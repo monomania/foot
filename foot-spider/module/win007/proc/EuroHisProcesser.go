@@ -2,21 +2,26 @@ package proc
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"opensource.io/go_spider/core/common/page"
-	"opensource.io/go_spider/core/pipeline"
-	"opensource.io/go_spider/core/spider"
+	"github.com/hu17889/go_spider/core/common/page"
+	"github.com/hu17889/go_spider/core/pipeline"
+	"github.com/hu17889/go_spider/core/spider"
 	"log"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	entity3 "tesou.io/platform/foot-parent/foot-core/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
-	entity2 "tesou.io/platform/foot-parent/foot-core/module/odds/entity"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"strconv"
 	"strings"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"time"
 )
 
 type EuroHisProcesser struct {
+	service.CompService
+	service.CompConfigService
+	service2.EuroLastService
+	service2.EuroHisService
 	//博彩公司对应的win007id
 	BetCompWin007Ids     []string
 	MatchLastConfig_list []*entity.MatchLastConfig
@@ -43,19 +48,19 @@ func (this *EuroHisProcesser) Startup() {
 
 		url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", match_win007_id, 1)
 		for _, v := range this.BetCompWin007Ids {
-			betCompConfig := new(entity3.CompConfig)
+			betCompConfig := new(entity2.CompConfig)
 			betCompConfig.Sid = v
-			existx := betCompConfig.FindByItemId()
+			existx := this.CompConfigService.FindBySId(betCompConfig)
 			if !existx {
-				comp := new(entity3.Comp)
+				comp := new(entity2.Comp)
 				//comp.Id = bson.NewObjectId().Hex()
 				comp.Id = v
 				comp.Name = win007.MODULE_FLAG + "-" + v
 
 				betCompConfig.CompId = comp.Id
 				betCompConfig.S = win007.MODULE_FLAG
-				mysql.Save(comp)
-				mysql.Save(betCompConfig)
+				this.CompService.Save(comp)
+				this.CompConfigService.Save(betCompConfig)
 			}
 			this.Win007Id_betCompId_map[v] = betCompConfig.CompId
 
@@ -94,7 +99,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 	win007_betCompId := this.findParamVal(request.Url, "cId")
 	compId := this.Win007Id_betCompId_map[win007_betCompId]
 
-	var euroHis_list = make([]*entity2.EuroHis, 0)
+	var euroHis_list = make([]*entity3.EuroHis, 0)
 
 	table_node := p.GetHtmlParser().Find(" table.mytable3 tr")
 	table_node.Each(func(i int, selection *goquery.Selection) {
@@ -102,14 +107,14 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 			return
 		}
 
-		euroHis := new(entity2.EuroHis)
+		euroHis := new(entity3.EuroHis)
 		euroHis_list = append(euroHis_list, euroHis)
 		euroHis.MatchId = matchId
 		euroHis.CompId = compId
 
 		td_list_node := selection.Find(" td ")
 		td_list_node.Each(func(ii int, selection *goquery.Selection) {
-			val := selection.Text()
+			val := strings.TrimSpace(selection.Text())
 			if "" == val {
 				return
 			}
@@ -128,7 +133,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 				temp, _ := strconv.ParseFloat(val, 64)
 				euroHis.Payout = temp
 			case 4:
-				selection.Find("span").Each(func(iii int, selection *goquery.Selection) {
+				selection.Children().Each(func(iii int, selection *goquery.Selection) {
 					val := selection.Text()
 					switch iii {
 					case 0:
@@ -145,7 +150,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 			case 5:
 				var month_day string
 				var hour_minute string
-				selection.Find("td div").Each(func(iii int, selection *goquery.Selection) {
+				selection.Children().Each(func(iii int, selection *goquery.Selection) {
 					val := selection.Text()
 					switch iii {
 					case 0:
@@ -162,7 +167,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 	this.euroHis_process(euroHis_list)
 }
 
-func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity2.EuroHis) {
+func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity3.EuroHis) {
 	euroHis_lsit_len := len(euroHis_lsit)
 	if euroHis_lsit_len < 1 {
 		return
@@ -173,10 +178,10 @@ func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity2.EuroHis) {
 	euro_last := euroHis_lsit[0]
 	if strings.EqualFold(euro_last.CompId, "616") {
 		euro_head := euroHis_lsit[(euroHis_lsit_len - 1)]
-		euro := new(entity2.EuroLast)
+		euro := new(entity3.EuroLast)
 		euro.MatchId = euro_last.MatchId
 		euro.CompId = euro_last.CompId
-		euro_exists := euro.FindExists()
+		euro_exists := this.EuroLastService.FindExists(euro)
 
 		euro.Sp3 = euro_head.Sp3
 		euro.Sp1 = euro_head.Sp1
@@ -185,22 +190,21 @@ func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity2.EuroHis) {
 		euro.Ep1 = euro_last.Sp1
 		euro.Ep0 = euro_last.Sp0
 		if euro_exists {
-			euro.ModifyTime = ""
-			mysql.Modify(euro.Id, euro)
+			this.EuroLastService.Modify(euro)
 		} else {
-			mysql.Save(euro)
+			this.EuroLastService.Save(euro)
 		}
 	}
 
 	//将历史赔率入库
 	euroHis_list_slice := make([]interface{}, 0)
 	for _, v := range euroHis_lsit {
-		exists := v.FindExists()
+		exists := this.EuroHisService.FindExists(v)
 		if !exists {
 			euroHis_list_slice = append(euroHis_list_slice, v)
 		}
 	}
-	mysql.SaveList(euroHis_list_slice)
+	this.EuroHisService.SaveList(euroHis_list_slice)
 }
 
 func (this *EuroHisProcesser) Finish() {

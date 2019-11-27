@@ -1,21 +1,28 @@
 package proc
 
 import (
+	"github.com/hu17889/go_spider/core/common/page"
+	"github.com/hu17889/go_spider/core/pipeline"
+	"github.com/hu17889/go_spider/core/spider"
 	"log"
-	"opensource.io/go_spider/core/common/page"
-	"opensource.io/go_spider/core/pipeline"
-	"opensource.io/go_spider/core/spider"
 	"reflect"
 	"strconv"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	entity2 "tesou.io/platform/foot-parent/foot-core/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
+	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"time"
 )
 
 type MatchPageProcesser struct {
+	service.MatchLastService
+	service.MatchLastConfigService
+	service2.LeagueService
+	service2.LeagueConfigService
+	service2.CompService
+	service2.CompConfigService
 	//抓取的url
 	MatchLast_url string
 }
@@ -180,7 +187,7 @@ func (this *MatchPageProcesser) Finish() {
 		}
 	/*	bytes, _ := json.Marshal(v)
 		log.Println(string(bytes))*/
-		exists := v.FindExistsById()
+		exists := this.LeagueService.FindExistsById(v.Id)
 		if exists {
 			continue
 		}
@@ -193,8 +200,8 @@ func (this *MatchPageProcesser) Finish() {
 		leagueConfig.Id = v.Id
 		leagueConfig_list_slice = append(leagueConfig_list_slice, leagueConfig)
 	}
-	mysql.SaveList(league_list_slice)
-	mysql.SaveList(leagueConfig_list_slice)
+	this.LeagueService.SaveList(league_list_slice)
+	this.LeagueConfigService.SaveList(leagueConfig_list_slice)
 
 	matchLast_list_slice := make([]interface{}, 0)
 	matchLastConfig_list_slice := make([]interface{}, 0)
@@ -203,7 +210,7 @@ func (this *MatchPageProcesser) Finish() {
 			continue
 		}
 
-		exists := v.FindExists()
+		exists := this.MatchLastService.FindExists(v)
 		if exists {
 			continue
 		}
@@ -223,7 +230,7 @@ func (this *MatchPageProcesser) Finish() {
 		matchLastConfig.Id = v.Id
 		matchLastConfig_list_slice = append(matchLastConfig_list_slice, matchLastConfig)
 	}
-	mysql.SaveList(matchLast_list_slice)
-	mysql.SaveList(matchLastConfig_list_slice)
+	this.MatchLastService.SaveList(matchLast_list_slice)
+	this.MatchLastConfigService.SaveList(matchLastConfig_list_slice)
 
 }

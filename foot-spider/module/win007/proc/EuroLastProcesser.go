@@ -3,22 +3,27 @@ package proc
 import (
 	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
-	"opensource.io/go_spider/core/common/page"
-	"opensource.io/go_spider/core/pipeline"
-	"opensource.io/go_spider/core/spider"
+	"github.com/hu17889/go_spider/core/common/page"
+	"github.com/hu17889/go_spider/core/pipeline"
+	"github.com/hu17889/go_spider/core/spider"
 	"log"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	entity2 "tesou.io/platform/foot-parent/foot-core/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-core/module/odds/entity"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 	"regexp"
 	"strconv"
 	"strings"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
 type EuroLastProcesser struct {
+	service.CompService
+	service.CompConfigService
+	service2.EuroLastService
+	service2.EuroHisService
 	//博彩公司对应的win007id
 	BetCompWin007Ids     []string
 	MatchLastConfig_list []*entity.MatchLastConfig
@@ -87,14 +92,14 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	matchId := this.Win007Id_matchId_map[win007Id]
 
 	//入库中
-	betComp_list_slice := make([]interface{}, 0)
-	betCompConfig_list_slice := make([]interface{}, 0)
+	comp_list_slice := make([]interface{}, 0)
+	compConfig_list_slice := make([]interface{}, 0)
 	euro_list_slice := make([]interface{}, 0)
 	euro_list_update_slice := make([]interface{}, 0)
 	for _, v := range hdata_list {
 		comp := new(entity2.Comp)
 		comp.Name = v.Cn
-		comp_exists := comp.FindExistsByName()
+		comp_exists := this.CompService.FindExistsByName(comp)
 		if !comp_exists {
 			//comp.Id = bson.NewObjectId().Hex()
 			comp.Id = strconv.Itoa(v.CId)
@@ -104,8 +109,8 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 			compConfig.Sid = strconv.Itoa(v.CId)
 			compConfig.S = win007.MODULE_FLAG
 
-			betComp_list_slice = append(betComp_list_slice, comp)
-			betCompConfig_list_slice = append(betCompConfig_list_slice, compConfig)
+			comp_list_slice = append(comp_list_slice, comp)
+			compConfig_list_slice = append(compConfig_list_slice, compConfig)
 		}
 
 		//判断是否在配置的波菜抓取队列中
@@ -133,7 +138,7 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		euro.Ep1 = v.Rs
 		euro.Ep0 = v.Rg
 
-		euro_exists := euro.FindExists()
+		euro_exists := this.EuroLastService.FindExists(euro)
 		if !euro_exists {
 			euro_list_slice = append(euro_list_slice, euro)
 		} else {
@@ -141,10 +146,10 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		}
 
 	}
-	mysql.SaveList(betComp_list_slice)
-	mysql.SaveList(betCompConfig_list_slice)
-	mysql.SaveList(euro_list_slice)
-	mysql.ModifyList(euro_list_update_slice)
+	this.CompService.SaveList(comp_list_slice)
+	this.CompService.SaveList(compConfig_list_slice)
+	this.EuroLastService.SaveList(euro_list_slice)
+	this.EuroLastService.ModifyList(euro_list_update_slice)
 }
 
 func (this *EuroLastProcesser) Finish() {

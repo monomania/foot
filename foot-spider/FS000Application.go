@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 )
@@ -29,10 +30,11 @@ func Spider() {
 }
 
 func test() {
-	matchLastConfig := new(entity.MatchLastConfig)
-	matchLastConfig.S = win007.MODULE_FLAG
-	matchLastConfig.EuroSpided = false
-	matchLastConfig_list := matchLastConfig.Query()
+	lastConfigService := new(service.MatchLastConfigService)
+	config := &entity.MatchLastConfig{}
+	config.S = win007.MODULE_FLAG
+	config.EuroSpided = false
+	matchLastConfig_list := lastConfigService.Query(config)
 
 	for _, v := range matchLastConfig_list {
 		bytes, _ := json.Marshal(v)

@@ -6,20 +6,29 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	entity4 "tesou.io/platform/foot-parent/foot-core/module/analy/entity"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/vo"
-	entity3 "tesou.io/platform/foot-parent/foot-core/module/elem/entity"
-	entity2 "tesou.io/platform/foot-parent/foot-core/module/match/entity"
-	"tesou.io/platform/foot-parent/foot-core/module/odds/entity"
+	service3 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
+	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"time"
 )
 
 type AnalyService struct {
+	mysql.BaseService
+	service.EuroLastService
+	service.EuroHisService
+	service.AsiaLastService
+	service2.MatchLastService
+	service3.LeagueService
 	MaxLetBall   float64
 	PrintOddData bool
 }
+
 //测试加载数据
 func (this *AnalyService) LoadData(matchId string) []*vo.AnalyResult {
 	sql_build := strings.Builder{}
@@ -27,27 +36,25 @@ func (this *AnalyService) LoadData(matchId string) []*vo.AnalyResult {
 	//结果值
 	entitys := make([]*vo.AnalyResult, 0)
 	//执行查询
-	mysql.Find(&entitys, sql_build.String())
+	this.Find(&entitys, sql_build.String())
 	return entitys
 }
+
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */
 func (this *AnalyService) Euro_Calc() []interface{} {
 
-	matchLast := new(entity2.MatchLast)
-	matchList := matchLast.FindAll()
+	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
 		matchId := v.Id
 		//声明使用变量
-		var e81data *entity.EuroLast
-		var e616data *entity.EuroLast
-		var a18betData *entity.AsiaLast
-		//欧赔
-		euroLast := new(entity.EuroLast)
+		var e81data *entity3.EuroLast
+		var e616data *entity3.EuroLast
+		var a18betData *entity3.AsiaLast
 		//81 -- 伟德
-		eList := euroLast.FindByMatchIdCompId(matchId, "81", "616")
+		eList := this.EuroLastService.FindByMatchIdCompId(matchId, "81", "616")
 		if len(eList) < 2 {
 			continue
 		}
@@ -70,8 +77,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 		}
 		//1.有变化,进行以下逻辑
 		//亚赔
-		asiaLast := new(entity.AsiaLast)
-		aList := asiaLast.FindByMatchIdCompId(matchId, "18Bet")
+		aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "18Bet")
 		if len(aList) < 1 {
 			continue
 		}
@@ -99,9 +105,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 
 		//1.1准备数据
 		//联赛数据
-		league := new(entity3.League)
-		league.Id = v.LeagueId
-		league.FindById()
+		league := this.LeagueService.FindById(v.LeagueId)
 		//比赛结果
 		globalResult := MatchResult(a18betData, v)
 		if this.PrintOddData {
@@ -121,9 +125,9 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 		} else {
 			resultFlag = "错误"
 		}
-		logStr += ","+resultFlag
+		logStr += "," + resultFlag
 		log.Println(logStr)
-		analyResult := new(entity4.AnalyResult)
+		analyResult := new(entity5.AnalyResult)
 		analyResult.MatchId = v.Id
 		analyResult.MatchDate = v.MatchDate
 		analyResult.LeagueId = v.LeagueId
@@ -132,13 +136,13 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 		analyResult.GuestTeamId = v.GuestTeamId
 		analyResult.GuestTeamGoals = v.GuestTeamGoals
 		format := time.Now().Format("1504")
-		analyResult.Al_Flag = utils.RunFuncName()+"-"+format
+		analyResult.Al_Flag = utils.RunFuncName() + "-" + format
 		analyResult.Context = logStr
 		analyResult.PreResult = result
 		analyResult.Result = resultFlag
 		data_list_slice = append(data_list_slice, analyResult)
 	}
-	mysql.SaveList(data_list_slice)
+	this.SaveList(data_list_slice)
 	return data_list_slice
 }
 
@@ -147,20 +151,17 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 ( 1.欧赔降水,亚赔反之,以亚赔为准)
 ( 2.欧赔升水,亚赔反之,以亚赔为准)
 */
-func (this *AnalyService) Euro_Asia_Diff() []interface{}{
-	matchLast := new(entity2.MatchLast)
-	matchList := matchLast.FindAll()
+func (this *AnalyService) Euro_Asia_Diff() []interface{} {
+	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
 		matchId := v.Id
 		//声明使用变量
-		var e81data *entity.EuroLast
-		var e616data *entity.EuroLast
-		var a18betData *entity.AsiaLast
-		//欧赔
-		euroLast := new(entity.EuroLast)
+		var e81data *entity3.EuroLast
+		var e616data *entity3.EuroLast
+		var a18betData *entity3.AsiaLast
 		//81 -- 伟德
-		eList := euroLast.FindByMatchIdCompId(matchId, "81", "616")
+		eList := this.EuroLastService.FindByMatchIdCompId(matchId, "81", "616")
 		if len(eList) < 2 {
 			continue
 		}
@@ -176,8 +177,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{}{
 		}
 
 		//亚赔
-		asiaLast := new(entity.AsiaLast)
-		aList := asiaLast.FindByMatchIdCompId(matchId, "18Bet")
+		aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "18Bet")
 		if len(aList) < 1 {
 			continue
 		}
@@ -201,9 +201,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{}{
 			continue
 		}
 		//联赛数据
-		league := new(entity3.League)
-		league.Id = v.LeagueId
-		league.FindById()
+		league := this.LeagueService.FindById(v.LeagueId)
 		//比赛结果
 		globalResult := MatchResult(a18betData, v)
 
@@ -224,9 +222,9 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{}{
 		} else {
 			resultFlag = "错误"
 		}
-		logStr += ","+resultFlag
+		logStr += "," + resultFlag
 		log.Println(logStr)
-		analyResult := new(entity4.AnalyResult)
+		analyResult := new(entity5.AnalyResult)
 		analyResult.MatchId = v.Id
 		analyResult.MatchDate = v.MatchDate
 		analyResult.LeagueId = v.LeagueId
@@ -235,17 +233,17 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{}{
 		analyResult.GuestTeamId = v.GuestTeamId
 		analyResult.GuestTeamGoals = v.GuestTeamGoals
 		format := time.Now().Format("1504")
-		analyResult.Al_Flag = utils.RunFuncName()+"-"+format
+		analyResult.Al_Flag = utils.RunFuncName() + "-" + format
 		analyResult.Context = logStr
 		analyResult.PreResult = result
 		analyResult.Result = resultFlag
 		data_list_slice = append(data_list_slice, analyResult)
 	}
-	mysql.SaveList(data_list_slice)
+	this.SaveList(data_list_slice)
 	return data_list_slice
 }
 
-func MatchResult(last *entity.AsiaLast, v *entity2.MatchLast) string {
+func MatchResult(last *entity3.AsiaLast, v *entity2.MatchLast) string {
 	var result string
 	h2, _ := time.ParseDuration("2h")
 	local, _ := time.LoadLocation("Local")
@@ -265,9 +263,9 @@ func MatchResult(last *entity.AsiaLast, v *entity2.MatchLast) string {
 		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
 	}
 	diff_goals := float64((v.MainTeamGoals - v.GuestTeamGoals)) - elb_sum
-	if diff_goals <= 0.25 && diff_goals >= -0.25{
+	if diff_goals <= 0.25 && diff_goals >= -0.25 {
 		result = "走盘(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
-	}else if mainTeamGoals > float64(v.GuestTeamGoals) {
+	} else if mainTeamGoals > float64(v.GuestTeamGoals) {
 		result = "主队(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
 	} else if mainTeamGoals < float64(v.GuestTeamGoals) {
 		result = "客队(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
@@ -280,7 +278,7 @@ func MatchResult(last *entity.AsiaLast, v *entity2.MatchLast) string {
 /**
 1.欧赔是主降还是主升 主降为true
 */
-func EuroMainDown(e81data *entity.EuroLast, e616data *entity.EuroLast) int {
+func EuroMainDown(e81data *entity3.EuroLast, e616data *entity3.EuroLast) int {
 	if e81data.Ep3 < e81data.Sp3 && e616data.Ep3 < e616data.Sp3 {
 		return 3
 	} else if e81data.Ep0 < e81data.Sp0 && e616data.Ep0 < e616data.Sp0 {
@@ -312,7 +310,7 @@ func Asia_Calc_Letball(letball string) float64 {
 /**
 2.亚赔是主降还是主升 主降为true
 */
-func AsiaMainDown(a18betData *entity.AsiaLast) bool {
+func AsiaMainDown(a18betData *entity3.AsiaLast) bool {
 	slb_sum := Asia_Calc_Letball(a18betData.SLetBall)
 	elb_sum := Asia_Calc_Letball(a18betData.ELetBall)
 

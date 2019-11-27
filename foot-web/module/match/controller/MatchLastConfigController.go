@@ -1,13 +1,15 @@
 package controller
 
 import (
-	"tesou.io/platform/foot-parent/foot-core/common/base/controller"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
 	"log"
+	"tesou.io/platform/foot-parent/foot-core/module/match/service"
+	"tesou.io/platform/foot-parent/foot-web/common/base/controller"
 )
 
 type MatchLastConfigController struct {
 	controller.BaseController
+	service.MatchLastConfigService
 }
 
 func (this *MatchLastConfigController) Query() {
@@ -20,7 +22,7 @@ func (this *MatchLastConfigController) Query() {
 	flag := values.Get("S")
 	log.Println(flag)
 	//执行查询
-	result := matchLastConfig.Query()
+	result := this.MatchLastConfigService.Query(&entity.MatchLastConfig{})
 
 	//封装结果
 	this.Data["json"] = result

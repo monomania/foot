@@ -3,20 +3,22 @@ package proc
 import (
 	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
-	"opensource.io/go_spider/core/common/page"
-	"opensource.io/go_spider/core/pipeline"
-	"opensource.io/go_spider/core/spider"
+	"github.com/hu17889/go_spider/core/common/page"
+	"github.com/hu17889/go_spider/core/pipeline"
+	"github.com/hu17889/go_spider/core/spider"
 	"log"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-core/module/odds/entity"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"regexp"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 )
 
 type AsiaLastProcesser struct {
+	service.AsiaLastService
+
 	MatchLastConfig_list []*entity.MatchLastConfig
 	Win007Id_matchId_map map[string]string
 }
@@ -63,9 +65,8 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 			return
 		}
 
-		asia := new(entity3.AsiaLast)
+		asia := new(entity2.AsiaLast)
 		asia.MatchId = matchId
-
 
 		selection.Find("td").Each(func(td_index int, selection *goquery.Selection) {
 			if td_index == 0 {
@@ -102,7 +103,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 			}
 		})
 
-		asia_exists := asia.FindExists()
+		asia_exists := this.AsiaLastService.FindExists(asia)
 		if !asia_exists {
 			asia_list_slice = append(asia_list_slice, asia)
 		} else {
@@ -111,8 +112,8 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 
 	})
 	//执行入库
-	mysql.SaveList(asia_list_slice)
-	mysql.ModifyList(asia_list_update_slice)
+	this.AsiaLastService.SaveList(asia_list_slice)
+	this.AsiaLastService.ModifyList(asia_list_update_slice)
 
 }
 

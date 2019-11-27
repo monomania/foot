@@ -7,9 +7,10 @@ import (
 	"io"
 	"log"
 	"os"
+	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
-	main2 "tesou.io/platform/foot-parent/foot-spider"
+	"tesou.io/platform/foot-parent/foot-spider/launch"
 )
 
 func main() {
@@ -90,29 +91,29 @@ func init() {
 }
 
 func TruncateTable() {
-	opsService := new(service.DBOpsService)
+	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
 	opsService.TruncateTable([]string{"t_match_last", "t_match_last_config", "t_euro_last", "t_euro_his", "t_asia_last"})
 }
 
 func GenTable() {
-	generateService := new(service.DBOpsService)
+	generateService := new(mysql.DBOpsService)
 	generateService.SyncTableStruct()
 }
 
 func Spider() {
 	//执行抓取比赛数据
-	main2.Before_spider_match()
-	main2.Spider_match(0)
+	launch.Before_spider_match()
+	launch.Spider_match(0)
 	//执行抓取比赛欧赔数据
-	main2.Before_spider_euroLast()
-	main2.Spider_euroLast()
+	launch.Before_spider_euroLast()
+	launch.Spider_euroLast()
 	//执行抓取亚赔数据
-	main2.Before_spider_asiaLast()
-	main2.Spider_asiaLast()
+	launch.Before_spider_asiaLast()
+	launch.Spider_asiaLast()
 	//执行抓取欧赔历史
-	main2.Before_spider_euroHis()
-	main2.Spider_euroHis()
+	launch.Before_spider_euroHis()
+	launch.Spider_euroHis()
 }
 
 func Analy(hookfn func([]interface{})){

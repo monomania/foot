@@ -1,8 +1,9 @@
 package launch
 
 import (
-	"tesou.io/platform/foot-parent/foot-core/module/core/service"
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
@@ -13,21 +14,22 @@ import (
 	Spider_euroLast()
 }*/
 
-func Before_spider_euroLast(){
+func Before_spider_euroLast() {
 	//抓取前清空当前比较表
-	opsService := new(service.DBOpsService)
+	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
 	opsService.TruncateTable([]string{"t_euro_last", "t_comp", "t_comp_config"})
 }
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 func Spider_euroLast() {
-	matchLastConfig := new(entity.MatchLastConfig)
-	matchLastConfig.S = win007.MODULE_FLAG
-	matchLastConfig.EuroSpided = false
-	matchLastConfigs := matchLastConfig.Query()
+	matchLastConfigService := new(service2.MatchLastConfigService)
+	config := &entity.MatchLastConfig{}
+	config.S = win007.MODULE_FLAG
+	config.EuroSpided = false
+	matchLastConfigs := matchLastConfigService.Query(config)
 	//281 -- bet 365  18 -- 12BET 976 -- 18Bet 81 -- 伟德 616 -- 888Sport
-	betCompWin007Ids := []string{"81","616"}
+	betCompWin007Ids := []string{"81", "616"}
 	//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 

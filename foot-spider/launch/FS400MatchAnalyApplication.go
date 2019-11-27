@@ -1,7 +1,8 @@
 package launch
 
 import (
-	"tesou.io/platform/foot-parent/foot-core/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
@@ -14,10 +15,11 @@ import (
 
 //抓取比赛分析数据
 func spider_match_analy() {
-	matchLastConfig := new(entity.MatchLastConfig)
-	matchLastConfig.S = win007.MODULE_FLAG
-	matchLastConfig.EuroSpided = false
-	matchLastConfigs := matchLastConfig.Query()
+	matchLastConfigService := new(service.MatchLastConfigService)
+	config := &entity.MatchLastConfig{}
+	config.S = win007.MODULE_FLAG
+	config.EuroSpided = false
+	matchLastConfigs := matchLastConfigService.Query(config)
 
 	processer := proc.GetMatchAnalyProcesser()
 	processer.MatchLastConfig_list = matchLastConfigs
