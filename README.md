@@ -7,6 +7,7 @@
 * [xorm](https://github.com/go-xorm/xorm)
 * [go_spider](https://github.com/hu17889/go_spider)
 * [beego](https://github.com/astaxie/beego)
+* [walk](https://github.com/lxn/walk)
 
 ## 项目结构
 ~~~
@@ -118,7 +119,15 @@ foot-parent
 * 启动http服务
 
    运行入口: ./foot-web/FW000Application.go
-  ![](https://oscimg.oschina.net/oscnet/b87398056bd5ffc0e7680f748c160bc7608.png "api")
+* windows gui程序
+
+   运行入口: ./foot-web/gui自行生成
+
+    ```
+    exe文件生成命令:go build -ldflags="-H windowsgui" 或者 go build
+    ```
+
+   
   
 * 联系作者
 <table>
