@@ -1,0 +1,4 @@
+#
+执行命令
+go build
+go build -ldflags="-H windowsgui"
