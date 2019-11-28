@@ -4,7 +4,9 @@ require (
 	github.com/astaxie/beego v1.12.0
 	github.com/lxn/walk v0.0.0-20191113135339-bf589de20b3c
 	github.com/lxn/win v0.0.0-20191106123917-121afc750dd3 // indirect
+	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect
+	tesou.io/platform/foot-parent/foot-api v1.0.0
 	tesou.io/platform/foot-parent/foot-core v1.0.0
 	tesou.io/platform/foot-parent/foot-spider v1.0.0
 )

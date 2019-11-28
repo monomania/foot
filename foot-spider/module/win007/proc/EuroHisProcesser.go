@@ -12,6 +12,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
+	service3 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"time"
@@ -22,9 +23,11 @@ type EuroHisProcesser struct {
 	service.CompConfigService
 	service2.EuroLastService
 	service2.EuroHisService
+	service3.MatchLastConfigService
 	//博彩公司对应的win007id
 	BetCompWin007Ids     []string
 	MatchLastConfig_list []*entity.MatchLastConfig
+	matchId_matchLastConfig_map   map[string]*entity.MatchLastConfig
 
 	Win007Id_matchId_map   map[string]string
 	Win007Id_betCompId_map map[string]string
@@ -37,6 +40,7 @@ func GetEuroHisProcesser() *EuroHisProcesser {
 func (this *EuroHisProcesser) Startup() {
 	this.Win007Id_matchId_map = map[string]string{}
 	this.Win007Id_betCompId_map = map[string]string{}
+	this.matchId_matchLastConfig_map = map[string]*entity.MatchLastConfig{}
 
 	newSpider := spider.NewSpider(this, "EuroHisProcesser")
 
@@ -45,6 +49,7 @@ func (this *EuroHisProcesser) Startup() {
 		match_win007_id := v.Sid
 
 		this.Win007Id_matchId_map[match_win007_id] = v.MatchId
+		this.matchId_matchLastConfig_map[v.MatchId] = v
 
 		url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", match_win007_id, 1)
 		for _, v := range this.BetCompWin007Ids {
@@ -70,7 +75,7 @@ func (this *EuroHisProcesser) Startup() {
 	}
 
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetThreadnum(1).Run()
+	newSpider.SetThreadnum(10).Run()
 }
 
 func (this *EuroHisProcesser) findParamVal(url string, paramName string) string {
@@ -194,6 +199,9 @@ func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity3.EuroHis) {
 		} else {
 			this.EuroLastService.Save(euro)
 		}
+		config := this.matchId_matchLastConfig_map[euro.MatchId]
+		config.EuroSpided = true
+		this.MatchLastConfigService.Modify(config)
 	}
 
 	//将历史赔率入库
