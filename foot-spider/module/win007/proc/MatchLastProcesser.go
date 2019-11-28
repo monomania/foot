@@ -221,8 +221,8 @@ func (this *MatchPageProcesser) Finish() {
 		matchLastConfig := new(entity.MatchLastConfig)
 		matchLast_elem := reflect.ValueOf(v).Elem()
 		matchLastConfig.MatchId = matchLast_elem.FieldByName("Id").String()
-		matchLastConfig.AsiaSpided = false
-		matchLastConfig.EuroSpided = false
+		matchLastConfig.AOSpider = false
+		matchLastConfig.EOSpider = false
 		matchLastConfig.S = win007.MODULE_FLAG
 		//ext := matchLast_elem.FieldByName("Ext").Interface().(map[string]interface{})
 		//matchLastConfig.Sid = ext["win007Id"].(string)

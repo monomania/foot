@@ -26,7 +26,7 @@ func Spider_asiaLast() {
 	matchLastConfigService := new(service2.MatchLastConfigService)
 	config := &entity.MatchLastConfig{}
 	config.S = win007.MODULE_FLAG
-	config.AsiaSpided = false
+	config.AOSpider = false
 	matchLastConfigs := matchLastConfigService.Query(config)
 
 

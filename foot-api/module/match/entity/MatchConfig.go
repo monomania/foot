@@ -9,9 +9,9 @@ import (
 */
 type MatchConfig struct {
 	//欧赔是否已经spider
-	EuroSpided bool `xorm:" comment('欧赔是否已经spider') index"`
+	EOSpider bool `xorm:" comment('欧赔是否已经spider') index"`
 	//亚赔是否已经spider
-	AsiaSpided bool `xorm:" comment('AsiaSpided') index"`
+	AOSpider bool `xorm:" comment('亚赔是否已经spider') index"`
 	//大小赔是否已经spider
 
 	entity2.SourceConfig `xorm:"extends"`

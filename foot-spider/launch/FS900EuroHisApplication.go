@@ -28,11 +28,11 @@ func Spider_euroHis() {
 	matchLastConfigService := new(service2.MatchLastConfigService)
 	config := &entity.MatchLastConfig{}
 	config.S = win007.MODULE_FLAG
-	config.EuroSpided = false
+	config.EOSpider = false
 	matchLastConfigs := matchLastConfigService.Query(config)
 
 	//设置要抓取的波菜公司id
-	betCompWin007Ids := []string{"616"}
+	betCompWin007Ids := []string{"81","616"}
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 
 	processer := proc.GetEuroHisProcesser()

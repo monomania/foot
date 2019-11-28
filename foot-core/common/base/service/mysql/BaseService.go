@@ -28,6 +28,11 @@ func GetEngine() *xorm.Engine {
 	return engine
 }
 
+func ShowSQL(show bool){
+	GetEngine().ShowSQL(show)
+
+}
+
 func setEngine() *xorm.Engine {
 	url := mysql_conf["url"]
 	maxIdle, _ := strconv.Atoi(mysql_conf["maxIdle"])
@@ -41,7 +46,7 @@ func setEngine() *xorm.Engine {
 	engine.ShowExecTime(true)
 	//则会在控制台打印出生成的SQL语句
 	//则会在控制台打印调试及以上的信息
-	engine.ShowSQL(false)
+	engine.ShowSQL(true)
 	//engine.Logger().SetLevel(core.LOG_DEBUG)
 	engine.SetMaxIdleConns(maxIdle)
 	engine.SetMaxOpenConns(maxConn)
@@ -209,7 +214,7 @@ func (this *BaseService) Modify(entity interface{}) int64 {
 
 	entity_value := reflect.ValueOf(entity).Elem()
 	id_field := entity_value.FieldByName("Id")
-	i, err := engine.Id(id_field.Interface()).Update(entity)
+	i, err := engine.Id(id_field.Interface()).AllCols().Update(entity)
 	if err != nil {
 		log.Println("Modify:", err)
 	}

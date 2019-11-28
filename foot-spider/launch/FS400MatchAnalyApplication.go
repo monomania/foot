@@ -18,7 +18,7 @@ func spider_match_analy() {
 	matchLastConfigService := new(service.MatchLastConfigService)
 	config := &entity.MatchLastConfig{}
 	config.S = win007.MODULE_FLAG
-	config.EuroSpided = false
+	config.EOSpider = false
 	matchLastConfigs := matchLastConfigService.Query(config)
 
 	processer := proc.GetMatchAnalyProcesser()

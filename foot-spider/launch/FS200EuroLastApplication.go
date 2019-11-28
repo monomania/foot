@@ -26,7 +26,7 @@ func Spider_euroLast() {
 	matchLastConfigService := new(service2.MatchLastConfigService)
 	config := &entity.MatchLastConfig{}
 	config.S = win007.MODULE_FLAG
-	config.EuroSpided = false
+	config.EOSpider = false
 	matchLastConfigs := matchLastConfigService.Query(config)
 	//281 -- bet 365  18 -- 12BET 976 -- 18Bet 81 -- 伟德 616 -- 888Sport
 	betCompWin007Ids := []string{"81", "616"}

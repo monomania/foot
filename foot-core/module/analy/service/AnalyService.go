@@ -29,6 +29,11 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
+func init(){
+	//关闭SQL输出
+	mysql.ShowSQL(false)
+}
+
 //测试加载数据
 func (this *AnalyService) LoadData(matchId string) []*vo.AnalyResult {
 	sql_build := strings.Builder{}

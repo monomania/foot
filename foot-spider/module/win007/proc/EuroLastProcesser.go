@@ -91,7 +91,6 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	win007Id := strings.Split(regex_temp.FindString(url), ".")[0]
 	matchId := this.Win007Id_matchId_map[win007Id]
 
-
 	//入库中
 	comp_list_slice := make([]interface{}, 0)
 	compConfig_list_slice := make([]interface{}, 0)
@@ -113,7 +112,8 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 			comp_list_slice = append(comp_list_slice, comp)
 			compConfig_list_slice = append(compConfig_list_slice, compConfig)
 		}
-		//判断是否在配置的波菜抓取队列中
+
+		//判断公司ID是否在配置的波菜公司队列中
 		if len(this.BetCompWin007Ids) > 0 {
 			var equal bool
 			for _, id := range this.BetCompWin007Ids {
@@ -144,8 +144,8 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		} else {
 			euro_list_update_slice = append(euro_list_update_slice, euro)
 		}
-
 	}
+
 	this.CompService.SaveList(comp_list_slice)
 	this.CompService.SaveList(compConfig_list_slice)
 	this.EuroLastService.SaveList(euro_list_slice)
