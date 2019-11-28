@@ -141,7 +141,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 		analyResult.GuestTeamId = v.GuestTeamId
 		analyResult.GuestTeamGoals = v.GuestTeamGoals
 		format := time.Now().Format("1504")
-		analyResult.Al_Flag = utils.RunFuncName() + "-" + format
+		analyResult.AlFlag = utils.RunFuncName() + "-" + format
 		analyResult.Context = logStr
 		analyResult.PreResult = result
 		analyResult.Result = resultFlag
@@ -238,7 +238,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{} {
 		analyResult.GuestTeamId = v.GuestTeamId
 		analyResult.GuestTeamGoals = v.GuestTeamGoals
 		format := time.Now().Format("1504")
-		analyResult.Al_Flag = utils.RunFuncName() + "-" + format
+		analyResult.AlFlag = utils.RunFuncName() + "-" + format
 		analyResult.Context = logStr
 		analyResult.PreResult = result
 		analyResult.Result = resultFlag

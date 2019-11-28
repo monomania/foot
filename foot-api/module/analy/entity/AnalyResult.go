@@ -32,7 +32,7 @@ type AnalyResult struct {
 	GuestTeamGoals int `xorm:" comment('客队进球数') index"`
 
 	//算法标识
-	Al_Flag string `xorm:" comment('算法标识') index"`
+	AlFlag string `xorm:" comment('算法标识') index"`
 	//结果
 	Context string
 
