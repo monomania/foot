@@ -23,7 +23,7 @@ func Spider() {
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据
 	//执行抓取欧赔历史
-	launch.Spider_match(4)
+	launch.Spider_match(0)
 	launch.Spider_asiaLast()
 	launch.Spider_euroLast()
 	launch.Spider_euroHis()
