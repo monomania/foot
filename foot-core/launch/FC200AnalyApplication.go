@@ -1,13 +1,10 @@
-package main
+package launch
 
 import (
 	"log"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 )
 
-func main() {
-	Analy()
-}
 
 func Analy() []interface{} {
 	analysisService := new(service.AnalyService)
