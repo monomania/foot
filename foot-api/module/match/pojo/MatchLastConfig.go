@@ -1,7 +1,7 @@
-package entity
+package pojo
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 
 type MatchLastConfig struct {
@@ -13,6 +13,6 @@ type MatchLastConfig struct {
 	MatchConfig `xorm:"extends"`
 
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }
 

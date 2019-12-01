@@ -6,20 +6,21 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"log"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"regexp"
 	"strconv"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 )
 
 type AsiaLastProcesser struct {
 	service.AsiaLastService
 
-	MatchLastConfig_list []*entity.MatchLastConfig
+	MatchLastConfig_list []*pojo.MatchLastConfig
 	Win007Id_matchId_map map[string]string
 }
 
@@ -34,7 +35,7 @@ func (this *AsiaLastProcesser) Startup() {
 
 	for _, v := range this.MatchLastConfig_list {
 		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(entity.MatchLastConfig)
+		matchLastConfig := new(pojo.MatchLastConfig)
 		json.Unmarshal(bytes, matchLastConfig)
 
 		win007_id := matchLastConfig.Sid
@@ -44,6 +45,7 @@ func (this *AsiaLastProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_ASIAODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
+	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -51,7 +53,7 @@ func (this *AsiaLastProcesser) Startup() {
 func (this *AsiaLastProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		log.Println("URL:,", request.Url, p.Errormsg())
+		base.Log.Info("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
@@ -118,6 +120,6 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 }
 
 func (this *AsiaLastProcesser) Finish() {
-	log.Println("亚赔抓取解析完成 \r\n")
+	base.Log.Info("亚赔抓取解析完成 \r\n")
 
 }

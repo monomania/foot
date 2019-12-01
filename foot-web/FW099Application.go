@@ -8,7 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"io/ioutil"
-	"log"
+
 	"net/http"
 	_ "tesou.io/platform/foot-parent/foot-web/common/fliters"
 	_ "tesou.io/platform/foot-parent/foot-web/common/routers"
@@ -31,12 +31,12 @@ func MatchInfo() {
 	client := &http.Client{}
 	request, err := http.NewRequest("GET", url, nil)
 	if nil != err {
-		log.Println(err)
+		base.Log.Error(err)
 	}
 	setHeader(request)
 	response, err := client.Do(request)
 	if nil != err {
-		log.Println(err)
+		base.Log.Error(err)
 	}
 	var reader io.ReadCloser
 	if response.Header.Get("Content-Encoding") == "gzip" {

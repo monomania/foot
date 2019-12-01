@@ -1,7 +1,7 @@
-package entity
+package pojo
 
 import (
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/core/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/core/pojo"
 )
 
 /**

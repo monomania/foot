@@ -1,8 +1,8 @@
-package entity
+package pojo
 
 import "time"
 
-type Base struct {
+type BasePojo struct {
 	//自增主键
 	Id string `xorm:"pk"`
 	//创建时间 这个Field将在Insert时自动赋值为当前时间

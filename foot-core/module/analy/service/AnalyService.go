@@ -2,14 +2,14 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"strconv"
 	"strings"
-	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	service3 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
@@ -27,11 +27,6 @@ type AnalyService struct {
 	service3.LeagueService
 	MaxLetBall   float64
 	PrintOddData bool
-}
-
-func init(){
-	//关闭SQL输出
-	mysql.ShowSQL(false)
 }
 
 //测试加载数据
@@ -114,10 +109,10 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 		//比赛结果
 		globalResult := MatchResult(a18betData, v)
 		if this.PrintOddData {
-			log.Println("比赛Id:" + e81data.MatchId + " e81data\tSp3:" + strconv.FormatFloat(e81data.Sp3, 'f', -1, 64) + "\t\tSp0:" + strconv.FormatFloat(e81data.Sp0, 'f', -1, 64))
-			log.Println("比赛Id:" + e81data.MatchId + " e81data\tEp3:" + strconv.FormatFloat(e81data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e81data.Ep0, 'f', -1, 64))
-			log.Println("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
-			log.Println("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e81data.MatchId + " e81data\tSp3:" + strconv.FormatFloat(e81data.Sp3, 'f', -1, 64) + "\t\tSp0:" + strconv.FormatFloat(e81data.Sp0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e81data.MatchId + " e81data\tEp3:" + strconv.FormatFloat(e81data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e81data.Ep0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
 		}
 		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + a18betData.ELetBall + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
 		var resultFlag string
@@ -131,7 +126,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 			resultFlag = "错误"
 		}
 		logStr += "," + resultFlag
-		log.Println(logStr)
+		base.Log.Info(logStr)
 		analyResult := new(entity5.AnalyResult)
 		analyResult.MatchId = v.Id
 		analyResult.MatchDate = v.MatchDate
@@ -211,10 +206,10 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{} {
 		globalResult := MatchResult(a18betData, v)
 
 		if this.PrintOddData {
-			log.Println("比赛Id:" + e81data.MatchId + " e81data\tSp3:" + strconv.FormatFloat(e81data.Sp3, 'f', -1, 64) + "\t\tSp0:" + strconv.FormatFloat(e81data.Sp0, 'f', -1, 64))
-			log.Println("比赛Id:" + e81data.MatchId + " e81data\tEp3:" + strconv.FormatFloat(e81data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e81data.Ep0, 'f', -1, 64))
-			log.Println("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
-			log.Println("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e81data.MatchId + " e81data\tSp3:" + strconv.FormatFloat(e81data.Sp3, 'f', -1, 64) + "\t\tSp0:" + strconv.FormatFloat(e81data.Sp0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e81data.MatchId + " e81data\tEp3:" + strconv.FormatFloat(e81data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e81data.Ep0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
+			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
 		}
 		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + a18betData.ELetBall + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
 		var resultFlag string
@@ -228,7 +223,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{} {
 			resultFlag = "错误"
 		}
 		logStr += "," + resultFlag
-		log.Println(logStr)
+		base.Log.Info(logStr)
 		analyResult := new(entity5.AnalyResult)
 		analyResult.MatchId = v.Id
 		analyResult.MatchDate = v.MatchDate

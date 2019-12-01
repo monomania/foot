@@ -1,8 +1,8 @@
 package service
 
 import (
-	"log"
-	"tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
@@ -11,16 +11,16 @@ type CompService struct {
 	mysql.BaseService
 }
 
-func (this *CompService) FindExistsByName(v *entity.Comp) bool {
+func (this *CompService) FindExistsByName(v *pojo.Comp) bool {
 	exist, err := mysql.GetEngine().Get(v)
 	if err != nil {
-		log.Println("FindExistsByName:", err)
+		base.Log.Info("FindExistsByName:", err)
 	}
 	return exist
 }
 
 func (this *CompService) FindAllIds() []string {
-	dataList := make([]*entity.Comp, 0)
+	dataList := make([]*pojo.Comp, 0)
 	dataIdArr := make([]string, 0)
 	mysql.GetEngine().Find(&dataList)
 	for _, v := range dataList {

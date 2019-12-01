@@ -1,8 +1,8 @@
 package service
 
 import (
-	"log"
-	"tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
@@ -11,10 +11,10 @@ type CompConfigService struct {
 	mysql.BaseService
 }
 
-func (this *CompConfigService) FindBySId(v *entity.CompConfig) bool {
+func (this *CompConfigService) FindBySId(v *pojo.CompConfig) bool {
 	exists, err := mysql.GetEngine().Get(v)
 	if err != nil {
-		log.Println("FindBySId:", err)
+		base.Log.Info("FindBySId:", err)
 	}
 	return exists
 }

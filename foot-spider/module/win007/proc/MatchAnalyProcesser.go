@@ -6,16 +6,18 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"log"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 	"strings"
 )
 
 type MatchAnalyProcesser struct {
 	//博彩公司对应的win007id
-	MatchLastConfig_list []*entity.MatchLastConfig
+	MatchLastConfig_list []*pojo.MatchLastConfig
 	Win007Id_matchId_map map[string]string
 }
 
@@ -30,7 +32,7 @@ func (this *MatchAnalyProcesser) Startup() {
 
  	for _, v := range this.MatchLastConfig_list {
 		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(entity.MatchLastConfig)
+		matchLastConfig := new(pojo.MatchLastConfig)
 		json.Unmarshal(bytes, matchLastConfig)
 
 		win007_id := matchLastConfig.Sid
@@ -40,7 +42,7 @@ func (this *MatchAnalyProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_MATCH_ANALY_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-
+	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -48,7 +50,7 @@ func (this *MatchAnalyProcesser) Startup() {
 func (this *MatchAnalyProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		log.Println("URL:,", request.Url, p.Errormsg())
+		base.Log.Info("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
@@ -68,7 +70,7 @@ func (this *MatchAnalyProcesser) Process(p *page.Page) {
 	// 获取script脚本中的，博彩公司信息
 	hdata_str = strings.Replace(hdata_str, ";", "", 1)
 	hdata_str = strings.Replace(hdata_str, "var hData = ", "", 1)
-	log.Println(hdata_str)
+	base.Log.Info(hdata_str)
 
 	this.hdata_process(request.Url, hdata_str)
 }
@@ -86,6 +88,6 @@ func (this *MatchAnalyProcesser) hdata_process(url string, hdata_str string) {
 }
 
 func (this *MatchAnalyProcesser) Finish() {
-	log.Println("比赛分析抓取解析完成 \r\n")
+	base.Log.Info("比赛分析抓取解析完成 \r\n")
 
 }

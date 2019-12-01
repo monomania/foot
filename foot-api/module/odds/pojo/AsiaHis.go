@@ -1,6 +1,6 @@
-package entity
+package pojo
 
-import "tesou.io/platform/foot-parent/foot-api/common/base/entity"
+import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 
 type AsiaHis struct {
 	/**
@@ -26,5 +26,5 @@ type AsiaHis struct {
 	//数据时间
 	OddDate string	`xorm:"unique(CompId_MatchId_OddDate)"`
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }

@@ -1,7 +1,7 @@
-package entity
+package pojo
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 
 //足球比赛信息
@@ -36,6 +36,6 @@ type MatchLast struct {
 	 */
 	GuestTeamGoals int	`xorm:" comment('客队进球数') index"`
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }
 

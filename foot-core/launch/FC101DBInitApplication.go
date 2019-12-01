@@ -5,6 +5,11 @@ import (
 )
 
 
+func init(){
+	//开启SQL输出
+	mysql.ShowSQL(true)
+}
+
 func TruncateTable() {
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表

@@ -4,15 +4,17 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"log"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+
 	"reflect"
 	"strconv"
 	"strings"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"time"
 )
 
@@ -36,7 +38,7 @@ var (
 	league_list           = make([]*entity2.League, 0)
 	win007Id_leagueId_map = make(map[string]string)
 	//比赛数据
-	matchLast_list = make([]*entity.MatchLast, 0)
+	matchLast_list = make([]*pojo.MatchLast, 0)
 )
 
 func init() {
@@ -47,9 +49,9 @@ func (this *MatchPageProcesser) Startup() {
 	if this.MatchLast_url == "" {
 		this.MatchLast_url = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
-
 	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
 	newSpider = newSpider.AddUrl(this.MatchLast_url, "text")
+	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -57,19 +59,19 @@ func (this *MatchPageProcesser) Startup() {
 func (this *MatchPageProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		log.Println("URL:,", request.Url, p.Errormsg())
+		base.Log.Info("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
 	rawText := p.GetBodyStr()
 	if rawText == "" {
-		log.Println("URL:,内容为空", request.Url)
+		base.Log.Info("URL:,内容为空", request.Url)
 		return
 	}
 
 	rawText_arr := strings.Split(rawText, "$$")
 	if len(rawText_arr) < 2 {
-		log.Println("URL:,解析失败,rawTextArr长度为:,小于所必需要的长度3", request.Url, len(rawText_arr))
+		base.Log.Info("URL:,解析失败,rawTextArr长度为:,小于所必需要的长度3", request.Url, len(rawText_arr))
 		return
 	}
 
@@ -84,9 +86,9 @@ func (this *MatchPageProcesser) Process(p *page.Page) {
 		match_str = rawText_arr[2]
 	}
 
-	log.Println("联赛信息:", league_str)
+	base.Log.Info("联赛信息:", league_str)
 	this.league_process(league_str)
-	log.Println("比赛信息:", match_str)
+	base.Log.Info("比赛信息:", match_str)
 	this.match_process(match_str)
 }
 
@@ -132,7 +134,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 	match_arr := strings.Split(rawText, "!")
 	match_len := len(match_arr)
 	for i := 0; i < match_len; i++ {
-		matchLast := new(entity.MatchLast)
+		matchLast := new(pojo.MatchLast)
 		//matchLast.Ext = make(map[string]interface{})
 		//matchLast.Id = bson.NewObjectId().Hex()
 
@@ -177,7 +179,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 }
 
 func (this *MatchPageProcesser) Finish() {
-	log.Println("比赛抓取解析完成,执行入库 \r\n")
+	base.Log.Info("比赛抓取解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)
 	leagueConfig_list_slice := make([]interface{}, 0)
@@ -186,7 +188,7 @@ func (this *MatchPageProcesser) Finish() {
 			continue
 		}
 	/*	bytes, _ := json.Marshal(v)
-		log.Println(string(bytes))*/
+		base.Log.Info(string(bytes))*/
 		exists := this.LeagueService.FindExistsById(v.Id)
 		if exists {
 			continue
@@ -218,7 +220,7 @@ func (this *MatchPageProcesser) Finish() {
 		matchLast_list_slice = append(matchLast_list_slice, v)
 
 		//处理比赛配置信息
-		matchLastConfig := new(entity.MatchLastConfig)
+		matchLastConfig := new(pojo.MatchLastConfig)
 		matchLast_elem := reflect.ValueOf(v).Elem()
 		matchLastConfig.MatchId = matchLast_elem.FieldByName("Id").String()
 		matchLastConfig.AOSpider = false

@@ -1,4 +1,4 @@
-package entity
+package pojo
 
 type Response struct {
 	Data    interface{}

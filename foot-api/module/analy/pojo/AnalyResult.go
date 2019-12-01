@@ -1,6 +1,6 @@
-package entity
+package pojo
 
-import "tesou.io/platform/foot-parent/foot-api/common/base/entity"
+import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 
 type AnalyResult struct {
 	//比赛id
@@ -36,5 +36,5 @@ type AnalyResult struct {
 	//结果
 	Context string
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }

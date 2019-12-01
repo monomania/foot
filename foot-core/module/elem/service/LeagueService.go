@@ -1,8 +1,8 @@
 package service
 
 import (
-	"log"
-	"tesou.io/platform/foot-parent/foot-api/module/elem/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
@@ -14,29 +14,29 @@ type LeagueService struct {
 /**
  */
 func (this *LeagueService) FindExistsByName(name string) bool {
-	exist, err := mysql.GetEngine().Exist(&entity.League{Name: name})
+	exist, err := mysql.GetEngine().Exist(&pojo.League{Name: name})
 	if err != nil {
-		log.Println("FindExistsByName:", err)
+		base.Log.Info("FindExistsByName:", err)
 	}
 	return exist
 }
 
 func (this *LeagueService) FindExistsById(id string) bool {
-	league := new(entity.League)
+	league := new(pojo.League)
 	league.Id = id
 	exist, err := mysql.GetEngine().Exist(league)
 	if err != nil {
-		log.Println("FindExistsById:", err)
+		base.Log.Info("FindExistsById:", err)
 	}
 	return exist
 }
 
-func (this *LeagueService) FindById(id string) *entity.League {
-	league := new(entity.League)
+func (this *LeagueService) FindById(id string) *pojo.League {
+	league := new(pojo.League)
 	league.Id = id
 	_, err := mysql.GetEngine().Get(league)
 	if err != nil {
-		log.Println("FindById:", err)
+		base.Log.Info("FindById:", err)
 	}
 	return league
 }

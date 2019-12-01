@@ -1,4 +1,4 @@
-package entity
+package pojo
 
 type SourceConfig struct {
 	//数据来源

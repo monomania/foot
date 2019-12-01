@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"regexp"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 )
 
 func main() {
-	launch.Spider(0)
+	launch.Spider(4)
 }
 
 func test() {
 	lastConfigService := new(service.MatchLastConfigService)
-	config := &entity.MatchLastConfig{}
+	config := &pojo.MatchLastConfig{}
 	config.S = win007.MODULE_FLAG
 	config.EOSpider = false
 	matchLastConfig_list := lastConfigService.Query(config)

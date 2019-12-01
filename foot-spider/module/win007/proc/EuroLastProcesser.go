@@ -6,16 +6,18 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"log"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+
 	"regexp"
 	"strconv"
 	"strings"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
@@ -26,7 +28,7 @@ type EuroLastProcesser struct {
 	service2.EuroHisService
 	//博彩公司对应的win007id
 	BetCompWin007Ids     []string
-	MatchLastConfig_list []*entity.MatchLastConfig
+	MatchLastConfig_list []*pojo.MatchLastConfig
 	Win007Id_matchId_map map[string]string
 }
 
@@ -41,7 +43,7 @@ func (this *EuroLastProcesser) Startup() {
 
 	for _, v := range this.MatchLastConfig_list {
 		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(entity.MatchLastConfig)
+		matchLastConfig := new(pojo.MatchLastConfig)
 		json.Unmarshal(bytes, matchLastConfig)
 
 		win007_id := matchLastConfig.Sid
@@ -51,6 +53,7 @@ func (this *EuroLastProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_EUROODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
+	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -58,7 +61,7 @@ func (this *EuroLastProcesser) Startup() {
 func (this *EuroLastProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		log.Println("URL:,", request.Url, p.Errormsg())
+		base.Log.Info("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
@@ -78,7 +81,7 @@ func (this *EuroLastProcesser) Process(p *page.Page) {
 	// 获取script脚本中的，博彩公司信息
 	hdata_str = strings.Replace(hdata_str, ";", "", 1)
 	hdata_str = strings.Replace(hdata_str, "var hData = ", "", 1)
-	log.Println(hdata_str)
+	base.Log.Info(hdata_str)
 
 	this.hdata_process(request.Url, hdata_str)
 }
@@ -153,6 +156,6 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 }
 
 func (this *EuroLastProcesser) Finish() {
-	log.Println("欧赔抓取解析完成 \r\n")
+	base.Log.Info("欧赔抓取解析完成 \r\n")
 
 }

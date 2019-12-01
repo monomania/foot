@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	_ "tesou.io/platform/foot-parent/foot-web/common/fliters"
 	_ "tesou.io/platform/foot-parent/foot-web/common/routers"
 )
@@ -14,7 +15,12 @@ func main() {
 
 func beeRun() {
 	beego.LoadAppConfig("ini", "conf/app.conf")
-	beego.SetLevel(beego.LevelDebug)
-	beego.SetLogger("file", `{"filename":"/home/logs/foot-web/foot-web.log"}`)
+	logs.SetLogger(logs.AdapterConsole, `{"level":1,"color":true}`)
+	//logs.SetLogger(logs.AdapterFile,`{"filename":"foot-web.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10,"color":true}`)
+	//输出文件名和行号
+	logs.EnableFuncCallDepth(true)
+	//异步输出日志
+	logs.Async(1e3)
+	//启动
 	beego.Run()
 }

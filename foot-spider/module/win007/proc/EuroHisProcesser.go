@@ -5,16 +5,17 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"log"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"strconv"
 	"strings"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/entity"
-	"tesou.io/platform/foot-parent/foot-api/module/match/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/entity"
+	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service3 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"time"
 )
 
@@ -26,8 +27,8 @@ type EuroHisProcesser struct {
 	service3.MatchLastConfigService
 	//博彩公司对应的win007id
 	BetCompWin007Ids            []string
-	MatchLastConfig_list        []*entity.MatchLastConfig
-	matchId_matchLastConfig_map map[string]*entity.MatchLastConfig
+	MatchLastConfig_list        []*pojo.MatchLastConfig
+	matchId_matchLastConfig_map map[string]*pojo.MatchLastConfig
 
 	Win007Id_matchId_map   map[string]string
 	Win007Id_betCompId_map map[string]string
@@ -40,7 +41,7 @@ func GetEuroHisProcesser() *EuroHisProcesser {
 func (this *EuroHisProcesser) Startup() {
 	this.Win007Id_matchId_map = map[string]string{}
 	this.Win007Id_betCompId_map = map[string]string{}
-	this.matchId_matchLastConfig_map = map[string]*entity.MatchLastConfig{}
+	this.matchId_matchLastConfig_map = map[string]*pojo.MatchLastConfig{}
 
 	newSpider := spider.NewSpider(this, "EuroHisProcesser")
 
@@ -73,7 +74,7 @@ func (this *EuroHisProcesser) Startup() {
 			newSpider = newSpider.AddUrl(url, "html")
 		}
 	}
-
+	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -92,7 +93,7 @@ func (this *EuroHisProcesser) findParamVal(url string, paramName string) string 
 func (this *EuroHisProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		log.Println("URL:,", request.Url, p.Errormsg())
+		base.Log.Info("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
@@ -213,6 +214,6 @@ func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity3.EuroHis) {
 }
 
 func (this *EuroHisProcesser) Finish() {
-	log.Println("欧赔历史抓取解析完成 \r\n")
+	base.Log.Info("欧赔历史抓取解析完成 \r\n")
 
 }

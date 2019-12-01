@@ -1,8 +1,8 @@
-package entity
+package pojo
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
-	entity3 "tesou.io/platform/foot-parent/foot-api/module/core/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
+	entity3 "tesou.io/platform/foot-parent/foot-api/module/core/pojo"
 )
 
 //足球联赛配置
@@ -12,5 +12,5 @@ type LeagueConfig struct {
 	//数据来源信息
 	entity3.SourceConfig `xorm:"extends"`
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }

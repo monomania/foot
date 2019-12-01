@@ -1,7 +1,7 @@
-package entity
+package pojo
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 
 //联赛表
@@ -15,6 +15,6 @@ type League struct {
 	//联赛官网
 	Website string	`xorm:" comment('联赛官网')"`
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }
 

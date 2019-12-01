@@ -1,6 +1,6 @@
-package entity
+package pojo
 
-import "tesou.io/platform/foot-parent/foot-api/common/base/entity"
+import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 
 type EuroHis struct {
 	/**
@@ -34,5 +34,5 @@ type EuroHis struct {
 	Kelly1 float64
 	Kelly0 float64
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }

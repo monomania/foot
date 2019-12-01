@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/astaxie/beego"
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
@@ -21,8 +21,8 @@ func (this *BaseController) GetIp() string {
 	return ""
 }
 
-func (this *BaseController) newPage() *entity.Page {
-	page := new(entity.Page)
+func (this *BaseController) newPage() *pojo.Page {
+	page := new(pojo.Page)
 	page.SetPageSize(10)
 	page.SetCurPage(1)
 	return page
@@ -31,7 +31,7 @@ func (this *BaseController) newPage() *entity.Page {
 /**
 获取分页设置
  */
-func (this *BaseController) GetPage() *entity.Page {
+func (this *BaseController) GetPage() *pojo.Page {
 	pageSize := this.Input().Get("pageSize")
 	curPage := this.Input().Get("curPage")
 	orderType := this.Input().Get("orderType")

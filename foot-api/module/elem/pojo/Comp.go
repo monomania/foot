@@ -1,7 +1,7 @@
-package entity
+package pojo
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/common/base/entity"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 
 //菠菜公司
@@ -11,5 +11,5 @@ type Comp struct {
 	//公司网址
 	Wesite string `xorm:" comment('公司网址')"`
 
-	entity.Base `xorm:"extends"`
+	pojo.BasePojo `xorm:"extends"`
 }

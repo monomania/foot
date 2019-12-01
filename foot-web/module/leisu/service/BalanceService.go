@@ -3,8 +3,8 @@ package service
 import "tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 
 /**
-发布推荐
+查看余额
  */
-type PubService struct {
+type StatService struct {
 	mysql.BaseService
 }

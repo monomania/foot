@@ -4,7 +4,8 @@ import (
 	"bufio"
 	"io"
 	"io/ioutil"
-	"log"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+
 	"os"
 	"time"
 )
@@ -82,9 +83,9 @@ func ReadLine(filePth string, hookfn func([]byte)) error {
 
 // 文件监控
 func FileMonitoring(filePth string, hookfn func([]byte)) {
-	f, err := os.Open(filePth)
+	f, err := os.OpenFile(filePth, os.O_RDONLY, 0777)
 	if err != nil {
-		log.Fatalln(err)
+		base.Log.Fatalln(err)
 	}
 	defer f.Close()
 
@@ -94,50 +95,51 @@ func FileMonitoring(filePth string, hookfn func([]byte)) {
 		line, err := rd.ReadBytes('\n')
 		// 如果是文件末尾不返回
 		if err == io.EOF {
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 			continue;
 		} else if err != nil {
-			log.Fatalln(err)
+			base.Log.Fatalln(err)
 		}
 		go hookfn(line)
 	}
 
 }
+
 //func main() {
 
-	/*
-	   一次性读取
-	*/
+/*
+   一次性读取
+*/
 
-	// 直接读取文件,无需打开句柄
-	/*
-	   ret,err:=ioutil.ReadFile("/usr/local/nginx/logs/access.log")
-	   if err != nil {
-	       fmt.Println(err)
-	   }
-	   fmt.Println(string(ret))
-	*/
+// 直接读取文件,无需打开句柄
+/*
+   ret,err:=ioutil.ReadFile("/usr/local/nginx/logs/access.log")
+   if err != nil {
+	   fmt.Println(err)
+   }
+   fmt.Println(string(ret))
+*/
 
-	// 一次性读取
-	/*
-	   ret, err := ReadAll("/usr/local/nginx/logs/access.log")
-	   if err != nil {
-	       fmt.Println(err)
-	   }
-	   fmt.Println(string(ret))
-	*/
+// 一次性读取
+/*
+   ret, err := ReadAll("/usr/local/nginx/logs/access.log")
+   if err != nil {
+	   fmt.Println(err)
+   }
+   fmt.Println(string(ret))
+*/
 
-	// 分块读取
-	/*
-	   ReadBlock("/usr/local/nginx/logs/access.log", 10000, processTask)
-	*/
+// 分块读取
+/*
+   ReadBlock("/usr/local/nginx/logs/access.log", 10000, processTask)
+*/
 
-	// 逐行读取
-	/*
-	   ReadLine("/usr/local/nginx/logs/access.log", processTask)
-	*/
+// 逐行读取
+/*
+   ReadLine("/usr/local/nginx/logs/access.log", processTask)
+*/
 
-	// 示例 日志实时监控
-	//FileMonitoring("/usr/local/nginx/logs/access.log", processTask)
+// 示例 日志实时监控
+//FileMonitoring("/usr/local/nginx/logs/access.log", processTask)
 
 //}
