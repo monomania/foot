@@ -1,4 +1,4 @@
-package leisu
+package constants
 
 const (
 	//登录地址

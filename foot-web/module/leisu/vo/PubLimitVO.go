@@ -3,7 +3,7 @@ package vo
 /**
 发布查询到的用户的限制内容
 */
-type PubLimitModel struct {
+type PubLimitVO struct {
 	//返回值, 0代表成功
 	Code         int64
 	//可推荐次数

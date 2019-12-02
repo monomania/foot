@@ -1,6 +1,7 @@
 module tesou.io/platform/foot-parent/foot-web
 
 require (
+	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/astaxie/beego v1.12.0
 	github.com/lxn/walk v0.0.0-20191113135339-bf589de20b3c
 	github.com/lxn/win v0.0.0-20191106123917-121afc750dd3 // indirect

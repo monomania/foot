@@ -1,6 +1,6 @@
 package vo
 
-type Pub struct {
+type PubMatchINF struct {
 	//比赛ID
 	Id string
 	//暂时不明白其意义 tr中可获取
@@ -12,7 +12,7 @@ type Pub struct {
 /**
 发布推荐
 */
-type PubModel struct {
+type PubVO struct {
 	//标题15字
 	Title string
 	//内容100字
@@ -20,5 +20,5 @@ type PubModel struct {
 	Price   string
 	Multipe string
 	//数据信息
-	Data Pub
+	Data PubMatchINF
 }

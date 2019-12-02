@@ -14,6 +14,6 @@ func init() {
 
 	//match
 	beego.AutoRouter(&controller2.MatchController{})
-	beego.AutoRouter(&controller2.MatchLastConfigController{})
+	beego.AutoRouter(&controller2.MatchLastController{})
 
 }
