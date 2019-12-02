@@ -1,18 +1,17 @@
 package proc
 
 import (
+	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"strconv"
 	"strings"
-	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
-	service3 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
@@ -21,17 +20,13 @@ import (
 
 type EuroHisProcesser struct {
 	service.CompService
-	service.CompConfigService
 	service2.EuroLastService
 	service2.EuroHisService
-	service3.MatchLastConfigService
 	//博彩公司对应的win007id
-	BetCompWin007Ids            []string
-	MatchLastConfig_list        []*pojo.MatchLastConfig
-	matchId_matchLastConfig_map map[string]*pojo.MatchLastConfig
+	CompWin007Ids []string
+	MatchLastList []*pojo.MatchLast
 
-	Win007Id_matchId_map   map[string]string
-	Win007Id_betCompId_map map[string]string
+	Win007idMatchidMap map[string]string
 }
 
 func GetEuroHisProcesser() *EuroHisProcesser {
@@ -39,37 +34,22 @@ func GetEuroHisProcesser() *EuroHisProcesser {
 }
 
 func (this *EuroHisProcesser) Startup() {
-	this.Win007Id_matchId_map = map[string]string{}
-	this.Win007Id_betCompId_map = map[string]string{}
-	this.matchId_matchLastConfig_map = map[string]*pojo.MatchLastConfig{}
+	this.Win007idMatchidMap = map[string]string{}
 
 	newSpider := spider.NewSpider(this, "EuroHisProcesser")
 
-	for _, v := range this.MatchLastConfig_list {
+	for _, v := range this.MatchLastList {
+		i := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(i)
+		matchExt := new(pojo.MatchExt)
+		json.Unmarshal(bytes, matchExt)
 
-		match_win007_id := v.Sid
+		win007_id := matchExt.Sid
 
-		this.Win007Id_matchId_map[match_win007_id] = v.MatchId
-		this.matchId_matchLastConfig_map[v.MatchId] = v
+		this.Win007idMatchidMap[win007_id] = v.Id
 
-		base_url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", match_win007_id, 1)
-		for _, v := range this.BetCompWin007Ids {
-			betCompConfig := new(entity2.CompConfig)
-			betCompConfig.Sid = v
-			existx := this.CompConfigService.FindBySId(betCompConfig)
-			if !existx {
-				comp := new(entity2.Comp)
-				//comp.Id = bson.NewObjectId().Hex()
-				comp.Id = v
-				comp.Name = win007.MODULE_FLAG + "-" + v
-
-				betCompConfig.CompId = comp.Id
-				betCompConfig.S = win007.MODULE_FLAG
-				this.CompService.Save(comp)
-				this.CompConfigService.Save(betCompConfig)
-			}
-			this.Win007Id_betCompId_map[v] = betCompConfig.CompId
-
+		base_url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", win007_id, 1)
+		for _, v := range this.CompWin007Ids {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}
@@ -100,10 +80,9 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 	current_year := time.Now().Format("2006")
 
 	win007_matchId := this.findParamVal(request.Url, "scheid")
-	matchId := this.Win007Id_matchId_map[win007_matchId]
+	matchId := this.Win007idMatchidMap[win007_matchId]
 
 	win007_betCompId := this.findParamVal(request.Url, "cId")
-	compId := this.Win007Id_betCompId_map[win007_betCompId]
 
 	var euroHis_list = make([]*entity3.EuroHis, 0)
 
@@ -116,7 +95,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 		euroHis := new(entity3.EuroHis)
 		euroHis_list = append(euroHis_list, euroHis)
 		euroHis.MatchId = matchId
-		euroHis.CompId = compId
+		euroHis.CompId = win007_betCompId
 
 		td_list_node := selection.Find(" td ")
 		td_list_node.Each(func(ii int, selection *goquery.Selection) {
@@ -192,15 +171,12 @@ func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity3.EuroHis) {
 	euro.Ep3 = euro_last.Sp3
 	euro.Ep1 = euro_last.Sp1
 	euro.Ep0 = euro_last.Sp0
+
 	if euro_exists {
 		this.EuroLastService.Modify(euro)
 	} else {
 		this.EuroLastService.Save(euro)
 	}
-	//更新比赛配置:  欧赔已经抓取
-	config := this.matchId_matchLastConfig_map[euro.MatchId]
-	config.EOSpider = true
-	this.MatchLastConfigService.Modify(config)
 
 	//将历史赔率入库
 	euroHis_list_slice := make([]interface{}, 0)

@@ -1,9 +1,9 @@
-package entity
+package vo
 
 type Pub struct {
 	//比赛ID
 	Id string
-	//暂时不明白其意义
+	//暂时不明白其意义 tr中可获取
 	Selects []string
 	//所选择的赔率
 	Values []string

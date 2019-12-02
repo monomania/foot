@@ -5,6 +5,7 @@ import (
 )
 
 //联赛表
+//不管是从哪个平台抓取的数据，都使用win007的联赛的ID数据
 type League struct {
 	//联赛名称
 	Name string `xorm:" comment('联赛名称') index"`

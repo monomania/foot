@@ -35,7 +35,7 @@ func Spider_match(flag int) {
 	}
 	for _, v := range strings {
 		processer := proc.GetMatchPageProcesser()
-		processer.MatchLast_url = v
+		processer.MatchlastUrl = v
 		processer.Startup()
 	}
 }

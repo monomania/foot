@@ -6,10 +6,10 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"regexp"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
@@ -20,8 +20,8 @@ import (
 type AsiaLastProcesser struct {
 	service.AsiaLastService
 
-	MatchLastConfig_list []*pojo.MatchLastConfig
-	Win007Id_matchId_map map[string]string
+	MatchLastList      []*pojo.MatchLast
+	Win007idMatchidMap map[string]string
 }
 
 func GetAsiaLastProcesser() *AsiaLastProcesser {
@@ -29,18 +29,19 @@ func GetAsiaLastProcesser() *AsiaLastProcesser {
 }
 
 func (this *AsiaLastProcesser) Startup() {
-	this.Win007Id_matchId_map = map[string]string{}
+	this.Win007idMatchidMap = map[string]string{}
 
 	newSpider := spider.NewSpider(this, "AsiaLastProcesser")
 
-	for _, v := range this.MatchLastConfig_list {
-		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(pojo.MatchLastConfig)
-		json.Unmarshal(bytes, matchLastConfig)
+	for _, v := range this.MatchLastList {
+		i := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(i)
+		matchExt := new(pojo.MatchExt)
+		json.Unmarshal(bytes, matchExt)
 
-		win007_id := matchLastConfig.Sid
+		win007_id := matchExt.Sid
 
-		this.Win007Id_matchId_map[win007_id] = matchLastConfig.MatchId
+		this.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_ASIAODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
@@ -59,7 +60,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 
 	var regex_temp = regexp.MustCompile(`(\d+).htm`)
 	win007Id := strings.Split(regex_temp.FindString(request.Url), ".")[0]
-	matchId := this.Win007Id_matchId_map[win007Id]
+	matchId := this.Win007idMatchidMap[win007Id]
 	asia_list_slice := make([]interface{}, 0)
 	asia_list_update_slice := make([]interface{}, 0)
 	p.GetHtmlParser().Find(" table.mytable3 tr").Each(func(i int, selection *goquery.Selection) {

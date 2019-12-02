@@ -23,13 +23,12 @@ import (
 
 type EuroLastProcesser struct {
 	service.CompService
-	service.CompConfigService
 	service2.EuroLastService
 	service2.EuroHisService
 	//博彩公司对应的win007id
-	BetCompWin007Ids     []string
-	MatchLastConfig_list []*pojo.MatchLastConfig
-	Win007Id_matchId_map map[string]string
+	CompWin007Ids      []string
+	MatchLastList      []*pojo.MatchLast
+	Win007idMatchidMap map[string]string
 }
 
 func GetEuroLastProcesser() *EuroLastProcesser {
@@ -37,18 +36,19 @@ func GetEuroLastProcesser() *EuroLastProcesser {
 }
 
 func (this *EuroLastProcesser) Startup() {
-	this.Win007Id_matchId_map = map[string]string{}
+	this.Win007idMatchidMap = map[string]string{}
 
 	newSpider := spider.NewSpider(this, "EuroLastProcesser")
 
-	for _, v := range this.MatchLastConfig_list {
-		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(pojo.MatchLastConfig)
-		json.Unmarshal(bytes, matchLastConfig)
+	for _, v := range this.MatchLastList {
+		i := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(i)
+		matchExt := new(pojo.MatchExt)
+		json.Unmarshal(bytes, matchExt)
 
-		win007_id := matchLastConfig.Sid
+		win007_id := matchExt.Sid
 
-		this.Win007Id_matchId_map[win007_id] = matchLastConfig.MatchId
+		this.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_EUROODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
@@ -92,11 +92,10 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	json.Unmarshal(([]byte)(hdata_str), &hdata_list)
 	var regex_temp = regexp.MustCompile(`(\d+).htm`)
 	win007Id := strings.Split(regex_temp.FindString(url), ".")[0]
-	matchId := this.Win007Id_matchId_map[win007Id]
+	matchId := this.Win007idMatchidMap[win007Id]
 
 	//入库中
 	comp_list_slice := make([]interface{}, 0)
-	compConfig_list_slice := make([]interface{}, 0)
 	euro_list_slice := make([]interface{}, 0)
 	euro_list_update_slice := make([]interface{}, 0)
 	for _, v := range hdata_list {
@@ -106,20 +105,13 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		if !comp_exists {
 			//comp.Id = bson.NewObjectId().Hex()
 			comp.Id = strconv.Itoa(v.CId)
-			compConfig := new(entity2.CompConfig)
-			compConfig.Id = comp.Id
-			compConfig.CompId = comp.Id
-			compConfig.Sid = strconv.Itoa(v.CId)
-			compConfig.S = win007.MODULE_FLAG
-
 			comp_list_slice = append(comp_list_slice, comp)
-			compConfig_list_slice = append(compConfig_list_slice, compConfig)
 		}
 
 		//判断公司ID是否在配置的波菜公司队列中
-		if len(this.BetCompWin007Ids) > 0 {
+		if len(this.CompWin007Ids) > 0 {
 			var equal bool
-			for _, id := range this.BetCompWin007Ids {
+			for _, id := range this.CompWin007Ids {
 				if strings.EqualFold(id, strconv.Itoa(v.CId)) {
 					equal = true
 					break
@@ -150,7 +142,6 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	}
 
 	this.CompService.SaveList(comp_list_slice)
-	this.CompService.SaveList(compConfig_list_slice)
 	this.EuroLastService.SaveList(euro_list_slice)
 	this.EuroLastService.ModifyList(euro_list_update_slice)
 }

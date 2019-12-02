@@ -56,7 +56,7 @@ func MatchInfo() {
 	fmt.Println(doc.Text())
 	fmt.Println(doc.Html())
 
-	// Find the review items
+	// FindBySQL the review items
 	doc.Find(".sidebar-reviews article .content-block").Each(func(i int, s *goquery.Selection) {
 		// For each item found, get the band and title
 		band := s.Find("a").Text()

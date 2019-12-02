@@ -36,7 +36,7 @@ func (this *AnalyService) LoadData(matchId string) []*vo.AnalyResult {
 	//结果值
 	entitys := make([]*vo.AnalyResult, 0)
 	//执行查询
-	this.Find(&entitys, sql_build.String())
+	this.FindBySQL(sql_build.String(), &entitys)
 	return entitys
 }
 
@@ -95,7 +95,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 			} else { //主队希望不大
 				continue
 			}
-		} else {                                                                                                                                                 //主升
+		} else { //主升
 			if (e616data.Sp0-e616data.Ep0 > e81data.Sp0-e81data.Ep0) && (e616data.Ep3 > e616data.Sp3) && (e616data.Ep3-e616data.Sp3 > e81data.Ep3-e81data.Sp3) { //客队有希望
 				result = "客队"
 			} else { //客队希望不大

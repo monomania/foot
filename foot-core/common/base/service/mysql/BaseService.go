@@ -246,15 +246,19 @@ func (this *BaseService) Exist(entity interface{}) bool {
 	return exist
 }
 
+func (this *BaseService) Find(entity interface{}) {
+	engine.Find(entity)
+}
+
+func (this *BaseService) FindBySQL(sql string, entity interface{}) {
+	engine.SQL(sql).Find(entity)
+}
+
 func (this *BaseService) FindAll(entity interface{}) {
 	err := engine.Find(entity)
 	if nil != err {
 		base.Log.Info("FindAll: " + err.Error())
 	}
-}
-
-func (this *BaseService) Find(entity interface{}, sql string) {
-	engine.SQL(sql).Find(entity)
 }
 
 /**

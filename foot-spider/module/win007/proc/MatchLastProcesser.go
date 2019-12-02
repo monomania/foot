@@ -4,11 +4,9 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
-
-	"reflect"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
@@ -20,13 +18,10 @@ import (
 
 type MatchPageProcesser struct {
 	service.MatchLastService
-	service.MatchLastConfigService
 	service2.LeagueService
-	service2.LeagueConfigService
 	service2.CompService
-	service2.CompConfigService
 	//抓取的url
-	MatchLast_url string
+	MatchlastUrl string
 }
 
 func GetMatchPageProcesser() *MatchPageProcesser {
@@ -46,11 +41,11 @@ func init() {
 }
 
 func (this *MatchPageProcesser) Startup() {
-	if this.MatchLast_url == "" {
-		this.MatchLast_url = "http://m.win007.com/phone/Schedule_0_0.txt"
+	if this.MatchlastUrl == "" {
+		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
 	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
-	newSpider = newSpider.AddUrl(this.MatchLast_url, "text")
+	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMobileDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
@@ -182,31 +177,21 @@ func (this *MatchPageProcesser) Finish() {
 	base.Log.Info("比赛抓取解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)
-	leagueConfig_list_slice := make([]interface{}, 0)
 	for _, v := range league_list {
 		if nil == v {
 			continue
 		}
-	/*	bytes, _ := json.Marshal(v)
-		base.Log.Info(string(bytes))*/
+		/*	bytes, _ := json.Marshal(v)
+			base.Log.Info(string(bytes))*/
 		exists := this.LeagueService.FindExistsById(v.Id)
 		if exists {
 			continue
 		}
 		league_list_slice = append(league_list_slice, v)
-
-		leagueConfig := new(entity2.LeagueConfig)
-		leagueConfig.S = win007.MODULE_FLAG
-		leagueConfig.Sid = v.Id
-		leagueConfig.LeagueId = v.Id
-		leagueConfig.Id = v.Id
-		leagueConfig_list_slice = append(leagueConfig_list_slice, leagueConfig)
 	}
 	this.LeagueService.SaveList(league_list_slice)
-	this.LeagueConfigService.SaveList(leagueConfig_list_slice)
 
 	matchLast_list_slice := make([]interface{}, 0)
-	matchLastConfig_list_slice := make([]interface{}, 0)
 	for _, v := range matchLast_list {
 		if nil == v {
 			continue
@@ -217,22 +202,18 @@ func (this *MatchPageProcesser) Finish() {
 			continue
 		}
 		//v.Id = v.Ext["win007Id"].(string);
-		matchLast_list_slice = append(matchLast_list_slice, v)
 
 		//处理比赛配置信息
-		matchLastConfig := new(pojo.MatchLastConfig)
-		matchLast_elem := reflect.ValueOf(v).Elem()
-		matchLastConfig.MatchId = matchLast_elem.FieldByName("Id").String()
-		matchLastConfig.AOSpider = false
-		matchLastConfig.EOSpider = false
-		matchLastConfig.S = win007.MODULE_FLAG
+		matchExt := new(pojo.MatchExt)
+		/*		matchLast_elem := reflect.ValueOf(v).Elem()
+				matchExt.MatchId = matchLast_elem.FieldByName("Id").String()*/
 		//ext := matchLast_elem.FieldByName("Ext").Interface().(map[string]interface{})
-		//matchLastConfig.Sid = ext["win007Id"].(string)
-		matchLastConfig.Sid = v.Id
-		matchLastConfig.Id = v.Id
-		matchLastConfig_list_slice = append(matchLastConfig_list_slice, matchLastConfig)
+		//matchExt.Sid = ext["win007Id"].(string)
+		matchExt.Sid = v.Id
+		v.Ext = make(map[string]interface{})
+		v.Ext[win007.MODULE_FLAG] = matchExt
+		matchLast_list_slice = append(matchLast_list_slice, v)
 	}
 	this.MatchLastService.SaveList(matchLast_list_slice)
-	this.MatchLastConfigService.SaveList(matchLastConfig_list_slice)
 
 }

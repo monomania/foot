@@ -1,4 +1,4 @@
-package entity
+package vo
 
 /**
 发布查询到的用户的限制内容

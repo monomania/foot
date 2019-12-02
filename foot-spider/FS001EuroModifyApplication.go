@@ -10,6 +10,7 @@ func init(){
 	mysql.ShowSQL(true)
 }
 
+
 func main() {
 	launch.Spider_euroLast()
 	launch.Spider_euroHis()

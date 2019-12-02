@@ -47,7 +47,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	var err error
 	//sync model
 	//比赛相关表
-	err = engine.Sync2(new(entity1.MatchLast), new(entity1.MatchLastConfig), new(entity1.MatchHis))
+	err = engine.Sync2(new(entity1.MatchLast), new(entity1.MatchHis))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}
@@ -59,7 +59,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	}
 
 	//波菜公司，联赛其他数据表
-	err = engine.Sync2(new(entity3.Comp), new(entity3.CompConfig), new(entity3.League), new(entity3.LeagueConfig))
+	err = engine.Sync2(new(entity3.Comp), new(entity3.League))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}

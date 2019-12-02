@@ -1,10 +1,8 @@
 package launch
 
 import (
-	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
 
@@ -25,19 +23,30 @@ func Before_spider_euroHis(){
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 func Spider_euroHis() {
-	matchLastConfigService := new(service2.MatchLastConfigService)
-	config := &pojo.MatchLastConfig{}
-	config.S = win007.MODULE_FLAG
-	config.EOSpider = false
-	matchLastConfigs := matchLastConfigService.Query(config)
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindAll()
 
 	//设置要抓取的波菜公司id
 	betCompWin007Ids := []string{"81","616"}
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 
 	processer := proc.GetEuroHisProcesser()
-	processer.BetCompWin007Ids = betCompWin007Ids
-	processer.MatchLastConfig_list = matchLastConfigs
+	processer.CompWin007Ids = betCompWin007Ids
+	processer.MatchLastList = matchLasts
+	processer.Startup()
+
+}
+
+func Spider_euroHis_Incomplete(count int) {
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindEuroIncomplete(count)
+
+	//设置要抓取的波菜公司id
+	compWin007Ids := []string{"81", "616"}
+
+	processer := proc.GetEuroHisProcesser()
+	processer.CompWin007Ids = compWin007Ids
+	processer.MatchLastList = matchLasts
 	processer.Startup()
 
 }

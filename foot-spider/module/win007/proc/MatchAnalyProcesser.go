@@ -8,17 +8,17 @@ import (
 	"github.com/hu17889/go_spider/core/spider"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
-	"strings"
 )
 
 type MatchAnalyProcesser struct {
 	//博彩公司对应的win007id
-	MatchLastConfig_list []*pojo.MatchLastConfig
-	Win007Id_matchId_map map[string]string
+	MatchLastList      []*pojo.MatchLast
+	Win007idMatchidMap map[string]string
 }
 
 func GetMatchAnalyProcesser() *MatchAnalyProcesser {
@@ -26,18 +26,19 @@ func GetMatchAnalyProcesser() *MatchAnalyProcesser {
 }
 
 func (this *MatchAnalyProcesser) Startup() {
-	this.Win007Id_matchId_map = map[string]string{}
+	this.Win007idMatchidMap = map[string]string{}
 
 	newSpider := spider.NewSpider(this, "MatchAnalyProcesser")
 
- 	for _, v := range this.MatchLastConfig_list {
-		bytes, _ := json.Marshal(v)
-		matchLastConfig := new(pojo.MatchLastConfig)
-		json.Unmarshal(bytes, matchLastConfig)
+	for _, v := range this.MatchLastList {
+		i := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(i)
+		matchLastExt := new(pojo.MatchExt)
+		json.Unmarshal(bytes, matchLastExt)
 
-		win007_id := matchLastConfig.Sid
+		win007_id := matchLastExt.Sid
 
-		this.Win007Id_matchId_map[win007_id] = matchLastConfig.MatchId
+		this.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_MATCH_ANALY_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
