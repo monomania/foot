@@ -3,7 +3,7 @@ package service
 import (
 	"encoding/json"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
 	"tesou.io/platform/foot-parent/foot-web/module/leisu/vo"
@@ -11,14 +11,21 @@ import (
 
 /**
 发布推荐
- */
+*/
 type PubService struct {
-	mysql.BaseService
-
-
-
+	service.AnalyService
 }
 
+/**
+发布比赛
+*/
+func (this *PubService) Action(param *vo.PubVO) *vo.PubRespVO {
+	dataList := this.AnalyService.FindAll()
+	for e := range dataList {
+		base.Log.Error(e)
+	}
+	return nil
+}
 
 /**
 发布比赛

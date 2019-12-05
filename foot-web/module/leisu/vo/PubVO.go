@@ -1,6 +1,6 @@
 package vo
 
-type PubMatchINF struct {
+type MatchINFVO struct {
 	//比赛ID
 	Id string
 	//暂时不明白其意义 tr中可获取
@@ -20,5 +20,5 @@ type PubVO struct {
 	Price   string
 	Multipe string
 	//数据信息
-	Data PubMatchINF
+	Data MatchINFVO
 }

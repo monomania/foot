@@ -29,6 +29,12 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
+func (this *AnalyService) FindAll() []*vo.AnalyResult {
+	dataList := make([]*vo.AnalyResult, 0)
+	mysql.GetEngine().OrderBy("CreateTime Desc").Find(&dataList)
+	return dataList
+}
+
 //测试加载数据
 func (this *AnalyService) LoadData(matchId string) []*vo.AnalyResult {
 	sql_build := strings.Builder{}

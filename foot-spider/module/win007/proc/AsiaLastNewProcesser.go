@@ -68,6 +68,10 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 	json.Unmarshal([]byte(str), asiaData)
 
 	matchId := this.Win007idMatchidMap[strconv.Itoa(asiaData.ScheduleID)]
+	//没有数据,则返回
+	if nil == asiaData.Companies || len(asiaData.Companies) <= 0{
+		return
+	}
 	for _, e := range asiaData.Companies {
 
 		asia := new(entity2.AsiaLast)

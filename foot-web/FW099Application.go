@@ -21,8 +21,8 @@ import (
 func main() {
 	//MatchInfo()
 
-	service := new(service2.PubLimitService)
-	service.GetPublimit()
+	service := new(service2.MatchListService)
+	service.GetMatchList()
 
 
 
