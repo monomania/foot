@@ -2,8 +2,6 @@ package down
 
 import (
 	"bytes"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/bitly/go-simplejson"
 	//    iconv "github.com/djimenez/iconv-go"
@@ -25,20 +23,20 @@ import (
 	"strings"
 )
 
-// The MobileDownloader download page by package net/http.
+// The MWin007Downloader download page by package net/http.
 // The "html" content is contained in dom parser of package goquery.
 // The "json" content is saved.
 // The "jsonp" content is modified to json.
 // The "text" content will save body plain text only.
 // The page result is saved in Page.
-type MobileDownloader struct {
+type MWin007Downloader struct {
 }
 
-func NewMobileDownloader() *MobileDownloader {
-	return &MobileDownloader{}
+func NewMWin007Downloader() *MWin007Downloader {
+	return &MWin007Downloader{}
 }
 
-func (this *MobileDownloader) Download(req *request.Request) *page.Page {
+func (this *MWin007Downloader) Download(req *request.Request) *page.Page {
 	var mtype string
 	var p = page.NewPage(req)
 	mtype = req.GetResponceType()
@@ -57,114 +55,8 @@ func (this *MobileDownloader) Download(req *request.Request) *page.Page {
 	return p
 }
 
-/*
-// The acceptableCharset is gui for whether Content-Type is UTF-8 or not
-func (this *MobileDownloader) acceptableCharset(contentTypes []string) bool {
-    // each type is like [text/html; charset=UTF-8]
-    // we want the UTF-8 only
-    for _, cType := range contentTypes {
-        if strings.Index(cType, "UTF-8") != -1 || strings.Index(cType, "utf-8") != -1 {
-            return true
-        }
-    }
-    return false
-}
-
-
-// The getCharset used for parsing the header["Content-Type"] string to get charset of the page.
-func (this *MobileDownloader) getCharset(header http.Header) string {
-    reg, err := regexp.Compile("charset=(.*)$")
-    if err != nil {
-        mlog.LogInst().LogError(err.Error())
-        return ""
-    }
-
-    var charset string
-    for _, cType := range header["Content-Type"] {
-        substrings := reg.FindStringSubmatch(cType)
-        if len(substrings) == 2 {
-            charset = substrings[1]
-        }
-    }
-
-    return charset
-}
-
-
-
-
-// Use golang.org/x/text/encoding. Get page body and change it to utf-8
-func (this *MobileDownloader) changeCharsetEncoding(charset string, sor io.ReadCloser) string {
-    ischange := true
-    var tr transform.Transformer
-    cs := strings.ToLower(charset)
-    if cs == "gbk" {
-        tr = simplifiedchinese.GBK.NewDecoder()
-    } else if cs == "gb18030" {
-        tr = simplifiedchinese.GB18030.NewDecoder()
-    } else if cs == "hzgb2312" || cs == "gb2312" || cs == "hz-gb2312" {
-        tr = simplifiedchinese.HZGB2312.NewDecoder()
-    } else {
-        ischange = false
-    }
-
-    var destReader io.Reader
-    if ischange {
-        transReader := transform.NewReader(sor, tr)
-        destReader = transReader
-    } else {
-        destReader = sor
-    }
-
-    var sorbody []byte
-    var err error
-    if sorbody, err = ioutil.ReadAll(destReader); err != nil {
-        mlog.LogInst().LogError(err.Error())
-        return ""
-    }
-    bodystr := string(sorbody)
-
-    return bodystr
-}
-
-// Use go-iconv. Get page body and change it to utf-8
-
-func (this *MobileDownloader) changeCharsetGoIconv(charset string, sor io.ReadCloser) string {
-    var err error
-    var converter *iconv.Converter
-    if charset != "" && strings.ToLower(charset) != "utf-8" && strings.ToLower(charset) != "utf8" {
-        converter, err = iconv.NewConverter(charset, "utf-8")
-        if err != nil {
-            mlog.LogInst().LogError(err.Error())
-            return ""
-        }
-        defer converter.Close()
-    }
-
-    var sorbody []byte
-    if sorbody, err = ioutil.ReadAll(sor); err != nil {
-        mlog.LogInst().LogError(err.Error())
-        return ""
-    }
-    bodystr := string(sorbody)
-
-    var destbody string
-    if converter != nil {
-        // convert to utf8
-        destbody, err = converter.ConvertString(bodystr)
-        if err != nil {
-            mlog.LogInst().LogError(err.Error())
-            return ""
-        }
-    } else {
-        destbody = bodystr
-    }
-    return destbody
-}
-*/
-
 // Charset auto determine. Use golang.org/x/net/html/charset. Get page body and change it to utf-8
-func (this *MobileDownloader) changeCharsetEncodingAuto(contentTypeStr string, sor io.ReadCloser) string {
+func (this *MWin007Downloader) changeCharsetEncodingAuto(contentTypeStr string, sor io.ReadCloser) string {
 	var err error
 	destReader, err := charset.NewReader(sor, contentTypeStr)
 
@@ -186,7 +78,7 @@ func (this *MobileDownloader) changeCharsetEncodingAuto(contentTypeStr string, s
 	return bodystr
 }
 
-func (this *MobileDownloader) changeCharsetEncodingAutoGzipSupport(contentTypeStr string, sor io.ReadCloser) string {
+func (this *MWin007Downloader) changeCharsetEncodingAutoGzipSupport(contentTypeStr string, sor io.ReadCloser) string {
 	var err error
 	gzipReader, err := gzip.NewReader(sor)
 	if err != nil {
@@ -214,7 +106,7 @@ func (this *MobileDownloader) changeCharsetEncodingAutoGzipSupport(contentTypeSt
 	return bodystr
 }
 
-func getHeader() http.Header {
+func (this *MWin007Downloader) getHeader() http.Header {
 	//设置head
 	header := http.Header{}
 	header.Add("Host", "m.win007.com")
@@ -238,7 +130,6 @@ func connectByHttp(p *page.Page, req *request.Request) (*http.Response, error) {
 		CheckRedirect: req.GetRedirectFunc(),
 	}
 
-	req.Header = getHeader()
 	httpreq, err := http.NewRequest(req.GetMethod(), req.GetUrl(), strings.NewReader(req.GetPostdata()))
 	if header := req.GetHeader(); header != nil {
 		httpreq.Header = req.GetHeader()
@@ -249,7 +140,6 @@ func connectByHttp(p *page.Page, req *request.Request) (*http.Response, error) {
 			httpreq.AddCookie(cookies[i])
 		}
 	}
-	base.Log.Info("spider url:" + req.GetUrl())
 
 	var resp *http.Response
 	if resp, err = client.Do(httpreq); err != nil {
@@ -287,9 +177,11 @@ func connectByHttpProxy(p *page.Page, in_req *request.Request) (*http.Response, 
 }
 
 // Download file and change the charset of page charset.
-func (this *MobileDownloader) downloadFile(p *page.Page, req *request.Request) (*page.Page, string) {
+func (this *MWin007Downloader) downloadFile(p *page.Page, req *request.Request) (*page.Page, string) {
 	var err error
 	var urlstr string
+	//设置header
+	req.Header = this.getHeader()
 	if urlstr = req.GetUrl(); len(urlstr) == 0 {
 		mlog.LogInst().LogError("url is empty")
 		p.SetStatus(true, "url is empty")
@@ -330,7 +222,7 @@ func (this *MobileDownloader) downloadFile(p *page.Page, req *request.Request) (
 	return p, bodyStr
 }
 
-func (this *MobileDownloader) downloadHtml(p *page.Page, req *request.Request) *page.Page {
+func (this *MWin007Downloader) downloadHtml(p *page.Page, req *request.Request) *page.Page {
 	var err error
 	p, destbody := this.downloadFile(p, req)
 	//fmt.Printf("Destbody %v \r\n", destbody)
@@ -359,7 +251,7 @@ func (this *MobileDownloader) downloadHtml(p *page.Page, req *request.Request) *
 	return p
 }
 
-func (this *MobileDownloader) downloadJson(p *page.Page, req *request.Request) *page.Page {
+func (this *MWin007Downloader) downloadJson(p *page.Page, req *request.Request) *page.Page {
 	var err error
 	p, destbody := this.downloadFile(p, req)
 	if !p.IsSucc() {
@@ -387,7 +279,7 @@ func (this *MobileDownloader) downloadJson(p *page.Page, req *request.Request) *
 	return p
 }
 
-func (this *MobileDownloader) downloadText(p *page.Page, req *request.Request) *page.Page {
+func (this *MWin007Downloader) downloadText(p *page.Page, req *request.Request) *page.Page {
 	p, destbody := this.downloadFile(p, req)
 	if !p.IsSucc() {
 		return p

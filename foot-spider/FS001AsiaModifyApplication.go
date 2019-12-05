@@ -11,5 +11,5 @@ func init(){
 }
 
 func main() {
-	launch.Spider_asiaLast()
+	launch.Spider_asiaLastNew()
 }

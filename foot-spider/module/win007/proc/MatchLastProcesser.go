@@ -46,7 +46,7 @@ func (this *MatchPageProcesser) Startup() {
 	}
 	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
-	newSpider.SetDownloader(down.NewMobileDownloader())
+	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"bytes"
 	"compress/gzip"
+	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"io/ioutil"
@@ -9,7 +11,10 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 )
 
-func GetJson(url string) string {
+/**
+ *
+ */
+func Get(url string) io.ReadCloser {
 	client := &http.Client{}
 	request, err := http.NewRequest("GET", url, nil)
 	if nil != err {
@@ -26,44 +31,65 @@ func GetJson(url string) string {
 	if response.Header.Get("Content-Encoding") == "gzip" {
 		reader, err = gzip.NewReader(response.Body)
 		if err != nil {
-			base.Log.Error("GetJson:" + err.Error())
+			base.Log.Error("GetDocument:" + err.Error())
+			return nil
+		}
+	} else {
+		reader = response.Body
+	}
+	return reader
+}
+func GetText(url string) string {
+	reader := Get(url)
+	bytes, e := ioutil.ReadAll(reader)
+	if e != nil {
+		base.Log.Error("GetText:" + e.Error())
+		return ""
+	}
+	return string(bytes)
+}
+func GetDocument(url string) (*goquery.Document, error) {
+	reader := Get(url)
+	return goquery.NewDocumentFromReader(reader)
+}
+
+
+/**
+ *
+ */
+func Post(url string, data interface{}) string {
+	byteData, _ := json.Marshal(data)
+	params := bytes.NewReader(byteData)
+
+	client := &http.Client{}
+	request, err := http.NewRequest("Post", url, params)
+	if nil != err {
+		base.Log.Error(err)
+	}
+
+	//设置请求头
+	setHeader(request)
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	response, err := client.Do(request)
+	if nil != err {
+		base.Log.Error(err)
+	}
+	var reader io.ReadCloser
+	if response.Header.Get("Content-Encoding") == "gzip" {
+		reader, err = gzip.NewReader(response.Body)
+		if err != nil {
+			base.Log.Error("Post:" + err.Error())
 			return ""
 		}
 	} else {
 		reader = response.Body
 	}
-
 	bytes, e := ioutil.ReadAll(reader)
 	if e != nil {
-		base.Log.Error("GetJson:" + e.Error())
+		base.Log.Error("Post:" + e.Error())
 		return ""
 	}
 	return string(bytes)
-}
-
-func Get(url string) (*goquery.Document, error) {
-	client := &http.Client{}
-	request, err := http.NewRequest("GET", url, nil)
-	if nil != err {
-		base.Log.Error(err)
-	}
-
-	//设置请求头
-	setHeader(request)
-	response, err := client.Do(request)
-	if nil != err {
-		base.Log.Error(err)
-	}
-	var reader io.ReadCloser
-	if response.Header.Get("Content-Encoding") == "gzip" {
-		reader, err = gzip.NewReader(response.Body)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		reader = response.Body
-	}
-	return goquery.NewDocumentFromReader(reader)
 }
 
 func setHeader(req *http.Request) {

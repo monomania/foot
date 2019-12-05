@@ -19,12 +19,12 @@ type PubLimitService struct {
 获取发布次数
  */
 func (this *PubLimitService) GetPublimit() *vo.PubLimitVO {
-	data := utils.GetJson(constants.PUB_LIMIT_URL)
+	data := utils.GetText(constants.PUB_LIMIT_URL)
 	if len(data) <= 0 {
 		base.Log.Error("GetPublimit:获取到的数据为空")
 		return nil
 	}
-	limitVO := new(vo.PubLimitVO)
-	json.Unmarshal([]byte(data), limitVO)
-	return limitVO
+	resp := new(vo.PubLimitVO)
+	json.Unmarshal([]byte(data), resp)
+	return resp
 }

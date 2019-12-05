@@ -46,7 +46,7 @@ func (this *AsiaLastProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_ASIAODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-	newSpider.SetDownloader(down.NewMobileDownloader())
+	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
@@ -83,7 +83,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 							asia.Sp3, _ = strconv.ParseFloat(selection.Text(), 64)
 							break
 						case 1:
-							asia.SLetBall = selection.Text()
+							asia.SLetBall = ConvertLetball(selection.Text())
 							break
 						case 2:
 							asia.Sp0, _ = strconv.ParseFloat(selection.Text(), 64)
@@ -95,7 +95,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 							asia.Ep3, _ = strconv.ParseFloat(selection.Text(), 64)
 							break
 						case 1:
-							asia.ELetBall = selection.Text()
+							asia.ELetBall = ConvertLetball(selection.Text())
 							break
 						case 2:
 							asia.Ep0, _ = strconv.ParseFloat(selection.Text(), 64)
@@ -118,6 +118,26 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 	this.AsiaLastService.SaveList(asia_list_slice)
 	this.AsiaLastService.ModifyList(asia_list_update_slice)
 
+}
+
+/**
+将让球转换类型
+*/
+func ConvertLetball(letball string) float64 {
+	var lb_sum float64
+	slb_arr := strings.Split(letball, "/")
+	slb_arr_0, _ := strconv.ParseFloat(slb_arr[0], 10)
+	if len(slb_arr) > 1 {
+		if strings.Index(slb_arr[0], "-") != -1 {
+			lb_sum = slb_arr_0 - 0.25
+		} else {
+			lb_sum = slb_arr_0 + 0.25
+		}
+	} else {
+		lb_sum = slb_arr_0
+	}
+
+	return lb_sum
 }
 
 func (this *AsiaLastProcesser) Finish() {

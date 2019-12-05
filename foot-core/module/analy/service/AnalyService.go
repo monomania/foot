@@ -82,7 +82,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 			continue
 		}
 		a18betData = aList[0]
-		if math.Abs(Asia_Calc_Letball(a18betData.ELetBall)) > this.MaxLetBall {
+		if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 			continue
 		}
 		//2.亚赔是主降还是主升 主降为true
@@ -114,7 +114,7 @@ func (this *AnalyService) Euro_Calc() []interface{} {
 			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
 			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
 		}
-		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + a18betData.ELetBall + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
+		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(a18betData.ELetBall,'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
 		var resultFlag string
 		if strings.Contains(globalResult, result) {
 			resultFlag = "正确"
@@ -182,7 +182,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{} {
 			continue
 		}
 		a18betData = aList[0]
-		if Asia_Calc_Letball(a18betData.ELetBall) > this.MaxLetBall {
+		if a18betData.ELetBall > this.MaxLetBall {
 			continue
 		}
 
@@ -211,7 +211,7 @@ func (this *AnalyService) Euro_Asia_Diff() []interface{} {
 			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tSp3:" + strconv.FormatFloat(e616data.Sp3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Sp0, 'f', -1, 64))
 			base.Log.Info("比赛Id:" + e616data.MatchId + " e616data\tEp3:" + strconv.FormatFloat(e616data.Ep3, 'f', -1, 64) + "\t\tEp0:" + strconv.FormatFloat(e616data.Ep0, 'f', -1, 64))
 		}
-		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + a18betData.ELetBall + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
+		logStr := "比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(a18betData.ELetBall,'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult
 		var resultFlag string
 		if strings.Contains(globalResult, result) {
 			resultFlag = "正确"
@@ -255,7 +255,7 @@ func MatchResult(last *entity3.AsiaLast, v *entity2.MatchLast) string {
 		return result
 	}
 
-	elb_sum := Asia_Calc_Letball(last.ELetBall)
+	elb_sum := last.ELetBall
 	var mainTeamGoals float64
 	if elb_sum > 0 {
 		mainTeamGoals = float64(v.MainTeamGoals) - elb_sum
@@ -287,32 +287,13 @@ func EuroMainDown(e81data *entity3.EuroLast, e616data *entity3.EuroLast) int {
 	return 1
 }
 
-/**
-将让球转换类型
-*/
-func Asia_Calc_Letball(letball string) float64 {
-	var lb_sum float64
-	slb_arr := strings.Split(letball, "/")
-	slb_arr_0, _ := strconv.ParseFloat(slb_arr[0], 10)
-	if len(slb_arr) > 1 {
-		if strings.Index(slb_arr[0], "-") != -1 {
-			lb_sum = slb_arr_0 - 0.25
-		} else {
-			lb_sum = slb_arr_0 + 0.25
-		}
-	} else {
-		lb_sum = slb_arr_0
-	}
-
-	return lb_sum
-}
 
 /**
 2.亚赔是主降还是主升 主降为true
 */
 func AsiaMainDown(a18betData *entity3.AsiaLast) bool {
-	slb_sum := Asia_Calc_Letball(a18betData.SLetBall)
-	elb_sum := Asia_Calc_Letball(a18betData.ELetBall)
+	slb_sum := a18betData.SLetBall
+	elb_sum := a18betData.ELetBall
 
 	if elb_sum > slb_sum {
 		return true

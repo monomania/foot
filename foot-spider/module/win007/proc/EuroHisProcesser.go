@@ -54,7 +54,7 @@ func (this *EuroHisProcesser) Startup() {
 			newSpider = newSpider.AddUrl(url, "html")
 		}
 	}
-	newSpider.SetDownloader(down.NewMobileDownloader())
+	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

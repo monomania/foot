@@ -11,7 +11,7 @@ func init() {
 }
 
 func main() {
-	Spider(0)
+	Spider(4)
 }
 
 func Spider(matchLevel int) {
@@ -24,7 +24,8 @@ func Spider(matchLevel int) {
 	//执行抓取亚赔数据
 	//执行抓取欧赔历史
 	launch.Spider_match(matchLevel)
-	launch.Spider_asiaLast()
+	//launch.Spider_asiaLast()
+	launch.Spider_asiaLastNew()
 	launch.Spider_euroLast()
 	launch.Spider_euroHis()
 	//再对欧赔数据不完整的比赛进行两次抓取

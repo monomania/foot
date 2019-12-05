@@ -9,7 +9,7 @@ type AsiaHis struct {
 	Sp3 float64
 	Sp0 float64
 	//让球
-	SLetBall string	`xorm:" comment('s让球') index"`
+	SLetBall float64	`xorm:" comment('s让球') index"`
 
 	/**
 	即时上下盘赔率
@@ -17,7 +17,7 @@ type AsiaHis struct {
 	Ep3 float64
 	Ep0 float64
 	//让球
-	ELetBall string `xorm:" comment('e让球') index"`
+	ELetBall float64 `xorm:" comment('e让球') index"`
 
 	//博彩公司id
 	CompId string `xorm:"unique(CompId_MatchId_OddDate)"`
