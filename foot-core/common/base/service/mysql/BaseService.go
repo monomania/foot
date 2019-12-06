@@ -79,7 +79,7 @@ func init() {
 }
 
 func loadConfig() {
-	configer, e := new(config.IniConfig).Parse("conf/mysql.ini")
+	configer, e := new(config.IniConfig).Parse("foot-core/conf/mysql.ini")
 	if e != nil {
 		base.Log.Info("loadConfig加载配置文件失败:", e.Error())
 		return
