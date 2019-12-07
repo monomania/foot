@@ -28,3 +28,14 @@ func (this *PubLimitService) GetPublimit() *vo.PubLimitVO {
 	json.Unmarshal([]byte(data), resp)
 	return resp
 }
+
+/**
+是否还有发布次数
+ */
+func (this *PubLimitService) HasPubCount() bool{
+	publimit := this.GetPublimit()
+	if publimit.Remain_times > 0 {
+		return true;
+	}
+	return false;
+}

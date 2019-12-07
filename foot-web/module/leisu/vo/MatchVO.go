@@ -8,7 +8,7 @@ type OddINFVO struct {
 	DataIdx int
 	//赔率
 	DataOdd float64
-	//
+	//11-5北单胜负过关主队 12-5北单胜负过关客队
 	DataSelects int
 	//提示
 	DataTip string
@@ -38,4 +38,26 @@ type MatchVO struct {
 	GuestTeam string
 	//赔率选项
 	OddDatas []OddINFVO
+}
+
+func (this *MatchVO) GetBJDCOddData(mainTeam bool) *OddINFVO {
+	var dataSelects = 11
+	if !mainTeam {
+		dataSelects = 12
+	}
+	for _, e := range this.OddDatas {
+		if e.DataIdx == 5 && e.DataSelects == dataSelects {
+			return &e
+		}
+	}
+	return nil
+}
+
+func (this *MatchVO) GetOddData(dataIdx int, dataSelects int) *OddINFVO {
+	for _, e := range this.OddDatas {
+		if e.DataIdx == dataIdx && e.DataSelects == dataSelects {
+			return &e
+		}
+	}
+	return nil
 }

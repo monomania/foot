@@ -13,16 +13,16 @@ import (
 )
 
 /**
-获取可推荐比赛列表
+获取发布池的比赛列表
 */
-type MatchListService struct {
+type MatchPoolService struct {
 	mysql.BaseService
 }
 
 /**
 获取可推荐比赛列表
 */
-func (this *MatchListService) GetMatchList() []*vo.MatchVO {
+func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 	doc, err := utils.GetDocument(constants.MATCH_LIST_URL)
 	if nil != err {
 		base.Log.Error("GetMatchList:" + err.Error())
@@ -49,8 +49,6 @@ func (this *MatchListService) GetMatchList() []*vo.MatchVO {
 		//1.3属性获取--end
 
 		selection.Find("tr td").Each(func(i int, selection *goquery.Selection) {
-			base.Log.Info(i)
-			base.Log.Info(selection.Html())
 			switch i {
 			case 0:
 				//编号

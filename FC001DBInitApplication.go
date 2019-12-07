@@ -7,5 +7,5 @@ func main() {
 	//生成数据库表
 	launch.GenTable()
 	//清空数据表
-	launch.TruncateTable()
+	//launch.TruncateTable()
 }

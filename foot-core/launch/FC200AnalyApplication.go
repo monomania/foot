@@ -6,26 +6,22 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 )
 
-func init(){
+func init() {
 	//关闭SQL输出
 	mysql.ShowSQL(false)
 }
 
-
-func Analy() []interface{} {
-	analysisService := new(service.AnalyService)
-	analysisService.MaxLetBall = 0.75
-	analysisService.PrintOddData = false
-	base.Log.Info("-----------------------------------------------")
-	base.Log.Info("----------------计算欧86之差-------------------")
-	base.Log.Info("-----------------------------------------------")
-	r1 := analysisService.Euro_Calc()
-	base.Log.Info("-----------------------------------------------")
-	base.Log.Info("---------------计算亚欧之差--------------------")
-	base.Log.Info("-----------------------------------------------")
-	r2 := analysisService.Euro_Asia_Diff()
-
-	i := append(r1, r2)
-	return i
-
+func Analy() {
+	base.Log.Info("---------------------------------------------------------------")
+	base.Log.Info("----------------计算欧AnalyEuro_81_616Service-------------------")
+	base.Log.Info("---------------------------------------------------------------")
+	euro_81_616Service := new(service.Euro81_616Service)
+	euro_81_616Service.MaxLetBall = 0.75
+	euro_81_616Service.PrintOddData = false
+	euro_81_616Service.Analy()
+	base.Log.Info("---------------------------------------------------------------")
+	base.Log.Info("---------------计算AnalyAsia_18_Euro_81_616Service--------------")
+	base.Log.Info("---------------------------------------------------------------")
+	euro81616Service := new(service.Asia18Euro81_616Service)
+	euro81616Service.Analy()
 }

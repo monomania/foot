@@ -1,5 +1,7 @@
 package vo
 
+import "encoding/json"
+
 /**
 发布推荐结果
 */
@@ -8,4 +10,13 @@ type PubRespVO struct {
 	Code int64
 	//ID
 	Id int64
+}
+
+
+/**
+获取发布次数
+ */
+func (this *PubRespVO) ToString() string {
+	bytes, _ := json.Marshal(this)
+	return string(bytes)
 }

@@ -10,7 +10,7 @@ func init() {
 	mysql.ShowSQL(true)
 }
 
-//抓取欧赔数据不完整的比赛
+//抓取欧赔数据少于两条的不完整的比赛
 func main() {
 	launch.Spider_euroHis_Incomplete(2)
 }

@@ -2,11 +2,11 @@ package vo
 
 type MatchINFVO struct {
 	//比赛ID
-	Id string
+	Id int64 `json:"id"`
 	//暂时不明白其意义 tr中可获取
-	Selects []string
+	Selects []int `json:"selects"`
 	//所选择的赔率
-	Values []string
+	Values []float64 `json:"values"`
 }
 
 /**
@@ -14,11 +14,11 @@ type MatchINFVO struct {
 */
 type PubVO struct {
 	//标题15字
-	Title string
+	Title string `json:"title"`
 	//内容100字
-	Content string
-	Price   string
-	Multipe string
+	Content string `json:"content"`
+	Price   int64  `json:"price"`
+	Multiple int64  `json:"multiple"`
 	//数据信息
-	Data MatchINFVO
+	Data []MatchINFVO `json:"data"`
 }

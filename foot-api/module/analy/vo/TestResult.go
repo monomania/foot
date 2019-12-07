@@ -1,6 +1,6 @@
 package vo
 
-type AnalyResult struct {
+type TestResult struct {
 	//service.MatchLast `xorm:"extends"`
 	//Id               string
 	//Name             string
