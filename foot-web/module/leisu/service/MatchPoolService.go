@@ -61,7 +61,7 @@ func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 			case 2:
 				//比赛时间
 				matchDate := strings.TrimSpace(selection.Text())
-				match_date_stamp, _ := time.Parse("2006-01-0215:04", matchDate)
+				match_date_stamp, _ := time.ParseInLocation("2006-01-0215:04", matchDate,time.Local)
 				matchVO.MatchDate = match_date_stamp
 				break;
 			case 3:
