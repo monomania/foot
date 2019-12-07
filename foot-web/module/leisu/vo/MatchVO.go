@@ -1,5 +1,7 @@
 package vo
 
+import "time"
+
 /**
 比赛对应的赔率信息
 */
@@ -31,7 +33,7 @@ type MatchVO struct {
 	//联赛名称
 	LeagueName string
 	//比赛时间
-	MatchDate string
+	MatchDate time.Time
 	//主队
 	MainTeam string
 	//客队

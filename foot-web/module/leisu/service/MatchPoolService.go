@@ -60,9 +60,9 @@ func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 				break;
 			case 2:
 				//比赛时间
-				matchVO.MatchDate = strings.TrimSpace(selection.Text())
-				match_date_stamp, _ := time.Parse("2006-01-0215:04", matchVO.MatchDate)
-				matchVO.MatchDate = match_date_stamp.Format("2006-01-02 15:04:05")
+				matchDate := strings.TrimSpace(selection.Text())
+				match_date_stamp, _ := time.Parse("2006-01-0215:04", matchDate)
+				matchVO.MatchDate = match_date_stamp
 				break;
 			case 3:
 				//主队名称

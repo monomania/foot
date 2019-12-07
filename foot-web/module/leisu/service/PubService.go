@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"math/rand"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
@@ -27,7 +28,7 @@ const content = "个人业余开发的一款足球分析程序，计算分析得
 发布北京单场胜负过关
 */
 func (this *PubService) PubBJDC() {
-	mainTeam := true
+	mainTeam := false
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", mainTeam)
 	if len(analyList) <= 0 {
@@ -47,6 +48,11 @@ func (this *PubService) PubBJDC() {
 			}
 		}
 	}
+	//打印要发布的比赛
+	for _, match := range pubList {
+		base.Log.Info("发布的比赛:", match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam)
+	}
+
 	//发布比赛
 	for analy, match := range pubList {
 		//检查是否还有发布次数
@@ -64,7 +70,9 @@ func (this *PubService) PubBJDC() {
 			this.AnalyService.Modify(analy)
 		}
 		//需要间隔6分钟，再进行下一次发布
-		time.Sleep(6 * time.Minute)
+		intn := rand.Intn(10) + 5
+		base.Log.Info("间隔时间为:", intn)
+		time.Sleep(time.Duration(intn) * time.Minute)
 	}
 }
 
@@ -72,9 +80,12 @@ func (this *PubService) PubBJDC() {
 发布比赛
 */
 func (this *PubService) BJDCAction(param *vo.MatchVO, mainTeam bool) *vo.PubRespVO {
-	current_date := time.Now().Format("20060102150405")
+	matchDate := param.MatchDate.Format("20060102150405")
 	pubVO := new(vo.PubVO)
-	pubVO.Title = "命中率验证中:" + current_date + "+" + param.MainTeam + "VS" + param.GuestTeam
+	pubVO.Title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
+	if len(pubVO.Title) < (3 * 15) {
+		pubVO.Title = "足球精推:" + pubVO.Title
+	}
 	pubVO.Content = content
 	pubVO.Multiple = 0
 	pubVO.Price = 0
