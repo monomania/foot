@@ -26,6 +26,12 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
+func (this *AnalyService) Find( matchDate time.Time,mainTeam string,guestTeam string) *entity5.AnalyResult {
+	data := entity5.AnalyResult{MatchDate: matchDate, MainTeamId: mainTeam, GuestTeamId: guestTeam}
+	mysql.GetEngine().Find(&data)
+	return &data
+}
+
 func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	dataList := make([]*entity5.AnalyResult, 0)
 	mysql.GetEngine().OrderBy("CreateTime Desc").Find(&dataList)
@@ -72,11 +78,9 @@ func (this *AnalyService) LoadData(matchId string) []*entity5.AnalyResult {
 func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) string {
 	var result string
 	h2, _ := time.ParseDuration("2h")
-	local, _ := time.LoadLocation("Local")
-	matchDate, _ := time.ParseInLocation("2006-01-02 15:04:05", v.MatchDate, local)
-	matchDate = matchDate.Add(h2)
-	nowDate := time.Now()
-	if matchDate.After(nowDate) { //比赛是否已经结束
+	matchDate := v.MatchDate.Add(h2)
+	if matchDate.After(time.Now()) {
+		//比赛未结束
 		return result
 	}
 

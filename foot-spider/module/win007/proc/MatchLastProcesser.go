@@ -145,8 +145,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		index++
 		index++
 		match_date_str := match_info_arr[index]
-		match_date_stamp, _ := time.Parse("20060102150405", match_date_str)
-		matchLast.MatchDate = match_date_stamp.Format("2006-01-02 15:04:05")
+		matchLast.MatchDate, _ = time.Parse("20060102150405", match_date_str)
 		index++
 		index++
 		matchLast.MainTeamId = match_info_arr[index]

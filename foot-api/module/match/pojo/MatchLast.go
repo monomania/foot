@@ -2,6 +2,7 @@ package pojo
 
 import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
+	"time"
 )
 
 //足球比赛信息
@@ -9,7 +10,7 @@ type MatchLast struct {
 	/**
 	 * 比赛时间
 	 */
-	MatchDate string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
+	MatchDate time.Time `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
 
 	/**
 	数据时间

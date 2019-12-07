@@ -27,8 +27,7 @@ const content = "个人业余开发的一款足球分析程序，计算分析得
 /**
 发布北京单场胜负过关
 */
-func (this *PubService) PubBJDC() {
-	mainTeam := false
+func (this *PubService) PubBJDC(mainTeam bool) {
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", mainTeam)
 	if len(analyList) <= 0 {

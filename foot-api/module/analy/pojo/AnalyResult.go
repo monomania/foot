@@ -1,6 +1,9 @@
 package pojo
 
-import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
+import (
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
+	"time"
+)
 
 type AnalyResult struct {
 	//是否已经发布到雷速
@@ -10,7 +13,7 @@ type AnalyResult struct {
 	//比赛id
 	MatchId string `xorm:" comment('比赛id') index"`
 	//比赛时间
-	MatchDate string `xorm:" comment('比赛时间') index"`
+	MatchDate time.Time `xorm:" comment('比赛时间') index"`
 	//主队id
 	MainTeamId string `xorm:" comment('主队id') index"`
 	//主队进球数

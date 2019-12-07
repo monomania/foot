@@ -72,6 +72,10 @@ func (this *Asia18Euro81_616Service) Analy() []interface{} {
 			continue
 		}
 		data := this.buildData(v, a18betData, e81data, e616data, result)
+		temp_data := this.Find(data.MatchDate, data.MainTeamId, data.GuestTeamId)
+		if len(temp_data.Id) > 0{
+			data.LeisuPubd = temp_data.LeisuPubd
+		}
 		data_list_slice = append(data_list_slice, data)
 	}
 	this.AnalyService.SaveList(data_list_slice)
@@ -113,6 +117,7 @@ func (this *Asia18Euro81_616Service) buildData(v *entity2.MatchLast, a18betData 
 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + v.MatchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(a18betData.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult + " ("+resultFlag+")")
+	matchDate := v.MatchDate.Format("2006-01-02 15:04:05")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(a18betData.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + result + ",已得结果:" + globalResult + " ("+resultFlag+")")
 	return analyResult
 }
