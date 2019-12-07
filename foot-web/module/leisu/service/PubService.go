@@ -64,13 +64,22 @@ func (this *PubService) PubBJDC(mainTeam bool) {
 
 		//----
 		action := this.BJDCAction(match, mainTeam)
-		if nil != action && action.Code == 0 && action.Id > 0 {
-			analy.LeisuPubd = true
-			this.AnalyService.Modify(analy)
+		if nil != action {
+			switch action.Code {
+			case 0, 100002:
+				//0 成功 100002 每场比赛同一种玩法只可选择1次
+				analy.LeisuPubd = true
+				this.AnalyService.Modify(analy)
+			case 100003:
+				//100003 标题长度不正确
+			default:
+				break
+			}
+
 		}
 		//需要间隔6分钟，再进行下一次发布
-		intn := rand.Intn(10) + 5
-		base.Log.Info("间隔时间为:", intn)
+		intn := rand.Intn(10) + 6
+		base.Log.Info("随机间隔时间为:", intn)
 		time.Sleep(time.Duration(intn) * time.Minute)
 	}
 }

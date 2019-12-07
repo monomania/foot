@@ -53,7 +53,7 @@ func (this *AnalyService) GetPubDataList(alName string,main bool) []*entity5.Ana
 		preResult = "客队"
 	}
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ar.* FROM foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '"+alName+"%' ) last_analy_time WHERE ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()  AND ar.`PreResult` = '"+preResult+"' AND ar.`AlFlag` LIKE '"+alName+"%' AND ar.`CreateTime` = last_analy_time.CreateTime")
+	sql_build.WriteString("SELECT ar.* FROM foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '"+alName+"%' ) last_analy_time WHERE ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()  AND ar.`PreResult` = '"+preResult+"' AND ar.`AlFlag` LIKE '"+alName+"%' AND ar.`CreateTime` = last_analy_time.CreateTime ORDER BY ar.`MatchDate` ")
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
 	//执行查询

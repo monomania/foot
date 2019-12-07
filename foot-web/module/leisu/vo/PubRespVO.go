@@ -10,6 +10,8 @@ type PubRespVO struct {
 	Code int64
 	//ID
 	Id int64
+	//msg
+	Msg string
 }
 
 
