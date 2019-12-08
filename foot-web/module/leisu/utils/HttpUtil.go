@@ -152,7 +152,8 @@ func setPostHeader(req *http.Request) {
 
 
 func setCookies(req *http.Request){
-	req.AddCookie(&http.Cookie{Name:"acw_sc__v2",Value:"5ded0fc3c5dcf635e4781179385f6f75784750b7"})
+	req.AddCookie(&http.Cookie{Name:"acw_sc__v3",Value:"5ded2b7f3ca9e08a6c780b7cb00951915ba5b2fa"})
+	req.AddCookie(&http.Cookie{Name:"acw_sc__v2",Value:"5ded2bbb69a003c830006ea6790726d3bbaa55d9"})
 	req.AddCookie(&http.Cookie{Name:"acw_tc",Value:"2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f"})
 	req.AddCookie(&http.Cookie{Name:"Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e",Value:"1575815243"})
 	req.AddCookie(&http.Cookie{Name:"Hm_lpvt_63b82ac6d9948bad5e14b1398610939a",Value:"1575748957"})
