@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -49,7 +50,7 @@ func (this *PubService) PubBJDC() {
 	}
 
 	if len(pubList) <= 0 {
-		base.Log.Info("2.当前无可发布的比赛!!!!")
+		base.Log.Info(fmt.Sprintf("2.当前无可发布的比赛!!!!比赛池size:%d,分析赛果size:%d",len(matchPool),len(analyList)))
 		return
 	}
 	//打印要发布的比赛
