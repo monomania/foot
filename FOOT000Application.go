@@ -53,7 +53,7 @@ HEAD:
 				pubService.PubBJDC()
 				base.Log.Info("--------程序周期结束--------")
 			}()
-			time.Sleep(8 * time.Hour)
+			time.Sleep(10 * time.Hour)
 		}
 	default:
 		goto HEAD
