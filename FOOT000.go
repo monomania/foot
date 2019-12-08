@@ -49,7 +49,7 @@ func main() {
 				pubService.PubBJDC()
 				base.Log.Info("--------程序周期结束--------")
 			}()
-			time.Sleep(10 * time.Hour)
+			time.Sleep(7 * time.Hour)
 		}
 	default:
 		fmt.Println("usage: init|spider|analy|pub|auto")
