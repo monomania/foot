@@ -115,6 +115,8 @@ func Post(apiUrl string, data interface{}) string {
 }
 
 func setGetHeader(req *http.Request) {
+	//设置cookies
+	setCookies(req)
 	//设置head
 	req.Header.Add("Host", "hao.leisu.com")
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0")
@@ -131,6 +133,8 @@ func setGetHeader(req *http.Request) {
 }
 
 func setPostHeader(req *http.Request) {
+	//设置cookies
+	setCookies(req)
 	//设置head
 	req.Header.Add("Host", "api.leisu.com")
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0")
@@ -143,8 +147,15 @@ func setPostHeader(req *http.Request) {
 	req.Header.Add("DNT", "1")
 	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("Referer", "https://hao.leisu.com/match")
-	//req.Header.Add("Cookie", "Hm_lvt_63b82ac6d9948bad5e14b1398610939a=1574214476,1574241706,1574912834; LWT=J38HWCiN9ar%2B5Ih2MPMpuOsXNUBwaQIkBg5DEfwTblTtgQFlCxIKOl8yHndiSdTBG2d3G%2BMfhbxNz1pPdnuxQMwxhPjiHrwoqUOAycHWgMA%3D; Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e=1574238486,1574241710,1574241711,1574912837; Hm_lpvt_63b82ac6d9948bad5e14b1398610939a=1574912834; acw_tc=2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f; SERVERID=4ab2f7c19b72630dd03ede01228e3e61|1574914772|1574912833; Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e=1574914777")
-	req.Header.Add("Cookie", "Hm_lvt_63b82ac6d9948bad5e14b1398610939a=1574241706,1574912834,1575529351,1575748957; Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e=1574241711,1574912837,1575529353,1575748959; acw_tc=2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f; Hm_lpvt_63b82ac6d9948bad5e14b1398610939a=1575748957; SERVERID=781c670734bb86bae9c144a7d6e78b87|1575805618|1575805541; Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e=1575805623; acw_sc__v2=5dece2524bac33b7e669c181b3e0c72ebd65e176; LWT=RIW0BQy19w%2FnuztwzW1REnAawhWx06ZglggjUPnfZl2Pf8FnjDk%2Fnx8Bbfa%2Fk4IhxfP69hKNjHuiSCXtYO8rCaHgDYEpu%2FItWxCIpZpz67o%3D")
 	req.Header.Add("Pragma", "no-cache")
 	req.Header.Add("Cache-Control", "no-cache")
+}
+
+
+func setCookies(req *http.Request){
+	req.AddCookie(&http.Cookie{Name:"acw_tc",Value:"2760776115742144718355201e7cb9413aba523148a7028556635a156dd569"})
+	req.AddCookie(&http.Cookie{Name:"Hm_lpvt_63b82ac6d9948bad5e14b1398610939a",Value:"1575748957"})
+	req.AddCookie(&http.Cookie{Name:"Hm_lvt_63b82ac6d9948bad5e14b1398610939a",Value:"1574241706,1574912834,1575529351,1575748957"})
+	req.AddCookie(&http.Cookie{Name:"LWT",Value:"RIW0BQy19w/nuztwzW1REnAawhWx06ZglggjUPnfZl2Pf8FnjDk/nx8Bbfa/k4IhxfP69hKNjHuiSCXtYO8rCaHgDYEpu/ItWxCIpZpz67o="})
+	req.AddCookie(&http.Cookie{Name:"SERVERID",Value:"4ab2f7c19b72630dd03ede01228e3e61|1575815203|1575815178"})
 }
