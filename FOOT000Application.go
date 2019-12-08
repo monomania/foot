@@ -21,13 +21,23 @@ HEAD:
 		return
 	}
 	switch input {
-	case "\r\n":
+	case "\n","\r\n":
 		goto HEAD
-	case "init\r\n":
+	case "init\n","init\r\n":
 		launch2.GenTable()
 		launch2.TruncateTable()
 		goto HEAD
-	case "auto\r\n":
+	case "spider\n","spider\r\n":
+		launch.Spider(4)
+		goto HEAD
+	case "analy\n","analy\r\n":
+		launch2.Analy()
+		goto HEAD
+	case "pub\n","pub\r\n":
+		pubService := new(service.PubService)
+		pubService.PubBJDC()
+		goto HEAD
+	case "auto\n","auto\r\n":
 		for {
 			go func() {
 				base.Log.Info("--------程序开始运行--------")
@@ -40,12 +50,13 @@ HEAD:
 				launch2.Analy()
 				//3.3 FW001PubApplication 执行发布到雷速
 				pubService := new(service.PubService)
-				pubService.PubBJDC(true)
+				pubService.PubBJDC()
 				base.Log.Info("--------程序周期结束--------")
 			}()
 			time.Sleep(8 * time.Hour)
 		}
 	default:
+		goto HEAD
 		fmt.Println("You are not welcome here! Goodbye!")
 	}
 

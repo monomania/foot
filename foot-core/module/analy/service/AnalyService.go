@@ -26,9 +26,9 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
-func (this *AnalyService) Find( matchDate time.Time,mainTeam string,guestTeam string) *entity5.AnalyResult {
+func (this *AnalyService) Find(matchDate time.Time, mainTeam string, guestTeam string) *entity5.AnalyResult {
 	data := entity5.AnalyResult{MatchDate: matchDate, MainTeamId: mainTeam, GuestTeamId: guestTeam}
-	mysql.GetEngine().Find(&data)
+	mysql.GetEngine().Get(&data)
 	return &data
 }
 
@@ -43,17 +43,24 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 1.预算结果是主队
 2.比赛未开始
 3.比赛未结束
-4.alName 算法名称，默认为Euro81_616Service ; main 是否只发布主队
+4.alName 算法名称，默认为Euro81_616Service ;
+5.option 3(只筛选主队),1(只筛选平局),0(只筛选客队)选项
  */
-func (this *AnalyService) GetPubDataList(alName string,main bool) []*entity5.AnalyResult {
+func (this *AnalyService) GetPubDataList(alName string, option int) []*entity5.AnalyResult {
 	var preResult string
-	if main{
+	if option == 3 {
 		preResult = "主队"
-	}else{
+	} else if option == 1 {
+		preResult = "平局"
+	} else if option == 0 {
 		preResult = "客队"
 	}
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ar.* FROM foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '"+alName+"%' ) last_analy_time WHERE ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()  AND ar.`PreResult` = '"+preResult+"' AND ar.`AlFlag` LIKE '"+alName+"%' AND ar.`CreateTime` = last_analy_time.CreateTime ORDER BY ar.`MatchDate` ")
+	sql_build.WriteString("SELECT ar.* FROM foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '" + alName + "%' ) last_analy_time WHERE ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()  AND ar.`CreateTime` = last_analy_time.CreateTime ")
+	if len(preResult) > 0 {
+		sql_build.WriteString(" AND ar.`PreResult` = '" + preResult + "' ")
+	}
+	sql_build.WriteString(" ORDER BY ar.`MatchDate`  ")
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
 	//执行查询

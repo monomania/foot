@@ -6,12 +6,10 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 )
 
-func init() {
-	//关闭SQL输出
-	mysql.ShowSQL(false)
-}
 
 func Analy() {
+	//关闭SQL输出
+	mysql.ShowSQL(false)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------计算欧AnalyEuro_81_616Service-------------------")
 	base.Log.Info("---------------------------------------------------------------")

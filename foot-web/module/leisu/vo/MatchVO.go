@@ -42,9 +42,9 @@ type MatchVO struct {
 	OddDatas []OddINFVO
 }
 
-func (this *MatchVO) GetBJDCOddData(mainTeam bool) *OddINFVO {
+func (this *MatchVO) GetBJDCOddData(option int) *OddINFVO {
 	var dataSelects = 11
-	if !mainTeam {
+	if option == 0 {
 		dataSelects = 12
 	}
 	for _, e := range this.OddDatas {

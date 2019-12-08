@@ -27,9 +27,9 @@ const content = "个人业余开发的一款足球分析程序，计算分析得
 /**
 发布北京单场胜负过关
 */
-func (this *PubService) PubBJDC(mainTeam bool) {
+func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", mainTeam)
+	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", 3)
 	if len(analyList) <= 0 {
 		base.Log.Info("当前无可发布的比赛!!!!")
 		return
@@ -63,7 +63,7 @@ func (this *PubService) PubBJDC(mainTeam bool) {
 		//检查是否是重复发布
 
 		//----
-		action := this.BJDCAction(match, mainTeam)
+		action := this.BJDCAction(match, 3)
 		if nil != action {
 			switch action.Code {
 			case 0, 100002:
@@ -87,7 +87,7 @@ func (this *PubService) PubBJDC(mainTeam bool) {
 /**
 发布比赛
 */
-func (this *PubService) BJDCAction(param *vo.MatchVO, mainTeam bool) *vo.PubRespVO {
+func (this *PubService) BJDCAction(param *vo.MatchVO, option int) *vo.PubRespVO {
 	matchDate := param.MatchDate.Format("20060102150405")
 	pubVO := new(vo.PubVO)
 	pubVO.Title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
@@ -98,7 +98,7 @@ func (this *PubService) BJDCAction(param *vo.MatchVO, mainTeam bool) *vo.PubResp
 	pubVO.Multiple = 0
 	pubVO.Price = 0
 	//设置赔率
-	oddData := param.GetBJDCOddData(mainTeam)
+	oddData := param.GetBJDCOddData(option)
 	if oddData == nil {
 		//没有找到北单胜负过关的选项
 		return nil;

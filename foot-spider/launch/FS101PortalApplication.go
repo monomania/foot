@@ -2,12 +2,9 @@ package launch
 
 import "tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 
-func init() {
+func Spider(matchLevel int) {
 	//开启SQL输出
 	mysql.ShowSQL(true)
-}
-
-func Spider(matchLevel int) {
 	Before_spider_match()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
