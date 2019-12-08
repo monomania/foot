@@ -29,10 +29,17 @@ const content = "个人业余开发的一款足球分析程序，计算分析得
 发布北京单场胜负过关
 */
 func (this *PubService) PubBJDC() {
+	option := 3
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", 3)
+	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
 	if len(analyList) <= 0 {
-		base.Log.Info("1.当前无可发布的比赛!!!!")
+		base.Log.Info("1.当前无主队可发布的比赛!!!!")
+		base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
+		option= 0
+		analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
+	}
+	if len(analyList) <= 0 {
+		base.Log.Info("1.2当前无客队可发布的比赛!!!!")
 		return
 	}
 	//获取发布池的比赛列表
@@ -69,7 +76,7 @@ func (this *PubService) PubBJDC() {
 		//检查是否是重复发布
 
 		//----
-		action := this.BJDCAction(match, 3)
+		action := this.BJDCAction(match, option)
 		if nil != action {
 			switch action.Code {
 			case 0, 100002:
