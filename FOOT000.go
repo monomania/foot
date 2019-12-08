@@ -16,7 +16,7 @@ func init() {
 
 func main() {
 	var input string
-	if len(os.Args) > 2 {
+	if len(os.Args) > 1 {
 		input = os.Args[1]
 	} else {
 		input = ""
