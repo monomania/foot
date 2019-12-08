@@ -21,6 +21,8 @@ HEAD:
 		return
 	}
 	switch input {
+	case "exit\n", "exit\r\n":
+		break;
 	case "\n", "\r\n":
 		goto HEAD
 	case "init\n", "init\r\n":
@@ -55,6 +57,7 @@ HEAD:
 				time.Sleep(7 * time.Hour)
 			}
 		}()
+		goto HEAD
 	default:
 		goto HEAD
 		fmt.Println("You are not welcome here! Goodbye!")
