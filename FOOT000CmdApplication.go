@@ -21,25 +21,25 @@ HEAD:
 		return
 	}
 	switch input {
-	case "\n","\r\n":
+	case "\n", "\r\n":
 		goto HEAD
-	case "init\n","init\r\n":
+	case "init\n", "init\r\n":
 		launch2.GenTable()
 		launch2.TruncateTable()
 		goto HEAD
-	case "spider\n","spider\r\n":
+	case "spider\n", "spider\r\n":
 		launch.Spider(4)
 		goto HEAD
-	case "analy\n","analy\r\n":
+	case "analy\n", "analy\r\n":
 		launch2.Analy()
 		goto HEAD
-	case "pub\n","pub\r\n":
+	case "pub\n", "pub\r\n":
 		pubService := new(service.PubService)
 		pubService.PubBJDC()
 		goto HEAD
-	case "auto\n","auto\r\n":
-		for {
-			go func() {
+	case "auto\n", "auto\r\n":
+		go func() {
+			for {
 				base.Log.Info("--------程序开始运行--------")
 				//1.安装数据库
 				//2.配置好数据库连接,打包程序发布
@@ -52,9 +52,9 @@ HEAD:
 				pubService := new(service.PubService)
 				pubService.PubBJDC()
 				base.Log.Info("--------程序周期结束--------")
-			}()
-			time.Sleep(10 * time.Hour)
-		}
+				time.Sleep(7 * time.Hour)
+			}
+		}()
 	default:
 		goto HEAD
 		fmt.Println("You are not welcome here! Goodbye!")

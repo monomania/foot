@@ -35,20 +35,18 @@ func main() {
 		pubService.PubBJDC()
 	case "auto":
 		for {
-			go func() {
-				base.Log.Info("--------程序开始运行--------")
-				//1.安装数据库
-				//2.配置好数据库连接,打包程序发布
-				//3.程序执行流程,周期定制定为一天三次
-				//3.1 FS000Application 爬取数据
-				launch.Spider(4)
-				//3.2 FC002AnalyApplication 分析得出推荐列表
-				launch2.Analy()
-				//3.3 FW001PubApplication 执行发布到雷速
-				pubService := new(service.PubService)
-				pubService.PubBJDC()
-				base.Log.Info("--------程序周期结束--------")
-			}()
+			base.Log.Info("--------程序开始运行--------")
+			//1.安装数据库
+			//2.配置好数据库连接,打包程序发布
+			//3.程序执行流程,周期定制定为一天三次
+			//3.1 FS000Application 爬取数据
+			launch.Spider(4)
+			//3.2 FC002AnalyApplication 分析得出推荐列表
+			launch2.Analy()
+			//3.3 FW001PubApplication 执行发布到雷速
+			pubService := new(service.PubService)
+			pubService.PubBJDC()
+			base.Log.Info("--------程序周期结束--------")
 			time.Sleep(7 * time.Hour)
 		}
 	default:
