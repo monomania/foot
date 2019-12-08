@@ -31,7 +31,7 @@ func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", 3)
 	if len(analyList) <= 0 {
-		base.Log.Info("当前无可发布的比赛!!!!")
+		base.Log.Info("1.当前无可发布的比赛!!!!")
 		return
 	}
 	//获取发布池的比赛列表
@@ -46,6 +46,11 @@ func (this *PubService) PubBJDC() {
 				break;
 			}
 		}
+	}
+
+	if len(pubList) <= 0 {
+		base.Log.Info("2.当前无可发布的比赛!!!!")
+		return
 	}
 	//打印要发布的比赛
 	for _, match := range pubList {
