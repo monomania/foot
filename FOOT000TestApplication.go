@@ -26,6 +26,7 @@ func main() {
 			break;
 		} else if err != nil {
 			fmt.Println(err)
+			break;
 		}else{
 			fmt.Println(string(line))
 		}
