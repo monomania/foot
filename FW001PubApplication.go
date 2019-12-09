@@ -1,9 +1,9 @@
 package main
 
 import (
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	_ "tesou.io/platform/foot-parent/foot-web/common/fliters"
 	_ "tesou.io/platform/foot-parent/foot-web/common/routers"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/service"
 )
 
 func main() {

@@ -8,9 +8,9 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/vo"
+	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
+	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
 	"time"
 )
 
@@ -45,7 +45,7 @@ func (this *PubService) PubBJDC() {
 	//获取发布池的比赛列表
 	matchPool := this.MatchPoolService.GetMatchList()
 	//适配比赛,获取发布列表
-	pubList := make(map[*pojo.AnalyResult]*vo.MatchVO, 0)
+	pubList := make(map[*pojo.AnalyResult]*vo2.MatchVO, 0)
 	for _, analy := range analyList {
 		analy_mainTeam := analy.MainTeamId
 		for _, match := range matchPool {
@@ -100,9 +100,9 @@ func (this *PubService) PubBJDC() {
 /**
 发布比赛
 */
-func (this *PubService) BJDCAction(param *vo.MatchVO, option int) *vo.PubRespVO {
+func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespVO {
 	matchDate := param.MatchDate.Format("20060102150405")
-	pubVO := new(vo.PubVO)
+	pubVO := new(vo2.PubVO)
 	pubVO.Title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
 	if len(pubVO.Title) < (3 * 15) {
 		pubVO.Title = "足球精推:" + pubVO.Title
@@ -116,11 +116,11 @@ func (this *PubService) BJDCAction(param *vo.MatchVO, option int) *vo.PubRespVO 
 		//没有找到北单胜负过关的选项
 		return nil;
 	}
-	infvo := vo.MatchINFVO{}
+	infvo := vo2.MatchINFVO{}
 	infvo.Id = param.DataId
 	infvo.Selects = []int{oddData.DataSelects}
 	infvo.Values = []float64{oddData.DataOdd}
-	pubVO.Data = []vo.MatchINFVO{infvo}
+	pubVO.Data = []vo2.MatchINFVO{infvo}
 	//执行发布
 	post := this.PubPost(pubVO)
 	base.Log.Info("发布结果:" + pubVO.Title + " " + post.ToString())
@@ -130,14 +130,14 @@ func (this *PubService) BJDCAction(param *vo.MatchVO, option int) *vo.PubRespVO 
 /**
 处理http post
 */
-func (this *PubService) PubPost(param *vo.PubVO) *vo.PubRespVO {
-	data := utils.Post(constants.PUB_URL, param)
+func (this *PubService) PubPost(param *vo2.PubVO) *vo2.PubRespVO {
+	data := utils2.Post(constants2.PUB_URL, param)
 	if len(data) <= 0 {
 		base.Log.Error("PubPost:获取到的数据为空")
 		return nil
 	}
 	base.Log.Info("http post 请求返回:" + data)
-	resp := new(vo.PubRespVO)
+	resp := new(vo2.PubRespVO)
 	json.Unmarshal([]byte(data), resp)
 	return resp
 }

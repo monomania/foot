@@ -6,9 +6,9 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/vo"
+	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
+	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
 	"time"
 )
 
@@ -22,17 +22,17 @@ type MatchPoolService struct {
 /**
 获取可推荐比赛列表
 */
-func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
-	doc, err := utils.GetDocument(constants.MATCH_LIST_URL)
+func (this *MatchPoolService) GetMatchList() []*vo2.MatchVO {
+	doc, err := utils2.GetDocument(constants2.MATCH_LIST_URL)
 	if nil != err {
 		base.Log.Error("GetMatchList:" + err.Error())
 		return nil
 	}
 
-	resp := make([]*vo.MatchVO, 0)
+	resp := make([]*vo2.MatchVO, 0)
 	doc.Find("tbody.data").Each(func(i int, selection *goquery.Selection) {
-		matchVO := new(vo.MatchVO)
-		matchVO.OddDatas = make([]vo.OddINFVO, 0)
+		matchVO := new(vo2.MatchVO)
+		matchVO.OddDatas = make([]vo2.OddINFVO, 0)
 		resp = append(resp, matchVO)
 		//1.1属性获取--start
 		data_id, _ := selection.Attr("data-id")
@@ -80,7 +80,7 @@ func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 				data_selects, _ := selection.Attr("data-selects")
 				data_tip, _ := selection.Attr("data-tip")
 				data_pk, _ := selection.Attr("data-pk")
-				infvo := vo.OddINFVO{}
+				infvo := vo2.OddINFVO{}
 				infvo.DataIdx, _ = strconv.Atoi(data_idx)
 				infvo.DataOdd, _ = strconv.ParseFloat(data_odd, 64)
 				infvo.DataSelects, _ = strconv.Atoi(data_selects)
@@ -104,7 +104,7 @@ func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 				data_selects, _ := selection.Attr("data-selects")
 				data_tip, _ := selection.Attr("data-tip")
 				data_pk, _ := selection.Attr("data-pk")
-				infvo := vo.OddINFVO{}
+				infvo := vo2.OddINFVO{}
 				infvo.DataIdx, _ = strconv.Atoi(data_idx)
 				infvo.DataOdd, _ = strconv.ParseFloat(data_odd, 64)
 				infvo.DataSelects, _ = strconv.Atoi(data_selects)
@@ -128,7 +128,7 @@ func (this *MatchPoolService) GetMatchList() []*vo.MatchVO {
 				data_selects, _ := selection.Attr("data-selects")
 				data_tip, _ := selection.Attr("data-tip")
 				data_pk, _ := selection.Attr("data-pk")
-				infvo := vo.OddINFVO{}
+				infvo := vo2.OddINFVO{}
 				infvo.DataIdx, _ = strconv.Atoi(data_idx)
 				infvo.DataOdd, _ = strconv.ParseFloat(data_odd, 64)
 				infvo.DataSelects, _ = strconv.Atoi(data_selects)

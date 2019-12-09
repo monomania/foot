@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io"
 	"math/rand"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/service"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 )
 
 func main() {

@@ -9,10 +9,10 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/service"
-	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
 	"time"
 )
 
