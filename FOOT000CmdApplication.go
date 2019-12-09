@@ -2,12 +2,17 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
+	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-web/module/leisu/service"
+	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
 	"time"
 )
 
@@ -20,6 +25,8 @@ HEAD:
 		fmt.Println("There were errors reading, exiting program.")
 		return
 	}
+
+	input = strings.ToLower(input)
 	switch input {
 	case "exit\n", "exit\r\n":
 		break;
@@ -34,6 +41,29 @@ HEAD:
 		goto HEAD
 	case "analy\n", "analy\r\n":
 		launch2.Analy()
+		goto HEAD
+	case "matchpool\n", "matchpool\r\n":
+		//测试从雷速获取可发布的比赛池
+		readCloser := utils.Get(constants.MATCH_LIST_URL)
+		reader := bufio.NewReader(readCloser)
+		for {
+			line, err := reader.ReadBytes('\n')
+			if err == io.EOF {
+				break;
+			} else if err != nil {
+				fmt.Println(err)
+				break;
+			} else {
+				fmt.Println(string(line))
+			}
+		}
+		//尝试获取比赛列表
+		poolService := new(service.MatchPoolService)
+		list := poolService.GetMatchList()
+		for _, e := range list {
+			bytes, _ := json.Marshal(e)
+			fmt.Println(string(bytes))
+		}
 		goto HEAD
 	case "pub\n", "pub\r\n":
 		pubService := new(service.PubService)

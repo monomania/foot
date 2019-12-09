@@ -1,12 +1,18 @@
 package main
 
 import (
+	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
+	"tesou.io/platform/foot-parent/foot-web/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-web/module/leisu/service"
+	"tesou.io/platform/foot-parent/foot-web/module/leisu/utils"
 	"time"
 )
 
@@ -17,7 +23,7 @@ func init() {
 func main() {
 	var input string
 	if len(os.Args) > 1 {
-		input = os.Args[1]
+		input = strings.ToLower(os.Args[1])
 	} else {
 		input = ""
 	}
@@ -30,6 +36,28 @@ func main() {
 		launch.Spider(4)
 	case "analy":
 		launch2.Analy()
+	case "matchpool":
+		//测试从雷速获取可发布的比赛池
+		readCloser := utils.Get(constants.MATCH_LIST_URL)
+		reader := bufio.NewReader(readCloser)
+		for {
+			line, err := reader.ReadBytes('\n')
+			if err == io.EOF {
+				break;
+			} else if err != nil {
+				fmt.Println(err)
+				break;
+			} else {
+				fmt.Println(string(line))
+			}
+		}
+		//尝试获取比赛列表
+		poolService := new(service.MatchPoolService)
+		list := poolService.GetMatchList()
+		for _, e := range list {
+			bytes, _ := json.Marshal(e)
+			fmt.Println(string(bytes))
+		}
 	case "pub":
 		pubService := new(service.PubService)
 		pubService.PubBJDC()
