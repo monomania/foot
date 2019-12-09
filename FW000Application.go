@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	_ "tesou.io/platform/foot-parent/foot-web/common/fliters"
-	_ "tesou.io/platform/foot-parent/foot-web/common/routers"
+	_ "tesou.io/platform/foot-parent/foot-core/common/fliters"
+	_ "tesou.io/platform/foot-parent/foot-core/common/routers"
 )
 
 func main() {

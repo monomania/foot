@@ -57,7 +57,7 @@ func (this *FootDownloader) Download(req *request.Request) *page.Page {
 }
 
 /*
-// The acceptableCharset is gui for whether Content-Type is UTF-8 or not
+// The acceptableCharset is foot-gui for whether Content-Type is UTF-8 or not
 func (this *FootDownloader) acceptableCharset(contentTypes []string) bool {
     // each type is like [text/html; charset=UTF-8]
     // we want the UTF-8 only

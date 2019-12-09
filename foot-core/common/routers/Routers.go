@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"tesou.io/platform/foot-parent/foot-web/module/index/controller"
-	controller2 "tesou.io/platform/foot-parent/foot-web/module/match/controller"
+	"tesou.io/platform/foot-parent/foot-core/module/index/controller"
+	controller2 "tesou.io/platform/foot-parent/foot-core/module/match/controller"
 )
 
 type Routers struct {
