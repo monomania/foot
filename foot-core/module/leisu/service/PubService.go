@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
@@ -34,14 +35,19 @@ func (this *PubService) PubBJDC() {
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
 	if len(analyList) <= 0 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
-		base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
-		option= 0
-		analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
+		hours, _ := strconv.Atoi(time.Now().Format("15"))
+		if hours < 24 && hours > 19 {
+			//只在晚上处理
+			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
+			option = 0
+			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
+			if len(analyList) <= 0 {
+				base.Log.Info("1.2当前无客队可发布的比赛!!!!")
+				return
+			}
+		}
 	}
-	if len(analyList) <= 0 {
-		base.Log.Info("1.2当前无客队可发布的比赛!!!!")
-		return
-	}
+
 	//获取发布池的比赛列表
 	matchPool := this.MatchPoolService.GetMatchList()
 	//适配比赛,获取发布列表
@@ -57,7 +63,7 @@ func (this *PubService) PubBJDC() {
 	}
 
 	if len(pubList) <= 0 {
-		base.Log.Info(fmt.Sprintf("2.当前无可发布的比赛!!!!比赛池size:%d,分析赛果size:%d",len(matchPool),len(analyList)))
+		base.Log.Info(fmt.Sprintf("2.当前无可发布的比赛!!!!比赛池size:%d,分析赛果size:%d", len(matchPool), len(analyList)))
 		return
 	}
 	//打印要发布的比赛
@@ -71,6 +77,8 @@ func (this *PubService) PubBJDC() {
 		count := this.PubLimitService.HasPubCount()
 		if !count {
 			base.Log.Error("已经没有发布次数啦,请更换cookies帐号!")
+			hours, _ := strconv.Atoi(time.Now().Format("15"))
+			time.Sleep(time.Duration(int64(24-hours)) * time.Hour)
 			break;
 		}
 		//检查是否是重复发布
