@@ -20,6 +20,6 @@ func Analy() {
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------计算AnalyAsia_18_Euro_81_616Service--------------")
 	base.Log.Info("---------------------------------------------------------------")
-	euro81616Service := new(service.Asia18Euro81_616Service)
+	euro81616Service := new(service.Asia18EuroUDReverseService)
 	euro81616Service.Analy()
 }

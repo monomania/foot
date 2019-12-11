@@ -11,7 +11,10 @@ import (
 	"time"
 )
 
-type Asia18Euro81_616Service struct {
+/**
+亚赔与欧赔up down 颠倒
+ */
+type Asia18EuroUDReverseService struct {
 	AnalyService
 	//最大让球数据
 	MaxLetBall float64
@@ -22,7 +25,7 @@ type Asia18Euro81_616Service struct {
 ( 1.欧赔降水,亚赔反之,以亚赔为准)
 ( 2.欧赔升水,亚赔反之,以亚赔为准)
 */
-func (this *Asia18Euro81_616Service) Analy() []interface{} {
+func (this *Asia18EuroUDReverseService) Analy() []interface{} {
 	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
@@ -82,7 +85,7 @@ func (this *Asia18Euro81_616Service) Analy() []interface{} {
 	return data_list_slice
 }
 
-func (this *Asia18Euro81_616Service) buildData(v *entity2.MatchLast, a18betData *entity3.AsiaLast, e81data *entity3.EuroLast, e616data *entity3.EuroLast, result int) *entity5.AnalyResult {
+func (this *Asia18EuroUDReverseService) buildData(v *entity2.MatchLast, a18betData *entity3.AsiaLast, e81data *entity3.EuroLast, e616data *entity3.EuroLast, result int) *entity5.AnalyResult {
 	//比赛结果
 	globalResult := this.ActualResult(a18betData, v)
 	if this.PrintOddData {
