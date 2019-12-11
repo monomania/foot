@@ -22,7 +22,10 @@ func beeRun() {
 	fmt.Println(time.Duration(int64(24-hours)))
 	mysql.ShowSQL(true)
 	analyService := new(service.AnalyService)
-	analyService.GetPubDataList("Euro81_616Service", -1)
+	list := analyService.GetPubDataList("Euro81_616Service", -1)
+
+	result := &list[0].AnalyResult
+	analyService.Modify(result)
 
 	beego.LoadAppConfig("ini", "conf/app.conf")
 	logs.SetLogger(logs.AdapterConsole, `{"level":1,"color":true}`)
