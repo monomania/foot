@@ -50,7 +50,7 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 func (this *AnalyService) GetPubDataList(alName string, option int) []*vo.AnalyResultVO {
 	sql_build := strings.Builder{}
 	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '" + alName + "%' ) last_analy_time WHERE ml.`Id` = ar.`MatchId` AND ar.`CreateTime` = last_analy_time.CreateTime AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
-	if option > 0 {
+	if option >= 0 {
 		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
 	sql_build.WriteString(" ORDER BY ar.`PreResult` DESC ,ar.`MatchDate` ASC   ")
