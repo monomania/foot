@@ -33,15 +33,16 @@ func (this *PubService) PubBJDC() {
 	option := 3
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
-	if len(analyList) < 2 {
+	if len(analyList) < 1 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
 		hours, _ := strconv.Atoi(time.Now().Format("15"))
 		if (hours <= 23 && hours >= 20) || (hours <= 5 && hours >= 0) {
 			//只在晚上处理
-			base.Log.Info("1.1尝试获取可发布的比赛!!!!")
-			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", -1)
+			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
+			option = 0
+			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
 			if len(analyList) <= 0 {
-				base.Log.Info("1.2当前无可发布的比赛!!!!")
+				base.Log.Info("1.2当前无客队可发布的比赛!!!!")
 				return
 			}
 		} else {
