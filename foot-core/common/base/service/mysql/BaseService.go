@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"container/list"
-	"github.com/astaxie/beego/config"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
@@ -11,6 +10,7 @@ import (
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 )
 
 type BaseService struct {
@@ -72,25 +72,12 @@ func setEngine() *xorm.Engine {
 
 func init() {
 	//加载配置
-	loadConfig()
+	mysql_conf = utils.GetSection("mysql")
 
 	//设置初始化数据库引擎
 	setEngine()
 }
 
-func loadConfig() {
-	configer, e := new(config.IniConfig).Parse("conf/mysql.ini")
-	if e != nil {
-		base.Log.Info("loadConfig加载配置文件失败:", e.Error())
-		return
-	}
-	section, e := configer.GetSection("mysql")
-	if e != nil {
-		base.Log.Info("loadConfig加载配置文件失败:", e.Error())
-		return
-	}
-	mysql_conf = section
-}
 
 func beforeModify(entity interface{}) {
 	//当前时间

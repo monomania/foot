@@ -16,7 +16,7 @@ func Before_spider_euroLast() {
 	//抓取前清空当前比较表
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
-	opsService.TruncateTable([]string{"t_euro_last", "t_comp", "t_comp_config"})
+	opsService.TruncateTable([]string{"t_euro_last", "t_comp"})
 }
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司

@@ -20,6 +20,7 @@ func Before_spider_asiaLast(){
 }
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
+//该页面已经被球探网废弃
 func Spider_asiaLast() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindAll()

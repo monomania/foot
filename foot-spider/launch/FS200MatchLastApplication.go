@@ -15,7 +15,7 @@ func Before_spider_match(){
 	//抓取前清空当前比较表
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
-	opsService.TruncateTable([]string{"t_match_last", "t_match_last_config"})
+	opsService.TruncateTable([]string{"t_match_last"})
 }
 
 //抓取比赛数据

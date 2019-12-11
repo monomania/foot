@@ -8,6 +8,7 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
@@ -24,8 +25,6 @@ type PubService struct {
 	PubLimitService
 }
 
-const content = "个人业余开发的一款足球分析程序，计算分析得出的结果.目前处于验证阶段，会持续同步发布出来，如发现近期命中率可以，可以选择跟进或参考，但一定要慎跟！！！！个人业余开发的一款足球分析程序，计算分析得出的结果.目前处于验证阶段，会持续同步发布出来，如发现近期命中率可以，可以选择跟进或参考，但一定要慎跟！！！"
-
 /**
 发布北京单场胜负过关
 */
@@ -36,7 +35,7 @@ func (this *PubService) PubBJDC() {
 	if len(analyList) <= 0 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
 		hours, _ := strconv.Atoi(time.Now().Format("15"))
-		if hours < 24 && hours > 19 {
+		if (hours <= 23 && hours >= 20) || (hours <= 5 && hours >= 0) {
 			//只在晚上处理
 			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
 			option = 0
@@ -45,6 +44,8 @@ func (this *PubService) PubBJDC() {
 				base.Log.Info("1.2当前无客队可发布的比赛!!!!")
 				return
 			}
+		} else {
+			return;
 		}
 	}
 
@@ -105,6 +106,21 @@ func (this *PubService) PubBJDC() {
 	}
 }
 
+func (this *PubService) getPubConfig() map[string]string {
+	section := utils.GetSection("pub")
+	return section
+}
+
+func (this *PubService) getContent() string {
+	config := this.getPubConfig()
+	if nil != config {
+		return config["content"]
+	}
+	return ""
+}
+
+const pubContent = "本次推荐为程序全自动处理,全程无人为参与干预.进而避免了人为分析的主观性及不稳定因素.程序根据各大波菜多维度数据,结合作者十年足球分析经验,十年程序员生涯,精雕细琢历经26个月得出的产物.程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).经近三个月的实验准确率一直能维持在一个较高的水平.依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!"
+
 /**
 发布比赛
 */
@@ -115,7 +131,11 @@ func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespV
 	if len(pubVO.Title) < (3 * 15) {
 		pubVO.Title = "足球精推:" + pubVO.Title
 	}
-	pubVO.Content = content
+	pubVO.Content = this.getContent()
+	if len(pubVO.Content) <= 0 {
+		pubVO.Content = pubContent
+	}
+
 	pubVO.Multiple = 0
 	pubVO.Price = 0
 	//设置赔率
