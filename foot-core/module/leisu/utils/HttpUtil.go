@@ -3,7 +3,6 @@ package utils
 import (
 	"compress/gzip"
 	"encoding/json"
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"io"
 	"io/ioutil"

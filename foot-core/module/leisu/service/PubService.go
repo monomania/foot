@@ -33,7 +33,7 @@ func (this *PubService) PubBJDC() {
 	option := 3
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
-	if len(analyList) < 5 {
+	if len(analyList) < 2 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
 		hours, _ := strconv.Atoi(time.Now().Format("15"))
 		if (hours <= 23 && hours >= 20) || (hours <= 5 && hours >= 0) {
