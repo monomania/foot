@@ -151,33 +151,32 @@ func setPostHeader(req *http.Request) {
 	req.Header.Add("Cache-Control", "no-cache")
 }
 
+//因beego会将key小写化,故加上该处理
+var keys = []string{"acw_sc__v3", "acw_sc__v2", "acw_tc", "Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e", "Hm_lpvt_63b82ac6d9948bad5e14b1398610939a", "Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e", "Hm_lvt_63b82ac6d9948bad5e14b1398610939a", "LWT", "SERVERID"}
+//设置cookies
 func setCookies(req *http.Request) {
-	//req.AddCookie(&http.Cookie{Name:"acw_sc__v3",Value:"5ded2b7f3ca9e08a6c780b7cb00951915ba5b2fa"})
-	//req.AddCookie(&http.Cookie{Name:"acw_sc__v2",Value:"5ded2bbb69a003c830006ea6790726d3bbaa55d9"})
-	//req.AddCookie(&http.Cookie{Name:"acw_tc",Value:"2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f"})
-	//req.AddCookie(&http.Cookie{Name:"Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e",Value:"1575815243"})
-	//req.AddCookie(&http.Cookie{Name:"Hm_lpvt_63b82ac6d9948bad5e14b1398610939a",Value:"1575748957"})
-	//req.AddCookie(&http.Cookie{Name:"Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e",Value:"1574241711,1574912837,1575529353,1575748959"})
-	//req.AddCookie(&http.Cookie{Name:"Hm_lvt_63b82ac6d9948bad5e14b1398610939a",Value:"1574241706,1574912834,1575529351,1575748957"})
-	//req.AddCookie(&http.Cookie{Name:"LWT",Value:"KBjo3NZHBCcMfcnaZ1JXVula6ZKdmthk0DqnddpGOcwxb/d/nr2ULipCnjSsetvzCgwBKwkj7nBLrOAdTnObJULe9q6AAzwXSGYnfRLNE2U="})
-	//req.AddCookie(&http.Cookie{Name:"SERVERID",Value:"f35c9b1c268fcc8b58043d36d0dddd26|1575817686|1575815177"})
-
 	section := utils.GetSection("cookies")
 	if nil == section {
 		base.Log.Error("未找到对应的cookies的信息")
-		req.AddCookie(&http.Cookie{Name:"acw_sc__v3",Value:"5ded2b7f3ca9e08a6c780b7cb00951915ba5b2fa"})
-		req.AddCookie(&http.Cookie{Name:"acw_sc__v2",Value:"5ded2bbb69a003c830006ea6790726d3bbaa55d9"})
-		req.AddCookie(&http.Cookie{Name:"acw_tc",Value:"2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f"})
-		req.AddCookie(&http.Cookie{Name:"Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e",Value:"1575815243"})
-		req.AddCookie(&http.Cookie{Name:"Hm_lpvt_63b82ac6d9948bad5e14b1398610939a",Value:"1575748957"})
-		req.AddCookie(&http.Cookie{Name:"Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e",Value:"1574241711,1574912837,1575529353,1575748959"})
-		req.AddCookie(&http.Cookie{Name:"Hm_lvt_63b82ac6d9948bad5e14b1398610939a",Value:"1574241706,1574912834,1575529351,1575748957"})
-		req.AddCookie(&http.Cookie{Name:"LWT",Value:"KBjo3NZHBCcMfcnaZ1JXVula6ZKdmthk0DqnddpGOcwxb/d/nr2ULipCnjSsetvzCgwBKwkj7nBLrOAdTnObJULe9q6AAzwXSGYnfRLNE2U="})
-		req.AddCookie(&http.Cookie{Name:"SERVERID",Value:"f35c9b1c268fcc8b58043d36d0dddd26|1575817686|1575815177"})
+		req.AddCookie(&http.Cookie{Name: "acw_sc__v3", Value: "5ded2b7f3ca9e08a6c780b7cb00951915ba5b2fa"})
+		req.AddCookie(&http.Cookie{Name: "acw_sc__v2", Value: "5ded2bbb69a003c830006ea6790726d3bbaa55d9"})
+		req.AddCookie(&http.Cookie{Name: "acw_tc", Value: "2f61f27615749128339236126e4d79296e8377930295ed12ea7a883b6b8e6f"})
+		req.AddCookie(&http.Cookie{Name: "Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e", Value: "1575815243"})
+		req.AddCookie(&http.Cookie{Name: "Hm_lpvt_63b82ac6d9948bad5e14b1398610939a", Value: "1575748957"})
+		req.AddCookie(&http.Cookie{Name: "Hm_lvt_2fb6939e65e63cfbc1953f152ec2402e", Value: "1574241711,1574912837,1575529353,1575748959"})
+		req.AddCookie(&http.Cookie{Name: "Hm_lvt_63b82ac6d9948bad5e14b1398610939a", Value: "1574241706,1574912834,1575529351,1575748957"})
+		req.AddCookie(&http.Cookie{Name: "LWT", Value: "KBjo3NZHBCcMfcnaZ1JXVula6ZKdmthk0DqnddpGOcwxb/d/nr2ULipCnjSsetvzCgwBKwkj7nBLrOAdTnObJULe9q6AAzwXSGYnfRLNE2U="})
+		req.AddCookie(&http.Cookie{Name: "SERVERID", Value: "f35c9b1c268fcc8b58043d36d0dddd26|1575817686|1575815177"})
 		return;
 	}
 
 	for k, v := range section {
+		for _, e := range keys {
+			if strings.EqualFold(strings.ToLower(k), strings.ToLower(e)) {
+				k = e
+				break;
+			}
+		}
 		req.AddCookie(&http.Cookie{Name: k, Value: v})
 	}
 

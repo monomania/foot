@@ -36,6 +36,16 @@ func main() {
 		launch.Spider(4)
 	case "analy":
 		launch2.Analy()
+	case "limit":
+		pubLimitService := new(service.PubLimitService)
+		publimit := pubLimitService.GetPublimit()
+		bytes, _ := json.Marshal(publimit)
+		fmt.Println("发布限制信息为:" + string(bytes))
+	case "price":
+		priceService := new(service.PriceService)
+		price := priceService.GetPrice()
+		bytes, _ := json.Marshal(price)
+		fmt.Println("收费信息为:" + string(bytes))
 	case "matchpool":
 		//测试从雷速获取可发布的比赛池
 		readCloser := utils.Get(constants.MATCH_LIST_URL)

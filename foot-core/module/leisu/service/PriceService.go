@@ -9,34 +9,34 @@ import (
 )
 
 /**
-发布前,需要查询限制
+发布前,查询收费
  */
-type PubLimitService struct {
+type PriceService struct {
 	//mysql.BaseService
 }
 
 /**
 获取发布次数
  */
-func (this *PubLimitService) GetPublimit() *vo2.PubLimitVO {
-	data := utils2.GetText(constants2.PUB_LIMIT_URL)
+func (this *PriceService) GetPrice() *vo2.PriceVO {
+	data := utils2.GetText(constants2.PRICE_URL)
 	if len(data) <= 0 {
-		base.Log.Error("GetPublimit:获取到的数据为空")
+		base.Log.Error("GetPrice:获取到的数据为空")
 		return nil
 	}
-	resp := new(vo2.PubLimitVO)
+	resp := new(vo2.PriceVO)
 	json.Unmarshal([]byte(data), resp)
 	return resp
 }
 
 /**
-是否还有发布次数
+是否可以收费
  */
-func (this *PubLimitService) HasPubCount() bool{
-	data := this.GetPublimit()
-	if data.Remain_times > 0 {
+func (this *PriceService) HasPrice() bool{
+	data := this.GetPrice()
+	if len(data.Data) > 0 {
+		base.Log.Warn(data.ToString())
 		return true;
 	}
-	base.Log.Warn(data.ToString())
 	return false;
 }

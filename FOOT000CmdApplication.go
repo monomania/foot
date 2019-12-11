@@ -42,6 +42,18 @@ HEAD:
 	case "analy\n", "analy\r\n":
 		launch2.Analy()
 		goto HEAD
+	case "limit\n", "limit\r\n":
+		pubLimitService := new(service.PubLimitService)
+		publimit := pubLimitService.GetPublimit()
+		bytes, _ := json.Marshal(publimit)
+		fmt.Println("发布限制信息为:" + string(bytes))
+		goto HEAD
+	case "price\n", "price\r\n":
+		priceService := new(service.PriceService)
+		price := priceService.GetPrice()
+		bytes, _ := json.Marshal(price)
+		fmt.Println("收费信息为:" + string(bytes))
+		goto HEAD
 	case "matchpool\n", "matchpool\r\n":
 		//测试从雷速获取可发布的比赛池
 		readCloser := utils.Get(constants.MATCH_LIST_URL)

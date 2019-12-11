@@ -23,6 +23,7 @@ type PubService struct {
 	service.AnalyService
 	MatchPoolService
 	PubLimitService
+	PriceService
 }
 
 /**
@@ -137,7 +138,13 @@ func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespV
 	}
 
 	pubVO.Multiple = 0
-	pubVO.Price = 0
+	//查询是否可以收费
+	price := this.PriceService.GetPrice()
+	if len(price.Data) > 0 {
+		pubVO.Price = price.Data[len(price.Data)-1]
+	}else{
+		pubVO.Price = 0
+	}
 	//设置赔率
 	oddData := param.GetBJDCOddData(option)
 	if oddData == nil {
