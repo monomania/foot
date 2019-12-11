@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
@@ -26,8 +27,8 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
-func (this *AnalyService) Find(matchDate time.Time, mainTeam string, guestTeam string) *entity5.AnalyResult {
-	data := entity5.AnalyResult{MatchDate: matchDate, MainTeamId: mainTeam, GuestTeamId: guestTeam}
+func (this *AnalyService) Find(matchId string) *entity5.AnalyResult {
+	data := entity5.AnalyResult{MatchId: matchId}
 	mysql.GetEngine().Get(&data)
 	return &data
 }
@@ -46,23 +47,15 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 4.alName 算法名称，默认为Euro81_616Service ;
 5.option 3(只筛选主队),1(只筛选平局),0(只筛选客队)选项
  */
-func (this *AnalyService) GetPubDataList(alName string, option int) []*entity5.AnalyResult {
-	var preResult string
-	if option == 3 {
-		preResult = "主队"
-	} else if option == 1 {
-		preResult = "平局"
-	} else if option == 0 {
-		preResult = "客队"
-	}
+func (this *AnalyService) GetPubDataList(alName string, option int) []*vo.AnalyResultVO {
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ar.* FROM foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '" + alName + "%' ) last_analy_time WHERE ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()  AND ar.`CreateTime` = last_analy_time.CreateTime ")
-	if len(preResult) > 0 {
-		sql_build.WriteString(" AND ar.`PreResult` = '" + preResult + "' ")
+	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '" + alName + "%' ) last_analy_time WHERE ml.`Id` = ar.`MatchId` AND ar.`CreateTime` = last_analy_time.CreateTime AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
+	if option > 0 {
+		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
-	sql_build.WriteString(" ORDER BY ar.`MatchDate`  ")
+	sql_build.WriteString(" ORDER BY ar.`PreResult` DESC ,ar.`MatchDate` ASC   ")
 	//结果值
-	entitys := make([]*entity5.AnalyResult, 0)
+	entitys := make([]*vo.AnalyResultVO, 0)
 	//执行查询
 	this.FindBySQL(sql_build.String(), &entitys)
 	return entitys
@@ -82,13 +75,13 @@ func (this *AnalyService) LoadData(matchId string) []*entity5.AnalyResult {
 /**
 比赛的实际结果计算
  */
-func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) string {
-	var result string
+func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) int {
+	var result int
 	h2, _ := time.ParseDuration("2h")
 	matchDate := v.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束
-		return result
+		return -1
 	}
 
 	elb_sum := last.ELetBall
@@ -100,13 +93,13 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 	}
 	diff_goals := float64((v.MainTeamGoals - v.GuestTeamGoals)) - elb_sum
 	if diff_goals <= 0.25 && diff_goals >= -0.25 {
-		result = "走盘(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
+		result = 1
 	} else if mainTeamGoals > float64(v.GuestTeamGoals) {
-		result = "主队(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
+		result = 3
 	} else if mainTeamGoals < float64(v.GuestTeamGoals) {
-		result = "客队(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
+		result = 0
 	} else {
-		result = "走盘(" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + ")"
+		result = 1
 	}
 	return result
 }

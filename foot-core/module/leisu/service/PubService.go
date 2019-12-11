@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
@@ -33,16 +33,15 @@ func (this *PubService) PubBJDC() {
 	option := 3
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
-	if len(analyList) <= 0 {
+	if len(analyList) < 5 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
 		hours, _ := strconv.Atoi(time.Now().Format("15"))
 		if (hours <= 23 && hours >= 20) || (hours <= 5 && hours >= 0) {
 			//只在晚上处理
-			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
-			option = 0
-			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
+			base.Log.Info("1.1尝试获取可发布的比赛!!!!")
+			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", -1)
 			if len(analyList) <= 0 {
-				base.Log.Info("1.2当前无客队可发布的比赛!!!!")
+				base.Log.Info("1.2当前无可发布的比赛!!!!")
 				return
 			}
 		} else {
@@ -53,7 +52,7 @@ func (this *PubService) PubBJDC() {
 	//获取发布池的比赛列表
 	matchPool := this.MatchPoolService.GetMatchList()
 	//适配比赛,获取发布列表
-	pubList := make(map[*pojo.AnalyResult]*vo2.MatchVO, 0)
+	pubList := make(map[*vo.AnalyResultVO]*vo2.MatchVO, 0)
 	for _, analy := range analyList {
 		analy_mainTeam := analy.MainTeamId
 		for _, match := range matchPool {

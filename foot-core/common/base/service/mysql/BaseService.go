@@ -64,8 +64,8 @@ func setEngine() *xorm.Engine {
 	engine.Exec("update user set name = ? where id = ?", "xlw", 1)
 	engine.ClearCache(new(User))
 	*/
-	cacher := xorm.NewLRUCacher(xorm.NewMemoryStore(), 999)
-	engine.SetDefaultCacher(cacher)
+	//cacher := xorm.NewLRUCacher(xorm.NewMemoryStore(), 999)
+	//engine.SetDefaultCacher(cacher)
 
 	return engine
 }

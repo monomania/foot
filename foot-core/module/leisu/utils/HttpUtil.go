@@ -81,8 +81,6 @@ func Post(apiUrl string, data interface{}) string {
 		values.Add(k, v)
 	}
 	encode := values.Encode()
-	fmt.Println(encode)
-
 	client := &http.Client{}
 	u, _ := url.ParseRequestURI(apiUrl)
 	request, err := http.NewRequest("POST", u.String(), strings.NewReader(encode))
