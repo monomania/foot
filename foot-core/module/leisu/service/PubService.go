@@ -8,8 +8,8 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
-	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/core/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
@@ -20,6 +20,7 @@ import (
 发布推荐
 */
 type PubService struct {
+	service2.ConfService
 	service.AnalyService
 	MatchPoolService
 	PubLimitService
@@ -36,7 +37,7 @@ func (this *PubService) PubBJDC() {
 	if len(analyList) < 1 {
 		base.Log.Info("1.当前无主队可发布的比赛!!!!")
 		hours, _ := strconv.Atoi(time.Now().Format("15"))
-		if (hours <= 23 && hours >= 20) || (hours <= 5 && hours >= 0) {
+		if (hours <= 23 && hours >= 21) || (hours <= 3 && hours >= 0) {
 			//只在晚上处理
 			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
 			option = 0
@@ -70,7 +71,7 @@ func (this *PubService) PubBJDC() {
 	}
 	//打印要发布的比赛
 	for _, match := range pubList {
-		base.Log.Info("发布的比赛:", match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam)
+		base.Log.Info(fmt.Sprintf("发布的比赛:%v%v%v%vVS%v", match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam))
 	}
 
 	//发布比赛
@@ -98,7 +99,6 @@ func (this *PubService) PubBJDC() {
 			default:
 				break
 			}
-
 		}
 		//需要间隔6分钟，再进行下一次发布
 		intn := rand.Intn(10) + 6
@@ -107,20 +107,21 @@ func (this *PubService) PubBJDC() {
 	}
 }
 
-func (this *PubService) getPubConfig() map[string]string {
-	section := utils.GetSection("pub")
-	return section
-}
 
+const pubContent = "本次推荐为程序全自动处理,全程无人为参与干预.进而避免了人为分析的主观性及不稳定因素.程序根据各大波菜多维度数据,结合作者多年足球分析经验,十年程序员生涯,精雕细琢历经26个月得出的产物.程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).经近三个月的实验准确率一直能维持在一个较高的水平.依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!"
 func (this *PubService) getContent() string {
-	config := this.getPubConfig()
+	var content string
+	config := this.ConfService.GetPubConfig()
 	if nil != config {
-		return config["content"]
+		content = config["content"]
 	}
-	return ""
+	if len(content) <= (2 * 101) {
+		content = pubContent
+	}
+	return content
 }
 
-const pubContent = "本次推荐为程序全自动处理,全程无人为参与干预.进而避免了人为分析的主观性及不稳定因素.程序根据各大波菜多维度数据,结合作者十年足球分析经验,十年程序员生涯,精雕细琢历经26个月得出的产物.程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).经近三个月的实验准确率一直能维持在一个较高的水平.依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!"
+
 
 /**
 发布比赛
@@ -129,18 +130,16 @@ func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespV
 	matchDate := param.MatchDate.Format("20060102150405")
 	pubVO := new(vo2.PubVO)
 	pubVO.Title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
-	if len(pubVO.Title) < (3 * 15) {
+	if len(pubVO.Title) < (2 * 16) {
 		pubVO.Title = "足球精推:" + pubVO.Title
 	}
 	pubVO.Content = this.getContent()
-	if len(pubVO.Content) <= 0 {
-		pubVO.Content = pubContent
-	}
 
 	pubVO.Multiple = 0
 	//查询是否可以收费
 	price := this.PriceService.GetPrice()
 	if len(price.Data) > 0 {
+		//如果可以收费,采用收费策略
 		pubVO.Price = price.Data[len(price.Data)-1]
 	}else{
 		pubVO.Price = 0

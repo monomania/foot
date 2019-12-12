@@ -1,10 +1,15 @@
 package launch
 
-import "tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+import (
+	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/launch"
+)
 
 func Spider(matchLevel int) {
 	//开启SQL输出
 	mysql.ShowSQL(true)
+	//清空数据表
+	launch.TruncateTable()
 	Before_spider_match()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
