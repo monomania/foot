@@ -96,7 +96,7 @@ HEAD:
 				pubService := new(service.PubService)
 				pubService.PubBJDC()
 				base.Log.Info("--------程序周期结束--------")
-				time.Sleep(198 * time.Minute)
+				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 			}
 		}()
 		goto HEAD

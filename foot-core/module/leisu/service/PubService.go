@@ -28,6 +28,27 @@ type PubService struct {
 }
 
 /**
+获取周期间隔时间
+*/
+func (this *PubService) CycleTime() int64 {
+	var result int64
+	var temp_val string
+	config := this.ConfService.GetPubConfig()
+	if nil != config {
+		temp_val = config["cycle_time"]
+	}
+
+	if len(temp_val) > 0 {
+		result, _ = strconv.ParseInt(temp_val, 0, 64);
+	}
+
+	if result <= 0 {
+		result = 186
+	}
+	return result
+}
+
+/**
 ###推送的主客队选项,
 #格式为:时间:选项,时间:选项,时间:选项
 #时间只支持设置小时数
@@ -94,7 +115,7 @@ func (this *PubService) PubBJDC() {
 	}
 	//打印要发布的比赛
 	for _, match := range pubList {
-		base.Log.Info(fmt.Sprintf("3.即将发布的比赛:%v%v%v%vVS%v",  match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam))
+		base.Log.Info(fmt.Sprintf("3.即将发布的比赛:%v%v%v%vVS%v", match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam))
 	}
 
 	//发布比赛
