@@ -91,7 +91,7 @@ func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList("Euro81_616_104Service", teamOption)
 	if len(analyList) < 1 {
-		base.Log.Info(fmt.Sprintf("1.当前可发布的比赛,发布的TeamOption为%d!!!!", teamOption))
+		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛,发布的TeamOption为%d!!!!", teamOption))
 		return
 	}
 
