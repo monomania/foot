@@ -12,13 +12,15 @@ type AnalyResult struct {
 	MatchId string `xorm:" comment('比赛id') index"`
 	//比赛时间,比较便利的冗余
 	MatchDate time.Time `xorm:" comment('比赛时间') index"`
+	//结果标识
+	PreResult int `xorm:" comment('预测结果') index"`
+	//命中次数
+	HitCount int    `xorm:" comment('预测结果命中次数') index"`
+	Result   string `xorm:" comment('实际结果') index"`
 	//算法标识
 	AlFlag string `xorm:" comment('算法标识') index"`
-	//结果标识
-	PreResult int    `xorm:" comment('预测结果') index"`
-	Result    string `xorm:" comment('实际结果') index"`
-	//结果
-	Context string
+	//算法批次
+	AlSeq string `xorm:" comment('算法批次') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }

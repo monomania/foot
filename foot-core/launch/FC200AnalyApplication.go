@@ -13,7 +13,7 @@ func Analy() {
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------计算欧AnalyEuro_81_616Service-------------------")
 	base.Log.Info("---------------------------------------------------------------")
-	euro_81_616Service := new(service.Euro81_616Service)
+	euro_81_616Service := new(service.Euro81_616_104Service)
 	euro_81_616Service.MaxLetBall = 0.75
 	euro_81_616Service.PrintOddData = false
 	euro_81_616Service.Analy()

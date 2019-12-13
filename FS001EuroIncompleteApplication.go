@@ -10,6 +10,6 @@ import (
 func main() {
 	//开启SQL输出
 	mysql.ShowSQL(true)
-	launch.Spider_euroHis_Incomplete(2)
+	launch.Spider_euroHis_Incomplete(3)
 }
 

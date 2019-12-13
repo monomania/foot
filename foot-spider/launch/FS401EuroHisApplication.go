@@ -14,7 +14,7 @@ import (
 	}
 }
 */
-func Before_spider_euroHis(){
+func Before_spider_euroHis() {
 	//抓取前清空当前比较表
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
@@ -27,7 +27,7 @@ func Spider_euroHis() {
 	matchLasts := matchLastService.FindAll()
 
 	//设置要抓取的波菜公司id
-	betCompWin007Ids := []string{"81","616"}
+	betCompWin007Ids := []string{"81", "616"}
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 
 	processer := proc.GetEuroHisProcesser()
@@ -42,7 +42,7 @@ func Spider_euroHis_Incomplete(count int) {
 	matchLasts := matchLastService.FindEuroIncomplete(count)
 
 	//设置要抓取的波菜公司id
-	compWin007Ids := []string{"81", "616"}
+	compWin007Ids := []string{"81", "616", "104"}
 
 	processer := proc.GetEuroHisProcesser()
 	processer.CompWin007Ids = compWin007Ids

@@ -5,6 +5,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
@@ -49,7 +50,7 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
  */
 func (this *AnalyService) GetPubDataList(alName string, option int) []*vo.AnalyResultVO {
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` LIKE '" + alName + "%' ) last_analy_time WHERE ml.`Id` = ar.`MatchId` AND ar.`CreateTime` = last_analy_time.CreateTime AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
+	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` = '" + alName + "' ) last_analy_time WHERE ml.`Id` = ar.`MatchId` AND ar.`CreateTime` = last_analy_time.CreateTime AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW() AND ar.`HitCount` >= 3  ")
 	if option >= 0 {
 		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
@@ -72,6 +73,31 @@ func (this *AnalyService) LoadData(matchId string) []*entity5.AnalyResult {
 	return entitys
 }
 
+
+
+
+func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast,preResult int) string {
+	//比赛结果
+	globalResult := this.ActualResult(last, v)
+	var resultFlag string
+	if globalResult == -1 {
+		resultFlag = "待定"
+	} else if globalResult == preResult {
+		resultFlag = "正确"
+	} else if globalResult == 1 {
+		resultFlag = "走盘"
+	} else {
+		resultFlag = "错误"
+	}
+
+	//打印数据
+	league := this.LeagueService.FindById(v.LeagueId)
+	matchDate := v.MatchDate.Format("2006-01-02 15:04:05")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(preResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	return resultFlag
+}
+
+
 /**
 比赛的实际结果计算
  */
@@ -91,7 +117,7 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 	} else {
 		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
 	}
-	diff_goals := float64((v.MainTeamGoals - v.GuestTeamGoals)) - elb_sum
+	diff_goals := float64(v.MainTeamGoals - v.GuestTeamGoals) - elb_sum
 	if diff_goals <= 0.25 && diff_goals >= -0.25 {
 		result = 1
 	} else if mainTeamGoals > float64(v.GuestTeamGoals) {

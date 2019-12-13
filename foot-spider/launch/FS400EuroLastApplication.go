@@ -23,8 +23,8 @@ func Before_spider_euroLast() {
 func Spider_euroLast() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindAll()
-	//281 -- bet 365  18 -- 12BET 976 -- 18Bet 81 -- 伟德 616 -- 888Sport
-	betCompWin007Ids := []string{"81", "616"}
+	//281 -- bet 365  18 -- 12BET 976 -- 18Bet 81 -- 伟德 616 -- 888Sport 104 --Interwetten
+	betCompWin007Ids := []string{"81", "616","104"}
 	//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 
