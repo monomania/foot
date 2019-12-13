@@ -4,6 +4,7 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
+	"math/rand"
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -44,6 +45,7 @@ func (this *MatchPageProcesser) Startup() {
 	if this.MatchlastUrl == "" {
 		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
+	this.MatchlastUrl = this.MatchlastUrl + "?flesh=" + strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
@@ -145,7 +147,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		index++
 		index++
 		match_date_str := match_info_arr[index]
-		matchLast.MatchDate, _ = time.ParseInLocation("20060102150405", match_date_str,time.Local)
+		matchLast.MatchDate, _ = time.ParseInLocation("20060102150405", match_date_str, time.Local)
 		index++
 		index++
 		matchLast.MainTeamId = match_info_arr[index]

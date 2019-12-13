@@ -17,6 +17,8 @@ import (
 
 func main() {
 	//测试随机数
+	fmt.Println(strconv.FormatFloat(rand.Float64(),'f',-1,64))
+	//测试随机数
 	for i := 0; i < 100000; i++ {
 		intn := rand.Intn(10)
 		if intn == 10{

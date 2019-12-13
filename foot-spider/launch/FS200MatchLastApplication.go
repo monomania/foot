@@ -22,14 +22,17 @@ func Before_spider_match(){
 func Spider_match(flag int) {
 	//开始抓取比赛数据
 	strings := make([]string, 0)
-	//所有
+	//0全部，1一级，2足彩，3竞猜，4单场
 	if flag == 0{
 	 strings = append(strings, "http://m.win007.com/phone/Schedule_0_0.txt")
 	}
+	//1一级
 	//strings = append(strings, "http://m.win007.com/phone/Schedule_0_1.txt")
+	//2足彩
 	//strings = append(strings, "http://m.win007.com/phone/Schedule_0_2.txt")
+	//3竞猜
 	//strings = append(strings, "http://m.win007.com/phone/Schedule_0_3.txt")
-	//北京单场
+	//4单场
 	if flag == 4 {
 		strings = append(strings, "http://m.win007.com/phone/Schedule_0_4.txt")
 	}
