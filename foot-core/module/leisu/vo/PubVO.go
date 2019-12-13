@@ -17,6 +17,7 @@ type PubVO struct {
 	Title string `json:"title"`
 	//内容100字
 	Content string `json:"content"`
+	//收费价格
 	Price   int64  `json:"price"`
 	Multiple int64  `json:"multiple"`
 	//数据信息

@@ -28,27 +28,50 @@ type PubService struct {
 }
 
 /**
+###推送的主客队选项,
+#格式为:时间:选项,时间:选项,时间:选项
+#时间只支持设置小时数
+#3 只推送主队, 1 只推送平局, 0 只推送客队,-1 全部推送
+#示例0-3:-1,4-19:3,19-23:-1,未设置时间段为默认只推送3
+*/
+func (this *PubService) teamOption() int {
+	var result int
+	var tempOptionConfig string
+	config := this.ConfService.GetPubConfig()
+	if nil != config {
+		tempOptionConfig = config["team_option"]
+	}
+	if len(tempOptionConfig) <= 0 {
+		//默认返回 主队选项
+		return 3
+	}
+	//当前的小时
+	currentHour, _ := strconv.Atoi(time.Now().Format("15"))
+	hourRange_options := strings.Split(tempOptionConfig, ",")
+	for _, e := range hourRange_options {
+		h_o := strings.Split(e, ":")
+		hourRanges := strings.Split(h_o[0], "-")
+		option, _ := strconv.Atoi(h_o[1])
+		hourBegin, _ := strconv.Atoi(hourRanges[0])
+		hourEnd, _ := strconv.Atoi(hourRanges[1])
+		if hourBegin <= currentHour && currentHour <= hourEnd {
+			result = option
+			break;
+		}
+	}
+	return result
+}
+
+/**
 发布北京单场胜负过关
 */
 func (this *PubService) PubBJDC() {
-	option := 3
+	teamOption := this.teamOption()
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", option)
+	analyList := this.AnalyService.GetPubDataList("Euro81_616Service", teamOption)
 	if len(analyList) < 1 {
-		base.Log.Info("1.当前无主队可发布的比赛!!!!")
-		hours, _ := strconv.Atoi(time.Now().Format("15"))
-		if (hours <= 23 && hours >= 21) || (hours <= 3 && hours >= 0) {
-			//只在晚上处理
-			base.Log.Info("1.1尝试获取客队可发布的比赛!!!!")
-			option = 0
-			analyList = this.AnalyService.GetPubDataList("Euro81_616Service", option)
-			if len(analyList) <= 0 {
-				base.Log.Info("1.2当前无客队可发布的比赛!!!!")
-				return
-			}
-		} else {
-			return;
-		}
+		base.Log.Info(fmt.Sprintf("1.当前可发布的比赛,发布的TeamOption为%d!!!!", teamOption))
+		return
 	}
 
 	//获取发布池的比赛列表
@@ -71,7 +94,7 @@ func (this *PubService) PubBJDC() {
 	}
 	//打印要发布的比赛
 	for _, match := range pubList {
-		base.Log.Info(fmt.Sprintf("发布的比赛:%v%v%v%vVS%v", match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam))
+		base.Log.Info(fmt.Sprintf("3.即将发布的比赛:%v%v%v%vVS%v",  match.MatchDate, match.Numb, match.LeagueName, match.MainTeam, match.GuestTeam))
 	}
 
 	//发布比赛
@@ -86,8 +109,8 @@ func (this *PubService) PubBJDC() {
 		}
 		//检查是否是重复发布
 
-		//----
-		action := this.BJDCAction(match, option)
+		//------------------------------------------------
+		action := this.BJDCAction(match, analy.PreResult)
 		if nil != action {
 			switch action.Code {
 			case 0, 100002:
@@ -100,16 +123,47 @@ func (this *PubService) PubBJDC() {
 				break
 			}
 		}
-		//需要间隔6分钟，再进行下一次发布
-		intn := rand.Intn(10) + 6
-		base.Log.Info("随机间隔时间为:", intn)
-		time.Sleep(time.Duration(intn) * time.Minute)
+		//需要至少间隔5分钟,最大14分钟，再进行下一次发布
+		interval := rand.Intn(10) + 5
+		base.Log.Info("随机间隔时间为:", interval)
+		time.Sleep(time.Duration(interval) * time.Minute)
 	}
 }
 
+/**
+获取标题
+*/
+func (this *PubService) title(param *vo2.MatchVO) string {
+	matchDate := param.MatchDate.Format("20060102150405")
 
+	var title string
+	var titleTemplate string
+	config := this.ConfService.GetPubConfig()
+	if nil != config {
+		titleTemplate = config["title"]
+	}
+
+	if len(titleTemplate) > 0 {
+		titleTemplate = strings.ReplaceAll(titleTemplate, "{leagueName}", param.LeagueName)
+		titleTemplate = strings.ReplaceAll(titleTemplate, "{matchDate}", matchDate)
+		titleTemplate = strings.ReplaceAll(titleTemplate, "{mainTeam}", param.MainTeam)
+		titleTemplate = strings.ReplaceAll(titleTemplate, "{guestTeam}", param.GuestTeam)
+		title = titleTemplate
+	} else {
+		title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
+	}
+	if len(title) < (2 * 16) {
+		title = "大数据AI精推:" + title
+	}
+	return title
+}
+
+/**
+获取内容
+*/
 const pubContent = "本次推荐为程序全自动处理,全程无人为参与干预.进而避免了人为分析的主观性及不稳定因素.程序根据各大波菜多维度数据,结合作者多年足球分析经验,十年程序员生涯,精雕细琢历经26个月得出的产物.程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).经近三个月的实验准确率一直能维持在一个较高的水平.依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!"
-func (this *PubService) getContent() string {
+
+func (this *PubService) content() string {
 	var content string
 	config := this.ConfService.GetPubConfig()
 	if nil != config {
@@ -121,29 +175,15 @@ func (this *PubService) getContent() string {
 	return content
 }
 
-
-
 /**
 发布比赛
 */
 func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespVO {
-	matchDate := param.MatchDate.Format("20060102150405")
 	pubVO := new(vo2.PubVO)
-	pubVO.Title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
-	if len(pubVO.Title) < (2 * 16) {
-		pubVO.Title = "足球精推:" + pubVO.Title
-	}
-	pubVO.Content = this.getContent()
-
+	pubVO.Title = this.title(param)
+	pubVO.Content = this.content()
 	pubVO.Multiple = 0
-	//查询是否可以收费
-	price := this.PriceService.GetPrice()
-	if len(price.Data) > 0 {
-		//如果可以收费,采用收费策略
-		pubVO.Price = price.Data[len(price.Data)-1]
-	}else{
-		pubVO.Price = 0
-	}
+	pubVO.Price = this.PriceService.GetPriceVal()
 	//设置赔率
 	oddData := param.GetBJDCOddData(option)
 	if oddData == nil {
@@ -170,7 +210,7 @@ func (this *PubService) PubPost(param *vo2.PubVO) *vo2.PubRespVO {
 		base.Log.Error("PubPost:获取到的数据为空")
 		return nil
 	}
-	base.Log.Info("http post 请求返回:" + data)
+	//base.Log.Info("http post 请求返回:" + data)
 	resp := new(vo2.PubRespVO)
 	json.Unmarshal([]byte(data), resp)
 	return resp

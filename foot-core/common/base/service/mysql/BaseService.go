@@ -37,8 +37,8 @@ func ShowSQL(show bool) {
 
 func setEngine() *xorm.Engine {
 	url := mysql_conf["url"]
-	maxIdle, _ := strconv.Atoi(mysql_conf["maxIdle"])
-	maxConn, _ := strconv.Atoi(mysql_conf["maxConn"])
+	maxIdle, _ := strconv.Atoi(mysql_conf["maxidle"])
+	maxConn, _ := strconv.Atoi(mysql_conf["maxconn"])
 
 	var err error
 	engine, err = xorm.NewEngine("mysql", url)

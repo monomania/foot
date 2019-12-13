@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/json"
 	"math/rand"
-	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/module/core/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
@@ -13,7 +12,7 @@ import (
 
 /**
 发布前,查询收费
- */
+*/
 type PriceService struct {
 	service.ConfService
 }
@@ -32,28 +31,23 @@ func (this *PriceService) GetPriceVal() int64 {
 			price_strategy = config["price_strategy"]
 		}
 		var index int
-		if len(price_strategy) <= 0 {
-			//默认不配置,取最大值
-			index = len(entity.Data)-1
-		}
-		//免费
-		if strings.EqualFold(price_strategy,"free"){
+		switch price_strategy {
+		case "free":
 			return 0
-		}
-		//最小
-		if strings.EqualFold(price_strategy,"min"){
+		case "min":
 			index = 0
-		}
-		//最大
-		if strings.EqualFold(price_strategy,"max"){
-			index = len(entity.Data)-1
-		}
-		//随机
-		if strings.EqualFold(price_strategy,"random"){
+		case "middle":
+			index = len(entity.Data) % 2
+		case "max":
+			index = len(entity.Data) - 1
+		case "random":
 			index = rand.Intn(len(entity.Data))
+		default:
+			//默认不配置,取最大值
+			index = len(entity.Data) - 1
 		}
 		data = entity.Data[index]
-	}else{
+	} else {
 		data = 0
 	}
 	return data
@@ -61,7 +55,7 @@ func (this *PriceService) GetPriceVal() int64 {
 
 /**
 获取收费数据
- */
+*/
 func (this *PriceService) GetPrice() *vo2.PriceVO {
 	data := utils2.GetText(constants2.PRICE_URL)
 	if len(data) <= 0 {
@@ -75,8 +69,8 @@ func (this *PriceService) GetPrice() *vo2.PriceVO {
 
 /**
 是否可以收费
- */
-func (this *PriceService) HasPrice() bool{
+*/
+func (this *PriceService) HasPrice() bool {
 	data := this.GetPrice()
 	if len(data.Data) > 0 {
 		base.Log.Warn(data.ToString())
