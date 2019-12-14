@@ -79,10 +79,10 @@ func (this *Asia18EuroUDReverseService) Analy() {
 		}
 
 		//增加104 --Interwetten过滤
-		if preResult == 3 && (e616data.Ep3 > e104data.Ep3){
+		if preResult == 3 && (e616data.Ep3 > e104data.Ep3 || e104data.Ep0 < e104data.Sp0){
 			continue
 		}
-		if preResult == 0 && (e616data.Ep0 > e104data.Ep0){
+		if preResult == 0 && (e616data.Ep0 > e104data.Ep0 || e104data.Ep3 < e104data.Sp3){
 			continue
 		}
 
