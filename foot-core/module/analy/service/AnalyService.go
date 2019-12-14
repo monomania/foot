@@ -56,12 +56,12 @@ func (this *AnalyService) GetPubDataList(alName string, hitCount int, option int
 		sql_build.WriteString(" AND ar.`AlFlag` = '" + alName + "' ")
 	}
 	if hitCount > 0 {
-		sql_build.WriteString(" AND AND ar.`HitCount` >= " + strconv.Itoa(hitCount))
+		sql_build.WriteString(" AND ar.`HitCount` >= " + strconv.Itoa(hitCount))
 	}
 	if option >= 0 {
 		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
-	sql_build.WriteString(" ORDER BY ar.`MatchDate` DESC  b ,ar.`PreResult` DESC  ")
+	sql_build.WriteString(" ORDER BY ar.`MatchDate` DESC  ,ar.`PreResult` DESC  ")
 	//结果值
 	entitys := make([]*vo.AnalyResultVO, 0)
 	//执行查询
