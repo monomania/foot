@@ -40,7 +40,7 @@ func main() {
 	//测试分析结果获取及更新
 	mysql.ShowSQL(true)
 	analyService := new(service2.AnalyService)
-	list := analyService.GetPubDataList("Euro81_616_104Service", -1)
+	list := analyService.GetPubDataList("Euro81_616_104Service",0, -1)
 	result := &list[0].AnalyResult
 	analyService.Modify(result)
 

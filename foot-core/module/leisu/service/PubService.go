@@ -27,16 +27,21 @@ type PubService struct {
 	PriceService
 }
 
+func (this *PubService) getConfig(key string) string {
+	var temp_val string
+	config := this.ConfService.GetPubConfig()
+	if nil != config {
+		temp_val = config[key]
+	}
+	return temp_val;
+}
+
 /**
 获取周期间隔时间
 */
 func (this *PubService) CycleTime() int64 {
 	var result int64
-	var temp_val string
-	config := this.ConfService.GetPubConfig()
-	if nil != config {
-		temp_val = config["cycle_time"]
-	}
+	temp_val := this.getConfig("cycle_time")
 
 	if len(temp_val) > 0 {
 		result, _ = strconv.ParseInt(temp_val, 0, 64);
@@ -57,11 +62,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) teamOption() int {
 	var result int
-	var tempOptionConfig string
-	config := this.ConfService.GetPubConfig()
-	if nil != config {
-		tempOptionConfig = config["team_option"]
-	}
+	tempOptionConfig := this.getConfig("team_option")
 	if len(tempOptionConfig) <= 0 {
 		//默认返回 主队选项
 		return 3
@@ -88,8 +89,10 @@ func (this *PubService) teamOption() int {
 */
 func (this *PubService) PubBJDC() {
 	teamOption := this.teamOption()
+	al_flag := this.getConfig("al_flag")
+	hit_count, _ := strconv.Atoi(this.getConfig("hit_count"))
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.GetPubDataList("Euro81_616_104Service", teamOption)
+	analyList := this.AnalyService.GetPubDataList(al_flag, hit_count, teamOption)
 	if len(analyList) < 1 {
 		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛,发布的TeamOption为%d!!!!", teamOption))
 		return

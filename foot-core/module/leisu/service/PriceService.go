@@ -37,7 +37,7 @@ func (this *PriceService) GetPriceVal() int64 {
 		case "min":
 			index = 0
 		case "middle":
-			index = len(entity.Data) % 2
+			index = len(entity.Data) / 2
 		case "max":
 			index = len(entity.Data) - 1
 		case "random":

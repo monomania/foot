@@ -47,14 +47,21 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 3.比赛未结束
 4.alName 算法名称，默认为Euro81_616Service ;
 5.option 3(只筛选主队),1(只筛选平局),0(只筛选客队)选项
- */
-func (this *AnalyService) GetPubDataList(alName string, option int) []*vo.AnalyResultVO {
+*/
+func (this *AnalyService) GetPubDataList(alName string, hitCount int, option int) []*vo.AnalyResultVO {
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar ,(SELECT MAX(temp.`CreateTime`) AS CreateTime FROM foot.`t_analy_result` temp WHERE  temp.`AlFlag` = '" + alName + "' ) last_analy_time WHERE ml.`Id` = ar.`MatchId` AND ar.`CreateTime` = last_analy_time.CreateTime AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW() AND ar.`HitCount` >= 3  ")
+	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar WHERE ml.`Id` = ar.`MatchId` AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
+
+	if len(alName) > 0 {
+		sql_build.WriteString(" AND ar.`AlFlag` = '" + alName + "' ")
+	}
+	if hitCount > 0 {
+		sql_build.WriteString(" AND AND ar.`HitCount` >= " + strconv.Itoa(hitCount))
+	}
 	if option >= 0 {
 		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
-	sql_build.WriteString(" ORDER BY ar.`PreResult` DESC ,ar.`MatchDate` ASC   ")
+	sql_build.WriteString(" ORDER BY ar.`MatchDate` DESC  b ,ar.`PreResult` DESC  ")
 	//结果值
 	entitys := make([]*vo.AnalyResultVO, 0)
 	//执行查询
@@ -73,10 +80,7 @@ func (this *AnalyService) LoadData(matchId string) []*entity5.AnalyResult {
 	return entitys
 }
 
-
-
-
-func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast,preResult int) string {
+func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, preResult int) string {
 	//比赛结果
 	globalResult := this.ActualResult(last, v)
 	var resultFlag string
@@ -97,10 +101,9 @@ func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast,p
 	return resultFlag
 }
 
-
 /**
 比赛的实际结果计算
- */
+*/
 func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) int {
 	var result int
 	h2, _ := time.ParseDuration("2h")
@@ -117,7 +120,7 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 	} else {
 		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
 	}
-	diff_goals := float64(v.MainTeamGoals - v.GuestTeamGoals) - elb_sum
+	diff_goals := float64(v.MainTeamGoals-v.GuestTeamGoals) - elb_sum
 	if diff_goals <= 0.25 && diff_goals >= -0.25 {
 		result = 1
 	} else if mainTeamGoals > float64(v.GuestTeamGoals) {
