@@ -28,8 +28,8 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
-func (this *AnalyService) Find(matchId string) *entity5.AnalyResult {
-	data := entity5.AnalyResult{MatchId: matchId}
+func (this *AnalyService) Find(matchId string,alFlag string) *entity5.AnalyResult {
+	data := entity5.AnalyResult{MatchId: matchId,AlFlag:alFlag}
 	mysql.GetEngine().Get(&data)
 	return &data
 }
@@ -61,7 +61,7 @@ func (this *AnalyService) GetPubDataList(alName string, hitCount int, option int
 	if option >= 0 {
 		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
 	}
-	sql_build.WriteString(" ORDER BY ar.`MatchDate` DESC  ,ar.`PreResult` DESC  ")
+	sql_build.WriteString(" ORDER BY ar.`MatchDate` ASC  ,ar.`PreResult` DESC  ")
 	//结果值
 	entitys := make([]*vo.AnalyResultVO, 0)
 	//执行查询

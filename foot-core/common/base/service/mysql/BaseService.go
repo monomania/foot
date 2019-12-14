@@ -192,7 +192,9 @@ func (this *BaseService) SaveList(entitys []interface{}) *list.List {
 
 func (this *BaseService) Del(entity interface{}) int64 {
 	beforeDelete(entity)
-	i, err := engine.Delete(entity)
+	entity_value := reflect.ValueOf(entity).Elem()
+	id_field := entity_value.FieldByName("Id")
+	i, err := engine.Id(id_field.Interface()).Delete(entity)
 	if err != nil {
 		base.Log.Info("Del:", err)
 	}

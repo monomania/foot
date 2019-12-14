@@ -29,12 +29,15 @@ func (this *Asia18EuroUDReverseService) Analy() {
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
 		stub, result := this.analyStub(v)
+		if nil == result {
+			continue
+		}
 		if stub == 0 {
 			data_list_slice = append(data_list_slice, result)
 		} else if stub == 1 {
 			data_modify_list_slice = append(data_modify_list_slice, result)
 		} else {
-			temp_data := this.Find(v.Id)
+			temp_data := this.Find(v.Id, result.AlFlag)
 			if len(temp_data.Id) > 0 {
 				this.AnalyService.Del(temp_data)
 			}
@@ -104,8 +107,9 @@ func (this *Asia18EuroUDReverseService) analyStub(v *pojo.MatchLast) (int, *enti
 		return -3, nil
 	}
 
+	alFlag := reflect.TypeOf(*this).Name()
 	var data *entity5.AnalyResult
-	temp_data := this.Find(v.Id)
+	temp_data := this.Find(v.Id, alFlag)
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
@@ -117,7 +121,7 @@ func (this *Asia18EuroUDReverseService) analyStub(v *pojo.MatchLast) (int, *enti
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.AlFlag = reflect.TypeOf(*this).Name()
+		data.AlFlag = alFlag
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
