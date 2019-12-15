@@ -120,10 +120,11 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 	} else {
 		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
 	}
-	diff_goals := float64(v.MainTeamGoals-v.GuestTeamGoals) - elb_sum
-	if diff_goals <= 0.25 && diff_goals >= -0.25 {
-		result = 1
-	} else if mainTeamGoals > float64(v.GuestTeamGoals) {
+	//diff_goals := float64(v.MainTeamGoals-v.GuestTeamGoals) - elb_sum
+	//if diff_goals <= 0.25 && diff_goals >= -0.25 {
+	//	result = 1
+	//}
+	if mainTeamGoals > float64(v.GuestTeamGoals) {
 		result = 3
 	} else if mainTeamGoals < float64(v.GuestTeamGoals) {
 		result = 0
