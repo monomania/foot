@@ -104,8 +104,13 @@ func (this *PubService) PubBJDC() {
 	pubList := make(map[*vo.AnalyResultVO]*vo2.MatchVO, 0)
 	for _, analy := range analyList {
 		analy_mainTeam := analy.MainTeamId
+		analy_guestTeam := analy.GuestTeamId
 		for _, match := range matchPool {
 			if strings.EqualFold(analy_mainTeam, match.MainTeam) {
+				pubList[analy] = match
+				break;
+			}
+			if strings.EqualFold(analy_guestTeam, match.GuestTeam) {
 				pubList[analy] = match
 				break;
 			}
