@@ -27,7 +27,7 @@ func Spider_euroHis() {
 	matchLasts := matchLastService.FindAll()
 
 	//设置要抓取的波菜公司id
-	betCompWin007Ids := []string{"81", "616"}
+	betCompWin007Ids := []string{"81", "616","104"}
 	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
 
 	processer := proc.GetEuroHisProcesser()
