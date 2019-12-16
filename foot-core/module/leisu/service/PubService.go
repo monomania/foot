@@ -8,8 +8,8 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
-	service2 "tesou.io/platform/foot-parent/foot-core/module/core/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
@@ -20,7 +20,6 @@ import (
 发布推荐
 */
 type PubService struct {
-	service2.ConfService
 	service.AnalyService
 	MatchPoolService
 	PubLimitService
@@ -32,7 +31,7 @@ type PubService struct {
 */
 func (this *PubService) CycleTime() int64 {
 	var result int64
-	temp_val := this.ConfService.GetConfig(constants2.SECTION_NAME, "cycle_time")
+	temp_val := utils.GetVal(constants2.SECTION_NAME, "cycle_time")
 	if len(temp_val) > 0 {
 		result, _ = strconv.ParseInt(temp_val, 0, 64);
 	}
@@ -52,7 +51,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) teamOption() int {
 	var result int
-	tempOptionConfig := this.ConfService.GetConfig(constants2.SECTION_NAME, "team_option")
+	tempOptionConfig := utils.GetVal(constants2.SECTION_NAME, "team_option")
 	if len(tempOptionConfig) <= 0 {
 		//默认返回 主队选项
 		return 3
@@ -79,8 +78,8 @@ func (this *PubService) teamOption() int {
 */
 func (this *PubService) PubBJDC() {
 	teamOption := this.teamOption()
-	al_flag := this.ConfService.GetConfig(constants2.SECTION_NAME, "al_flag")
-	hit_count_str := this.ConfService.GetConfig(constants2.SECTION_NAME, "hit_count")
+	al_flag := utils.GetVal(constants2.SECTION_NAME, "al_flag")
+	hit_count_str := utils.GetVal(constants2.SECTION_NAME, "hit_count")
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList(al_flag, hit_count, teamOption)
@@ -156,7 +155,7 @@ func (this *PubService) PubBJDC() {
 func (this *PubService) title(param *vo2.MatchVO) string {
 	var title string
 	matchDate := param.MatchDate.Format("20060102150405")
-	titleTpl := this.ConfService.GetConfig(constants2.SECTION_NAME, "title_tpl")
+	titleTpl := utils.GetVal(constants2.SECTION_NAME, "title_tpl")
 	if len(titleTpl) > 0 {
 		titleTpl = strings.ReplaceAll(titleTpl, "{leagueName}", param.LeagueName)
 		titleTpl = strings.ReplaceAll(titleTpl, "{matchDate}", matchDate)
@@ -179,7 +178,7 @@ const pubContent = "本次推荐为程序全自动处理,全程无人为参与�
 func (this *PubService) content(param *vo2.MatchVO) string {
 	var content string
 	matchDate := param.MatchDate.Format("20060102150405")
-	contentTpl := this.ConfService.GetConfig(constants2.SECTION_NAME, "content_tpl")
+	contentTpl := utils.GetVal(constants2.SECTION_NAME, "content_tpl")
 	if len(contentTpl) > 0 {
 		contentTpl = strings.ReplaceAll(contentTpl, "{leagueName}", param.LeagueName)
 		contentTpl = strings.ReplaceAll(contentTpl, "{matchDate}", matchDate)

@@ -153,7 +153,7 @@ var keys = []string{"acw_sc__v3", "acw_sc__v2", "acw_tc", "Hm_lpvt_2fb6939e65e63
 //设置cookies
 func setCookies(req *http.Request) {
 	section := utils.GetSection("cookies")
-	if nil == section {
+	if nil == section || len(section.Keys()) <= 0 {
 		base.Log.Error("未找到对应的cookies的信息")
 		req.AddCookie(&http.Cookie{Name: "acw_sc__v3", Value: "5ded2b7f3ca9e08a6c780b7cb00951915ba5b2fa"})
 		req.AddCookie(&http.Cookie{Name: "acw_sc__v2", Value: "5ded2bbb69a003c830006ea6790726d3bbaa55d9"})
@@ -167,14 +167,8 @@ func setCookies(req *http.Request) {
 		return;
 	}
 
-	for k, v := range section {
-		for _, e := range keys {
-			if strings.EqualFold(strings.ToLower(k), strings.ToLower(e)) {
-				k = e
-				break;
-			}
-		}
-		req.AddCookie(&http.Cookie{Name: k, Value: v})
+	keys := section.Keys()
+	for _, e := range keys {
+		req.AddCookie(&http.Cookie{Name: e.Name(), Value: e.Value()})
 	}
-
 }

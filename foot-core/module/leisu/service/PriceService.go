@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-core/module/core/service"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
@@ -15,7 +15,6 @@ import (
 发布前,查询收费
 */
 type PriceService struct {
-	service.ConfService
 }
 
 /**
@@ -27,7 +26,7 @@ func (this *PriceService) GetPriceVal() int64 {
 	if len(entity.Data) > 0 {
 		var index int
 		//如果可以收费,采用收费策略
-		price_strategy := this.ConfService.GetConfig(constants2.SECTION_NAME, "price_strategy")
+		price_strategy := utils.GetVal(constants2.SECTION_NAME, "price_strategy")
 		i, e := strconv.Atoi(price_strategy)
 		if e == nil {
 			index = i

@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	utils2 "tesou.io/platform/foot-parent/foot-core/common/utils"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
@@ -16,12 +17,22 @@ import (
 )
 
 func main() {
+	//测试获取配置
+	val := utils2.GetVal("cookies", "Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e")
+	fmt.Println(val)
+
+	section := utils2.GetSection("cookies")
+	keys := section.Keys()
+	for _, e := range keys {
+		fmt.Println(e.Name() + "=" +e.Value())
+		fmt.Println(section.Key(e.Name()).Value())
+	}
 	//测试随机数
-	fmt.Println(strconv.FormatFloat(rand.Float64(),'f',-1,64))
+	fmt.Println(strconv.FormatFloat(rand.Float64(), 'f', -1, 64))
 	//测试随机数
 	for i := 0; i < 100000; i++ {
 		intn := rand.Intn(10)
-		if intn == 10{
+		if intn == 10 {
 			fmt.Println("------------------------------")
 			fmt.Println("------------------------------")
 			fmt.Println("------------------------------")
@@ -35,12 +46,12 @@ func main() {
 
 	//测试时间
 	hours, _ := strconv.Atoi(time.Now().Format("15"))
-	fmt.Println(time.Duration(int64(24-hours)))
+	fmt.Println(time.Duration(int64(24 - hours)))
 
 	//测试分析结果获取及更新
 	mysql.ShowSQL(true)
 	analyService := new(service2.AnalyService)
-	list := analyService.GetPubDataList("Euro81_616_104Service",0, -1)
+	list := analyService.GetPubDataList("Euro81_616_104Service", 0, -1)
 	result := &list[0].AnalyResult
 	analyService.Modify(result)
 
@@ -54,7 +65,7 @@ func main() {
 		} else if err != nil {
 			fmt.Println(err)
 			break;
-		}else{
+		} else {
 			fmt.Println(string(line))
 		}
 	}
@@ -65,6 +76,5 @@ func main() {
 		bytes, _ := json.Marshal(e)
 		fmt.Println(string(bytes))
 	}
-
 
 }

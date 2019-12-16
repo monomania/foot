@@ -8,8 +8,10 @@ require (
 	github.com/go-xorm/xorm v0.7.9
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/smartystreets/goconvey v1.6.4 // indirect
 	golang.org/x/sys v0.0.0-20190904154756-749cb33beabd // indirect
 	google.golang.org/appengine v1.6.5 // indirect
+	gopkg.in/ini.v1 v1.51.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	tesou.io/platform/foot-parent/foot-api v1.0.0
 )
