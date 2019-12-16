@@ -1,6 +1,7 @@
 package constants
 
 const (
+	SECTION_NAME = "pub"
 	//登录地址
 	LOGIN_URL = ""
 	//比赛信息地址

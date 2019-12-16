@@ -9,6 +9,7 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/core/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
@@ -28,7 +29,7 @@ HEAD:
 
 	input = strings.ToLower(input)
 	switch input {
-	case "exit\n", "exit\r\n":
+	case "exit\n", "exit\r\n", "quit\n", "quit\r\n":
 		break;
 	case "\n", "\r\n":
 		goto HEAD
@@ -81,10 +82,10 @@ HEAD:
 		pubService := new(service.PubService)
 		pubService.PubBJDC()
 		goto HEAD
-	case "auto\n", "auto\r\n":
+	case "autospider\n", "autospider\r\n":
 		go func() {
 			for {
-				base.Log.Info("--------程序开始运行--------")
+				base.Log.Info("--------数据更新开始运行--------")
 				//1.安装数据库
 				//2.配置好数据库连接,打包程序发布
 				//3.程序执行流程,周期定制定为一天三次
@@ -92,17 +93,53 @@ HEAD:
 				launch.Spider(4)
 				//3.2 FC002AnalyApplication 分析得出推荐列表
 				launch2.Analy()
+				configService := new(service2.ConfService)
+				base.Log.Info("--------数据更新周期结束--------")
+				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
+			}
+		}()
+		goto HEAD
+	case "autospub\n", "autospub\r\n":
+		go func() {
+			for {
+				base.Log.Info("--------发布开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速
 				pubService := new(service.PubService)
 				pubService.PubBJDC()
-				base.Log.Info("--------程序周期结束--------")
+				base.Log.Info("--------发布周期结束--------")
+				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
+			}
+		}()
+		goto HEAD
+	case "auto\n", "auto\r\n":
+		go func() {
+			for {
+				base.Log.Info("--------数据更新开始运行--------")
+				//1.安装数据库
+				//2.配置好数据库连接,打包程序发布
+				//3.程序执行流程,周期定制定为一天三次
+				//3.1 FS000Application 爬取数据
+				launch.Spider(4)
+				//3.2 FC002AnalyApplication 分析得出推荐列表
+				launch2.Analy()
+				configService := new(service2.ConfService)
+				base.Log.Info("--------数据更新周期结束--------")
+				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
+			}
+		}()
+		go func() {
+			for {
+				base.Log.Info("--------发布开始运行--------")
+				//3.3 FW001PubApplication 执行发布到雷速
+				pubService := new(service.PubService)
+				pubService.PubBJDC()
+				base.Log.Info("--------发布周期结束--------")
 				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 			}
 		}()
 		goto HEAD
 	default:
 		goto HEAD
-		fmt.Println("You are not welcome here! Goodbye!")
 	}
 
 }

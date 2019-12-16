@@ -11,7 +11,6 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
@@ -43,7 +42,7 @@ func (this *MatchAnalyProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_MATCH_ANALY_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
+	//newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

@@ -27,28 +27,18 @@ type PubService struct {
 	PriceService
 }
 
-func (this *PubService) getConfig(key string) string {
-	var temp_val string
-	config := this.ConfService.GetPubConfig()
-	if nil != config {
-		temp_val = config[key]
-	}
-	return temp_val;
-}
-
 /**
 获取周期间隔时间
 */
 func (this *PubService) CycleTime() int64 {
 	var result int64
-	temp_val := this.getConfig("cycle_time")
-
+	temp_val := this.ConfService.GetConfig(constants2.SECTION_NAME, "cycle_time")
 	if len(temp_val) > 0 {
 		result, _ = strconv.ParseInt(temp_val, 0, 64);
 	}
 
 	if result <= 0 {
-		result = 186
+		result = 120
 	}
 	return result
 }
@@ -62,7 +52,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) teamOption() int {
 	var result int
-	tempOptionConfig := this.getConfig("team_option")
+	tempOptionConfig := this.ConfService.GetConfig(constants2.SECTION_NAME, "team_option")
 	if len(tempOptionConfig) <= 0 {
 		//默认返回 主队选项
 		return 3
@@ -89,8 +79,9 @@ func (this *PubService) teamOption() int {
 */
 func (this *PubService) PubBJDC() {
 	teamOption := this.teamOption()
-	al_flag := this.getConfig("al_flag")
-	hit_count, _ := strconv.Atoi(this.getConfig("hit_count"))
+	al_flag := this.ConfService.GetConfig(constants2.SECTION_NAME, "al_flag")
+	hit_count_str := this.ConfService.GetConfig(constants2.SECTION_NAME, "hit_count")
+	hit_count, _ := strconv.Atoi(hit_count_str)
 	//获取分析计算出的比赛列表
 	analyList := this.AnalyService.GetPubDataList(al_flag, hit_count, teamOption)
 	if len(analyList) < 1 {
@@ -163,21 +154,15 @@ func (this *PubService) PubBJDC() {
 获取标题
 */
 func (this *PubService) title(param *vo2.MatchVO) string {
-	matchDate := param.MatchDate.Format("20060102150405")
-
 	var title string
-	var titleTemplate string
-	config := this.ConfService.GetPubConfig()
-	if nil != config {
-		titleTemplate = config["title"]
-	}
-
-	if len(titleTemplate) > 0 {
-		titleTemplate = strings.ReplaceAll(titleTemplate, "{leagueName}", param.LeagueName)
-		titleTemplate = strings.ReplaceAll(titleTemplate, "{matchDate}", matchDate)
-		titleTemplate = strings.ReplaceAll(titleTemplate, "{mainTeam}", param.MainTeam)
-		titleTemplate = strings.ReplaceAll(titleTemplate, "{guestTeam}", param.GuestTeam)
-		title = titleTemplate
+	matchDate := param.MatchDate.Format("20060102150405")
+	titleTpl := this.ConfService.GetConfig(constants2.SECTION_NAME, "title_tpl")
+	if len(titleTpl) > 0 {
+		titleTpl = strings.ReplaceAll(titleTpl, "{leagueName}", param.LeagueName)
+		titleTpl = strings.ReplaceAll(titleTpl, "{matchDate}", matchDate)
+		titleTpl = strings.ReplaceAll(titleTpl, "{mainTeam}", param.MainTeam)
+		titleTpl = strings.ReplaceAll(titleTpl, "{guestTeam}", param.GuestTeam)
+		title = titleTpl
 	} else {
 		title = param.LeagueName + " " + matchDate + " " + param.MainTeam + "VS" + param.GuestTeam
 	}
@@ -191,14 +176,19 @@ func (this *PubService) title(param *vo2.MatchVO) string {
 获取内容
 */
 const pubContent = "本次推荐为程序全自动处理,全程无人为参与干预.进而避免了人为分析的主观性及不稳定因素.程序根据各大波菜多维度数据,结合作者多年足球分析经验,十年程序员生涯,精雕细琢历经26个月得出的产物.程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).经近三个月的实验准确率一直能维持在一个较高的水平.依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!"
-
-func (this *PubService) content() string {
+func (this *PubService) content(param *vo2.MatchVO) string {
 	var content string
-	config := this.ConfService.GetPubConfig()
-	if nil != config {
-		content = config["content"]
+	matchDate := param.MatchDate.Format("20060102150405")
+	contentTpl := this.ConfService.GetConfig(constants2.SECTION_NAME, "content_tpl")
+	if len(contentTpl) > 0 {
+		contentTpl = strings.ReplaceAll(contentTpl, "{leagueName}", param.LeagueName)
+		contentTpl = strings.ReplaceAll(contentTpl, "{matchDate}", matchDate)
+		contentTpl = strings.ReplaceAll(contentTpl, "{mainTeam}", param.MainTeam)
+		contentTpl = strings.ReplaceAll(contentTpl, "{guestTeam}", param.GuestTeam)
+		content = contentTpl
 	}
-	if len(content) <= (2 * 101) {
+
+	if len(contentTpl) <= (2 * 101) {
 		content = pubContent
 	}
 	return content
@@ -210,7 +200,7 @@ func (this *PubService) content() string {
 func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespVO {
 	pubVO := new(vo2.PubVO)
 	pubVO.Title = this.title(param)
-	pubVO.Content = this.content()
+	pubVO.Content = this.content(param)
 	pubVO.Multiple = 0
 	pubVO.Price = this.PriceService.GetPriceVal()
 	//设置赔率

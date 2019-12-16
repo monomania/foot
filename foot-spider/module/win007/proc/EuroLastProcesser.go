@@ -17,7 +17,6 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
@@ -53,7 +52,7 @@ func (this *EuroLastProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_EUROODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
+	//newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

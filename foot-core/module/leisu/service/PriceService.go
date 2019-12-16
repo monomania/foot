@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"math/rand"
+	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/module/core/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
@@ -24,27 +25,28 @@ func (this *PriceService) GetPriceVal() int64 {
 	var data int64
 	entity := this.GetPrice()
 	if len(entity.Data) > 0 {
-		//如果可以收费,采用收费策略
-		var price_strategy string
-		config := this.ConfService.GetPubConfig()
-		if nil != config {
-			price_strategy = config["price_strategy"]
-		}
 		var index int
-		switch price_strategy {
-		case "free":
-			return 0
-		case "min":
-			index = 0
-		case "middle":
-			index = len(entity.Data) / 2
-		case "max":
-			index = len(entity.Data) - 1
-		case "random":
-			index = rand.Intn(len(entity.Data))
-		default:
-			//默认不配置,取最大值
-			index = len(entity.Data) - 1
+		//如果可以收费,采用收费策略
+		price_strategy := this.ConfService.GetConfig(constants2.SECTION_NAME, "price_strategy")
+		i, e := strconv.Atoi(price_strategy)
+		if e == nil {
+			index = i
+		} else {
+			switch price_strategy {
+			case "free":
+				return 0
+			case "min":
+				index = 0
+			case "middle":
+				index = len(entity.Data) / 2
+			case "max":
+				index = len(entity.Data) - 1
+			case "random":
+				index = rand.Intn(len(entity.Data))
+			default:
+				//默认不配置,取最大值
+				index = len(entity.Data) - 1
+			}
 		}
 		data = entity.Data[index]
 	} else {

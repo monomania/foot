@@ -14,7 +14,6 @@ import (
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 )
 
 type AsiaLastProcesser struct {
@@ -46,7 +45,7 @@ func (this *AsiaLastProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_ASIAODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
+	//newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

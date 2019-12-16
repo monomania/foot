@@ -13,7 +13,6 @@ import (
 	service2 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"time"
 )
 
@@ -48,7 +47,7 @@ func (this *MatchPageProcesser) Startup() {
 	this.MatchlastUrl = this.MatchlastUrl + "?flesh=" + strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
-	newSpider.SetDownloader(down.NewMWin007Downloader())
+	//newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
