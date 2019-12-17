@@ -1,11 +1,13 @@
 package launch
 
 import (
+	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/launch"
 )
 
-func Spider(matchLevel int) {
+func Spider() {
 	//开启SQL输出
 	mysql.ShowSQL(true)
 	//清空数据表
@@ -18,6 +20,11 @@ func Spider(matchLevel int) {
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据
 	//执行抓取欧赔历史
+	matchLevelStr := utils.GetVal("spider", "match_level")
+	if len(matchLevelStr) <= 0 {
+		matchLevelStr = "4"
+	}
+	matchLevel, _ := strconv.Atoi(matchLevelStr)
 	Spider_match(matchLevel)
 	//Spider_asiaLast()
 	Spider_asiaLastNew()

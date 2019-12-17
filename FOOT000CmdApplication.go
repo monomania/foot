@@ -38,7 +38,7 @@ HEAD:
 		launch2.TruncateTable()
 		goto HEAD
 	case "spider\n", "spider\r\n":
-		launch.Spider(4)
+		launch.Spider()
 		goto HEAD
 	case "analy\n", "analy\r\n":
 		launch2.Analy()
@@ -90,7 +90,7 @@ HEAD:
 				//2.配置好数据库连接,打包程序发布
 				//3.程序执行流程,周期定制定为一天三次
 				//3.1 FS000Application 爬取数据
-				launch.Spider(4)
+				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
 				launch2.Analy()
 				configService := new(service2.ConfService)
@@ -119,7 +119,7 @@ HEAD:
 				//2.配置好数据库连接,打包程序发布
 				//3.程序执行流程,周期定制定为一天三次
 				//3.1 FS000Application 爬取数据
-				launch.Spider(4)
+				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
 				launch2.Analy()
 				configService := new(service2.ConfService)

@@ -6,6 +6,6 @@ import (
 
 
 func main() {
-	launch.Spider(4)
+	launch.Spider()
 }
 

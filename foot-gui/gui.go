@@ -37,7 +37,7 @@ func buildWinForm() {
 						Text: "Spider数据",
 						OnClicked: func() {
 							inTE.SetText("Spider数据...\r\n")
-							go launch2.Spider(4)
+							go launch2.Spider()
 							go showConsole(inTE)
 						},
 					},

@@ -28,7 +28,7 @@ func main() {
 		launch2.GenTable()
 		launch2.TruncateTable()
 	case "spider":
-		launch.Spider(4)
+		launch.Spider()
 	case "analy":
 		launch2.Analy()
 	case "autospider":
@@ -38,7 +38,7 @@ func main() {
 			//2.配置好数据库连接,打包程序发布
 			//3.程序执行流程,周期定制定为一天三次
 			//3.1 FS000Application 爬取数据
-			launch.Spider(4)
+			launch.Spider()
 			//3.2 FC002AnalyApplication 分析得出推荐列表
 			launch2.Analy()
 			configService := new(service2.ConfService)
