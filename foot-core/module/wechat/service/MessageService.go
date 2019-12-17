@@ -17,7 +17,8 @@ func (this *MessageService) Handle(v message.MixMessage) *message.Reply {
 	//文本消息
 	case message.MsgTypeText:
 		//do something
-		return nil
+		text := message.NewText(v.Content)
+		return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
 		//图片消息
 	case message.MsgTypeImage:
 		//do something
