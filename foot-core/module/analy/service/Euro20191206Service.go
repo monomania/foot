@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-type Euro81_616_104Service struct {
+type Euro20191206Service struct {
 	AnalyService
 	//最大让球数据
 	MaxLetBall float64
@@ -19,7 +19,7 @@ type Euro81_616_104Service struct {
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */
-func (this *Euro81_616_104Service) Analy() {
+func (this *Euro20191206Service) Analy() {
 	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
@@ -45,7 +45,7 @@ func (this *Euro81_616_104Service) Analy() {
 
 }
 
-func (this *Euro81_616_104Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
+func (this *Euro20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
 	var e81data *entity3.EuroLast

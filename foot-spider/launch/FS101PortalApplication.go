@@ -2,14 +2,13 @@ package launch
 
 import (
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/launch"
 )
 
 func Spider() {
 	//开启SQL输出
-	mysql.ShowSQL(true)
+
 	//清空数据表
 	launch.TruncateTable()
 	Before_spider_match()

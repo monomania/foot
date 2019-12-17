@@ -7,7 +7,7 @@ import (
 
 func TruncateTable() {
 	//开启SQL输出
-	mysql.ShowSQL(true)
+
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
 	opsService.TruncateTable([]string{"t_match_last", "t_asia_last", "t_euro_last", "t_euro_his"})
@@ -15,7 +15,7 @@ func TruncateTable() {
 
 func GenTable() {
 	//开启SQL输出
-	mysql.ShowSQL(true)
+
 	generateService := new(mysql.DBOpsService)
 	generateService.SyncTableStruct()
 }

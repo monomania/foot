@@ -48,7 +48,7 @@ func setEngine() *xorm.Engine {
 	//engine.ShowExecTime(true)
 	//则会在控制台打印出生成的SQL语句
 	//则会在控制台打印调试及以上的信息
-	//engine.ShowSQL(true)
+	engine.ShowSQL(true)
 	//engine.Logger().SetLevel(core.LOG_DEBUG)
 	engine.SetMaxIdleConns(maxIdle)
 	engine.SetMaxOpenConns(maxConn)

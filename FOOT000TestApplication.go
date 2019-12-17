@@ -7,16 +7,19 @@ import (
 	"io"
 	"math/rand"
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	utils2 "tesou.io/platform/foot-parent/foot-core/common/utils"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"time"
 )
 
 func main() {
+	//测试获取比赛
+
+	launch.Spider_match(4)
 	//测试获取配置
 	val := utils2.GetVal("cookies", "Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e")
 	fmt.Println(val)
@@ -49,9 +52,9 @@ func main() {
 	fmt.Println(time.Duration(int64(24 - hours)))
 
 	//测试分析结果获取及更新
-	mysql.ShowSQL(true)
+
 	analyService := new(service2.AnalyService)
-	list := analyService.GetPubDataList("Euro81_616_104Service", 0, -1)
+	list := analyService.GetPubDataList("Euro20191206Service", 0, -1)
 	result := &list[0].AnalyResult
 	analyService.Modify(result)
 

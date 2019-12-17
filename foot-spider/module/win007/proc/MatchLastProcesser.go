@@ -18,6 +18,7 @@ import (
 
 type MatchPageProcesser struct {
 	service.MatchLastService
+	service.MatchHisService
 	service2.LeagueService
 	service2.CompService
 	//抓取的url
@@ -192,15 +193,14 @@ func (this *MatchPageProcesser) Finish() {
 	this.LeagueService.SaveList(league_list_slice)
 
 	matchLast_list_slice := make([]interface{}, 0)
+	matchLast_modify_list_slice := make([]interface{}, 0)
+	matchHis_list_slice := make([]interface{}, 0)
+	matchHis_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchLast_list {
 		if nil == v {
 			continue
 		}
 
-		exists := this.MatchLastService.FindExists(v)
-		if exists {
-			continue
-		}
 		//v.Id = v.Ext["win007Id"].(string);
 
 		//处理比赛配置信息
@@ -212,8 +212,26 @@ func (this *MatchPageProcesser) Finish() {
 		matchExt.Sid = v.Id
 		v.Ext = make(map[string]interface{})
 		v.Ext[win007.MODULE_FLAG] = matchExt
-		matchLast_list_slice = append(matchLast_list_slice, v)
+
+		exists := this.MatchLastService.FindExists(v)
+		if exists {
+			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)
+		}else{
+			matchLast_list_slice = append(matchLast_list_slice, v)
+		}
+
+		his := new(pojo.MatchHis)
+		his.MatchLast = *v
+		his_exists := this.MatchHisService.FindExists(his)
+		if his_exists {
+			matchHis_modify_list_slice = append(matchHis_modify_list_slice,his)
+		}else{
+			matchHis_list_slice = append(matchHis_list_slice, his)
+		}
 	}
 	this.MatchLastService.SaveList(matchLast_list_slice)
+	this.MatchLastService.ModifyList(matchLast_modify_list_slice)
+	this.MatchHisService.SaveList(matchHis_list_slice)
+	this.MatchHisService.ModifyList(matchHis_modify_list_slice)
 
 }

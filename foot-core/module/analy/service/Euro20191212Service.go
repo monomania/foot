@@ -1,6 +1,7 @@
 package service
 
 import (
+	"math"
 	"reflect"
 	"strings"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
@@ -9,21 +10,16 @@ import (
 	"time"
 )
 
-/**
-亚赔与欧赔up down 颠倒
- */
-type Asia18EuroUDReverseService struct {
+type Euro20191212Service struct {
 	AnalyService
 	//最大让球数据
 	MaxLetBall float64
 }
 
 /**
-分析比赛数据,, 结合亚赔 赔赔差异
-( 1.欧赔降水,亚赔反之,以亚赔为准)
-( 2.欧赔升水,亚赔反之,以亚赔为准)
+计算欧赔81 616的即时盘,和初盘的差异
 */
-func (this *Asia18EuroUDReverseService) Analy() {
+func (this *Euro20191212Service) Analy() {
 	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
@@ -32,6 +28,7 @@ func (this *Asia18EuroUDReverseService) Analy() {
 		if nil == result {
 			continue
 		}
+
 		if stub == 0 {
 			data_list_slice = append(data_list_slice, result)
 		} else if stub == 1 {
@@ -45,25 +42,21 @@ func (this *Asia18EuroUDReverseService) Analy() {
 	}
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
+
 }
 
-func (this *Asia18EuroUDReverseService) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
+func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
-	var e81data *entity3.EuroLast
 	var e616data *entity3.EuroLast
 	var e104data *entity3.EuroLast
 	var a18betData *entity3.AsiaLast
 	//81 -- 伟德
-	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "81", "616", "104")
-	if len(eList) < 3 {
+	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "616", "104")
+	if len(eList) < 2 {
 		return -1, nil
 	}
 	for _, ev := range eList {
-		if strings.EqualFold(ev.CompId, "81") {
-			e81data = ev
-			continue
-		}
 		if strings.EqualFold(ev.CompId, "616") {
 			e616data = ev
 			continue
@@ -73,39 +66,39 @@ func (this *Asia18EuroUDReverseService) analyStub(v *pojo.MatchLast) (int, *enti
 			continue
 		}
 	}
+	//0.没有变化则跳过
+	if e104data.Ep3 == e104data.Sp3 || e104data.Ep0 == e104data.Sp0 {
+		return -3, nil
+	}
+	if e616data.Ep3 == e616data.Sp3 || e616data.Ep0 == e616data.Sp0 {
+		return -3, nil
+	}
 
+	//1.有变化,进行以下逻辑
 	//亚赔
 	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "18Bet")
 	if len(aList) < 1 {
 		return -1, nil
 	}
 	a18betData = aList[0]
-	if a18betData.ELetBall > this.MaxLetBall {
+	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		return -2, nil
 	}
 
-	//判断分析logic
-	//1.欧赔是主降还是主升 主降为true
-	euroMainDown := EuroMainDown(e81data, e616data)
-	//2.亚赔是主降还是主升 主降为true
-	asiaMainDown := AsiaMainDown(a18betData)
 	//得出结果
+	if e616data.Ep0 < e616data.Sp0 && e616data.Ep0 < e104data.Sp0 {
+		return -3, nil
+	}
 	var preResult int
-	if euroMainDown == 3 && !asiaMainDown {
-		preResult = 0
-	} else if euroMainDown == 0 && asiaMainDown {
+	if e616data.Ep3 > (e616data.Sp3 + 0.01) && e104data.Ep3 < e104data.Sp3 {
 		preResult = 3
-	} else {
+	}else if e616data.Ep3 < e616data.Sp3 && e104data.Ep3 < e104data.Sp3 && e616data.Ep3 < e104data.Ep3 {
+		preResult = 3
+	}else{
 		return -3, nil
 	}
 
-	//增加104 --Interwetten过滤
-	if preResult == 3 && (e616data.Ep3 > e104data.Ep3 || e104data.Ep0 < e104data.Sp0) {
-		return -3, nil
-	}
-	if preResult == 0 && (e616data.Ep0 > e104data.Ep0 || e104data.Ep3 < e104data.Sp3) {
-		return -3, nil
-	}
+
 
 	alFlag := reflect.TypeOf(*this).Name()
 	var data *entity5.AnalyResult
@@ -130,5 +123,4 @@ func (this *Asia18EuroUDReverseService) analyStub(v *pojo.MatchLast) (int, *enti
 		data.Result = this.IsRight(a18betData, v, preResult)
 		return 0, data
 	}
-
 }
