@@ -26,7 +26,19 @@ func GetSection(sectionName string) *ini.Section {
 		return nil
 	}
 	return section
+}
 
+func GetSectionMap(sectionName string) map[string]string {
+	section, e := iniFile.GetSection(sectionName)
+	if e != nil {
+		base.Log.Info("未找到对应的配置信息:", sectionName, e.Error())
+		return nil
+	}
+	section_map := make(map[string]string, 0)
+	for _, e := range section.Keys() {
+		section_map[e.Name()] = e.Value()
+	}
+	return section_map
 }
 
 func GetVal(sectionName string, key string) string {
@@ -37,4 +49,3 @@ func GetVal(sectionName string, key string) string {
 	}
 	return temp_val;
 }
-
