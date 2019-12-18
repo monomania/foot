@@ -1,7 +1,7 @@
 package constants
 
 const (
-	SECTION_NAME = "pub"
+	SECTION_NAME = "leisu"
 	//登录地址
 	LOGIN_URL = ""
 	//比赛信息地址

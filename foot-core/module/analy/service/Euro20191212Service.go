@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"math"
 	"reflect"
 	"strings"
@@ -24,6 +25,9 @@ func (this *Euro20191212Service) Analy() {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
+		if strings.EqualFold("沃尔夫斯堡",v.MainTeamId){
+			fmt.Println("-----------------")
+		}
 		stub, result := this.analyStub(v)
 		if nil == result {
 			continue
@@ -46,6 +50,9 @@ func (this *Euro20191212Service) Analy() {
 }
 
 func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
+	if strings.EqualFold("沃尔夫斯堡",v.MainTeamId){
+		fmt.Println("-----------------")
+	}
 	matchId := v.Id
 	//声明使用变量
 	var e616data *entity3.EuroLast

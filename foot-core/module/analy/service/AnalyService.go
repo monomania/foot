@@ -48,9 +48,9 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 4.alName 算法名称，默认为Euro81_616Service ;
 5.option 3(只筛选主队),1(只筛选平局),0(只筛选客队)选项
 */
-func (this *AnalyService) GetPubDataList(alName string, hitCount int, option int) []*vo.AnalyResultVO {
+func (this *AnalyService) ListData(alName string, hitCount int, option int) []*vo.AnalyResultVO {
 	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_analy_result` ar WHERE ml.`Id` = ar.`MatchId` AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
+	sql_build.WriteString("SELECT   l.`Name` as LeagueName,ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_league` l,foot.`t_analy_result` ar WHERE ml.`LeagueId` = l.`Id` AND ml.`Id` = ar.`MatchId` AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
 
 	if len(alName) > 0 {
 		sql_build.WriteString(" AND ar.`AlFlag` = '" + alName + "' ")

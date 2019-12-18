@@ -7,6 +7,7 @@ import (
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
@@ -42,7 +43,7 @@ func (this *MatchAnalyProcesser) Startup() {
 		url := strings.Replace(win007.WIN007_MATCH_ANALY_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
 	}
-	//newSpider.SetDownloader(down.NewMWin007Downloader())
+	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }

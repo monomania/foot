@@ -1,26 +1,37 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/silenceper/wechat/material"
 	"github.com/silenceper/wechat/message"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 )
 
 type MessageService struct {
 	mysql.BaseService
+	service.RecommendService
 }
 
 /**
 消息管理
  */
 func (this *MessageService) Handle(v message.MixMessage) *message.Reply {
-	base.Log.Info("请求内容:",v)
+	base.Log.Info("请求内容:", v)
 	switch v.MsgType {
 	//文本消息
 	case message.MsgTypeText:
 		//do something
 		text := message.NewText(v.Content)
-		return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
+		textStr := string(text.Content)
+		if strings.EqualFold("今日推荐", textStr) || strings.EqualFold("推荐", textStr) {
+			return this.Today()
+		} else {
+			return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
+		}
 		//图片消息
 	case message.MsgTypeImage:
 		//do something
@@ -47,65 +58,30 @@ func (this *MessageService) Handle(v message.MixMessage) *message.Reply {
 		return nil
 		//事件推送消息
 	case message.MsgTypeEvent:
-		return this.handleMsgTypeEvent(v)
+		return this.Today()
 	}
 	text := message.NewText(v.Content)
 	return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
 }
 
-/**
-事件推送消息
- */
-func (this *MessageService) handleMsgTypeEvent(v message.MixMessage) *message.Reply {
-	switch v.Event {
-	//EventSubscribe 订阅
-	case message.EventSubscribe:
-		//do something
-		return nil
-		//取消订阅
-	case message.EventUnsubscribe:
-		//do something
-		return nil
-		//用户已经关注公众号，则微信会将带场景值扫描事件推送给开发者
-	case message.EventScan:
-		//do something
-		return nil
-		// 上报地理位置事件
-	case message.EventLocation:
-		//do something
-		return nil
-		// 点击菜单拉取消息时的事件推送
-	case message.EventClick:
-		//do something
-		return nil
-		// 点击菜单跳转链接时的事件推送
-	case message.EventView:
-		//do something
-		return nil
-		// 扫码推事件的事件推送
-	case message.EventScancodePush:
-		//do something
-		return nil
-		// 扫码推事件且弹出“消息接收中”提示框的事件推送
-	case message.EventScancodeWaitmsg:
-		//do something
-		return nil
-		// 弹出系统拍照发图的事件推送
-	case message.EventPicSysphoto:
-		//do something
-		return nil
-		// 弹出拍照或者相册发图的事件推送
-	case message.EventPicPhotoOrAlbum:
-		//do something
-		return nil
-		// 弹出微信相册发图器的事件推送
-	case message.EventPicWeixin:
-		//do something
-		return nil
-		// 弹出地理位置选择器的事件推送
-	case message.EventLocationSelect:
-		//do something
-		return nil
+func (this *MessageService) Today() *message.Reply {
+	listData := this.RecommendService.ListData()
+	articles := make([]*material.Article, len(listData))
+	for _, e := range listData {
+		bytes, _ := json.Marshal(e)
+		base.Log.Warn("比赛信息:" + string(bytes))
+		matchDateStr := e.MatchDate.Format("01月02日15点04分")
+		article := new(material.Article)
+		article.Title = fmt.Sprintf("%v", matchDateStr)
+		article.Digest = fmt.Sprintf("%v %v vs %v", e.LeagueName, e.MainTeamId, e.GuestTeamId)
+		//-----
+		article.ThumbMediaID = ""
+		//-----
+		article.ShowCoverPic = 1
+		//图文消息的原文地址，即点击“阅读原文”后的URL
+		article.ContentSourceURL = ""
+		article.Content = string(bytes)
+		articles = append(articles, article)
 	}
-	return nil
+	return &message.Reply{MsgType: message.MsgTypeNews, MsgData: articles}
 }
