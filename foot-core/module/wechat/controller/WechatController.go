@@ -1,40 +1,38 @@
 package controller
 
 import (
-	"fmt"
 	_ "github.com/astaxie/beego"
 	"github.com/silenceper/wechat"
 	"github.com/silenceper/wechat/cache"
 	"github.com/silenceper/wechat/message"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/controller"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/wechat/service"
 )
 
-type WeChatController struct {
+type WechatController struct {
 	controller.BaseController
 	service.MessageService
 }
 
 var (
-	section_map map[string]string
+	wc *wechat.Wechat
 )
 
 func init() {
-	section_map = utils.GetSectionMap("wechat")
-}
-
-func (this *WeChatController) Portal() {
-	memory := cache.NewMemory()
+	section_map := utils.GetSectionMap("wechat")
 	//配置微信参数
 	config := &wechat.Config{
-		AppID:          section_map["AppID"],
-		AppSecret:      section_map["AppSecret"],
-		Token:          section_map["Token"],
-		EncodingAESKey: section_map["EncodingAESKey"],
-		Cache:          memory,
+		AppID:     section_map["AppID"],
+		AppSecret: section_map["AppSecret"],
+		Token:     section_map["Token"],
+		//EncodingAESKey: section_map["EncodingAESKey"],
+		Cache: cache.NewMemory(),
 	}
-	wc := wechat.NewWechat(config)
+	wc = wechat.NewWechat(config)
+}
+func (this *WechatController) Portable() {
 	// 传入request和responseWriter
 	server := wc.GetServer(this.Ctx.Request, this.Ctx.ResponseWriter)
 	//设置接收消息的处理方法
@@ -51,9 +49,11 @@ func (this *WeChatController) Portal() {
 	//处理消息接收以及回复
 	err := server.Serve()
 	if err != nil {
-		fmt.Println(err)
+		base.Log.Error(err)
 		return
 	}
 	//发送回复的消息
 	server.Send()
 }
+
+

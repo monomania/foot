@@ -1,13 +1,12 @@
 module tesou.io/platform/foot-parent
 
 require (
-	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/astaxie/beego v1.12.0
-	github.com/lxn/walk v0.0.0-20191128110447-55ccb3a9f5c1
+	github.com/lxn/walk v0.0.0-20191128110447-55ccb3a9f5c1 // indirect
 	tesou.io/platform/foot-parent/foot-api v1.0.0
 	tesou.io/platform/foot-parent/foot-core v1.0.0
 	tesou.io/platform/foot-parent/foot-spider v1.0.0
-	tesou.io/platform/foot-parent/foot-web v1.0.0
+	tesou.io/platform/foot-parent/foot-web v1.0.0 // indirect
 )
 
 replace (

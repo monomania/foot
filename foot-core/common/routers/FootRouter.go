@@ -7,7 +7,8 @@ import (
 	controller3 "tesou.io/platform/foot-parent/foot-core/module/wechat/controller"
 )
 
-type Routers struct {
+type FootRouter struct {
+
 }
 
 func init() {
@@ -18,6 +19,9 @@ func init() {
 	beego.AutoRouter(&controller2.MatchLastController{})
 
 	//wechat
-	beego.AutoRouter(&controller3.WeChatController{})
+	beego.AutoRouter(&controller3.WechatController{})
+}
+
+func (this *FootRouter) Hello(){
 
 }

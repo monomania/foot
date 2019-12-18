@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/silenceper/wechat/message"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
@@ -13,6 +14,7 @@ type MessageService struct {
 消息管理
  */
 func (this *MessageService) Handle(v message.MixMessage) *message.Reply {
+	base.Log.Info("请求内容:",v)
 	switch v.MsgType {
 	//文本消息
 	case message.MsgTypeText:

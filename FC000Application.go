@@ -3,7 +3,13 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
+	"tesou.io/platform/foot-parent/foot-core/common/routers"
 )
+
+func init() {
+	router := &routers.FootRouter{}
+	router.Hello()
+}
 
 func main() {
 
@@ -18,7 +24,7 @@ func beeRun() {
 	//输出文件名和行号
 	logs.EnableFuncCallDepth(true)
 	//异步输出日志
-	logs.Async(1e3)
+	//logs.Async(1e3)
 	//启动
 	beego.Run()
 }
