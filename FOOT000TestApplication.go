@@ -2,11 +2,15 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"math/rand"
 	"strconv"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	utils2 "tesou.io/platform/foot-parent/foot-core/common/utils"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
@@ -17,8 +21,36 @@ import (
 )
 
 func main() {
-	//测试获取比赛
+	//测试markdown
+	tpl, err := template.ParseFiles("assets/wechat/html/week.html")
+	if err != nil {
+		base.Log.Error(err)
+	}
+	weekVO := vo.WeekVO{}
+	weekVO.BeginDate = time.Now()
+	weekVO.BeginDateStr = weekVO.BeginDate.Format("2006年01月02日")
+	weekVO.EndDate = time.Now()
+	weekVO.EndDateStr = weekVO.EndDate.Format("2006年01月02日")
+	weekVO.MatchCount = 98
+	weekVO.RedCount = 68
+	weekVO.WalkCount = 40
+	weekVO.BlackCount = 20
+	weekVO.LinkRedCount = 10
+	weekVO.LinkBlackCount = 5
+	dataList := make([]vo.SuggestVO,1)
+	suggestVO := vo.SuggestVO{}
+	suggestVO.LeagueName = "联赛1"
+	suggestVO.MatchDate = time.Now()
+	suggestVO.MainTeam = "主队1"
+	dataList[0] = suggestVO
+	weekVO.DataList = dataList
+	var buf bytes.Buffer
+	if err := tpl.Execute(&buf, &weekVO); err != nil {
+		base.Log.Fatal(err)
+	}
+	fmt.Println(buf.String())
 
+	//测试获取比赛
 	launch.Spider_match(4)
 	//测试获取配置
 	val := utils2.GetVal("cookies", "Hm_lpvt_2fb6939e65e63cfbc1953f152ec2402e")
@@ -27,7 +59,7 @@ func main() {
 	section := utils2.GetSection("cookies")
 	keys := section.Keys()
 	for _, e := range keys {
-		fmt.Println(e.Name() + "=" +e.Value())
+		fmt.Println(e.Name() + "=" + e.Value())
 		fmt.Println(section.Key(e.Name()).Value())
 	}
 	//测试随机数

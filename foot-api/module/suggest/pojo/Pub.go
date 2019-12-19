@@ -2,7 +2,7 @@ package pojo
 
 import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
-	"tesou.io/platform/foot-parent/foot-api/module/pub/enums"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/enums"
 )
 
 

@@ -7,7 +7,7 @@ import (
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	entity1 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
-	"tesou.io/platform/foot-parent/foot-api/module/pub/pojo"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
 )
 
 type DBOpsService struct {

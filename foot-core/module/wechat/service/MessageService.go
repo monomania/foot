@@ -11,11 +11,11 @@ import (
 
 type MessageService struct {
 	mysql.BaseService
-	service.RecommendService
+	service.AnalyService
 }
 
 func (this *MessageService) Today() []response.Article {
-	listData := this.RecommendService.ListData()
+	listData := this.AnalyService.ListDefaultData()
 	articles := make([]response.Article,len(listData))
 	for i, e := range listData {
 		bytes, _ := json.Marshal(e)

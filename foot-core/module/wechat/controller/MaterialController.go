@@ -18,7 +18,7 @@ type MaterialController struct {
 
 func (this *MaterialController) Images() {
 
-	infos, err := ioutil.ReadDir("assets")
+	infos, err := ioutil.ReadDir("assets/img")
 	if err != nil {
 		base.Log.Error(err)
 		return
@@ -26,11 +26,11 @@ func (this *MaterialController) Images() {
 	result := []string{}
 	for _, e := range infos {
 		name := e.Name()
-		if !strings.HasSuffix(name,".jpg"){
+		if !strings.HasSuffix(name, ".jpg") {
 			continue
 		}
 		fileName := "assets/" + name
-		mediaId, url, err := material.UploadImage(wcClient,fileName)
+		mediaId, url, err := material.UploadImage(wcClient, fileName)
 		if err != nil {
 			base.Log.Error(err)
 			return
@@ -66,7 +66,8 @@ func (this *MaterialController) News() {
 	this.ServeJSON()
 }
 
-
 func (this *MaterialController) ModifyNews() {
-
+	this.MatchService.ModifyWeek(wcClient)
+	this.Data["json"] = "ok"
+	this.ServeJSON()
 }

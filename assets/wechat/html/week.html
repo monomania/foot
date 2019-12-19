@@ -1,0 +1,40 @@
+<html>
+<body>
+<ul>
+    <li>日期 {{.BeginDateStr}} - {{.EndDateStr}}</li>
+    <li>总场次:{{.MatchCount}}
+        <span style="color: red; ">红:{{.RedCount}}</span>
+        <span style="color: green; ">走:{{.WalkCount}}</span>
+        <span style="color: black; ">黑:{{.BlackCount}}</span>
+    </li>
+    <li><span style="color: red; ">最长连红:{{.LinkRedCount}}</span>  <span style="color: black; ">最长连黑:{{.LinkBlackCount}}</span></li>
+</ul>
+<h2><b>赛事列表</b></h2>
+<table>
+    <tr>
+        <td>时间</td>
+        <td>联赛</td>
+        <td>主队</td>
+        <td>让球</td>
+        <td>客队</td>
+        <td>让球</td>
+        <td>比分</td>
+        <td>推荐</td>
+    </tr>
+{{with .DataList}}
+{{range .}}
+    <tr>
+        <td>{{.MatchDateStr}}</td>
+        <td>{{.LeagueName}}</td>
+        <td>{{.MainTeam}}</td>
+        <td>{{.LetBall}}</td>
+        <td>{{.GuestTeam}}</td>
+        <td>{{.MainTeamGoal}}</td>
+        <td>{{.GuestTeamGoal}}</td>
+        <td>{{.PreResult}}</td>
+    </tr>
+{{end}}
+{{end}}
+</table>
+</body>
+</html>

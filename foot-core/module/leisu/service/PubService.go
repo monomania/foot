@@ -20,7 +20,7 @@ import (
 发布推荐
 */
 type PubService struct {
-	service.RecommendService
+	service.AnalyService
 	MatchPoolService
 	PubLimitService
 	PriceService
@@ -47,7 +47,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
-	analyList := this.RecommendService.ListData()
+	analyList := this.AnalyService.ListDefaultData()
 	if len(analyList) < 1 {
 		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛!!!!"))
 		return
