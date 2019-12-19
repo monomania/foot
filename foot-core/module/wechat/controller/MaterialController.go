@@ -3,7 +3,7 @@ package controller
 import (
 	"fmt"
 	_ "github.com/astaxie/beego"
-	material2 "github.com/silenceper/wechat/material"
+	"github.com/chanxuehong/wechat/mp/material"
 	"io/ioutil"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -17,7 +17,7 @@ type MaterialController struct {
 }
 
 func (this *MaterialController) Images() {
-	material := wc.GetMaterial()
+
 	infos, err := ioutil.ReadDir("assets")
 	if err != nil {
 		base.Log.Error(err)
@@ -30,7 +30,7 @@ func (this *MaterialController) Images() {
 			continue
 		}
 		fileName := "assets/" + name
-		mediaId, url, err := material.AddMaterial(material2.MediaTypeImage, fileName)
+		mediaId, url, err := material.UploadImage(wcClient,fileName)
 		if err != nil {
 			base.Log.Error(err)
 			return
@@ -47,17 +47,17 @@ func (this *MaterialController) Images() {
 func (this *MaterialController) News() {
 	result := []string{}
 	//today
-	mediaId := this.MatchService.Today(wc)
+	mediaId := this.MatchService.Today(wcClient)
 	data := fmt.Sprintf("today mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)
 	//week
-	mediaId = this.MatchService.Week(wc)
+	mediaId = this.MatchService.Week(wcClient)
 	data = fmt.Sprintf("week mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)
 	//month
-	mediaId = this.MatchService.Month(wc)
+	mediaId = this.MatchService.Month(wcClient)
 	data = fmt.Sprintf("month mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)

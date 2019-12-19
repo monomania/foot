@@ -26,8 +26,11 @@ github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869/go.mod h1:Ekp36dR
 github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737 h1:rRISKWyXfVxvoa702s91Zl5oREZTrR3yv+tXrrX7G/g=
 github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737/go.mod h1:PmM6Mmwb0LSuEubjR8N7PtNe1KxZLtOUHtbeikc5h60=
 github.com/casbin/casbin v1.7.0/go.mod h1:c67qKN6Oum3UF5Q1+BByfFxkwKvhwW57ITjqwtzR1KE=
+github.com/chanxuehong/rand v0.0.0-20180830053958-4b3aff17f488 h1:6d1ijTov542DDRWsFdnPYeGWnlRxlzbpEaJuNJtBQiU=
 github.com/chanxuehong/rand v0.0.0-20180830053958-4b3aff17f488/go.mod h1:h13adSJmQ5tsaV9bR72eTp7ePXJ2WIWyK6heLeietxA=
+github.com/chanxuehong/util v0.0.0-20181116100727-caf892acd09c h1:+bidl2o5S+JFtpiJdUPrgHYE922v3RgHKPqzojUVRyw=
 github.com/chanxuehong/util v0.0.0-20181116100727-caf892acd09c/go.mod h1:oCc2u0egGweOE68RdURGznc2LgbCrdGAAkXOQw2CuNM=
+github.com/chanxuehong/wechat v0.0.0-20190521093015-fafb751f9916 h1:uD+wIaoJkd0RznEoYFhjA4dHS30iP5D+TLTeYb+5Z4U=
 github.com/chanxuehong/wechat v0.0.0-20190521093015-fafb751f9916/go.mod h1:BO4IXwEfyapf9pSD8vEInR6JjnmQBxBw7VJKB3NZuiI=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=

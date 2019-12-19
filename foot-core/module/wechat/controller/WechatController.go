@@ -2,9 +2,11 @@ package controller
 
 import (
 	_ "github.com/astaxie/beego"
-	"github.com/silenceper/wechat"
-	"github.com/silenceper/wechat/cache"
-	"github.com/silenceper/wechat/message"
+	"github.com/chanxuehong/wechat/mp/core"
+	"github.com/chanxuehong/wechat/mp/menu"
+	"github.com/chanxuehong/wechat/mp/message/callback/request"
+	"github.com/chanxuehong/wechat/mp/message/callback/response"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/controller"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
@@ -17,45 +19,61 @@ type WechatController struct {
 }
 
 var (
-	wc *wechat.Wechat
+	wcServer *core.Server
+	wcClient *core.Client
 )
 
 func init() {
+	msgHandler := core.NewServeMux()
+	msgHandler.DefaultMsgHandleFunc(defaultMsgHandler)
+	msgHandler.DefaultEventHandleFunc(defaultEventHandler)
+	msgHandler.MsgHandleFunc(request.MsgTypeText, textMsgHandler)
+	msgHandler.EventHandleFunc(menu.EventTypeClick, menuClickEventHandler)
+
 	section_map := utils.GetSectionMap("wechat")
-	//配置微信参数
-	config := &wechat.Config{
-		AppID:     section_map["AppID"],
-		AppSecret: section_map["AppSecret"],
-		Token:     section_map["Token"],
-		//EncodingAESKey: section_map["EncodingAESKey"],
-		Cache: cache.NewMemory(),
+	wcServer = core.NewServer(section_map["OriId"], section_map["AppID"], section_map["Token"], section_map["EncodingAESKey"], msgHandler, nil)
+
+	accessTokenServer := core.NewDefaultAccessTokenServer(section_map["AppID"], section_map["AppSecret"], nil)
+	wcClient = core.NewClient(accessTokenServer, nil)
+}
+
+func textMsgHandler(ctx *core.Context) {
+	base.Log.Info("收到文本消息:\n%s\n", ctx.MsgPlaintext)
+	msg := request.GetText(ctx.MixedMsg)
+	var resp interface{}
+	if strings.EqualFold("今日推荐", msg.Content) || strings.EqualFold("推荐", msg.Content) {
+		messageService := new(service.MessageService)
+		today := messageService.Today()
+		resp = response.NewNews(msg.FromUserName, msg.ToUserName, msg.CreateTime, today)
+	} else {
+		resp = response.NewText(msg.FromUserName, msg.ToUserName, msg.CreateTime, msg.Content)
 	}
-	wc = wechat.NewWechat(config)
+	ctx.RawResponse(resp) // 明文回复
+	//ctx.AESResponse(resp, 0, "", nil) // aes密文回复
+}
+
+func defaultMsgHandler(ctx *core.Context) {
+	base.Log.Info("收到消息:\n%s\n", ctx.MsgPlaintext)
+	ctx.NoneResponse()
+}
+
+func menuClickEventHandler(ctx *core.Context) {
+	base.Log.Info("收到菜单 click 事件:\n%s\n", ctx.MsgPlaintext)
+
+	event := menu.GetClickEvent(ctx.MixedMsg)
+	resp := response.NewText(event.FromUserName, event.ToUserName, event.CreateTime, "收到 click 类型的事件")
+	//ctx.RawResponse(resp) // 明文回复
+	ctx.AESResponse(resp, 0, "", nil) // aes密文回复
+}
+
+func defaultEventHandler(ctx *core.Context) {
+	base.Log.Info("收到事件:\n%s\n", ctx.MsgPlaintext)
+	ctx.NoneResponse()
 }
 
 /**
 消息接收处理
 */
 func (this *WechatController) Portable() {
-	// 传入request和responseWriter
-	server := wc.GetServer(this.Ctx.Request, this.Ctx.ResponseWriter)
-	//设置接收消息的处理方法
-	//server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
-	//	//回复消息：演示回复用户发送的消息
-	//	text := message.NewText(msg.Content)
-	//	return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
-	//})
-	server.SetMessageHandler(func(v message.MixMessage) *message.Reply {
-		reply := this.MessageService.Handle(v)
-		return reply
-	})
-
-	//处理消息接收以及回复
-	err := server.Serve()
-	if err != nil {
-		base.Log.Error(err)
-		return
-	}
-	//发送回复的消息
-	server.Send()
+	wcServer.ServeHTTP(this.Ctx.ResponseWriter, this.Ctx.Request, nil)
 }
