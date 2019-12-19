@@ -1,7 +1,6 @@
 package launch
 
 import (
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
@@ -14,12 +13,12 @@ import (
 	}
 }
 */
-func Before_spider_euroHis() {
-	//抓取前清空当前比较表
-	opsService := new(mysql.DBOpsService)
-	//指定需要清空的数据表
-	opsService.TruncateTable([]string{"t_euro_his"})
-}
+//func Before_spider_euroHis() {
+//	//抓取前清空当前比较表
+//	opsService := new(mysql.DBOpsService)
+//	//指定需要清空的数据表
+//	opsService.TruncateTable([]string{"t_euro_his"})
+//}
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 func Spider_euroHis() {

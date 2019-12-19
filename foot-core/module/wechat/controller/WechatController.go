@@ -35,7 +35,7 @@ func init() {
 
 /**
 消息接收处理
- */
+*/
 func (this *WechatController) Portable() {
 	// 传入request和responseWriter
 	server := wc.GetServer(this.Ctx.Request, this.Ctx.ResponseWriter)

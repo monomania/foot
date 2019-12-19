@@ -3,7 +3,6 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/silenceper/wechat/material"
 	"github.com/silenceper/wechat/message"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -66,22 +65,18 @@ func (this *MessageService) Handle(v message.MixMessage) *message.Reply {
 
 func (this *MessageService) Today() *message.Reply {
 	listData := this.RecommendService.ListData()
-	articles := make([]*material.Article, len(listData))
-	for _, e := range listData {
+	articles := make([]*message.Article, len(listData))
+	for i, e := range listData {
 		bytes, _ := json.Marshal(e)
 		base.Log.Warn("比赛信息:" + string(bytes))
 		matchDateStr := e.MatchDate.Format("01月02日15点04分")
-		article := new(material.Article)
+		article := new(message.Article)
 		article.Title = fmt.Sprintf("%v", matchDateStr)
-		article.Digest = fmt.Sprintf("%v %v vs %v", e.LeagueName, e.MainTeamId, e.GuestTeamId)
-		//-----
-		article.ThumbMediaID = ""
-		//-----
-		article.ShowCoverPic = 1
-		//图文消息的原文地址，即点击“阅读原文”后的URL
-		article.ContentSourceURL = ""
-		article.Content = string(bytes)
-		articles = append(articles, article)
+		article.Description = fmt.Sprintf("%v %v vs %v", e.LeagueName, e.MainTeamId, e.GuestTeamId)
+		article.PicURL = "http://mmbiz.qpic.cn/sz_mmbiz_jpg/BePaFicK2B5QZuw0bf1HsiarnqQXzuWxE9XYC25oe2mVLeguvo6Rd1j1D2ibRibfmpu8eDqs0lfXaEfXR2bhslrPKQ/0?wx_fmt=jpeg"
+		article.URL = "https://gitee.com/aoe5188/foot-parent"
+		articles[i] = article
 	}
-	return &message.Reply{MsgType: message.MsgTypeNews, MsgData: articles}
+	news := message.NewNews(articles)
+	return &message.Reply{MsgType: message.MsgTypeNews, MsgData: news}
 }

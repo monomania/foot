@@ -20,6 +20,7 @@ func init() {
 
 	//wechat
 	beego.AutoRouter(&controller3.WechatController{})
+	beego.AutoRouter(&controller3.MaterialController{})
 }
 
 func (this *FootRouter) Hello(){
