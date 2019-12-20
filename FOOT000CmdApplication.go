@@ -155,7 +155,7 @@ HEAD:
 				base.Log.Info("--------发布公众号开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速
 				materialController := new(controller.MaterialController)
-				materialController.ModifyNews()
+				materialController.ModifyNewsOnly()
 				base.Log.Info("--------发布公众号周期结束--------")
 				time.Sleep(15 * time.Minute)
 			}
