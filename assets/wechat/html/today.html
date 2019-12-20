@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="Content-Language" content="zh-CN">
-    <title>今日推荐</title>
-    <meta name="keywords" content="足球,竞彩,足彩,北京单场,AI,AI分析,球探,比分,大数据,胜平负,混合过关,胜负过关,串子,推荐,精推,欧盘,欧指,亚盘,亚指"/>
-</head>
-<body>
 <hr/>
 <h1 style="margin-top: 5px">
-    <div style="float: left;width: 50%"><strong>赛事列表</strong></div>
-    <div style="float: right;width: 50%">
+    <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
+    <div style="float: right;width: 40%">
         <strong>标识:
             <span style="color: orange">A1</span>
             <span style="color: orangered">A2</span>
@@ -47,6 +38,7 @@
         >
             <strong>
             {{.PreResult}}
+            </strong>
             {{if eq .AlFlag "Asia20191206Service"}}
                 (<span style="color: orange">A1</span>)
             {{else if eq .AlFlag "Euro20191206Service"}}
@@ -55,7 +47,6 @@
                 (<span style="color: darkblue">E2</span>)
             {{else}}
             {{end}}
-            </strong>
         </td>
 
     </tr>
@@ -63,5 +54,3 @@
 {{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
-</body>
-</html>

@@ -1,8 +1,11 @@
 package service
 
 import (
+	"strconv"
 	vo2 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 )
 
 /**
@@ -32,6 +35,13 @@ WHERE mh.LeagueId = l.Id
   AND al.CompId = '韦德' 
   AND mh.Id = ar.MatchId 
 	`
+	if param.HitCount > 0 {
+		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
+	}else{
+		hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+		sql += " AND ar.HitCount >= '" + hit_count_str + "' "
+	}
+
 	if len(param.AlFlag) > 0 {
 		sql += " AND ar.AlFlag = '" + param.AlFlag + "' "
 	}
