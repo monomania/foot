@@ -1,6 +1,7 @@
 package proc
 
 import (
+	"fmt"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
@@ -24,25 +25,25 @@ type MatchPageProcesser struct {
 	service2.CompService
 	//抓取的url
 	MatchlastUrl string
+	//联赛数据
+	league_list           []*entity2.League
+	win007Id_leagueId_map map[string]string
+	//比赛数据
+	matchLast_list []*pojo.MatchLast
 }
 
 func GetMatchPageProcesser() *MatchPageProcesser {
 	return &MatchPageProcesser{}
 }
 
-var (
-	//联赛数据
-	league_list           = make([]*entity2.League, 0)
-	win007Id_leagueId_map = make(map[string]string)
-	//比赛数据
-	matchLast_list = make([]*pojo.MatchLast, 0)
-)
-
-func init() {
-
-}
 
 func (this *MatchPageProcesser) Startup() {
+	//联赛数据
+	this.league_list           = make([]*entity2.League, 0)
+	this.win007Id_leagueId_map = make(map[string]string)
+	//比赛数据
+	this.matchLast_list = make([]*pojo.MatchLast, 0)
+
 	if this.MatchlastUrl == "" {
 		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
@@ -99,7 +100,7 @@ func (this *MatchPageProcesser) findParamVal(url string) string {
 func (this *MatchPageProcesser) league_process(rawText string) {
 	league_arr := strings.Split(rawText, "!")
 
-	league_list = make([]*entity2.League, len(league_arr))
+	this.league_list = make([]*entity2.League, len(league_arr))
 	var index int
 	for _, v := range league_arr {
 		league_info_arr := strings.Split(v, "^")
@@ -114,13 +115,13 @@ func (this *MatchPageProcesser) league_process(rawText string) {
 		league.Name = name
 		//league.Ext = make(map[string]interface{})
 		//league.Ext["win007Id"] = win007Id
-		win007Id_leagueId_map[win007Id] = league.Id
+		this.win007Id_leagueId_map[win007Id] = league.Id
 
 		level_str := league_info_arr[2]
 		level, _ := strconv.Atoi(level_str)
 		league.Level = level
 
-		league_list[index] = league
+		this.league_list[index] = league
 		index++
 	}
 }
@@ -144,7 +145,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		//matchLast.Ext["win007Id"] = win007Id
 		matchLast.Id = win007Id
 		index++
-		matchLast.LeagueId = win007Id_leagueId_map[match_info_arr[index]]
+		matchLast.LeagueId = this.win007Id_leagueId_map[match_info_arr[index]]
 		index++
 		index++
 		match_date_str := match_info_arr[index]
@@ -170,7 +171,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		matchLast.GuestTeamGoals = guestTeamGoals
 
 		//最后加入数据中
-		matchLast_list = append(matchLast_list, matchLast)
+		this.matchLast_list = append(this.matchLast_list, matchLast)
 	}
 
 }
@@ -179,7 +180,7 @@ func (this *MatchPageProcesser) Finish() {
 	base.Log.Info("比赛抓取解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)
-	for _, v := range league_list {
+	for _, v := range this.league_list {
 		if nil == v {
 			continue
 		}
@@ -197,7 +198,7 @@ func (this *MatchPageProcesser) Finish() {
 	matchLast_modify_list_slice := make([]interface{}, 0)
 	matchHis_list_slice := make([]interface{}, 0)
 	matchHis_modify_list_slice := make([]interface{}, 0)
-	for _, v := range matchLast_list {
+	for _, v := range this.matchLast_list {
 		if nil == v {
 			continue
 		}
@@ -213,7 +214,9 @@ func (this *MatchPageProcesser) Finish() {
 		matchExt.Sid = v.Id
 		v.Ext = make(map[string]interface{})
 		v.Ext[win007.MODULE_FLAG] = matchExt
-
+		if v.Id == "1748077" || v.Id == "1748078" || v.Id == "1748079" {
+			fmt.Println("---------------------")
+		}
 		exists := this.MatchLastService.FindExists(v)
 		if exists {
 			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)
