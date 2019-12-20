@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>最近一月战绩</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <title>最近七天战绩</title>
+    <meta name="keywords" content="足球,竞彩,足彩,北京单场,AI,AI分析,球探,比分,大数据,胜平负,混合过关,胜负过关,串子,推荐,精推,欧盘,欧指,亚盘,亚指"/>
 </head>
 <body>
-<h2><b><u>概况</u></b></h2>
-<ul>
-    <li>日期 {{.BeginDateStr}} 至 {{.EndDateStr}}</li>
-    <li>总场次:{{.MatchCount}}
-        <span style="color: orangered; ">红:{{.RedCount}}</span>
-        <span style="color: greenyellow; ">走:{{.WalkCount}}</span>
-        <span style="color: gray; ">黑:{{.BlackCount}}</span>
-    </li>
-    <li><span style="color: orangered; ">最长连红:{{.LinkRedCount}}</span> <span
-                style="color: gray; ">最长连黑:{{.LinkBlackCount}}</span></li>
+<h1><strong>概况</strong></h1>
+<ul style="font-size: 15px;font-weight: lighter">
+    <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
+    <li>总场次:{{.MatchCount}}</li>
+    <li><span style="color: red; ">红:{{.RedCount}}</span></li>
+    <li><span style="color: greenyellow; ">走:{{.WalkCount}}</span></li>
+    <li><span style="color: gray; ">黑:{{.BlackCount}}</span></li>
+    <li><span style="color: red; ">最长连红:{{.LinkRedCount}}</span></li>
+    <li><span style="color: gray; ">最长连黑:{{.LinkBlackCount}}</span></li>
 </ul>
-<h2><b><u>赛事列表</u></b> <span>算法标识: 1 2 3</span></h2>
-<table style="font-size: 12px;">
+<hr/>
+<h1 style="margin-top: 5px">
+    <div style="float: left;width: 50%"><strong>赛事列表</strong></div>
+    <div style="float: right;width: 50%">
+        <strong>标识:
+            <span style="color: orange">A1</span>
+            <span style="color: orangered">A2</span>
+            <span style="color: blue">E1</span>
+            <span style="color: darkblue">E2</span>
+        </strong>
+    </div>
+</h1>
+<table style="font-size: 12px;font-weight: bold">
     <tr>
         <td>时间</td>
         <!--<td>联赛</td>-->
         <td>主队(让球)客队</td>
         <td>比分</td>
-        <td>推荐</td>
+        <td>推荐(标识)</td>
     </tr>
-    {{with .DataList}}
-        {{range .}}
-            <tr{{if eq  .Result "正确"}}
-                style="background-color: orangered"
-            {{else if eq  .Result "错误"}}
-                style="background-color: gray"
-            {{else}}
-                style="background-color: greenyellow"
-            {{end}}>
-
-                <td>{{.MatchDateStr}}</td>
-                <!--<td>{{.LeagueName}}</td>-->
-                <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-                <td>{{.MainTeamGoal}}:{{.GuestTeamGoal}}</td>
-                <td>
-                    <b>{{.PreResult}}</b>
-                    {{if eq .AlFlag "Asia20191206Service"}}
-                        1
-                    {{else if eq .AlFlag "Euro20191206Service"}}
-                        2
-                    {{else if eq .AlFlag "Euro20191212Service"}}
-                        3
-                    {{else}}
-                    {{end}}
-                </td>
-
-            </tr>
+{{with .DataList}}
+{{range .}}
+    <tr>
+        <td>{{.MatchDateStr}}</td>
+        <!--<td>{{.LeagueName}}</td>-->
+        <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
+        <td>
+        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+        </td>
+        <td
+        {{if eq  .Result "正确"}}
+        style="background-color: red"
+        {{else if eq  .Result "错误"}}
+        style="background-color: gray"
+        {{else}}
+        style="background-color: greenyellow"
         {{end}}
-    {{end}}
+        >
+            <strong>
+            {{.PreResult}}
+            {{if eq .AlFlag "Asia20191206Service"}}
+                (<span style="color: orange">A1</span>)
+            {{else if eq .AlFlag "Euro20191206Service"}}
+                (<span style="color: blue">E1</span>)
+            {{else if eq .AlFlag "Euro20191212Service"}}
+                (<span style="color: darkblue">E2</span>)
+            {{else}}
+            {{end}}
+            </strong>
+        </td>
+
+    </tr>
+{{end}}
+{{end}}
 </table>
+<span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
 </body>
 </html>

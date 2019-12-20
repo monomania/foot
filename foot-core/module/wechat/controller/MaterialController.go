@@ -13,7 +13,7 @@ import (
 
 type MaterialController struct {
 	controller.BaseController
-	service.MatchService
+	service.MaterialService
 }
 
 func (this *MaterialController) Images() {
@@ -67,9 +67,11 @@ func (this *MaterialController) News() {
 }
 
 func (this *MaterialController) ModifyNews() {
-	this.MatchService.ModifyToday(wcClient)
-	this.MatchService.ModifyWeek(wcClient)
-	this.MatchService.ModifyMonth(wcClient)
+	this.ModifyNewsOnly()
 	this.Data["json"] = "ok"
 	this.ServeJSON()
+}
+
+func (this *MaterialController) ModifyNewsOnly() {
+	this.MaterialService.ModifyNews(wcClient)
 }

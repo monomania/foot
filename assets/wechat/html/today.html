@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-CN">
     <title>今日推荐</title>
+    <meta name="keywords" content="足球,竞彩,足彩,北京单场,AI,AI分析,球探,比分,大数据,胜平负,混合过关,胜负过关,串子,推荐,精推,欧盘,欧指,亚盘,亚指"/>
 </head>
 <body>
-<h2><b><u>概况</u></b></h2>
-<h2><b><u>赛事列表</u></b></h2>
-<table>
+<hr/>
+<h1 style="margin-top: 5px">
+    <div style="float: left;width: 50%"><strong>赛事列表</strong></div>
+    <div style="float: right;width: 50%">
+        <strong>标识:
+            <span style="color: orange">A1</span>
+            <span style="color: orangered">A2</span>
+            <span style="color: blue">E1</span>
+            <span style="color: darkblue">E2</span>
+        </strong>
+    </div>
+</h1>
+<table style="font-size: 12px;font-weight: bold">
     <tr>
         <td>时间</td>
         <!--<td>联赛</td>-->
         <td>主队(让球)客队</td>
         <td>比分</td>
-        <td>推荐</td>
+        <td>推荐(标识)</td>
     </tr>
 {{with .DataList}}
 {{range .}}
@@ -21,11 +33,35 @@
         <td>{{.MatchDateStr}}</td>
         <!--<td>{{.LeagueName}}</td>-->
         <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-        <td>{{.MainTeamGoal}}:{{.GuestTeamGoal}}</td>
-        <td><b>{{.PreResult}}</b></td>
+        <td>
+        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+        </td>
+        <td
+        {{if eq  .Result "正确"}}
+        style="background-color: red"
+        {{else if eq  .Result "错误"}}
+        style="background-color: gray"
+        {{else}}
+        style="background-color: greenyellow"
+        {{end}}
+        >
+            <strong>
+            {{.PreResult}}
+            {{if eq .AlFlag "Asia20191206Service"}}
+                (<span style="color: orange">A1</span>)
+            {{else if eq .AlFlag "Euro20191206Service"}}
+                (<span style="color: blue">E1</span>)
+            {{else if eq .AlFlag "Euro20191212Service"}}
+                (<span style="color: darkblue">E2</span>)
+            {{else}}
+            {{end}}
+            </strong>
+        </td>
+
     </tr>
 {{end}}
 {{end}}
 </table>
+<span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
 </body>
 </html>

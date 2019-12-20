@@ -13,6 +13,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/wechat/controller"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"time"
 )
@@ -99,7 +100,7 @@ HEAD:
 			}
 		}()
 		goto HEAD
-	case "autospub\n", "autospub\r\n":
+	case "autoleisu\n", "autoleisu\r\n":
 		go func() {
 			for {
 				base.Log.Info("--------发布开始运行--------")
@@ -108,6 +109,18 @@ HEAD:
 				pubService.PubBJDC()
 				base.Log.Info("--------发布周期结束--------")
 				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
+			}
+		}()
+		goto HEAD
+	case "autowechat\n", "autowechat\r\n":
+		go func() {
+			for {
+				base.Log.Info("--------发布公众号开始运行--------")
+				//3.3 FW001PubApplication 执行发布到雷速
+				materialController := new(controller.MaterialController)
+				materialController.ModifyNewsOnly()
+				base.Log.Info("--------发布公众号周期结束--------")
+				time.Sleep(15 * time.Minute)
 			}
 		}()
 		goto HEAD
@@ -135,6 +148,16 @@ HEAD:
 				pubService.PubBJDC()
 				base.Log.Info("--------发布周期结束--------")
 				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
+			}
+		}()
+		go func() {
+			for {
+				base.Log.Info("--------发布公众号开始运行--------")
+				//3.3 FW001PubApplication 执行发布到雷速
+				materialController := new(controller.MaterialController)
+				materialController.ModifyNews()
+				base.Log.Info("--------发布公众号周期结束--------")
+				time.Sleep(15 * time.Minute)
 			}
 		}()
 		goto HEAD

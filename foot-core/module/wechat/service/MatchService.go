@@ -51,11 +51,12 @@ func (this *MatchService) Today(wcClient *core.Client) string {
 
 func (this *MatchService) ModifyToday(wcClient *core.Client) {
 	param := new(vo.SuggestVO)
-	nowStr := time.Now().Format("2006-01-02")
-	param.BeginDateStr = nowStr + " 12:00:00"
-	beginDate, _ := time.Parse("2006-01-02 15:04:05", param.BeginDateStr)
-	h23, _ := time.ParseDuration("23h")
-	endDate := beginDate.Add(h23)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-12h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("12h")
+	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	//今日推荐
 	tempList := this.SuggestService.Query(param)
