@@ -17,7 +17,7 @@ type BaseService struct {
 }
 
 var (
-	engine     *xorm.Engine
+	engine *xorm.Engine
 )
 
 func GetEngine() *xorm.Engine {
@@ -35,9 +35,9 @@ func ShowSQL(show bool) {
 }
 
 func setEngine() *xorm.Engine {
-	url := utils.GetVal("mysql","url")
-	maxIdle, _ := strconv.Atoi(utils.GetVal("mysql","maxIdle"))
-	maxConn, _ := strconv.Atoi(utils.GetVal("mysql","maxConn"))
+	url := utils.GetVal("mysql", "url")
+	maxIdle, _ := strconv.Atoi(utils.GetVal("mysql", "maxIdle"))
+	maxConn, _ := strconv.Atoi(utils.GetVal("mysql", "maxConn"))
 
 	var err error
 	engine, err = xorm.NewEngine("mysql", url)
@@ -73,7 +73,6 @@ func init() {
 	//设置初始化数据库引擎
 	setEngine()
 }
-
 
 func beforeModify(entity interface{}) {
 	//当前时间

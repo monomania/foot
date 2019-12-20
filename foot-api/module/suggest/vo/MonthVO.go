@@ -1,6 +1,6 @@
 package vo
 
-type WeekVO struct {
+type MonthVO struct {
 	//开始时间
 	BeginDateStr string
 	//结束时间

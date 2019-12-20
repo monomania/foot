@@ -16,28 +16,36 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	service3 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"time"
 )
 
 func main() {
+	//测试
+	suggestService := new(service3.SuggestService)
+	i := vo.SuggestVO{}
+	//i.AlFlag = "Euro20191212Service"
+	i.BeginDateStr = "2019-12-19 00:00:00"
+	query := suggestService.Query(&i)
+	for i, e := range query {
+		bytes, _ := json.Marshal(e)
+		fmt.Println(fmt.Sprintf("%d,%v", i, string(bytes)))
+	}
+
 	//测试markdown
 	tpl, err := template.ParseFiles("assets/wechat/html/week.html")
 	if err != nil {
 		base.Log.Error(err)
 	}
 	weekVO := vo.WeekVO{}
-	weekVO.BeginDate = time.Now()
-	weekVO.BeginDateStr = weekVO.BeginDate.Format("2006年01月02日")
-	weekVO.EndDate = time.Now()
-	weekVO.EndDateStr = weekVO.EndDate.Format("2006年01月02日")
 	weekVO.MatchCount = 98
 	weekVO.RedCount = 68
 	weekVO.WalkCount = 40
 	weekVO.BlackCount = 20
 	weekVO.LinkRedCount = 10
 	weekVO.LinkBlackCount = 5
-	dataList := make([]vo.SuggestVO,1)
+	dataList := make([]vo.SuggestVO, 1)
 	suggestVO := vo.SuggestVO{}
 	suggestVO.LeagueName = "联赛1"
 	suggestVO.MatchDate = time.Now()

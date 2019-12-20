@@ -2,7 +2,6 @@ package service
 
 import (
 	"strconv"
-	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
@@ -32,15 +31,21 @@ func (this *MatchLastService) FindAll() []*pojo.MatchLast {
 
 /**
 查找欧赔不完整的比赛
- */
+*/
 func (this *MatchLastService) FindEuroIncomplete(count int) []*pojo.MatchLast {
-	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT la.* FROM foot.`t_euro_last` l,foot.`t_match_last` la  WHERE l.`MatchId` = la.`Id` GROUP BY l.`MatchId` HAVING COUNT(1) <  " + strconv.Itoa(count))
+	sql_build := `
+SELECT 
+  la.* 
+FROM
+  foot.t_euro_last l,
+  foot.t_match_last la 
+WHERE l.MatchId = la.Id 
+GROUP BY l.MatchId
+	`
+	sql_build += " HAVING COUNT(1) < " + strconv.Itoa(count)
 	//结果值
 	dataList := make([]*pojo.MatchLast, 0)
 	//执行查询
-	this.FindBySQL(sql_build.String(), &dataList)
+	this.FindBySQL(sql_build, &dataList)
 	return dataList
 }
-
-

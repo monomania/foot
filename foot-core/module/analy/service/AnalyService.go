@@ -30,8 +30,8 @@ type AnalyService struct {
 	PrintOddData bool
 }
 
-func (this *AnalyService) Find(matchId string,alFlag string) *entity5.AnalyResult {
-	data := entity5.AnalyResult{MatchId: matchId,AlFlag:alFlag}
+func (this *AnalyService) Find(matchId string, alFlag string) *entity5.AnalyResult {
+	data := entity5.AnalyResult{MatchId: matchId, AlFlag: alFlag}
 	mysql.GetEngine().Get(&data)
 	return &data
 }
@@ -41,8 +41,6 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	mysql.GetEngine().OrderBy("CreateTime Desc").Find(&dataList)
 	return dataList
 }
-
-
 
 /**
 ###推送的主客队选项,
@@ -85,8 +83,6 @@ func (this *AnalyService) ListDefaultData() []*vo.AnalyResultVO {
 	return analyList
 }
 
-
-
 /**
 获取可发布的数据项
 1.预算结果是主队
@@ -96,34 +92,59 @@ func (this *AnalyService) ListDefaultData() []*vo.AnalyResultVO {
 5.option 3(只筛选主队),1(只筛选平局),0(只筛选客队)选项
 */
 func (this *AnalyService) ListData(alName string, hitCount int, option int) []*vo.AnalyResultVO {
-	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT  l.`Name` as LeagueName,ml.`MainTeamId`,ml.`GuestTeamId`,ar.* FROM foot.`t_match_last` ml,foot.`t_league` l,foot.`t_analy_result` ar WHERE ml.`LeagueId` = l.`Id` AND ml.`Id` = ar.`MatchId` AND ar.`LeisuPubd` IS FALSE AND ar.`MatchDate` > NOW()   ")
+	sql_build := `
+SELECT 
+  l.Name as LeagueName,
+  ml.MainTeamId,
+  ml.GuestTeamId,
+  ar.* 
+FROM
+  foot.t_match_last ml,
+  foot.t_league l,
+  foot.t_analy_result ar 
+WHERE ml.LeagueId = l.Id 
+  AND ml.Id = ar.MatchId 
+  AND ar.LeisuPubd IS FALSE 
+  AND ar.MatchDate > NOW()
+     `
 
 	if len(alName) > 0 {
-		sql_build.WriteString(" AND ar.`AlFlag` = '" + alName + "' ")
+		sql_build += " AND ar.AlFlag = '" + alName + "' "
 	}
 	if hitCount > 0 {
-		sql_build.WriteString(" AND ar.`HitCount` >= " + strconv.Itoa(hitCount))
+		sql_build += " AND ar.HitCount >= " + strconv.Itoa(hitCount)
 	}
 	if option >= 0 {
-		sql_build.WriteString(" AND ar.`PreResult` = " + strconv.Itoa(option) + " ")
+		sql_build += " AND ar.PreResult = " + strconv.Itoa(option) + " "
 	}
-	sql_build.WriteString(" ORDER BY ar.`MatchDate` ASC  ,ar.`PreResult` DESC  ")
+	sql_build += " ORDER BY ar.MatchDate ASC ,ar.PreResult DESC  "
 	//结果值
 	entitys := make([]*vo.AnalyResultVO, 0)
 	//执行查询
-	this.FindBySQL(sql_build.String(), &entitys)
+	this.FindBySQL(sql_build, &entitys)
 	return entitys
 }
 
 //测试加载数据
 func (this *AnalyService) LoadData(matchId string) []*entity5.AnalyResult {
-	sql_build := strings.Builder{}
-	sql_build.WriteString("SELECT ml.*,  bc.id,  bc.name AS compName, el.*  FROM t_match_last ml, t_euro_last el,  t_comp bc  WHERE ml.id = el.matchid  AND el.compid = bc.id AND ml.id =  '" + matchId + "' ")
+	sql_build := `
+SELECT 
+  ml.*,
+  bc.id,
+  bc.name AS compName,
+  el.* 
+FROM
+  t_match_last ml,
+  t_euro_last el,
+  t_comp bc 
+WHERE ml.id = el.matchid 
+  AND el.compid = bc.id 
+	`
+	sql_build += "  AND ml.id = '" + matchId + "' "
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
 	//执行查询
-	this.FindBySQL(sql_build.String(), &entitys)
+	this.FindBySQL(sql_build, &entitys)
 	return entitys
 }
 

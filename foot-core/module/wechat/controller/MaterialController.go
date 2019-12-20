@@ -67,7 +67,9 @@ func (this *MaterialController) News() {
 }
 
 func (this *MaterialController) ModifyNews() {
+	this.MatchService.ModifyToday(wcClient)
 	this.MatchService.ModifyWeek(wcClient)
+	this.MatchService.ModifyMonth(wcClient)
 	this.Data["json"] = "ok"
 	this.ServeJSON()
 }

@@ -1,6 +1,8 @@
 package vo
 
-import "tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
+import (
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
+)
 
 type SuggestVO struct {
 	MatchDateStr string
@@ -16,6 +18,11 @@ type SuggestVO struct {
 	MainTeamGoal string
 	//客队进球
 	GuestTeamGoal string
+
+	//开始时间
+	BeginDateStr string
+	//结束时间
+	EndDateStr string
 
 	pojo.Suggest `xorm:"extends"`
 }
