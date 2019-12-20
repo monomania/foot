@@ -48,7 +48,7 @@ func (this *MatchPageProcesser) Startup() {
 		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
 	this.MatchlastUrl = this.MatchlastUrl + "?flesh=" + strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
-	newSpider := spider.NewSpider(GetMatchPageProcesser(), "MatchPageProcesser")
+	newSpider := spider.NewSpider(this, "MatchPageProcesser")
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
