@@ -17,3 +17,13 @@ func (this *MatchHisService) FindExists(v *pojo.MatchHis) bool {
 	}
 	return has
 }
+
+func (this *MatchHisService) FindById(matchId string) *pojo.MatchHis {
+	data := new(pojo.MatchHis)
+	data.Id = matchId
+	_, err := mysql.GetEngine().Get(data)
+	if err != nil {
+		base.Log.Info("FindById:", err)
+	}
+	return data
+}

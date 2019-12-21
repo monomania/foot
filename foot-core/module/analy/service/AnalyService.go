@@ -25,6 +25,7 @@ type AnalyService struct {
 	service.EuroHisService
 	service.AsiaLastService
 	service2.MatchLastService
+	service2.MatchHisService
 	service3.LeagueService
 	//是否打印赔率数据
 	PrintOddData bool
@@ -71,6 +72,46 @@ func (this *AnalyService) teamOption() int {
 		}
 	}
 	return result
+}
+
+func (this *AnalyService) ModifyResult() {
+	sql_build := `
+SELECT 
+  ar.* 
+FROM
+  foot.t_analy_result ar 
+WHERE ar.MatchDate > NOW() 
+  AND ar.Result = '待定' 
+     `
+	//结果值
+	entitys := make([]*entity5.AnalyResult, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &entitys)
+
+	if len(entitys) <= 0 {
+		return
+	}
+	for _, e := range entitys {
+		aList := this.AsiaLastService.FindByMatchIdCompId(e.MatchId, "18Bet")
+		if len(aList) < 1 {
+			continue
+		}
+		his := this.MatchHisService.FindById(e.MatchId)
+		if nil == his {
+			continue
+		}
+		last := new(entity2.MatchLast)
+		last.MatchDate = his.MatchDate
+		last.DataDate = his.DataDate
+		last.LeagueId = his.LeagueId
+		last.MainTeamId = his.MainTeamId
+		last.MainTeamGoals = his.MainTeamGoals
+		last.GuestTeamId = his.GuestTeamId
+		last.GuestTeamGoals = his.GuestTeamGoals
+		e.Result = this.IsRight(aList[0], last, e.PreResult)
+		this.Modify(e)
+	}
+
 }
 
 func (this *AnalyService) ListDefaultData() []*vo.AnalyResultVO {
