@@ -21,6 +21,7 @@ type SuggestVO struct {
 	BeginDateStr string
 	//结束时间
 	EndDateStr string
-
+	//是否倒序
+	IsDesc bool
 	pojo.Suggest `xorm:"extends"`
 }

@@ -48,9 +48,11 @@ WHERE mh.LeagueId = l.Id
 	if len(param.EndDateStr) > 0 {
 		sql += " AND mh.`MatchDate` <= '" + param.EndDateStr + "' "
 	}
-
-	sql += " ORDER BY ar.MatchDate ASC,  ar.PreResult DESC "
-
+	if param.IsDesc{
+		sql += " ORDER BY ar.MatchDate DESC, l.id ASC, ar.PreResult DESC "
+	}else{
+		sql += " ORDER BY ar.MatchDate ASC,  l.id ASC,ar.PreResult DESC "
+	}
 	//结果值
 	entitys := make([]*vo2.SuggestVO, 0)
 	//执行查询
