@@ -108,7 +108,7 @@ WHERE ar.MatchDate < NOW()
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		e.Result = this.IsRight(aList[0], last, e.PreResult)
+		e.Result = this.IsRight(aList[0], last, e)
 		this.Modify(e)
 	}
 
@@ -189,13 +189,13 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
-func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, preResult int) string {
+func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
-	globalResult := this.ActualResult(last, v)
+	globalResult := this.ActualResult(last, v,analy)
 	var resultFlag string
 	if globalResult == -1 {
 		resultFlag = "待定"
-	} else if globalResult == preResult {
+	} else if globalResult == analy.PreResult {
 		resultFlag = "正确"
 	} else if globalResult == 1 {
 		resultFlag = "走盘"
@@ -206,14 +206,14 @@ func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
 	matchDate := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(preResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
 }
 
 /**
 比赛的实际结果计算
 */
-func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) int {
+func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
 	h2, _ := time.ParseDuration("148m")
 	matchDate := v.MatchDate.Add(h2)
@@ -222,7 +222,12 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 		return -1
 	}
 
-	elb_sum := last.ELetBall
+	var elb_sum float64
+	if analy.LetBall > 0 {
+		elb_sum = analy.LetBall
+	}else{
+		elb_sum = last.ELetBall
+	}
 	var mainTeamGoals float64
 	if elb_sum > 0 {
 		mainTeamGoals = float64(v.MainTeamGoals) - elb_sum

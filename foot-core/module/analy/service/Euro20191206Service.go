@@ -138,7 +138,7 @@ func (this *Euro20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data = temp_data
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, preResult)
+		data.Result = this.IsRight(a18betData, v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -151,7 +151,7 @@ func (this *Euro20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.PreResult = preResult
 		data.HitCount = 1
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, preResult)
+		data.Result = this.IsRight(a18betData, v, data)
 		return 0, data
 	}
 }
