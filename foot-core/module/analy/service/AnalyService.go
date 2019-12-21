@@ -80,7 +80,7 @@ SELECT
   ar.* 
 FROM
   foot.t_analy_result ar 
-WHERE ar.MatchDate > NOW() 
+WHERE ar.MatchDate < NOW() 
   AND ar.Result = '待定' 
      `
 	//结果值
