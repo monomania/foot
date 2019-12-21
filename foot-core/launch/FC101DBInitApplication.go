@@ -10,7 +10,7 @@ func TruncateTable() {
 
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
-	opsService.TruncateTable([]string{"t_match_last", "t_asia_last", "t_euro_last", "t_euro_his"})
+	opsService.TruncateTable([]string{"t_match_last", "t_asia_last", "t_euro_last"})
 }
 
 func GenTable() {

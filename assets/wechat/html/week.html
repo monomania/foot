@@ -42,8 +42,10 @@
         style="background-color: red"
         {{else if eq  .Result "错误"}}
         style="background-color: gray"
-        {{else}}
+        {{else if eq  .Result "走盘"}}
         style="background-color: greenyellow"
+        {{else}}
+        style="background-color: orange"
         {{end}}
         >
             <strong>

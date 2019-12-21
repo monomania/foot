@@ -42,7 +42,7 @@ func (this *Euro20191206Service) Analy() {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count{
-					temp_data.HitCount = (hit_count - 1)
+					temp_data.HitCount = (hit_count / 2) -1
 					this.AnalyService.Modify(temp_data)
 					continue
 				}
