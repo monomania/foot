@@ -45,6 +45,8 @@ func (this *Asia20191206Service) Analy() {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count{
+					temp_data.HitCount = (hit_count - 1)
+					this.AnalyService.Modify(temp_data)
 					continue
 				}
 				this.AnalyService.Del(temp_data)
@@ -136,6 +138,7 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
+		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)
 		return 0, data

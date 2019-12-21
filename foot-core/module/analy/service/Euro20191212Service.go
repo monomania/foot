@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"math"
 	"reflect"
 	"strconv"
@@ -28,9 +27,6 @@ func (this *Euro20191212Service) Analy() {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
-		if strings.EqualFold("沃尔夫斯堡",v.MainTeamId){
-			fmt.Println("-----------------")
-		}
 		stub, result := this.analyStub(v)
 		if nil == result {
 			continue
@@ -45,7 +41,9 @@ func (this *Euro20191212Service) Analy() {
 			if len(temp_data.Id) > 0 {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
-				if temp_data.HitCount >= hit_count{
+				if temp_data.HitCount >= hit_count {
+					temp_data.HitCount = (hit_count - 1)
+					this.AnalyService.Modify(temp_data)
 					continue
 				}
 				this.AnalyService.Del(temp_data)
@@ -58,9 +56,6 @@ func (this *Euro20191212Service) Analy() {
 }
 
 func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
-	if strings.EqualFold("沃尔夫斯堡",v.MainTeamId){
-		fmt.Println("-----------------")
-	}
 	matchId := v.Id
 	//声明使用变量
 	var e616data *entity3.EuroLast
@@ -115,9 +110,9 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 
 
 
-	alFlag := reflect.TypeOf(*this).Name()
 	var data *entity5.AnalyResult
-	temp_data := this.Find(v.Id, alFlag)
+	alFlag := reflect.TypeOf(*this).Name()
+	temp_data := this.Find(matchId, alFlag)
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
@@ -136,6 +131,7 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
+		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)
 		return 0, data
