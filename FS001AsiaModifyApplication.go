@@ -1,7 +1,6 @@
 package main
 
 import (
-	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 )
 

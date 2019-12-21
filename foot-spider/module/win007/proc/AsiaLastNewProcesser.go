@@ -20,6 +20,7 @@ import (
 
 type AsiaLastNewProcesser struct {
 	service.AsiaLastService
+	service.AsiaHisService
 
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
@@ -62,6 +63,8 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 
 	asia_list_slice := make([]interface{}, 0)
 	asia_list_update_slice := make([]interface{}, 0)
+	asia_his_slice := make([]interface{}, 0)
+	asia_his_update_slice := make([]interface{}, 0)
 	str := p.GetBodyStr()
 	fmt.Println(str)
 	asiaData := &vo.AsiaData{}
@@ -74,35 +77,55 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 	}
 	for _, e := range asiaData.Companies {
 
-		asia := new(entity2.AsiaLast)
-		asia.MatchId = matchId
-		asia.CompId = e.NameCn
+		last := new(entity2.AsiaLast)
+		last.MatchId = matchId
+		last.CompId = e.NameCn
 
 		odd := e.Details[0]
-		asia.Sp3= odd.FirstHomeOdds
-		asia.SLetBall = odd.FirstDrawOdds
-		asia.Sp0= odd.FirstAwayOdds
-		asia.Ep3= odd.HomeOdds
-		asia.ELetBall = odd.DrawOdds
-		asia.Ep0 = odd.AwayOdds
+		last.Sp3= odd.FirstHomeOdds
+		last.SLetBall = odd.FirstDrawOdds
+		last.Sp0= odd.FirstAwayOdds
+		last.Ep3= odd.HomeOdds
+		last.ELetBall = odd.DrawOdds
+		last.Ep0 = odd.AwayOdds
 		if len(odd.ModifyTime) > 0 {
 			tempMt, err := strconv.ParseInt(odd.ModifyTime,0,64)
 			if nil != err{
 				base.Log.Error(err.Error())
 			}
-			asia.OddDate = time.Unix(tempMt, 0).Format("2006-01-02 15:04:05" )
+			last.OddDate = time.Unix(tempMt, 0).Format("2006-01-02 15:04:05" )
 		}
-		asia_exists := this.AsiaLastService.FindExists(asia)
-		if !asia_exists {
-			asia_list_slice = append(asia_list_slice, asia)
+		last_exists := this.AsiaLastService.FindExists(last)
+		if !last_exists {
+			asia_list_slice = append(asia_list_slice, last)
 		} else {
-			asia_list_update_slice = append(asia_list_update_slice, asia)
+			asia_list_update_slice = append(asia_list_update_slice, last)
+		}
+
+		his := new(entity2.AsiaHis)
+		his.CompId = last.CompId
+		his.MatchId = last.MatchId
+		his.OddDate = last.OddDate
+		his.Sp0 = last.Sp0
+		his.Sp3 = last.Sp3
+		his.SLetBall = last.SLetBall
+		his.Ep0 = last.Ep0
+		his.Ep3 = last.Ep3
+		his.ELetBall = last.ELetBall
+
+		his_exists := this.AsiaHisService.FindExists(his)
+		if !his_exists {
+			asia_his_slice = append(asia_his_slice, his)
+		} else {
+			asia_his_update_slice = append(asia_his_update_slice, his)
 		}
 	}
 
 	//执行入库
 	this.AsiaLastService.SaveList(asia_list_slice)
 	this.AsiaLastService.ModifyList(asia_list_update_slice)
+	this.AsiaHisService.SaveList(asia_his_slice)
+	this.AsiaHisService.ModifyList(asia_his_update_slice)
 
 }
 

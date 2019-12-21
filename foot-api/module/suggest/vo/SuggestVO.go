@@ -10,8 +10,6 @@ type SuggestVO struct {
 	LeagueName string
 	//主队
 	MainTeam string
-	//主球
-	LetBall float64
 	//客队
 	GuestTeam string
 	//主队进球

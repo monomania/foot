@@ -14,7 +14,7 @@ type AsiaLastService struct {
 
 //查看数据是否已经存在
 func (this *AsiaLastService) FindExists(v *pojo.AsiaLast) bool {
-	exist, err := mysql.GetEngine().Get(v)
+	exist, err := mysql.GetEngine().Get(&pojo.AsiaLast{MatchId:v.MatchId,CompId:v.CompId})
 	if err != nil {
 		base.Log.Info("错误:", err)
 	}

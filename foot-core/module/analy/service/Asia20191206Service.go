@@ -114,6 +114,7 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		data = temp_data
+		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, preResult)
 		return 1, data
@@ -121,6 +122,7 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
+		data.LetBall = a18betData.ELetBall
 		data.AlFlag = alFlag
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

@@ -22,17 +22,13 @@ SELECT
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,
   mh.MainTeamGoals AS MainTeamGoal,
-  al.ELetBall AS LetBall,
   mh.GuestTeamGoals AS GuestTeamGoal,
   ar.* 
 FROM
   foot.t_league l,
   foot.t_match_his mh,
-  foot.t_asia_last al,
   foot.t_analy_result ar 
 WHERE mh.LeagueId = l.Id 
-  AND mh.Id = al.MatchId 
-  AND al.CompId = '韦德' 
   AND mh.Id = ar.MatchId 
 	`
 	if param.HitCount > 0 {
