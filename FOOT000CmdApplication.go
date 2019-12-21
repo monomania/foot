@@ -140,16 +140,16 @@ HEAD:
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
 			}
 		}()
-		go func() {
-			for {
-				base.Log.Info("--------发布开始运行--------")
-				//3.3 FW001PubApplication 执行发布到雷速
-				pubService := new(service.PubService)
-				pubService.PubBJDC()
-				base.Log.Info("--------发布周期结束--------")
-				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
-			}
-		}()
+		//go func() {
+		//	for {
+		//		base.Log.Info("--------发布开始运行--------")
+		//		//3.3 FW001PubApplication 执行发布到雷速
+		//		pubService := new(service.PubService)
+		//		pubService.PubBJDC()
+		//		base.Log.Info("--------发布周期结束--------")
+		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
+		//	}
+		//}()
 		go func() {
 			for {
 				base.Log.Info("--------发布公众号开始运行--------")

@@ -215,7 +215,7 @@ func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, 
 */
 func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast) int {
 	var result int
-	h2, _ := time.ParseDuration("2h")
+	h2, _ := time.ParseDuration("148m")
 	matchDate := v.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束
