@@ -93,8 +93,9 @@ WHERE ar.MatchDate < NOW()
 	}
 	for _, e := range entitys {
 		aList := this.AsiaLastService.FindByMatchIdCompId(e.MatchId, "18Bet")
-		if len(aList) < 1 {
-			continue
+		if nil == aList || len(aList) < 1 {
+			aList = make([]*entity3.AsiaLast,1)
+			aList[0] = new(entity3.AsiaLast)
 		}
 		his := this.MatchHisService.FindById(e.MatchId)
 		if nil == his {

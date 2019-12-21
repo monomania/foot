@@ -11,6 +11,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"time"
@@ -65,6 +66,8 @@ func (this *MatchService) ModifyToday(wcClient *core.Client) {
 	first.Title = fmt.Sprintf("今日推荐 %v", time.Now().Format("01月02日"))
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
+	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
+	first.Author = utils.GetVal("wechat","author")
 
 	todayVO := vo.TodayVO{}
 	todayVO.DataList = make([]vo.SuggestVO, len(tempList))
@@ -96,6 +99,7 @@ func (this *MatchService) Week(wcClient *core.Client) string {
 	first.Title = "最近七天战绩"
 	first.Digest = "20191216-20191219"
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
+
 	var first_content string
 	for _, e := range listData {
 		bytes, _ := json.Marshal(e)
@@ -121,6 +125,7 @@ func (this *MatchService) ModifyWeek(wcClient *core.Client) {
 	h168, _ := time.ParseDuration("-168h")
 	beginDate := now.Add(h168)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	param.IsDesc = true
 	//今日推荐
 	tempList := this.SuggestService.Query(param)
 	//更新推送
@@ -130,7 +135,7 @@ func (this *MatchService) ModifyWeek(wcClient *core.Client) {
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
 	first.ShowCoverPic = 0
 	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
-
+	first.Author = utils.GetVal("wechat","author")
 	temp := vo.WeekVO{}
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
@@ -216,6 +221,7 @@ func (this *MatchService) ModifyMonth(wcClient *core.Client) {
 	h168, _ := time.ParseDuration("-720h")
 	beginDate := now.Add(h168)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	param.IsDesc = true
 	//今日推荐
 	tempList := this.SuggestService.Query(param)
 	//更新推送
@@ -223,6 +229,8 @@ func (this *MatchService) ModifyMonth(wcClient *core.Client) {
 	first.Title = "最近一月战绩"
 	first.Digest = fmt.Sprintf("%v-%v", beginDate.Format("2006年01月02日"), now.Format("2006年01月02日"))
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
+	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
+	first.Author = utils.GetVal("wechat","author")
 
 	temp := vo.WeekVO{}
 	temp.BeginDateStr = param.BeginDateStr
