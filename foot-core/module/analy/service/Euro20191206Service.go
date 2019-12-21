@@ -3,10 +3,13 @@ package service
 import (
 	"math"
 	"reflect"
+	"strconv"
 	"strings"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	"time"
 )
 
@@ -36,6 +39,11 @@ func (this *Euro20191206Service) Analy() {
 		} else {
 			temp_data := this.Find(v.Id,result.AlFlag)
 			if len(temp_data.Id) > 0 {
+				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+				hit_count, _ := strconv.Atoi(hit_count_str)
+				if temp_data.HitCount >= hit_count{
+					continue
+				}
 				this.AnalyService.Del(temp_data)
 			}
 		}
