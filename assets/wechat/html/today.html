@@ -14,7 +14,7 @@
 <table style="font-size: 12px;font-weight: bold">
     <tr>
         <td>时间</td>
-        <!--<td>联赛</td>-->
+        <td>联赛</td>
         <td>主队(让球)客队</td>
         <td>比分</td>
         <td>推荐(模型)</td>
@@ -23,7 +23,7 @@
 {{range .}}
     <tr>
         <td>{{.MatchDateStr}}</td>
-        <!--<td>{{.LeagueName}}</td>-->
+        <td>{{.LeagueName}}</td>
         <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
         <td>
         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
