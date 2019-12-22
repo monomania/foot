@@ -32,7 +32,7 @@ WHERE mh.LeagueId = l.Id
   AND mh.Id = ar.MatchId 
 	`
 	if param.HitCount > 0 {
-		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
+		sql += "  AND ar.HitCount >= THitCount AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
 	} else if param.MinHitCount > 0 || param.MaxHitCount > 0 {
 		if param.MinHitCount > 0 {
 			sql += " AND ar.HitCount >= '" + strconv.Itoa(param.MinHitCount) + "' "
@@ -42,7 +42,7 @@ WHERE mh.LeagueId = l.Id
 		}
 	} else {
 		hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-		sql += " AND ar.HitCount >= '" + hit_count_str + "' "
+		sql += " AND ar.HitCount >= THitCount AND ar.HitCount >= '" + hit_count_str + "' "
 	}
 
 	if len(param.AlFlag) > 0 {

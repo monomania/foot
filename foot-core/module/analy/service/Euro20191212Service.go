@@ -131,6 +131,11 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
+		hours := v.MatchDate.Sub(time.Now()).Hours()
+		if hours > 0 {
+			hours = math.Abs(hours * 0.7)
+			data.THitCount = int(hours)
+		}
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)

@@ -146,6 +146,7 @@ FROM
   foot.t_analy_result ar 
 WHERE ml.LeagueId = l.Id 
   AND ml.Id = ar.MatchId 
+  AND ar.HitCount >= THitCount
   AND ar.LeisuPubd IS FALSE 
   AND ar.MatchDate > NOW()
      `

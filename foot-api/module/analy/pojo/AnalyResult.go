@@ -18,6 +18,8 @@ type AnalyResult struct {
 	PreResult int `xorm:" comment('预测结果') index"`
 	//命中次数
 	HitCount int    `xorm:" comment('预测结果命中次数') index"`
+	//target 命中次数
+	THitCount int    `xorm:" comment('达标预测结果命中次数') index"`
 	Result   string `xorm:" comment('实际结果') index"`
 	//算法标识
 	AlFlag string `xorm:" comment('算法标识') index"`
