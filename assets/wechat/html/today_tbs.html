@@ -1,4 +1,4 @@
-<span style="color: red;font-weight: bold;font-size: 12px">注意:比赛为程序自动处理,自动更新同步,目前更新周期为一个小时一次.</span>
+<span style="color: red;font-weight: bold;font-size: 12px">注意:以下比赛为待选池中的比赛,未被模型认可.</span>
 <hr/>
 <h1 style="margin-top: 5px">
     <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
@@ -14,34 +14,22 @@
 <table style="font-size: 12px;font-weight: bold">
     <tr>
         <td>时间</td>
-        <!--<td>联赛</td>-->
+        <td>联赛</td>
         <td>主队(让球)客队</td>
         <td>比分</td>
-        <td>推荐(模型)</td>
+        <td>模型</td>
+        <td>指数</td>
     </tr>
 {{with .DataList}}
 {{range .}}
     <tr>
         <td>{{.MatchDateStr}}</td>
-        <!--<td>{{.LeagueName}}</td>-->
+        <td>{{.LeagueName}}</td>
         <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
         <td>
         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
         </td>
-        <td
-        {{if eq  .Result "正确"}}
-        style="background-color: red"
-        {{else if eq  .Result "错误"}}
-        style="background-color: gray"
-        {{else if eq  .Result "走盘"}}
-        style="background-color: greenyellow"
-        {{else}}
-        style="background-color: orange"
-        {{end}}
-        >
-            <strong>
-            {{.PreResult}}
-            </strong>
+        <td>
         {{if eq .AlFlag "Asia20191206Service"}}
             (<span style="color: orange">A1</span>)
         {{else if eq .AlFlag "Euro20191206Service"}}
@@ -51,7 +39,9 @@
         {{else}}
             {{end}}
         </td>
-
+        <td style="color: red">
+            <strong>{{.HitCount}}</strong>
+        </td>
     </tr>
 {{end}}
 {{end}}

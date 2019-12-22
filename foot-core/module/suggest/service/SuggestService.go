@@ -33,7 +33,14 @@ WHERE mh.LeagueId = l.Id
 	`
 	if param.HitCount > 0 {
 		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
-	}else{
+	} else if param.MinHitCount > 0 || param.MaxHitCount > 0 {
+		if param.MinHitCount > 0 {
+			sql += " AND ar.HitCount >= '" + strconv.Itoa(param.MinHitCount) + "' "
+		}
+		if param.MaxHitCount > 0 {
+			sql += " AND ar.HitCount <= '" + strconv.Itoa(param.MaxHitCount) + "' "
+		}
+	} else {
 		hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 		sql += " AND ar.HitCount >= '" + hit_count_str + "' "
 	}
@@ -48,9 +55,9 @@ WHERE mh.LeagueId = l.Id
 	if len(param.EndDateStr) > 0 {
 		sql += " AND mh.`MatchDate` <= '" + param.EndDateStr + "' "
 	}
-	if param.IsDesc{
+	if param.IsDesc {
 		sql += " ORDER BY ar.MatchDate DESC, l.id ASC, ar.PreResult DESC "
-	}else{
+	} else {
 		sql += " ORDER BY ar.MatchDate ASC,  l.id ASC,ar.PreResult DESC "
 	}
 	//结果值

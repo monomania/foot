@@ -16,12 +16,17 @@ type SuggestVO struct {
 	MainTeamGoal string
 	//客队进球
 	GuestTeamGoal string
-
+	//指数
+	HitCount int
 	//开始时间
 	BeginDateStr string
 	//结束时间
 	EndDateStr string
 	//是否倒序
 	IsDesc bool
+
+
+	MinHitCount int
+	MaxHitCount int
 	pojo.Suggest `xorm:"extends"`
 }
