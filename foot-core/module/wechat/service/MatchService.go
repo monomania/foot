@@ -74,6 +74,7 @@ func (this *MatchService) ModifyToday(wcClient *core.Client) {
 	temp := vo.TodayVO{}
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
 	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
@@ -118,6 +119,7 @@ func (this *MatchService) ModifyTodayDetail(wcClient *core.Client) {
 	temp := vo.TodayVO{}
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
 	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
@@ -167,6 +169,7 @@ func (this *MatchService) ModifyTodayTbs(wcClient *core.Client) {
 	temp := vo.TodayVO{}
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
 	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
