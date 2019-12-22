@@ -71,11 +71,13 @@ func (this *MatchService) ModifyToday(wcClient *core.Client) {
 	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
 	first.Author = utils.GetVal("wechat","author")
 
-	todayVO := vo.TodayVO{}
-	todayVO.DataList = make([]vo.SuggestVO, len(tempList))
+	temp := vo.TodayVO{}
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
-		todayVO.DataList[i] = *e
+		temp.DataList[i] = *e
 	}
 
 	var buf bytes.Buffer
@@ -83,7 +85,7 @@ func (this *MatchService) ModifyToday(wcClient *core.Client) {
 	if err != nil {
 		base.Log.Error(err)
 	}
-	if err := tpl.Execute(&buf, &todayVO); err != nil {
+	if err := tpl.Execute(&buf, &temp); err != nil {
 		base.Log.Fatal(err)
 	}
 	first.Content = buf.String()
@@ -113,11 +115,13 @@ func (this *MatchService) ModifyTodayDetail(wcClient *core.Client) {
 	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
 	first.Author = utils.GetVal("wechat","author")
 
-	todayVO := vo.TodayVO{}
-	todayVO.DataList = make([]vo.SuggestVO, len(tempList))
+	tema := vo.TodayVO{}
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	tema.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
-		todayVO.DataList[i] = *e
+		tema.DataList[i] = *e
 	}
 
 	var buf bytes.Buffer
@@ -125,7 +129,7 @@ func (this *MatchService) ModifyTodayDetail(wcClient *core.Client) {
 	if err != nil {
 		base.Log.Error(err)
 	}
-	if err := tpl.Execute(&buf, &todayVO); err != nil {
+	if err := tpl.Execute(&buf, &tema); err != nil {
 		base.Log.Fatal(err)
 	}
 	first.Content = buf.String()
@@ -160,11 +164,13 @@ func (this *MatchService) ModifyTodayTbs(wcClient *core.Client) {
 	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
 	first.Author = utils.GetVal("wechat","author")
 
-	todayVO := vo.TodayVO{}
-	todayVO.DataList = make([]vo.SuggestVO, len(tempList))
+	temp := vo.TodayVO{}
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
-		todayVO.DataList[i] = *e
+		temp.DataList[i] = *e
 	}
 
 	var buf bytes.Buffer
@@ -172,7 +178,7 @@ func (this *MatchService) ModifyTodayTbs(wcClient *core.Client) {
 	if err != nil {
 		base.Log.Error(err)
 	}
-	if err := tpl.Execute(&buf, &todayVO); err != nil {
+	if err := tpl.Execute(&buf, &temp); err != nil {
 		base.Log.Fatal(err)
 	}
 	first.Content = buf.String()
