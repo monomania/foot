@@ -27,22 +27,27 @@ func (this *Euro20191212Service) Analy() {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
-		stub, result := this.analyStub(v)
-		if nil == result {
-			continue
-		}
+		stub, data := this.analyStub(v)
 
-		if stub == 0 {
-			data_list_slice = append(data_list_slice, result)
-		} else if stub == 1 {
-			data_modify_list_slice = append(data_modify_list_slice, result)
+		if stub == 0 || stub == 1 {
+			hours := v.MatchDate.Sub(time.Now()).Hours()
+			if hours > 0 {
+				hours = math.Abs(hours * 0.7)
+				data.THitCount = int(hours)
+			}
+			if stub == 0 {
+				data_list_slice = append(data_list_slice, data)
+			} else if stub == 1 {
+				data_modify_list_slice = append(data_modify_list_slice, data)
+			}
 		} else {
-			temp_data := this.Find(v.Id, result.AlFlag)
+			alFlag := reflect.TypeOf(*this).Name()
+			temp_data := this.Find(v.Id, alFlag)
 			if len(temp_data.Id) > 0 {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count {
-					temp_data.HitCount = (hit_count / 2) -1
+					temp_data.HitCount = (hit_count / 2) - 1
 					this.AnalyService.Modify(temp_data)
 					continue
 				}
@@ -100,15 +105,13 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		return -3, nil
 	}
 	var preResult int
-	if e616data.Ep3 > (e616data.Sp3 + 0.01) && e104data.Ep3 < e104data.Sp3 {
+	if e616data.Ep3 > (e616data.Sp3+0.01) && e104data.Ep3 < e104data.Sp3 {
 		preResult = 3
-	}else if e616data.Ep3 < e616data.Sp3 && e104data.Ep3 < e104data.Sp3 && e616data.Ep3 < e104data.Ep3 {
+	} else if e616data.Ep3 < e616data.Sp3 && e104data.Ep3 < e104data.Sp3 && e616data.Ep3 < e104data.Ep3 {
 		preResult = 3
-	}else{
+	} else {
 		return -3, nil
 	}
-
-
 
 	var data *entity5.AnalyResult
 	alFlag := reflect.TypeOf(*this).Name()
@@ -116,8 +119,8 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
+		temp_data.LetBall = a18betData.ELetBall
 		data = temp_data
-		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)
 		return 1, data
@@ -131,11 +134,6 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
-		hours := v.MatchDate.Sub(time.Now()).Hours()
-		if hours > 0 {
-			hours = math.Abs(hours * 0.7)
-			data.THitCount = int(hours)
-		}
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)

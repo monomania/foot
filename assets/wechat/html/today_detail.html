@@ -1,50 +1,22 @@
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<br/>
-<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span>
-<hr/>
 <ul style="font-size: 15px;font-weight: lighter">
+    <li>更新时间:{{.DataDateStr}}</li>
     <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
 </ul>
 <hr/>
-<h1 style="margin-top: 5px">
-    <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
-    <div style="float: right;width: 40%">
-        <strong>模型:
-            <span style="color: orange">A1</span>
-            <span style="color: orangered">A2</span>
-            <span style="color: blue">E1</span>
-            <span style="color: darkblue">E2</span>
-        </strong>
-    </div>
-</h1>
-<table style="font-size: 12px;font-weight: bold">
-    <tr>
-        <td>时间</td>
-        <td>联赛</td>
-        <td>主队(让球)客队</td>
-        <td>比分</td>
-    </tr>
 {{with .DataList}}
 {{range .}}
-    <tr>
-        <td>{{.MatchDateStr}}</td>
-       <td>{{.LeagueName}}</td>
-        <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-        <td>
-        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
-        </td>
-    </tr>
+<ul>
+    <li>比赛时间:{{.MatchDateStr}}</li>
+    <li>联　　赛:{{.LeagueName}}</li>
+    <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
+    <li>球探指数:{{.HitCount}}</li>
+    <li>分　　析:<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span></li>
+</ul>
+<hr/>
 {{end}}
 {{end}}
-</table>
+
+
+
+
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>

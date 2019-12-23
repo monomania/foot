@@ -45,7 +45,14 @@
         {{end}}
         >
             <strong>
-            {{.PreResult}}
+            {{if eq .PreResult 3}}
+                主
+            {{else if eq .PreResult 1}}
+                平
+            {{else if eq .PreResult 0}}
+                客
+            {{else}}
+            {{end}}
             </strong>
         {{if eq .AlFlag "Asia20191206Service"}}
             (<span style="color: orange">A1</span>)
