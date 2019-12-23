@@ -1,0 +1,7 @@
+x.对接微信公众号,支付使用xorpay.com
+x.对接抖音
+x.对接各大平台,知乎,头条,百家号
+x.非同一IP的cookies不可用,看似乎得走流程,获取cookies.目前暂时放在12上
+x.对接leisu的论坛发布文章,重点功能,依赖于第一点
+x.可能后期会部署于wondows 服务器上,开发一个舒服可控制的gui程序出来,也弥补一下从业编程多年的空白
+x.优化分析算法,机器学习,需要Python支持,Tensorflow(google) PyTorch (facebook)两个方向,优先PyTorch
