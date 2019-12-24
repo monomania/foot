@@ -1,22 +1,25 @@
-<ul style="font-size: 15px;font-weight: lighter">
-    <li>更新时间:{{.DataDateStr}}</li>
-    <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
+<ul style="font-size: 12px;font-weight: lighter">
+    <li><strong>更新时间:{{.DataDateStr}}</strong></li>
+    <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
 </ul>
 <hr/>
-{{with .DataList}}
-{{range .}}
-<ul>
-    <li>比赛时间:{{.MatchDateStr}}</li>
-    <li>联　　赛:{{.LeagueName}}</li>
-    <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
-    <li>球探指数:{{.HitCount}}</li>
-    <li>分　　析:<span style="color: red;font-weight: bold;font-size: 12px">Tips:内容开发中....</span></li>
-</ul>
-<hr/>
+{{if .DataList}}
+    {{with .DataList}}
+    {{range .}}
+    <ul>
+        <li>比赛时间:{{.MatchDateStr}}</li>
+        <li>联　　赛:{{.LeagueName}}</li>
+        <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
+        <li>球探指数:{{.HitCount}}</li>
+        <li>分　　析:<span style="color: red;font-weight: bold;font-size: 12px">tips:内容开发中....</span></li>
+    </ul>
+    <hr/>
+    {{end}}
+    {{end}}
+{{else}}
+<span style="font-size: 12px;font-weight: bold">没有符合模型的比赛推荐,感谢关注~~~</span>
 {{end}}
-{{end}}
 
 
-
-
+<br/>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>

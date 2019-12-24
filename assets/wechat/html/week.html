@@ -1,12 +1,12 @@
 <h1><strong>概况</strong></h1>
-<ul style="font-size: 15px;font-weight: lighter">
-    <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
-    <li>总场次:{{.MatchCount}}</li>
-    <li><span style="color: red; ">红:{{.RedCount}}</span></li>
-    <li><span style="color: greenyellow; ">走:{{.WalkCount}}</span></li>
-    <li><span style="color: gray; ">黑:{{.BlackCount}}</span></li>
-    <li><span style="color: red; ">最长连红:{{.LinkRedCount}}</span></li>
-    <li><span style="color: gray; ">最长连黑:{{.LinkBlackCount}}</span></li>
+<ul style="font-size: 12px;font-weight: lighter">
+    <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
+    <li><strong>总场次:{{.MatchCount}}</strong></li>
+    <li><span style="color: red; "><strong>红(正确):{{.RedCount}}</strong></span></li>
+    <li><span style="color: greenyellow; "><strong>走:{{.WalkCount}}</strong></span></li>
+    <li><span style="color: gray; "><strong>黑(错误):{{.BlackCount}}</strong></span></li>
+    <li><span style="color: red; "><strong>最长连红:{{.LinkRedCount}}</strong></span></li>
+    <li><span style="color: gray; "><strong>最长连黑:{{.LinkBlackCount}}</strong></span></li>
 </ul>
 <hr/>
 <h1 style="margin-top: 5px">

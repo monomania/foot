@@ -1,8 +1,8 @@
-<span style="color: red;font-weight: bold;font-size: 12px">注意:比赛为程序自动处理,自动更新同步,目前更新周期为半个小时一次.</span>
+<span style="color: red;font-weight: bold;font-size: 12px">注意:比赛为程序自动处理,自动更新同步,目前更新周期为30~60分钟一次.</span>
 <hr/>
-<ul style="font-size: 15px;font-weight: lighter">
-    <li>更新时间:{{.DataDateStr}}</li>
-    <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
+<ul style="font-size: 12px;font-weight: lighter">
+    <li><strong>更新时间:{{.DataDateStr}}</strong></li>
+    <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
 </ul>
 <hr/>
 <h1 style="margin-top: 5px">
@@ -24,48 +24,52 @@
         <td>比分</td>
         <td>推荐(模型)</td>
     </tr>
-{{with .DataList}}
-{{range .}}
-    <tr>
-        <td>{{.MatchDateStr}}</td>
-        <td>{{.LeagueName}}</td>
-        <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-        <td>
-        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
-        </td>
-        <td
-        {{if eq  .Result "正确"}}
-        style="background-color: red"
-        {{else if eq  .Result "错误"}}
-        style="background-color: gray"
-        {{else if eq  .Result "走盘"}}
-        style="background-color: greenyellow"
-        {{else}}
-        style="background-color: orange"
-        {{end}}
-        >
-            <strong>
-            {{if eq .PreResult 3}}
-                主
-            {{else if eq .PreResult 1}}
-                平
-            {{else if eq .PreResult 0}}
-                客
+{{if .DataList}}
+    {{with .DataList}}
+    {{range .}}
+        <tr>
+            <td>{{.MatchDateStr}}</td>
+            <td>{{.LeagueName}}</td>
+            <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
+            <td>
+            {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+            </td>
+            <td
+            {{if eq  .Result "正确"}}
+            style="background-color: red"
+            {{else if eq  .Result "错误"}}
+            style="background-color: gray"
+            {{else if eq  .Result "走盘"}}
+            style="background-color: greenyellow"
             {{else}}
+            style="background-color: orange"
             {{end}}
-            </strong>
-        {{if eq .AlFlag "Asia20191206Service"}}
-            (<span style="color: orange">A1</span>)
-        {{else if eq .AlFlag "Euro20191206Service"}}
-            (<span style="color: blue">E1</span>)
-        {{else if eq .AlFlag "Euro20191212Service"}}
-            (<span style="color: darkblue">E2</span>)
-        {{else}}
-            {{end}}
-        </td>
+            >
+                <strong>
+                {{if eq .PreResult 3}}
+                    主
+                {{else if eq .PreResult 1}}
+                    平
+                {{else if eq .PreResult 0}}
+                    客
+                {{else}}
+                {{end}}
+                </strong>
+            {{if eq .AlFlag "Asia20191206Service"}}
+                (<span style="color: orange">A1</span>)
+            {{else if eq .AlFlag "Euro20191206Service"}}
+                (<span style="color: blue">E1</span>)
+            {{else if eq .AlFlag "Euro20191212Service"}}
+                (<span style="color: darkblue">E2</span>)
+            {{else}}
+                {{end}}
+            </td>
 
-    </tr>
-{{end}}
+        </tr>
+    {{end}}
+    {{end}}
+{{else}}
+    <tr><td colspan="5">没有符合模型的比赛推荐,感谢关注~~~</td></tr>
 {{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
