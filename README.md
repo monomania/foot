@@ -101,7 +101,7 @@ foot-parent
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-    ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
+    ![](https://images.gitee.com/uploads/images/2019/1224/112619_cdbc3743_1880617.png "go mod")
 * 下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -136,8 +136,11 @@ foot-parent
   *  FS001EuroIncompleteApplication.go  欧指数据遗漏检测,重新尝试
   *  FS001EuroModifyApplication.go  欧指数据单独获取
 ## 公众号演示
-公众号: ai00268
-![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
-* 联系作者
+ * 公众号: ai00268
+ * ![](https://images.gitee.com/uploads/images/2019/1224/112619_93efd7ec_1880617.jpeg "go mod")
+## 战绩截图
+<img src="https://images.gitee.com/uploads/images/2019/1224/112619_a60ebef5_1880617.png" width="180px">
+<img src="https://images.gitee.com/uploads/images/2019/1224/112619_9be5f9ce_1880617.png" width="180px">
+
 
  
