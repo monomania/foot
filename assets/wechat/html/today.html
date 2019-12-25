@@ -46,30 +46,16 @@
             {{end}}
             >
                 <strong>
-                {{if eq .PreResult 3}}
-                    主
-                {{else if eq .PreResult 1}}
-                    平
-                {{else if eq .PreResult 0}}
-                    客
-                {{else}}
-                {{end}}
+                {{preResultStr .PreResult}}
                 </strong>
-            {{if eq .AlFlag "Asia20191206Service"}}
-                (<span style="color: orange">A1</span>)
-            {{else if eq .AlFlag "Euro20191206Service"}}
-                (<span style="color: blue">E1</span>)
-            {{else if eq .AlFlag "Euro20191212Service"}}
-                (<span style="color: darkblue">E2</span>)
-            {{else}}
-                {{end}}
+                {{alFlagStr .AlFlag}}
             </td>
 
         </tr>
     {{end}}
     {{end}}
 {{else}}
-    <tr><td colspan="5">没有符合模型的比赛推荐,感谢关注~~~</td></tr>
+    <tr><td colspan="5" style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</td></tr>
 {{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>

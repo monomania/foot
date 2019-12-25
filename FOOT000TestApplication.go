@@ -21,6 +21,37 @@ import (
 	"time"
 )
 
+
+func preResultStr(val int) string {
+	if 3 == val {
+		return "主"
+	} else if 1 == val {
+		return "平"
+	} else if 0 == val {
+		return "客"
+	}
+	return "未知"
+}
+
+func alFlagStr(str string) string {
+	if "Asia20191206Service" == str {
+		return "A1"
+	} else if "Euro20191206Service" == str {
+		return "E1"
+	} else if "Euro20191212Service" == str {
+		return "E2"
+	}
+	return "XX"
+}
+
+func getFuncMap() map[string]interface{} {
+	funcMap := template.FuncMap{
+		"preResultStr": preResultStr,
+		"alFlagStr": alFlagStr,
+	}
+	return funcMap
+}
+
 func main() {
 	//测试
 	suggestService := new(service3.SuggestService)
@@ -34,7 +65,7 @@ func main() {
 	}
 
 	//测试markdown
-	tpl, err := template.ParseFiles("assets/wechat/html/week.html")
+	tpl, err := template.New("week.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/week.html")
 	if err != nil {
 		base.Log.Error(err)
 	}

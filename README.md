@@ -121,7 +121,7 @@ foot-parent
     * ./conf/app.ini
      >>>> 详情看配置文件内的说明
 * 同步数据库表
-     * ./FC001DBInitApplication.go 
+     * FC001DBInitApplication.go 
       
 ## 运行入口
   *  build_linux.bat            一键打包linux发布程序
