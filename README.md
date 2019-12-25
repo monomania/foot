@@ -2,9 +2,9 @@
 * [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
 
 ## 项目介绍
-    究极足球爱好者,平时也会去体彩店支持一下国足,或是自己喜欢的球队.
-    入了门道,就想结合一下所学所专,尝试着分析预测一下足球比赛.最近命中率感觉还可以阿.
-    娱乐娱乐!!!如果该项目对您有帮助,请您给一个star.
+   >> 1. 究极足球爱好者,平时也会去体彩店支持一下国足,或是自己喜欢的球队.
+   >> 2. 入了门道,就想结合一下所学所专,尝试着分析预测一下足球比赛.最近命中率感觉还可以阿.
+   >> 3. 娱乐娱乐!!!如果该项目对您有帮助,请您给一个star.
 
 ## 技术选型
 * [xorm](https://github.com/go-xorm/xorm)
@@ -74,18 +74,21 @@ foot-parent
 
 
 ## 实现功能
-* 当前比赛的获取
-* 当前亚赔的获取
-* 当前欧赔的获取
-* 历史欧赔的获取
+* 当前及历史比赛数据爬取
+* 当前及历史亚赔数据爬取
+* 当前及历史欧赔数据爬取
 * 欧亚赔的分析预测
 * 数据推送到雷速发布
 * 数据推送到微信公众号发布
 * 定时更新微信公众号发布素材
 
     ```
-    本项目仅作娱乐研究参考所用,请勿使用到非法途径,
+    本项目仅作娱乐研究参考所用,
     ```
+## 后台数据截图
+> 1. <img src="https://oscimg.oschina.net/oscnet/up-fb352eee77e897424c365a77b07269388ca.png" width="180px">
+> 2. <img src="https://oscimg.oschina.net/oscnet/up-7da97167e12e1d89e455a342c0e17bbe21d.png" width="180px">
+> 3. <img src="https://oscimg.oschina.net/oscnet/up-e1dc8255364a999bcc473489b163e1aa98c.png" width="180px">
 
 ## 使用教程
 
@@ -101,7 +104,7 @@ foot-parent
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-    ![](https://images.gitee.com/uploads/images/2019/1224/112619_cdbc3743_1880617.png "go mod")
+  >> ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
 * 下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -114,14 +117,13 @@ foot-parent
   
   数据库名为: foot 
 * 配置数据库连接
-  
   * conf文件修改配置
-    * ./conf/mysql.ini
-    详情看配置文件内的说明
+    * ./conf/app.ini
+     >>>> 详情看配置文件内的说明
 * 同步数据库表
      * ./FC001DBInitApplication.go 
       
-  运行入口: 
+## 运行入口
   *  build_linux.bat            一键打包linux发布程序
   *  build_windows.bat          一键打包windows发布程序
   *  FC000Application.go        运行beego
@@ -137,10 +139,11 @@ foot-parent
   *  FS001EuroModifyApplication.go  欧指数据单独获取
 ## 公众号演示
  * 公众号: ai00268
- * ![](https://images.gitee.com/uploads/images/2019/1224/112619_93efd7ec_1880617.jpeg "go mod")
+ >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
 ## 战绩截图
-<img src="https://images.gitee.com/uploads/images/2019/1224/112619_a60ebef5_1880617.png" width="180px">
-<img src="https://images.gitee.com/uploads/images/2019/1224/112619_9be5f9ce_1880617.png" width="180px">
+<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
+<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
+
 
 
  
