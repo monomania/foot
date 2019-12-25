@@ -7,12 +7,10 @@ import (
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
 	"html/template"
-	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"time"
@@ -192,12 +190,8 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	h12, _ = time.ParseDuration("24h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	param.MinHitCount = 1
-	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-	hit_count, _ := strconv.Atoi(hit_count_str)
-	param.MaxHitCount = hit_count - 1
 	//今日推荐
-	tempList := this.SuggestService.Query(param)
+	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
 	first.Title = fmt.Sprintf("待选池比赛")

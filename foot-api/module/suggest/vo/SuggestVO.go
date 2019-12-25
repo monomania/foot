@@ -25,8 +25,5 @@ type SuggestVO struct {
 	//是否倒序
 	IsDesc bool
 
-
-	MinHitCount int
-	MaxHitCount int
 	pojo.Suggest `xorm:"extends"`
 }
