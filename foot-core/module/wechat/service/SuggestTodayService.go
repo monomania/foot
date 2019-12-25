@@ -40,6 +40,8 @@ func alFlagStr(str string) string {
 		return "E1"
 	} else if "Euro20191212Service" == str {
 		return "E2"
+	}else if "Euro20191226Service" == str{
+		return "Q1"
 	}
 	return "XX"
 }

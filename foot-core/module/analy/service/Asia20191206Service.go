@@ -69,7 +69,7 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	//声明使用变量
 	var e81data *entity3.EuroLast
 	var e616data *entity3.EuroLast
-	var e104data *entity3.EuroLast
+	//var e104data *entity3.EuroLast
 	var a18betData *entity3.AsiaLast
 	//81 -- 伟德
 	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "81", "616", "104")
@@ -85,10 +85,10 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 			e616data = ev
 			continue
 		}
-		if strings.EqualFold(ev.CompId, "104") {
-			e104data = ev
-			continue
-		}
+		//if strings.EqualFold(ev.CompId, "104") {
+		//	e104data = ev
+		//	continue
+		//}
 	}
 
 	//亚赔
@@ -116,13 +116,13 @@ func (this *Asia20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		return -3, nil
 	}
 
-	//增加104 --Interwetten过滤
-	if preResult == 3 && (e616data.Ep3 > e104data.Ep3 || e104data.Ep0 < e104data.Sp0) {
-		return -3, nil
-	}
-	if preResult == 0 && (e616data.Ep0 > e104data.Ep0 || e104data.Ep3 < e104data.Sp3) {
-		return -3, nil
-	}
+	////增加104 --Interwetten过滤
+	//if preResult == 3 && (e616data.Ep3 > e104data.Ep3 || e104data.Ep0 < e104data.Sp0) {
+	//	return -3, nil
+	//}
+	//if preResult == 0 && (e616data.Ep0 > e104data.Ep0 || e104data.Ep3 < e104data.Sp3) {
+	//	return -3, nil
+	//}
 
 	alFlag := reflect.TypeOf(*this).Name()
 	var data *entity5.AnalyResult
