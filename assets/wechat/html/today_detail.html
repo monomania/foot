@@ -11,7 +11,8 @@
         <li>联　　赛:{{.LeagueName}}</li>
         <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
         <li>球探指数:{{.HitCount}}</li>
-        <li>分　　析:<span style="color: red;font-weight: bold;font-size: 12px">tips:内容开发中....</span></li>
+		<li>推荐选项:<span style="color: red;font-weight: bold;">{{preResultStr .PreResult}}</span></li>
+        <li>分　　析:<span style="color: red;font-weight: bold;font-size: 12px">内容开发中....</span></li>
     </ul>
     <hr/>
     {{end}}

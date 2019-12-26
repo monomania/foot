@@ -24,11 +24,11 @@ type SuggestTodayService struct {
 
 func preResultStr(val int) string {
 	if 3 == val {
-		return "主"
+		return "主不败"
 	} else if 1 == val {
 		return "平"
 	} else if 0 == val {
-		return "客"
+		return "客不败"
 	}
 	return "-"
 }

@@ -156,6 +156,8 @@ WHERE ml.LeagueId = l.Id
 	}
 	if hitCount > 0 {
 		sql_build += " AND ar.HitCount >= " + strconv.Itoa(hitCount)
+	}else{
+		sql_build += " AND ar.HitCount > 0 "
 	}
 	if option >= 0 {
 		sql_build += " AND ar.PreResult = " + strconv.Itoa(option) + " "

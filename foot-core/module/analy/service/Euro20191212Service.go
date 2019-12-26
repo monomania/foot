@@ -48,10 +48,10 @@ func (this *Euro20191212Service) Analy() {
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
-					this.AnalyService.Modify(temp_data)
-					continue
+				}else{
+					temp_data.HitCount = 0
 				}
-				this.AnalyService.Del(temp_data)
+				this.AnalyService.Modify(temp_data)
 			}
 		}
 	}
