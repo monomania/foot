@@ -73,7 +73,7 @@ func (this *Euro20191226Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 			continue
 		}
 		if strings.EqualFold(ev.CompId, "1129") {
-			e281data = ev
+			e1129data = ev
 			continue
 		}
 	}
