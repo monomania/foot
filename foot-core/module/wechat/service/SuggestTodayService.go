@@ -53,6 +53,11 @@ func getFuncMap() map[string]interface{} {
 	return funcMap
 }
 
+func getAlFlag() string{
+	al_flag := utils.GetVal("wechat", "al_flag")
+	return al_flag;
+}
+
 const contentSourceURL = "https://gitee.com/aoe5188/foot"
 const today_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
 const today_detail_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
@@ -95,6 +100,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	//今日推荐
+	param.AlFlag = getAlFlag()
 	tempList := this.SuggestService.Query(param)
 	//更新推送
 	first := material.Article{}
@@ -143,6 +149,7 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	//今日推荐
+	param.AlFlag = getAlFlag()
 	tempList := this.SuggestService.Query(param)
 	//更新推送
 	first := material.Article{}
@@ -191,6 +198,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	//今日推荐
+	param.AlFlag = getAlFlag()
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}

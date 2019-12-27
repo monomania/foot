@@ -55,6 +55,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	param.IsDesc = true
 	//今日推荐
+	param.AlFlag = getAlFlag()
 	tempList := this.SuggestService.Query(param)
 	//更新推送
 	first := material.Article{}

@@ -45,15 +45,22 @@ func Spider_euroHis() {
 
 }
 
-func Spider_euroHis_Incomplete(count int) {
-	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindEuroIncomplete(count)
+func Spider_euroHis_Incomplete() {
+	var compIds []string
+	val := utils.GetVal("spider", "euro_comp_ids")
+	if len(val) < 0 {
+		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
+		compService := new(service.CompService)
+		compIds = compService.FindAllIds()
+	}else{
+		compIds = strings.Split(val, ",")
+	}
 
-	//设置要抓取的波菜公司id
-	compWin007Ids := []string{"81", "616", "104"}
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindEuroIncomplete(len(compIds))
 
 	processer := proc.GetEuroHisProcesser()
-	processer.CompWin007Ids = compWin007Ids
+	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
 	processer.Startup()
 

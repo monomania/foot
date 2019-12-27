@@ -29,6 +29,6 @@ func Spider() {
 	Spider_euroLast()
 	Spider_euroHis()
 	//再对欧赔数据不完整的比赛进行两次抓取
-	Spider_euroHis_Incomplete(3)
-	Spider_euroHis_Incomplete(3)
+	Spider_euroHis_Incomplete()
+	Spider_euroHis_Incomplete()
 }
