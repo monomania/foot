@@ -39,6 +39,8 @@ func (this *Asia20191206Service) Analy() {
 			if hours > 0 {
 				hours = math.Abs(hours * 0.7)
 				data.THitCount = int(hours)
+			}else{
+				data.THitCount = 1
 			}
 			if stub == 0 {
 				data_list_slice = append(data_list_slice, data)
