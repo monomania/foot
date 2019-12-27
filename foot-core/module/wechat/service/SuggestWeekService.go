@@ -2,7 +2,6 @@ package service
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
@@ -23,20 +22,18 @@ type SuggestWeekService struct {
 	service2.SuggestService
 }
 
+const week_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
+const week_mediaId = "chP-LBQxy9SVbAFjwZ4QEgcfOu5CZ67hiBgn5qnZ-Ac"
+
+
 func (this *SuggestWeekService) Week(wcClient *core.Client) string {
-	listData := this.AnalyService.ListDefaultData()
 	articles := make([]material.Article, 1)
 	first := material.Article{}
 	first.Title = "最近七天战绩"
 	first.Digest = "20191216-20191219"
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
+	first.ThumbMediaId = week_thumbMediaId
 
-	var first_content string
-	for _, e := range listData {
-		bytes, _ := json.Marshal(e)
-		first_content += string(bytes) + "<br/>"
-	}
-	first.Content = first_content
+	first.Content = "first_content"
 	articles[0] = first
 
 	mediaId, err := material.AddNews(wcClient, &material.News{Articles: articles})
@@ -63,7 +60,8 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = "最近七天战绩"
 	first.Digest = fmt.Sprintf("%v-%v", beginDate.Format("2006年01月02日"), now.Format("2006年01月02日"))
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
+	first.ThumbMediaId = week_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
 	first.ShowCoverPic = 0
 	first.Author = utils.GetVal("wechat","author")
 	temp := vo.WeekVO{}
@@ -112,7 +110,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	}
 	first.Content = buf.String()
 
-	err = material.UpdateNews(wcClient, "chP-LBQxy9SVbAFjwZ4QEgcfOu5CZ67hiBgn5qnZ-Ac", 0, &first)
+	err = material.UpdateNews(wcClient, week_mediaId, 0, &first)
 	if err != nil {
 		base.Log.Error(err)
 	}

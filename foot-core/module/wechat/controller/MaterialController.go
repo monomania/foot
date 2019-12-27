@@ -29,7 +29,7 @@ func (this *MaterialController) Images() {
 		if !strings.HasSuffix(name, ".jpg") {
 			continue
 		}
-		fileName := "assets/" + name
+		fileName := "assets/img/" + name
 		mediaId, url, err := material.UploadImage(wcClient, fileName)
 		if err != nil {
 			base.Log.Error(err)

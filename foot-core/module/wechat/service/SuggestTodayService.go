@@ -2,7 +2,6 @@ package service
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
@@ -24,11 +23,11 @@ type SuggestTodayService struct {
 
 func preResultStr(val int) string {
 	if 3 == val {
-		return "主不败"
+		return "主胜"
 	} else if 1 == val {
 		return "平"
 	} else if 0 == val {
-		return "客不败"
+		return "客胜"
 	}
 	return "-"
 }
@@ -54,26 +53,25 @@ func getFuncMap() map[string]interface{} {
 	return funcMap
 }
 
+const contentSourceURL = "https://gitee.com/aoe5188/foot"
+const today_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
+const today_detail_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
+const today_tbs_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI"
+const today_mediaId = "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo"
 /**
 今日推荐
  */
 func (this *SuggestTodayService) Today(wcClient *core.Client) string {
-	listData := this.AnalyService.ListDefaultData()
 	articles := make([]material.Article, 1)
 	first := material.Article{}
 	matchDateStr := time.Now().Format("01月02日")
 	first.Title = fmt.Sprintf("今日推荐 %v", matchDateStr)
-	first.Digest = fmt.Sprintf("%d场赛事", len(listData))
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
+	first.Digest = fmt.Sprintf("%d场赛事", 0)
+	first.ThumbMediaId = today_thumbMediaId
 	first.ShowCoverPic = 0
 	//图文消息的原文地址，即:击“阅读原文”后的URL
-	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
-	var first_content string
-	for _, e := range listData {
-		bytes, _ := json.Marshal(e)
-		first_content += string(bytes) + "<br/>"
-	}
-	first.Content = first_content
+	first.ContentSourceURL = today_thumbMediaId
+	first.Content = "first_content"
 	articles[0] = first
 
 	mediaId, err := material.AddNews(wcClient, &material.News{Articles: articles})
@@ -102,8 +100,8 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = fmt.Sprintf("今日推荐 %v", time.Now().Format("01月02日"))
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
-	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
+	first.ThumbMediaId = today_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
 	temp := vo.TodayVO{}
@@ -126,7 +124,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	}
 	first.Content = buf.String()
 
-	err = material.UpdateNews(wcClient, "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo", 0, &first)
+	err = material.UpdateNews(wcClient, today_mediaId, 0, &first)
 	if err != nil {
 		base.Log.Error(err)
 	}
@@ -150,8 +148,8 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = fmt.Sprintf("赛事解析")
 	first.Digest = fmt.Sprintf("赛事的模型算法解析")
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
-	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
+	first.ThumbMediaId = today_detail_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
 	temp := vo.TodayVO{}
@@ -174,7 +172,7 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	}
 	first.Content = buf.String()
 
-	err = material.UpdateNews(wcClient, "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo", 1, &first)
+	err = material.UpdateNews(wcClient, today_mediaId, 1, &first)
 	if err != nil {
 		base.Log.Error(err)
 	}
@@ -198,8 +196,8 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = fmt.Sprintf("待选池比赛")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI"
-	first.ContentSourceURL = "https://gitee.com/aoe5188/poem-parent"
+	first.ThumbMediaId = today_tbs_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
 	temp := vo.TodayVO{}
@@ -222,7 +220,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	}
 	first.Content = buf.String()
 
-	err = material.UpdateNews(wcClient, "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo", 2, &first)
+	err = material.UpdateNews(wcClient, today_mediaId, 2, &first)
 	if err != nil {
 		base.Log.Error(err)
 	}
