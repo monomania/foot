@@ -4,8 +4,6 @@ import (
 	"strconv"
 	vo2 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 )
 
 /**
@@ -33,9 +31,8 @@ FROM
   foot.t_analy_result ar 
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId
-  AND ar.HitCount < THitCount 
+  AND (ar.HitCount < THitCount or ar.HitCount = 0) 
 	`
-
 	if len(param.AlFlag) > 0 {
 		sql += " AND ar.AlFlag = '" + param.AlFlag + "' "
 	}
@@ -76,12 +73,11 @@ FROM
   foot.t_analy_result ar 
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId
+  AND ar.HitCount > 0 
+  AND ar.HitCount >= ar.THitCount
 	`
 	if param.HitCount > 0 {
-		sql += "  AND ar.HitCount >= THitCount AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
-	} else {
-		hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-		sql += " AND ar.HitCount >= THitCount AND ar.HitCount >= '" + hit_count_str + "' "
+		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
 	}
 
 	if len(param.AlFlag) > 0 {
