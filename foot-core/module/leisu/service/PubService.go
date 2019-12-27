@@ -9,7 +9,6 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
@@ -20,7 +19,7 @@ import (
 发布推荐
 */
 type PubService struct {
-	service.AnalyService
+	LeisuService
 	MatchPoolService
 	PubLimitService
 	PriceService
@@ -47,7 +46,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.ListDefaultData()
+	analyList := this.LeisuService.ListDefaultData()
 	if len(analyList) < 1 {
 		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛!!!!"))
 		return

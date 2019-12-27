@@ -19,9 +19,6 @@ type Euro20191226Service struct {
 	MaxLetBall float64
 }
 
-/**
-计算欧赔81 616的即时盘,和初盘的差异
-*/
 func (this *Euro20191226Service) Analy() {
 	matchList := this.MatchLastService.FindAll()
 	data_list_slice := make([]interface{}, 0)
@@ -63,29 +60,28 @@ func (this *Euro20191226Service) Analy() {
 func (this *Euro20191226Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
-	var e616data *entity3.EuroLast
-	var e104data *entity3.EuroLast
+	var e281data *entity3.EuroLast
+	var e1129data *entity3.EuroLast
 	var a18betData *entity3.AsiaLast
-	//81 -- 伟德
-	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "616", "104")
+	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "281", "1129")
 	if len(eList) < 2 {
 		return -1, nil
 	}
 	for _, ev := range eList {
-		if strings.EqualFold(ev.CompId, "616") {
-			e616data = ev
+		if strings.EqualFold(ev.CompId, "281") {
+			e281data = ev
 			continue
 		}
-		if strings.EqualFold(ev.CompId, "104") {
-			e104data = ev
+		if strings.EqualFold(ev.CompId, "1129") {
+			e281data = ev
 			continue
 		}
 	}
 	//0.没有变化则跳过
-	if e104data.Ep3 == e104data.Sp3 || e104data.Ep0 == e104data.Sp0 {
+	if e281data.Ep3 == e281data.Sp3 || e281data.Ep0 == e281data.Sp0 {
 		return -3, nil
 	}
-	if e616data.Ep3 == e616data.Sp3 || e616data.Ep0 == e616data.Sp0 {
+	if e1129data.Ep3 == e1129data.Sp3 || e1129data.Ep0 == e1129data.Sp0 {
 		return -3, nil
 	}
 
@@ -101,15 +97,12 @@ func (this *Euro20191226Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	}
 
 	//得出结果
-	if e616data.Ep0 < e616data.Sp0 && e616data.Ep0 < e104data.Sp0 {
-		return -3, nil
-	}
 	var preResult int
-	if e616data.Ep3 > (e616data.Sp3+0.01) && e104data.Ep3 < e104data.Sp3 {
+	if e1129data.Ep3 > e281data.Ep3 && e1129data.Ep0 < e281data.Ep0 {
+		preResult = 0
+	}else if e1129data.Ep0 > e281data.Ep0 && e1129data.Ep3 < e281data.Ep3 {
 		preResult = 3
-	} else if e616data.Ep3 < e616data.Sp3 && e104data.Ep3 < e104data.Sp3 && e616data.Ep3 < e104data.Ep3 {
-		preResult = 3
-	} else {
+	}else{
 		return -3, nil
 	}
 

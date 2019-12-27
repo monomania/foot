@@ -1,6 +1,9 @@
 package launch
 
 import (
+	"strings"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
@@ -25,12 +28,18 @@ func Spider_euroHis() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindAll()
 
-	//设置要抓取的波菜公司id
-	betCompWin007Ids := []string{"81", "616","104"}
-	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
+	var compIds []string
+	val := utils.GetVal("spider", "euro_comp_ids")
+	if len(val) < 0 {
+		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
+		compService := new(service.CompService)
+		compIds = compService.FindAllIds()
+	}else{
+		compIds = strings.Split(val, ",")
+	}
 
 	processer := proc.GetEuroHisProcesser()
-	processer.CompWin007Ids = betCompWin007Ids
+	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
 	processer.Startup()
 

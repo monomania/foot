@@ -13,22 +13,30 @@ func Analy() {
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------Euro20191212Service-------------------")
 	base.Log.Info("---------------------------------------------------------------")
-	euro616_104Service := new(service.Euro20191212Service)
-	euro616_104Service.MaxLetBall = 1
-	euro616_104Service.PrintOddData = false
-	euro616_104Service.Analy()
+	euro20191212Service := new(service.Euro20191212Service)
+	euro20191212Service.MaxLetBall = 1
+	euro20191212Service.PrintOddData = false
+	euro20191212Service.Analy()
+	base.Log.Info("---------------------------------------------------------------")
+	base.Log.Info("----------------Euro20191226Service-------------------")
+	base.Log.Info("---------------------------------------------------------------")
+	euro20191226Service := new(service.Euro20191226Service)
+	euro20191226Service.MaxLetBall = 1
+	euro20191226Service.PrintOddData = false
+	euro20191226Service.Analy()
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------Euro20191206Service-------------------")
 	base.Log.Info("---------------------------------------------------------------")
-	euro_81_616Service := new(service.Euro20191206Service)
-	euro_81_616Service.MaxLetBall = 1
-	euro_81_616Service.PrintOddData = false
-	euro_81_616Service.Analy()
+	euro20191206Service := new(service.Euro20191206Service)
+	euro20191206Service.MaxLetBall = 1
+	euro20191206Service.PrintOddData = false
+	euro20191206Service.Analy()
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------Asia20191206Service--------------")
 	base.Log.Info("---------------------------------------------------------------")
-	euro81616Service := new(service.Asia20191206Service)
-	euro81616Service.Analy()
+	asia20191206Service := new(service.Asia20191206Service)
+	asia20191206Service.MaxLetBall = 1
+	asia20191206Service.Analy()
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------处理结果--------------")
 	base.Log.Info("---------------------------------------------------------------")
