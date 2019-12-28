@@ -29,7 +29,7 @@ func (this *Euro20191226Service) Analy() {
 		if stub == 0 || stub == 1 {
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				hours = math.Abs(hours * 0.7)
+				hours = math.Abs(hours * 0.5)
 				data.THitCount = int(hours)
 			}else{
 				data.THitCount = 1
@@ -83,9 +83,9 @@ func (this *Euro20191226Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	if e281data.Ep3 == e281data.Sp3 || e281data.Ep0 == e281data.Sp0 {
 		return -3, nil
 	}
-	if e1129data.Ep3 == e1129data.Sp3 || e1129data.Ep0 == e1129data.Sp0 {
-		return -3, nil
-	}
+	//if e1129data.Ep3 == e1129data.Sp3 || e1129data.Ep0 == e1129data.Sp0 {
+	//	return -3, nil
+	//}
 
 	//1.有变化,进行以下逻辑
 	//亚赔

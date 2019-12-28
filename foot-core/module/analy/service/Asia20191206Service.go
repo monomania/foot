@@ -37,7 +37,7 @@ func (this *Asia20191206Service) Analy() {
 		if stub == 0 || stub == 1 {
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				hours = math.Abs(hours * 0.7)
+				hours = math.Abs(hours * 0.5)
 				data.THitCount = int(hours)
 			}else{
 				data.THitCount = 1
