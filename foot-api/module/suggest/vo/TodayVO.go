@@ -1,5 +1,7 @@
 package vo
 
+import "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
+
 type TodayVO struct {
 	//开始时间
 	BeginDateStr string
@@ -9,4 +11,8 @@ type TodayVO struct {
 	DataDateStr string
 
 	DataList []SuggestVO
+
+	EuroOddList []pojo.EuroLast
+
+	AsiaOddList []pojo.AsiaLast
 }
