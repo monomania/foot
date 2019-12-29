@@ -20,6 +20,7 @@
         <li>比赛时间:{{.MatchDateStr}}</li>
         <li>联　　赛:{{.LeagueName}}</li>
         <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
+        <li>算法模型:<span style="color: red;font-weight: bold;">{{alFlagStr .AlFlag}}</span></li>
         <li>球探指数:<span style="color: red;font-weight: bold;">{{.HitCount}}(指数越大,越稳定)</span></li>
         <li>推荐选项:<span style="color: red;font-weight: bold;">{{preResultStr .PreResult}}</span></li>
         <li>说　　明:<span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.历史统计以亚指为依据.</span></li>
