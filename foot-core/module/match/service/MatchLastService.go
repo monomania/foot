@@ -23,6 +23,24 @@ func (this *MatchLastService) FindExists(v *pojo.MatchLast) bool {
 	return has
 }
 
+/**
+查找未结束的比赛
+*/
+func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
+	sql_build := `
+SELECT 
+  la.* 
+FROM
+  foot.t_match_last la 
+  WHERE la.MatchDate > DATE_SUB(NOW(), INTERVAL 2 HOUR)
+	`
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &dataList)
+	return dataList
+}
+
 func (this *MatchLastService) FindAll() []*pojo.MatchLast {
 	dataList := make([]*pojo.MatchLast, 0)
 	mysql.GetEngine().OrderBy("MatchDate").Find(&dataList)
