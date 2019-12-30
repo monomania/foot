@@ -22,7 +22,7 @@
         <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
         <li>算法模型:<span style="color: {{color .AlFlag}}">({{alFlagStr .AlFlag}})</span></li>
         <li>球探指数:{{.HitCount}}<span style="color: red;font-weight: bold;">(指数越大,越稳定)</span></li>
-        <li>推荐选项:{{preResultStr .PreResult}}</li>
+        <li>推荐选项:{{preResultStr .PreResult .AlFlag}}</li>
         <li>说　　明:<span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.历史统计以亚指为依据.</span></li>
     </ul>
     <hr/>

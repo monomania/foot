@@ -6,14 +6,16 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/launch"
 )
 
-func Spider() {
-	//开启SQL输出
-
+func Clean(){
 	//清空数据表
 	launch.TruncateTable()
 	Before_spider_match()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
+}
+
+
+func Spider() {
 	//执行抓取比赛数据
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据

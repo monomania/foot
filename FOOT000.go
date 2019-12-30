@@ -116,6 +116,8 @@ func main() {
 				//2.配置好数据库连接,打包程序发布
 				//3.程序执行流程,周期定制定为一天三次
 				//3.1 FS000Application 爬取数据
+				//清空数据库数据,为爬虫作准备
+				launch.Clean()
 				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
 				launch2.Analy()

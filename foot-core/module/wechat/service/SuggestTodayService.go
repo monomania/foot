@@ -21,15 +21,19 @@ type SuggestTodayService struct {
 	service2.SuggestService
 }
 
-func preResultStr(val int) string {
+func preResultStr(val int, al_flag string) string {
+	var result string
 	if 3 == val {
-		return "胜平"
+		result = "胜"
 	} else if 1 == val {
-		return "平"
+		result = "平"
 	} else if 0 == val {
-		return "负平"
+		result = "负"
 	}
-	return "-"
+	if "Euro20191212Service" == al_flag {
+		result += "平"
+	}
+	return result
 }
 
 func alFlagStr(str string) string {
@@ -39,7 +43,7 @@ func alFlagStr(str string) string {
 		return "E1"
 	} else if "Euro20191212Service" == str {
 		return "E2"
-	}else if "Euro20191226Service" == str{
+	} else if "Euro20191226Service" == str {
 		return "Q1"
 	}
 	return "XX"
@@ -52,7 +56,7 @@ func color(str string) string {
 		return "blue"
 	} else if "Euro20191212Service" == str {
 		return "darkblue"
-	}else if "Euro20191226Service" == str{
+	} else if "Euro20191226Service" == str {
 		return "olivedrab"
 	}
 	return "XX"
@@ -61,18 +65,18 @@ func color(str string) string {
 func getFuncMap() map[string]interface{} {
 	funcMap := template.FuncMap{
 		"preResultStr": preResultStr,
-		"alFlagStr": alFlagStr,
-		"color": color,
+		"alFlagStr":    alFlagStr,
+		"color":        color,
 	}
 	return funcMap
 }
 
-func getAlFlag() string{
+func getAlFlag() string {
 	al_flag := utils.GetVal("wechat", "al_flag")
 	return al_flag;
 }
 
-func getMainAlFlag() string{
+func getMainAlFlag() string {
 	al_flag := utils.GetVal("wechat", "main_al_flag")
 	return al_flag;
 }
@@ -82,6 +86,7 @@ const today_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
 const today_detail_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
 const today_tbs_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI"
 const today_mediaId = "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo"
+
 /**
 今日推荐
  */
