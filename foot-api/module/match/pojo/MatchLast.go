@@ -5,6 +5,9 @@ import (
 	"time"
 )
 
+/**
+比赛当前数据表
+ */
 //足球比赛信息
 type MatchLast struct {
 	/**

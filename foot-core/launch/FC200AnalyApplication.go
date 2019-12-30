@@ -9,7 +9,7 @@ import (
 
 func Analy() {
 	//关闭SQL输出
-	mysql.ShowSQL(false)
+	mysql.ShowSQL(true)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------Euro20191212Service-------------------")
 	base.Log.Info("---------------------------------------------------------------")

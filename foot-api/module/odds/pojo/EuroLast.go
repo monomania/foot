@@ -3,7 +3,9 @@ package pojo
 import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
-
+/**
+欧赔当前表
+*/
 type EuroLast struct {
 	//博彩公司id
 	CompId string `xorm:"unique(CompId_MatchId)"`

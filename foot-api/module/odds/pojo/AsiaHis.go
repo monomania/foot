@@ -1,7 +1,9 @@
 package pojo
 
 import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
-
+/**
+亚赔历史表
+*/
 type AsiaHis struct {
 	/**
 	初上下盘赔率

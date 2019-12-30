@@ -2,6 +2,9 @@ package pojo
 
 import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 
+/**
+欧赔历史表
+ */
 type EuroHis struct {
 	/**
 	初盘胜平负赔率

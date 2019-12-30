@@ -5,6 +5,9 @@ import (
 	"time"
 )
 
+/**
+分析结果表
+ */
 type AnalyResult struct {
 	//是否已经发布到雷速
 	LeisuPubd bool `xorm:"bool notnull comment('是否已经发布到雷速') index"`

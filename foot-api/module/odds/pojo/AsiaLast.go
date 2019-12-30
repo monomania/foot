@@ -3,7 +3,9 @@ package pojo
 import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
-
+/**
+亚赔当前表
+*/
 type AsiaLast struct {
 	//博彩公司id
 	CompId string `xorm:"unique(CompId_MatchId)"`
