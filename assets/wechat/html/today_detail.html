@@ -5,7 +5,7 @@
     <li><strong>3.推荐的场次为当前时间"往前推12个小时"至"往后推24小时"的比赛.</strong></li>
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)4.推荐的场次会随指数的变化而变化,如再次进入不见上次推荐的比赛,请查看"待选池比赛".</strong></li>
     <li><strong>5.推荐选项跟着的字母,如A1 A2 E1 E2,为算法模型标识,仅是为了方便观察不同模型的表现.</strong></li>
-    <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.建议多关注支持模型E2的比赛.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型为E2,敬请关注.</strong></li>
 </ul>
 <hr/>
 <ul style="font-size: 12px;font-weight: lighter">
@@ -20,9 +20,9 @@
         <li>比赛时间:{{.MatchDateStr}}</li>
         <li>联　　赛:{{.LeagueName}}</li>
         <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
-        <li>算法模型:<span style="color: red;font-weight: bold;">{{alFlagStr .AlFlag}}</span></li>
-        <li>球探指数:<span style="color: red;font-weight: bold;">{{.HitCount}}(指数越大,越稳定)</span></li>
-        <li>推荐选项:<span style="color: red;font-weight: bold;">{{preResultStr .PreResult}}</span></li>
+        <li>算法模型:<span style="color: {{color .AlFlag}}">({{alFlagStr .AlFlag}})</span></li>
+        <li>球探指数:{{.HitCount}}<span style="color: red;font-weight: bold;">(指数越大,越稳定)</span></li>
+        <li>推荐选项:{{preResultStr .PreResult}}</li>
         <li>说　　明:<span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.历史统计以亚指为依据.</span></li>
     </ul>
     <hr/>

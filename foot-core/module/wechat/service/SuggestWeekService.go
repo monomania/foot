@@ -6,6 +6,7 @@ import (
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
 	"html/template"
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
@@ -24,7 +25,6 @@ type SuggestWeekService struct {
 
 const week_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEo81I0bHaY3YDYRwVGmf7o8"
 const week_mediaId = "chP-LBQxy9SVbAFjwZ4QEgcfOu5CZ67hiBgn5qnZ-Ac"
-
 
 func (this *SuggestWeekService) Week(wcClient *core.Client) string {
 	articles := make([]material.Article, 1)
@@ -64,7 +64,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	first.ThumbMediaId = week_thumbMediaId
 	first.ContentSourceURL = contentSourceURL
 	first.ShowCoverPic = 0
-	first.Author = utils.GetVal("wechat","author")
+	first.Author = utils.GetVal("wechat", "author")
 	temp := vo.WeekVO{}
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
@@ -100,6 +100,25 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	temp.BlackCount = blackCount
 	temp.LinkRedCount = linkRedCount
 	temp.LinkBlackCount = linkBlackCount
+
+	//计算主要模型胜率
+	param.AlFlag = getMainAlFlag()
+	mainTempList := this.SuggestService.Query(param)
+	var mainRedCount, mainBlackCount int64
+	for _, e := range mainTempList {
+		if e.PreResult == 3 && e.MainTeamGoal >= e.GuestTeamGoal{
+			mainRedCount++
+		}else if e.PreResult == 0 && e.MainTeamGoal <= e.GuestTeamGoal{
+			mainRedCount++
+		}else{
+			mainBlackCount++
+		}
+	}
+	temp.MainRedCount = mainRedCount
+	temp.MainBlackCount = mainBlackCount
+	value := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+	temp.MainVal = strconv.FormatFloat(value, 'f', -1, 64) + "%"
 
 	var buf bytes.Buffer
 	tpl, err := template.New("week.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/week.html")

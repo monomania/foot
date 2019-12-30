@@ -7,6 +7,7 @@
     <li><span style="color: gray; "><strong>黑(错误):{{.BlackCount}}</strong></span></li>
     <li><span style="color: red; "><strong>最长连红:{{.LinkRedCount}}</strong></span></li>
     <li><span style="color: gray; "><strong>最长连黑:{{.LinkBlackCount}}</strong></span></li>
+    <li style="font-size: 12px;font-weight: bold"><strong>E2模型统计,红(正确):{{.MainRedCount}} 黑(错误):{{.MainBlackCount}},胜率:{{.MainRedCount}}/({{.MainRedCount}}+{{.MainBlackCount}})={{.MainVal}}</strong></li>
 </ul>
 <hr/>
 <h1 style="margin-top: 5px">
@@ -40,7 +41,7 @@
         style="background-color: orange"
         {{end}}
         >
-            {{preResultStr .PreResult}}({{alFlagStr .AlFlag}})
+            {{preResultStr .PreResult}}<span style="color: {{color .AlFlag}}">({{alFlagStr .AlFlag}})</span>
         </td>
 
     </tr>

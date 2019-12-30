@@ -81,7 +81,7 @@ WHERE mh.LeagueId = l.Id
 	}
 
 	if len(param.AlFlag) > 0 {
-		sql += " AND ar.AlFlag = '" + param.AlFlag + "' "
+		sql += " AND ar.AlFlag in (" + param.AlFlag + ") "
 	}
 	if len(param.BeginDateStr) > 0 {
 		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "

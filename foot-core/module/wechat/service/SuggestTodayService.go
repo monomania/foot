@@ -45,16 +45,35 @@ func alFlagStr(str string) string {
 	return "XX"
 }
 
+func color(str string) string {
+	if "Asia20191206Service" == str {
+		return "orange"
+	} else if "Euro20191206Service" == str {
+		return "blue"
+	} else if "Euro20191212Service" == str {
+		return "darkblue"
+	}else if "Euro20191226Service" == str{
+		return "olivedrab"
+	}
+	return "XX"
+}
+
 func getFuncMap() map[string]interface{} {
 	funcMap := template.FuncMap{
 		"preResultStr": preResultStr,
 		"alFlagStr": alFlagStr,
+		"color": color,
 	}
 	return funcMap
 }
 
 func getAlFlag() string{
 	al_flag := utils.GetVal("wechat", "al_flag")
+	return al_flag;
+}
+
+func getMainAlFlag() string{
+	al_flag := utils.GetVal("wechat", "main_al_flag")
 	return al_flag;
 }
 
@@ -197,8 +216,8 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	h12, _ = time.ParseDuration("24h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	//今日推荐
-	param.AlFlag = getAlFlag()
+	//待选池释放Q1
+	param.AlFlag = ""
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}

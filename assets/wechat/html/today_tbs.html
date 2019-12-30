@@ -5,7 +5,7 @@
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)3.获取最新推荐请发送"今日推荐"给公众号.</strong></li>
     <li><strong>4.待选的场次为当前时间"往前推48小时"至"往后推24小时"的比赛.</strong></li>
     <li><strong>5.待选的场次会随指数的变化而变化,如再次进入不见上次待选的比赛,请查看"今日推荐".</strong></li>
-    <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.建议多关注支持模型E2的比赛.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型为E2,敬请关注.</strong></li>
 </ul>
 <hr/>
 <ul style="font-size: 12px;font-weight: lighter">
@@ -17,11 +17,11 @@
     <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
     <div style="float: right;width: 40%;font-weight: bold;font-size: 12px">
         模型:
-            <span style="color: orange">A1</span>
-            <span style="color: orangered">A2</span>
-            <span style="color: blue">E1</span>
-            <span style="color: darkblue">E2</span>
-            <span style="color: blue">Q1</span>
+        <span style="color: orange">A1</span>
+        <span style="color: orangered">A2</span>
+        <span style="color: blue">E1</span>
+        <span style="color: darkblue">E2</span>
+        <span style="color: olivedrab">Q1</span>
     </div>
 </h1>
 <table style="font-size: 12px;font-weight: bold">
@@ -44,7 +44,7 @@
             {{.MainTeamGoal}}:{{.GuestTeamGoal}}
             </td>
             <td>
-                {{preResultStr .PreResult}}({{alFlagStr .AlFlag}})
+                {{preResultStr .PreResult}}<span style="color: {{color .AlFlag}}">({{alFlagStr .AlFlag}})</span>
             </td>
             <td style="color: red">
                 <strong>{{.HitCount}}</strong>

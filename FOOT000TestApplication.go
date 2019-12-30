@@ -53,6 +53,13 @@ func getFuncMap() map[string]interface{} {
 }
 
 func main() {
+	var mainRedCount, mainBlackCount int64
+	mainRedCount =27
+	mainBlackCount = 22
+	value := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) *100
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+	fmt.Println(strconv.FormatFloat(value,'f', -1, 64)+"%")
+
 	//测试
 	suggestService := new(service3.SuggestService)
 	i := vo.SuggestVO{}
