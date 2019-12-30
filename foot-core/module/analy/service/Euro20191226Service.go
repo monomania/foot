@@ -20,7 +20,7 @@ type Euro20191226Service struct {
 }
 
 func (this *Euro20191226Service) Analy() {
-	matchList := this.MatchLastService.FindAll()
+	matchList := this.MatchLastService.FindNotFinished()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {

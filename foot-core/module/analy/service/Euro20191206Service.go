@@ -23,7 +23,7 @@ type Euro20191206Service struct {
 计算欧赔81 616的即时盘,和初盘的差异
 */
 func (this *Euro20191206Service) Analy() {
-	matchList := this.MatchLastService.FindAll()
+	matchList := this.MatchLastService.FindNotFinished()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {

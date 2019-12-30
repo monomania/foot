@@ -28,7 +28,7 @@ type Asia20191206Service struct {
 ( 2.欧赔升水,亚赔反之,以亚赔为准)
 */
 func (this *Asia20191206Service) Analy() {
-	matchList := this.MatchLastService.FindAll()
+	matchList := this.MatchLastService.FindNotFinished()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {

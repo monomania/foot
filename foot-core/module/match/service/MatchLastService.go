@@ -30,6 +30,24 @@ func (this *MatchLastService) FindAll() []*pojo.MatchLast {
 }
 
 /**
+查找未结束的比赛
+ */
+func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
+	sql_build := `
+SELECT 
+  la.* 
+FROM
+  foot.t_match_last la 
+  WHERE la.MatchDate > DATE_SUB(NOW(), INTERVAL 2 HOUR)
+	`
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &dataList)
+	return dataList
+}
+
+/**
 查找欧赔不完整的比赛
 */
 func (this *MatchLastService) FindEuroIncomplete(count int) []*pojo.MatchLast {
