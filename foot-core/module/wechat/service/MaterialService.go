@@ -5,14 +5,15 @@ import (
 )
 
 type MaterialService struct {
-	MatchService
+	SuggestTodayService
+	SuggestWeekService
+	SuggestMonthService
 }
 
-
-func (this *MaterialService) ModifyNews(wcClient *core.Client){
-	this.MatchService.ModifyToday(wcClient)
-	this.MatchService.ModifyTodayDetail(wcClient)
-	this.MatchService.ModifyTodayTbs(wcClient)
-	this.MatchService.ModifyWeek(wcClient)
-	this.MatchService.ModifyMonth(wcClient)
+func (this *MaterialService) ModifyNews(wcClient *core.Client) {
+	this.SuggestTodayService.ModifyToday(wcClient)
+	this.SuggestTodayService.ModifyTodayDetail(wcClient)
+	this.SuggestTodayService.ModifyTodayTbs(wcClient)
+	this.SuggestWeekService.ModifyWeek(wcClient)
+	this.SuggestMonthService.ModifyMonth(wcClient)
 }

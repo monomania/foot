@@ -29,7 +29,7 @@ func (this *MaterialController) Images() {
 		if !strings.HasSuffix(name, ".jpg") {
 			continue
 		}
-		fileName := "assets/" + name
+		fileName := "assets/img/" + name
 		mediaId, url, err := material.UploadImage(wcClient, fileName)
 		if err != nil {
 			base.Log.Error(err)
@@ -47,17 +47,17 @@ func (this *MaterialController) Images() {
 func (this *MaterialController) News() {
 	result := []string{}
 	//today
-	mediaId := this.MatchService.Today(wcClient)
+	mediaId := this.SuggestTodayService.Today(wcClient)
 	data := fmt.Sprintf("today mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)
 	//week
-	mediaId = this.MatchService.Week(wcClient)
+	mediaId = this.SuggestWeekService.Week(wcClient)
 	data = fmt.Sprintf("week mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)
 	//month
-	mediaId = this.MatchService.Month(wcClient)
+	mediaId = this.SuggestMonthService.Month(wcClient)
 	data = fmt.Sprintf("month mediaId is : %v", mediaId)
 	base.Log.Info(data)
 	result = append(result, data)

@@ -6,16 +6,16 @@ import (
 	"github.com/chanxuehong/wechat/mp/message/callback/response"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
+	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 )
 
 type MessageService struct {
 	mysql.BaseService
-	service.AnalyService
+	service.LeisuService
 }
 
 func (this *MessageService) Today() []response.Article {
-	listData := this.AnalyService.ListDefaultData()
+	listData := this.LeisuService.ListDefaultData()
 	articles := make([]response.Article,len(listData))
 	for i, e := range listData {
 		bytes, _ := json.Marshal(e)

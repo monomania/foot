@@ -19,5 +19,14 @@ type WeekVO struct {
 	//最长连黑
 	LinkBlackCount int64
 
+
+	//红
+	MainRedCount int64
+	//黑
+	MainBlackCount int64
+	//胜率
+	MainVal string
+
+
 	DataList []SuggestVO
 }
