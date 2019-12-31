@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -34,7 +35,7 @@ func (this *Euro20191212Service) Analy() {
 			if hours > 0 {
 				hours = math.Abs(hours * 0.5)
 				data.THitCount = int(hours)
-			}else{
+			} else {
 				data.THitCount = 1
 			}
 			if stub == 0 {
@@ -50,7 +51,7 @@ func (this *Euro20191212Service) Analy() {
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
-				}else{
+				} else {
 					temp_data.HitCount = 0
 				}
 				this.AnalyService.Modify(temp_data)
@@ -141,4 +142,37 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.Result = this.IsRight(a18betData, v, data)
 		return 0, data
 	}
+}
+
+func (this *Euro20191212Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy *entity5.AnalyResult) string {
+	//比赛结果
+	var globalResult int
+	h2, _ := time.ParseDuration("148m")
+	matchDate := v.MatchDate.Add(h2)
+	if matchDate.After(time.Now()) {
+		//比赛未结束
+		globalResult = -1
+	} else {
+		if v.MainTeamGoals > v.GuestTeamGoals {
+			globalResult = 3
+		} else if v.MainTeamGoals < v.GuestTeamGoals {
+			globalResult = 0
+		} else {
+			globalResult = 1
+		}
+	}
+	var resultFlag string
+	if globalResult == -1 {
+		resultFlag = "待定"
+	} else if globalResult == analy.PreResult || globalResult == 1{
+		resultFlag = "正确"
+	} else {
+		resultFlag = "错误"
+	}
+
+	//打印数据
+	league := this.LeagueService.FindById(v.LeagueId)
+	matchDateStr := v.MatchDate.Format("2006-01-02 15:04:05")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	return resultFlag
 }

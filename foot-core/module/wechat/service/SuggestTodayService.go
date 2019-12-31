@@ -23,15 +23,22 @@ type SuggestTodayService struct {
 
 func preResultStr(val int, al_flag string) string {
 	var result string
-	if 3 == val {
-		result = "胜"
-	} else if 1 == val {
-		result = "平"
-	} else if 0 == val {
-		result = "负"
-	}
 	if "Euro20191212Service" == al_flag {
-		result += "平"
+		if 3 == val {
+			result = "胜平"
+		} else if 1 == val {
+			result = "平"
+		} else if 0 == val {
+			result = "负平"
+		}
+	}else{
+		if 3 == val {
+			result = "主"
+		} else if 1 == val {
+			result = "走"
+		} else if 0 == val {
+			result = "客"
+		}
 	}
 	return result
 }

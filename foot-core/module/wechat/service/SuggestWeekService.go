@@ -100,6 +100,9 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	temp.BlackCount = blackCount
 	temp.LinkRedCount = linkRedCount
 	temp.LinkBlackCount = linkBlackCount
+	val := float64(redCount) / (float64(redCount) + float64(blackCount)) * 100
+	val, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", val), 64)
+	temp.Val = strconv.FormatFloat(val, 'f', -1, 64) + "%"
 
 	//计算主要模型胜率
 	param.AlFlag = getMainAlFlag()
@@ -116,9 +119,9 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	}
 	temp.MainRedCount = mainRedCount
 	temp.MainBlackCount = mainBlackCount
-	value := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100
-	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
-	temp.MainVal = strconv.FormatFloat(value, 'f', -1, 64) + "%"
+	mainVal := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100
+	mainVal, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", mainVal), 64)
+	temp.MainVal = strconv.FormatFloat(mainVal, 'f', -1, 64) + "%"
 
 	var buf bytes.Buffer
 	tpl, err := template.New("week.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/week.html")

@@ -100,6 +100,9 @@ func (this *SuggestMonthService) ModifyMonth(wcClient *core.Client) {
 	temp.BlackCount = blackCount
 	temp.LinkRedCount = linkRedCount
 	temp.LinkBlackCount = linkBlackCount
+	val := float64(redCount) / (float64(redCount) + float64(blackCount)) * 100
+	val, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", val), 64)
+	temp.Val = strconv.FormatFloat(val, 'f', -1, 64) + "%"
 
 	//计算主要模型胜率
 	param.AlFlag = getMainAlFlag()

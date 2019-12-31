@@ -18,7 +18,8 @@ type WeekVO struct {
 	LinkRedCount int64
 	//最长连黑
 	LinkBlackCount int64
-
+	//胜率
+	Val string
 
 	//红
 	MainRedCount int64
