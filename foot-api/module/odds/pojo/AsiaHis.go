@@ -6,7 +6,7 @@ import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 */
 type AsiaHis struct {
 	/**
-	初上下盘赔率
+	初主队盘口赔率
 	*/
 	Sp3 float64
 	Sp0 float64
@@ -14,7 +14,7 @@ type AsiaHis struct {
 	SLetBall float64	`xorm:" comment('s让球') index"`
 
 	/**
-	即时上下盘赔率
+	即时客队盘口赔率
 	*/
 	Ep3 float64
 	Ep0 float64

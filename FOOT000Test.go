@@ -1,57 +1,38 @@
 package main
 
 import (
-	"bufio"
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"html/template"
-	"io"
-	"math/rand"
-	"strconv"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
-	utils2 "tesou.io/platform/foot-parent/foot-core/common/utils"
-	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
-	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
-	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
-	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
-	service3 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
-	"tesou.io/platform/foot-parent/foot-spider/launch"
-	"time"
+	"syscall"
 )
 
-
-func preResultStr(val int) string {
-	if 3 == val {
-		return "主"
-	} else if 1 == val {
-		return "平"
-	} else if 0 == val {
-		return "客"
-	}
-	return "未知"
+func abort(funcname string, err string) {
+	panic(funcname + " failed: " + err)
 }
 
-func alFlagStr(str string) string {
-	if "Asia20191206Service" == str {
-		return "A1"
-	} else if "Euro20191206Service" == str {
-		return "E1"
-	} else if "Euro20191212Service" == str {
-		return "E2"
-	}
-	return "XX"
+func print_version(v uint32) {
+	major := byte(v)
+	minor := uint8(v >> 8)
+	build := uint16(v >> 16)
+	print("windows version ", major, ".", minor, " (Build ", build, ")\n")
 }
 
-func getFuncMap() map[string]interface{} {
-	funcMap := template.FuncMap{
-		"preResultStr": preResultStr,
-		"alFlagStr": alFlagStr,
+func main() {
+	h, err := syscall.LoadLibrary("kernel32.dll")
+	if err != nil {
+		abort("LoadLibrary", err.Error())
 	}
-	return funcMap
+	defer syscall.FreeLibrary(h)
+	proc, err := syscall.GetProcAddress(h, "GetVersion")
+	if err != nil {
+		abort("GetProcAddress", err.Error())
+	}
+	r, _, _ := syscall.Syscall(uintptr(proc), 0, 0, 0, 0)
+	print_version(uint32(r))
+
+
+
 }
 
+/*
 func main() {
 	var mainRedCount, mainBlackCount int64
 	mainRedCount =27
@@ -158,4 +139,4 @@ func main() {
 		fmt.Println(string(bytes))
 	}
 
-}
+}*/

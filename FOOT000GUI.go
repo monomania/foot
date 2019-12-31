@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/lxn/walk"
 	. "github.com/lxn/walk/declarative"
 	"io"
@@ -17,16 +18,18 @@ import (
 )
 
 func init() {
+
 }
+
 func main() {
-	buildWinForm()
-	//test()
+	//buildWinForm()
+	test()
 }
 
 func buildWinForm() {
 	var inTE *walk.TextEdit
 	window := MainWindow{
-		Title:   "Foot",
+		Title:   "FOOT000GUI",
 		MinSize: Size{400, 300},
 		Layout:  VBox{},
 		Children: []Widget{
@@ -53,7 +56,6 @@ func buildWinForm() {
 						Text: "清理数据库",
 						OnClicked: func() {
 							inTE.SetText("清理数据库...\r\n")
-							go launch.DBInit()
 							go showConsole(inTE)
 						},
 					},
@@ -101,7 +103,6 @@ func test() {
 		line, _, err := reader.ReadLine()
 		if err == io.EOF {
 			time.Sleep(200)
-			base.Log.Info("----------111-----------", i)
 		} else if nil != err {
 			str = "发生错误:" + err.Error()
 		} else {
@@ -111,7 +112,6 @@ func test() {
 		if strings.TrimSpace(str) == "" {
 			continue
 		}
-
-		str = str + "\r\n"
+		fmt.Println(str)
 	}
 }

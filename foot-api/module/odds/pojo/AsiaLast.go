@@ -13,7 +13,7 @@ type AsiaLast struct {
 	MatchId string `xorm:"unique(CompId_MatchId)"`
 
 	/**
-	初上下盘赔率
+	初主队盘口赔率
 	*/
 	Sp3 float64	`xorm:" comment('Sp3') index"`
 	Sp0 float64	`xorm:" comment('Sp0') index"`
@@ -21,7 +21,7 @@ type AsiaLast struct {
 	SLetBall float64 `xorm:" comment('s让球') index"`
 
 	/**
-	即时上下盘赔率
+	即时客队盘口赔率
 	*/
 	Ep3 float64	`xorm:" comment('Ep3') index"`
 	Ep0 float64	`xorm:" comment('Ep0') index"`

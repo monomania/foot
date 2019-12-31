@@ -24,7 +24,7 @@ type MatchLast struct {
 	 */
 	LeagueId string	`xorm:" comment('联赛Id') index"`
 	/**
-	 * 主队id
+	 * 主队id,目前为主队名称
 	 */
 	MainTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
 	/**
@@ -32,7 +32,7 @@ type MatchLast struct {
 	 */
 	MainTeamGoals int	`xorm:" comment('主队进球数') index"`
 	/**
-	 * 客队id
+	 * 客队id,目前为客队名称
 	 */
 	GuestTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
 	/**
