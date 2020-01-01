@@ -2,7 +2,6 @@ package service
 
 import (
 	"math"
-	"reflect"
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -14,16 +13,20 @@ import (
 	"time"
 )
 
-type Euro20191212Service struct {
+type E2Service struct {
 	AnalyService
 	//最大让球数据
 	MaxLetBall float64
 }
 
+func (this *E2Service) ModelName() string{
+	return "E2"
+}
+
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */
-func (this *Euro20191212Service) Analy() {
+func (this *E2Service) Analy() {
 	matchList := this.MatchLastService.FindNotFinished()
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
@@ -44,8 +47,7 @@ func (this *Euro20191212Service) Analy() {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			alFlag := reflect.TypeOf(*this).Name()
-			temp_data := this.Find(v.Id, alFlag)
+			temp_data := this.Find(v.Id, this.ModelName())
 			if len(temp_data.Id) > 0 {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
@@ -63,7 +65,7 @@ func (this *Euro20191212Service) Analy() {
 
 }
 
-func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
+func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
 	var e616data *entity3.EuroLast
@@ -117,8 +119,7 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	}
 
 	var data *entity5.AnalyResult
-	alFlag := reflect.TypeOf(*this).Name()
-	temp_data := this.Find(matchId, alFlag)
+	temp_data := this.Find(matchId, this.ModelName())
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
@@ -132,7 +133,7 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
 		data.LetBall = a18betData.ELetBall
-		data.AlFlag = alFlag
+		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
@@ -144,7 +145,7 @@ func (this *Euro20191212Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	}
 }
 
-func (this *Euro20191212Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy *entity5.AnalyResult) string {
+func (this *E2Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	var globalResult int
 	h2, _ := time.ParseDuration("148m")

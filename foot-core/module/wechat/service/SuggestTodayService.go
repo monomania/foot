@@ -23,7 +23,7 @@ type SuggestTodayService struct {
 
 func preResultStr(val int, al_flag string) string {
 	var result string
-	if "Euro20191212Service" == al_flag {
+	if "E2" == al_flag {
 		if 3 == val {
 			result = "胜平"
 		} else if 1 == val {
@@ -43,27 +43,14 @@ func preResultStr(val int, al_flag string) string {
 	return result
 }
 
-func alFlagStr(str string) string {
-	if "Asia20191206Service" == str {
-		return "A1"
-	} else if "Euro20191206Service" == str {
-		return "E1"
-	} else if "Euro20191212Service" == str {
-		return "E2"
-	} else if "Euro20191226Service" == str {
-		return "Q1"
-	}
-	return "XX"
-}
-
 func color(str string) string {
-	if "Asia20191206Service" == str {
+	if "A1" == str {
 		return "orange"
-	} else if "Euro20191206Service" == str {
+	} else if "E1" == str {
 		return "blue"
-	} else if "Euro20191212Service" == str {
+	} else if "E2" == str {
 		return "darkblue"
-	} else if "Euro20191226Service" == str {
+	} else if "Q1" == str {
 		return "olivedrab"
 	}
 	return "XX"
@@ -72,7 +59,6 @@ func color(str string) string {
 func getFuncMap() map[string]interface{} {
 	funcMap := template.FuncMap{
 		"preResultStr": preResultStr,
-		"alFlagStr":    alFlagStr,
 		"color":        color,
 	}
 	return funcMap

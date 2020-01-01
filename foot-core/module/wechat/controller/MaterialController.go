@@ -18,7 +18,7 @@ type MaterialController struct {
 
 func (this *MaterialController) Images() {
 
-	infos, err := ioutil.ReadDir("assets/img")
+	infos, err := ioutil.ReadDir("assets/wechat/img")
 	if err != nil {
 		base.Log.Error(err)
 		return
@@ -29,7 +29,7 @@ func (this *MaterialController) Images() {
 		if !strings.HasSuffix(name, ".jpg") {
 			continue
 		}
-		fileName := "assets/img/" + name
+		fileName := "assets/wechat/img/" + name
 		mediaId, url, err := material.UploadImage(wcClient, fileName)
 		if err != nil {
 			base.Log.Error(err)

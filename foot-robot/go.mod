@@ -1,6 +1,9 @@
 module tesou.io/platform/foot-parent/foot-robot
 
-require github.com/go-vgo/robotgo v0.0.0-20191226160149-28f256a4c5a0
+require (
+	github.com/go-vgo/robotgo v0.0.0-20191226160149-28f256a4c5a0
+	tesou.io/platform/foot-parent/foot-core v0.0.0-00010101000000-000000000000
+)
 
 replace (
 	github.com/go-xorm/core v0.6.3 => github.com/go-xorm/core v0.6.2
