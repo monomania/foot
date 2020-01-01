@@ -23,7 +23,11 @@
         <li>算法模型:<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span></li>
         <li>球探指数:{{.HitCount}}<span style="color: red;font-weight: bold;">(指数越大,越稳定)</span></li>
         <li>推荐选项:{{preResultStr .PreResult .AlFlag}}</li>
-        <li>说　　明:<span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.历史统计以亚指为依据.</span></li>
+        <li>说　　明:
+            {{if eq .AlFlag "E2"}}
+            <span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.</span>
+            {{end}}
+        </li>
     </ul>
     <hr/>
     {{end}}

@@ -3,9 +3,20 @@ package main
 import (
 	"fmt"
 	"github.com/go-vgo/robotgo"
+	"tesou.io/platform/foot-parent/foot-robot/helper"
 )
 
 func main() {
+	robotgo.Sleep(1)
+
+	title := robotgo.GetTitle()
+	fmt.Println("title@@@ ", title)
+
+	util := &helper.RobotHelper{}
+	util.Tips()
+}
+
+func tes11t(){
 	robotgo.Sleep(1)
 
 	title := robotgo.GetTitle()

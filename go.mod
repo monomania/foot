@@ -6,6 +6,7 @@ require (
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect
 	tesou.io/platform/foot-parent/foot-api v1.0.0
 	tesou.io/platform/foot-parent/foot-core v1.0.0
+	tesou.io/platform/foot-parent/foot-robot v1.0.0
 	tesou.io/platform/foot-parent/foot-spider v1.0.0
 )
 
@@ -14,6 +15,7 @@ replace (
 	opensource.io/go_spider => ../../../../opensource.io/go_spider
 	tesou.io/platform/foot-parent/foot-api => ./foot-api
 	tesou.io/platform/foot-parent/foot-core => ./foot-core
+	tesou.io/platform/foot-parent/foot-robot => ./foot-robot
 	tesou.io/platform/foot-parent/foot-spider => ./foot-spider
 	tesou.io/platform/foot-parent/foot-web => ./foot-web
 )

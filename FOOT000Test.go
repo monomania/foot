@@ -118,7 +118,7 @@ func main() {
 	analyService.Modify(result)
 
 	//测试从雷速获取可发布的比赛池
-	readCloser := utils.Get(constants.MATCH_LIST_URL)
+	readCloser := helper.Get(constants.MATCH_LIST_URL)
 	reader := bufio.NewReader(readCloser)
 	for {
 		line, err := reader.ReadBytes('\n')
