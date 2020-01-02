@@ -38,23 +38,6 @@ HEAD:
 	case "analy\n", "analy\r\n":
 		launch2.Analy()
 		goto HEAD
-	case "autospider\n", "autospider\r\n":
-		go func() {
-			for {
-				base.Log.Info("--------数据更新开始运行--------")
-				//1.安装数据库
-				//2.配置好数据库连接,打包程序发布
-				//3.程序执行流程,周期定制定为一天三次
-				//3.1 FS000Application 爬取数据
-				launch.Spider()
-				//3.2 FC002AnalyApplication 分析得出推荐列表
-				launch2.Analy()
-				configService := new(service2.ConfService)
-				base.Log.Info("--------数据更新周期结束--------")
-				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
-			}
-		}()
-		goto HEAD
 	case "auto\n", "auto\r\n":
 		go func() {
 			for {
