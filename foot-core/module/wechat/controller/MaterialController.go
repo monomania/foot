@@ -16,6 +16,20 @@ type MaterialController struct {
 	service.MaterialService
 }
 
+func (this *MaterialController) Image() {
+	fileName := "assets/wechat/img/follow_bottom.png"
+	mediaId, url, err := material.UploadImage(wcClient, fileName)
+	if err != nil {
+		base.Log.Error(err)
+		return
+	}
+	data := fmt.Sprintf("fileName is: %v,mediaId is : %v ,url is : %v", fileName, mediaId, url)
+	base.Log.Info(data)
+
+	this.Data["json"] = data
+	this.ServeJSON()
+}
+
 func (this *MaterialController) Images() {
 
 	infos, err := ioutil.ReadDir("assets/wechat/img")

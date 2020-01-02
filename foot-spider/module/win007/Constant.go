@@ -5,7 +5,7 @@ const MODULE_FLAG = "win007"
 /**
  * 比赛分析页面数据
  */
-const WIN007_MATCH_ANALY_URL_PATTERN = "http://m.win007.com/analy/Analysis/${matchId}.htm"
+const WIN007_BASE_FACE_URL_PATTERN = "http://m.win007.com/analy/Analysis/${matchId}.htm"
 
 /**
  * 欧赔, scheid为比赛Id , cId为公司Id

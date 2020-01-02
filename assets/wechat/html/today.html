@@ -1,3 +1,6 @@
+<div>
+    <img src="http://mmbiz.qpic.cn/sz_mmbiz_gif/BePaFicK2B5R6lNrnAdOpR63megZibx7GnwXTAl2yZTEibKIbCFrs0QpsmOWG0CrxWEicHldX2ibqva6Ise5G5vILCQ/0?wx_fmt=gif"/>
+</div>
 <h1 style="color: red;font-weight: bold;font-size: 12px"><strong>注意</strong></h1>
 <ul style="color: red;font-weight: bold;font-size: 12px">
     <li><strong>1.比赛为程序自动处理,自动更新同步,目前更新周期为30~60分钟一次.</strong></li>
@@ -17,11 +20,11 @@
     <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
     <div style="float: right;width: 40%;font-weight: bold;font-size: 12px">
         模型:
-            <span style="color: orange">A1</span>
-            <span style="color: orangered">A2</span>
-            <span style="color: blue">E1</span>
-            <span style="color: darkblue">E2</span>
-            <span style="color: olivedrab">Q1</span>
+        <span style="color: orange">A1</span>
+        <span style="color: orangered">A2</span>
+        <span style="color: blue">E1</span>
+        <span style="color: darkblue">E2</span>
+        <span style="color: olivedrab">Q1</span>
     </div>
 </h1>
 <table style="font-size: 12px;font-weight: bold">
@@ -33,34 +36,39 @@
         <td>推荐(模型)</td>
     </tr>
 {{if .DataList}}
-    {{with .DataList}}
-    {{range .}}
-        <tr>
-            <td>{{.MatchDateStr}}</td>
-            <td>{{.LeagueName}}</td>
-            <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-            <td>
-            {{.MainTeamGoal}}:{{.GuestTeamGoal}}
-            </td>
-            <td
-            {{if eq  .Result "正确"}}
-            style="background-color: red"
-            {{else if eq  .Result "错误"}}
-            style="background-color: gray"
-            {{else if eq  .Result "走盘"}}
-            style="background-color: greenyellow"
-            {{else}}
-            style="background-color: orange"
-            {{end}}
-            >
-            {{preResultStr .PreResult .AlFlag}}<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span>
-            </td>
+{{with .DataList}}
+{{range .}}
+    <tr>
+        <td>{{.MatchDateStr}}</td>
+        <td>{{.LeagueName}}</td>
+        <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
+        <td>
+        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+        </td>
+        <td
+        {{if eq  .Result "正确"}}
+        style="background-color: red"
+        {{else if eq  .Result "错误"}}
+        style="background-color: gray"
+        {{else if eq  .Result "走盘"}}
+        style="background-color: greenyellow"
+        {{else}}
+        style="background-color: orange"
+        {{end}}
+        >
+        {{preResultStr .PreResult .AlFlag}}<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span>
+        </td>
 
-        </tr>
-    {{end}}
-    {{end}}
+    </tr>
+{{end}}
+{{end}}
 {{else}}
-    <tr><td colspan="5" style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</td></tr>
+    <tr>
+        <td colspan="5" style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</td>
+    </tr>
 {{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
+<div>
+    <img src="http://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5R6lNrnAdOpR63megZibx7Gnqj9UlhbGMnKbDYmfkFvIhRsz5LEK27Fukf0sE8NzOlNI2nALx25icQQ/0?wx_fmt=png">
+</div>

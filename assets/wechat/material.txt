@@ -23,4 +23,5 @@
   "fileName is: assets/16.jpg,mediaId is : chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4 ,url is : http://mmbiz.qpic.cn/sz_mmbiz_jpg/BePaFicK2B5QZuw0bf1HsiarnqQXzuWxE92y6PhGre05TwpWYaSj0cmyAxHVotQibURMHqwYqvR7c05ercY11K6FQ/0?wx_fmt=jpeg",
   "fileName is: assets/17.jpg,mediaId is : chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI ,url is : http://mmbiz.qpic.cn/sz_mmbiz_jpg/BePaFicK2B5QZuw0bf1HsiarnqQXzuWxE9ogvYdcdKGWkQbBWxxgHulRzunHdG6oJ1E82xcqqDk9wicjTYljZUtxA/0?wx_fmt=jpeg",
 ]
-
+"fileName is: assets/wechat/img/follow_head.gif,mediaId is : chP-LBQxy9SVbAFjwZ4QEmE0SaglrrzcsqZ2Kuswecs ,url is : http://mmbiz.qpic.cn/sz_mmbiz_gif/BePaFicK2B5R6lNrnAdOpR63megZibx7GnwXTAl2yZTEibKIbCFrs0QpsmOWG0CrxWEicHldX2ibqva6Ise5G5vILCQ/0?wx_fmt=gif"
+"fileName is: assets/wechat/img/follow_bottom.png,mediaId is : chP-LBQxy9SVbAFjwZ4QEqVYyz0pfodyN1M82aUJiV4 ,url is : http://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5R6lNrnAdOpR63megZibx7Gnqj9UlhbGMnKbDYmfkFvIhRsz5LEK27Fukf0sE8NzOlNI2nALx25icQQ/0?wx_fmt=png"

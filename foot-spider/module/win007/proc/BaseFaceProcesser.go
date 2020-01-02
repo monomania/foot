@@ -15,20 +15,20 @@ import (
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
-type MatchAnalyProcesser struct {
+type BaseFaceProcesser struct {
 	//博彩公司对应的win007id
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
 }
 
-func GetMatchAnalyProcesser() *MatchAnalyProcesser {
-	return &MatchAnalyProcesser{}
+func GetBaseFaceProcesser() *BaseFaceProcesser {
+	return &BaseFaceProcesser{}
 }
 
-func (this *MatchAnalyProcesser) Startup() {
+func (this *BaseFaceProcesser) Startup() {
 	this.Win007idMatchidMap = map[string]string{}
 
-	newSpider := spider.NewSpider(this, "MatchAnalyProcesser")
+	newSpider := spider.NewSpider(this, "BaseFaceProcesser")
 
 	for _, v := range this.MatchLastList {
 		i := v.Ext[win007.MODULE_FLAG]
@@ -48,7 +48,7 @@ func (this *MatchAnalyProcesser) Startup() {
 	newSpider.SetThreadnum(1).Run()
 }
 
-func (this *MatchAnalyProcesser) Process(p *page.Page) {
+func (this *BaseFaceProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
 		base.Log.Info("URL:,", request.Url, p.Errormsg())
@@ -76,7 +76,7 @@ func (this *MatchAnalyProcesser) Process(p *page.Page) {
 	this.hdata_process(request.Url, hdata_str)
 }
 
-func (this *MatchAnalyProcesser) hdata_process(url string, hdata_str string) {
+func (this *BaseFaceProcesser) hdata_process(url string, hdata_str string) {
 
 	var hdata_list = make([]*vo.HData, 0)
 	json.Unmarshal(([]byte)(hdata_str), &hdata_list)
@@ -88,7 +88,7 @@ func (this *MatchAnalyProcesser) hdata_process(url string, hdata_str string) {
 
 }
 
-func (this *MatchAnalyProcesser) Finish() {
+func (this *BaseFaceProcesser) Finish() {
 	base.Log.Info("比赛分析抓取解析完成 \r\n")
 
 }
