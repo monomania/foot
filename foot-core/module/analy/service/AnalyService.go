@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -22,8 +21,6 @@ import (
 type AnalyService struct {
 	mysql.BaseService
 	service.EuroLastService
-	service.EuroHisService
-	service.AsiaLastService
 	service2.MatchLastService
 	service2.MatchHisService
 	service3.LeagueService
@@ -72,47 +69,6 @@ func (this *AnalyService) teamOption() int {
 		}
 	}
 	return result
-}
-
-func (this *AnalyService) ModifyResult() {
-	sql_build := `
-SELECT 
-  ar.* 
-FROM
-  foot.t_analy_result ar 
-WHERE ar.MatchDate < NOW() 
-  AND ar.Result = '待定' 
-     `
-	//结果值
-	entitys := make([]*entity5.AnalyResult, 0)
-	//执行查询
-	this.FindBySQL(sql_build, &entitys)
-
-	if len(entitys) <= 0 {
-		return
-	}
-	for _, e := range entitys {
-		aList := this.AsiaLastService.FindByMatchIdCompId(e.MatchId, "澳门")
-		if nil == aList || len(aList) < 1 {
-			aList = make([]*entity3.AsiaLast,1)
-			aList[0] = new(entity3.AsiaLast)
-		}
-		his := this.MatchHisService.FindById(e.MatchId)
-		if nil == his {
-			continue
-		}
-		last := new(entity2.MatchLast)
-		last.MatchDate = his.MatchDate
-		last.DataDate = his.DataDate
-		last.LeagueId = his.LeagueId
-		last.MainTeamId = his.MainTeamId
-		last.MainTeamGoals = his.MainTeamGoals
-		last.GuestTeamId = his.GuestTeamId
-		last.GuestTeamGoals = his.GuestTeamGoals
-		e.Result = this.IsRight(aList[0], last, e)
-		this.Modify(e)
-	}
-
 }
 
 func (this *AnalyService) ListDefaultData() []*vo.AnalyResultVO {
@@ -191,9 +147,9 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
-func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) string {
+func (this *AnalyService) IsRight(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
-	globalResult := this.ActualResult(last, v,analy)
+	globalResult := this.ActualResult(v, analy)
 	var resultFlag string
 	if globalResult == -1 {
 		resultFlag = "待定"
@@ -208,14 +164,14 @@ func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
 	matchDate := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "VS" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
 }
 
 /**
 比赛的实际结果计算
 */
-func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) int {
+func (this *AnalyService) ActualResult(v *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
 	h2, _ := time.ParseDuration("148m")
 	matchDate := v.MatchDate.Add(h2)
@@ -224,25 +180,14 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 		return -1
 	}
 
-	var elb_sum float64
-	if analy.LetBall > 0 {
-		elb_sum = analy.LetBall
-	}else{
-		elb_sum = last.ELetBall
-	}
-	var mainTeamGoals float64
-	if elb_sum > 0 {
-		mainTeamGoals = float64(v.MainTeamGoals) - elb_sum
-	} else {
-		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
-	}
+	mainTeamGoals := v.MainTeamGoals
 	//diff_goals := float64(v.MainTeamGoals-v.GuestTeamGoals) - elb_sum
 	//if diff_goals <= 0.25 && diff_goals >= -0.25 {
 	//	result = 1
 	//}
-	if mainTeamGoals > float64(v.GuestTeamGoals) {
+	if mainTeamGoals > v.GuestTeamGoals {
 		result = 3
-	} else if mainTeamGoals < float64(v.GuestTeamGoals) {
+	} else if mainTeamGoals < v.GuestTeamGoals {
 		result = 0
 	} else {
 		result = 1
@@ -260,25 +205,6 @@ func EuroMainDown(e1data *entity3.EuroLast, e2data *entity3.EuroLast) int {
 		return 0
 	}
 	return 1
-}
-
-/**
-2.亚赔是主降还是主升 主降为true
-*/
-func AsiaMainDown(a1betData *entity3.AsiaLast) bool {
-	slb_sum := a1betData.SLetBall
-	elb_sum := a1betData.ELetBall
-
-	if elb_sum > slb_sum {
-		return true
-	} else if elb_sum < slb_sum {
-		return false
-	} else { //初始让球和即时让球一致
-		if a1betData.Ep3 < a1betData.Sp3 {
-			return true
-		}
-	}
-	return false
 }
 
 func Decimal(value float64) float64 {

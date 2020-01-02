@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"math"
 	"reflect"
 	"strconv"
@@ -66,10 +67,9 @@ func (this *Euro20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 	var e1data *entity3.EuroLast
 	var e2data *entity3.EuroLast
 	var e3data *entity3.EuroLast
-	var aomenData *entity3.AsiaLast
 	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "115", "1129", "432")
 	if len(eList) < 3 {
-		return -1,nil
+		return -1, nil
 	}
 	for _, ev := range eList {
 		if strings.EqualFold(ev.CompId, "115") {
@@ -85,80 +85,52 @@ func (this *Euro20191206Service) analyStub(v *pojo.MatchLast) (int, *entity5.Ana
 			continue
 		}
 	}
-	//0.没有变化则跳过
-	if e1data.Ep3 == e1data.Sp3 || e1data.Ep0 == e1data.Sp0 {
-		return -3,nil
-	}
-	if e2data.Ep3 == e2data.Sp3 || e2data.Ep0 == e2data.Sp0 {
-		return -3,nil
-	}
 
-	//1.有变化,进行以下逻辑
-	//亚赔
-	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "澳门")
-	if len(aList) < 1 {
-		return -1,nil
-	}
-	aomenData = aList[0]
-	if math.Abs(aomenData.ELetBall) > this.MaxLetBall {
-		return -2,nil
-	}
 	//2.亚赔是主降还是主升 主降为true
 	//得出结果
 	var preResult int
-	asiaMainDown := AsiaMainDown(aomenData)
-	if asiaMainDown {
-		//主降
-		if (e2data.Sp3-e2data.Ep3 > e1data.Sp3-e1data.Ep3) && (e2data.Ep0 > e2data.Sp0) && (e2data.Ep0-e2data.Sp0 > e1data.Ep0-e1data.Sp0) {
-			//主队有希望
-			preResult = 3
-		} else {
-			//主队希望不大
-			return -3,nil
-		}
+	//主降
+	if (e2data.Sp3-e2data.Ep3 > e1data.Sp3-e1data.Ep3) && (e2data.Ep0 > e2data.Sp0) && (e2data.Ep0-e2data.Sp0 > e1data.Ep0-e1data.Sp0) {
+		//主队有希望
+		preResult = 3
 	} else {
+		//主队希望不大
+		return -3, nil
+	}
+	if preResult < 0 {
 		//主升
 		if (e2data.Sp0-e2data.Ep0 > e1data.Sp0-e1data.Ep0) && (e2data.Ep3 > e2data.Sp3) && (e2data.Ep3-e2data.Sp3 > e1data.Ep3-e1data.Sp3) {
 			//客队有希望
 			preResult = 0
 		} else {
 			//客队希望不大
-			return -3,nil
+			return -3, nil
 		}
 	}
 
-	//增加
-	if preResult == 3 && (e2data.Ep3 > e3data.Ep3 || e3data.Ep0 < e3data.Sp0) {
-		return -3,nil
-	}
-	if preResult == 0 && (e2data.Ep0 > e3data.Ep0 || e3data.Ep3 < e3data.Sp3) {
-		return -3,nil
-	}
+	fmt.Println(e3data.MatchId)
 
 	alFlag := reflect.TypeOf(*this).Name()
 	var data *entity5.AnalyResult
-	temp_data := this.Find(v.Id,alFlag)
+	temp_data := this.Find(v.Id, alFlag)
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = aomenData.ELetBall
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(aomenData, v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.LetBall = aomenData.ELetBall
-		data.AlFlag =alFlag
+		data.AlFlag = alFlag
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
-		data.LetBall = aomenData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight(aomenData, v, data)
+		data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 }

@@ -18,10 +18,5 @@ func Analy() {
 	euroService.PrintOddData = false
 	euroService.Analy()
 
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------处理结果--------------")
-	base.Log.Info("---------------------------------------------------------------")
-	analyService := new(service.AnalyService)
-	analyService.ModifyResult()
 	mysql.ShowSQL(true)
 }

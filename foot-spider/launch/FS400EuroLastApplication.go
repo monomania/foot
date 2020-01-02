@@ -6,12 +6,6 @@ import (
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
 
-/*func main() {
-	//执行抓取比赛欧赔数据
-	Before_spider_euroLast()
-	Spider_euroLast()
-}*/
-
 func Before_spider_euroLast() {
 	//抓取前清空当前比较表
 	opsService := new(mysql.DBOpsService)
@@ -23,10 +17,7 @@ func Before_spider_euroLast() {
 func Spider_euroLast() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindAll()
-	betCompWin007Ids := []string{"115", "1129", "432"}
-	//为空会抓取所有,这里没有必要配置所有的波菜公司ID
-	//betCompWin007Ids := new(entity2.Comp).FindAllIds()
-
+	betCompWin007Ids := []string{"115", "1129", "432","281"}
 	processer := proc.GetEuroLastProcesser()
 	processer.MatchLastList = matchLasts
 	processer.CompWin007Ids = betCompWin007Ids

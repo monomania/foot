@@ -7,7 +7,6 @@ import (
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	entity1 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
-	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
 )
 
 type DBOpsService struct {
@@ -54,7 +53,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	}
 
 	//赔率相关表
-	err = engine.Sync2(new(entity2.EuroLast), new(entity2.EuroHis), new(entity2.AsiaLast), new(entity2.AsiaHis))
+	err = engine.Sync2(new(entity2.EuroLast))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}
@@ -71,8 +70,5 @@ func (this *DBOpsService) SyncTableStruct() {
 	}
 
 	//发布相关的数据库表
-	err = engine.Sync2(new(pojo.Pub))
-	if nil != err {
-		base.Log.Error(err.Error())
-	}
+
 }
