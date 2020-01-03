@@ -7,7 +7,7 @@
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)2.获取最新推荐请点击"今日推荐"菜单按钮.</strong></li>
     <li><strong>3.待选的场次为当前时间"往前推48小时"至"往后推24小时"的比赛.</strong></li>
     <li><strong>4.待选的场次会随指数的变化而变化,如再次进入不见上次待选的比赛,请查看"今日推荐".</strong></li>
-    <li  style="text-shadow: 0 0 7px blue"><strong>(重要)5.以下比赛为待选池中的比赛,未被模型认可.如被认可成功,则会进入"今日推荐"中.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)5.以下比赛为待选池中的比赛,未被模型认可.如被认可成功,则会进入"今日推荐"中.</strong></li>
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型为E2,请重点关注.</strong></li>
 </ul>
 <hr/>
@@ -36,28 +36,40 @@
         <td>推荐(模型)</td>
         <td>指数</td>
     </tr>
-{{if .DataList}}
-    {{with .DataList}}
-    {{range .}}
+    {{if .DataList}}
+        {{with .DataList}}
+            {{range .}}
+                <tr>
+                    <td>{{.MatchDateStr}}</td>
+                    <td>{{.LeagueName}}</td>
+                    <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
+                    <td>
+                        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+                    </td>
+                    <td
+                            {{if eq  .Result "正确"}}
+                                style="background-color: red"
+                            {{else if eq  .Result "错误"}}
+                                style="background-color: gray"
+                            {{else if eq  .Result "走盘"}}
+                                style="background-color: greenyellow"
+                            {{else}}
+
+                            {{end}}
+                    >
+                        {{preResultStr .PreResult .AlFlag}}<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span>
+                    </td>
+                    <td style="color: red">
+                        <strong>{{.HitCount}}</strong>
+                    </td>
+                </tr>
+            {{end}}
+        {{end}}
+    {{else}}
         <tr>
-            <td>{{.MatchDateStr}}</td>
-            <td>{{.LeagueName}}</td>
-            <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
-            <td>
-            {{.MainTeamGoal}}:{{.GuestTeamGoal}}
-            </td>
-            <td>
-                {{preResultStr .PreResult .AlFlag}}<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span>
-            </td>
-            <td style="color: red">
-                <strong>{{.HitCount}}</strong>
-            </td>
+            <td colspan="6" style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</td>
         </tr>
     {{end}}
-    {{end}}
-{{else}}
-    <tr><td colspan="6" style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</td></tr>
-{{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
 {{/*

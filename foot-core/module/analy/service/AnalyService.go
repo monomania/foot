@@ -77,7 +77,11 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		e.Result = this.IsRight(aList[0], last, e)
+		if e.AlFlag == "E2"{
+			e.Result = new(E2Service).IsRight(aList[0], last, e)
+		}else{
+			e.Result = this.IsRight(aList[0], last, e)
+		}
 		this.Modify(e)
 	}
 
