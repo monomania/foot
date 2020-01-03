@@ -1,6 +1,16 @@
 ## 项目地址
 * [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
 
+## 公众号演示
+ * 公众号: ai00268
+ >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
+## 战绩截图
+<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
+<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
+
+
+## 项目己部分闭源
+
 ## 项目介绍
    >> 1. 究极足球爱好者,平时也会去体彩店支持一下国足,或是自己喜欢的球队.
    >> 2. 入了门道,就想结合一下所学所专,尝试着分析预测一下足球比赛.最近命中率感觉还可以阿.
@@ -137,12 +147,6 @@ foot-parent
   *  FS001AsiaModifyApplication.go  亚指数据遗漏检测,重新尝试
   *  FS001EuroIncompleteApplication.go  欧指数据遗漏检测,重新尝试
   *  FS001EuroModifyApplication.go  欧指数据单独获取
-## 公众号演示
- * 公众号: ai00268
- >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
-## 战绩截图
-<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
-<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
 
 
 
