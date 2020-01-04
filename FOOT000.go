@@ -106,7 +106,7 @@ func main() {
 			materialController := new(controller.MaterialController)
 			materialController.ModifyNewsOnly()
 			base.Log.Info("--------发布公众号周期结束--------")
-			time.Sleep(60 * time.Minute)
+			time.Sleep(10 * time.Minute)
 		}
 	case "auto\n", "auto":
 		go func() {
@@ -142,7 +142,7 @@ func main() {
 			materialController := new(controller.MaterialController)
 			materialController.ModifyNewsOnly()
 			base.Log.Info("--------发布公众号周期结束--------")
-			time.Sleep(30 * time.Minute)
+			time.Sleep(10 * time.Minute)
 		}
 
 	default:
