@@ -3,6 +3,7 @@ package vo
 import "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 
 type TodayVO struct {
+	SpiderDateStr string
 	//开始时间
 	BeginDateStr string
 	//结束时间

@@ -25,15 +25,17 @@
 </h1>
 <table style="font-size: 12px;font-weight: bold">
     <tr>
+        <td>模型</td>
         <td>时间</td>
         <td>联赛</td>
         <td>主队(让球)客队</td>
         <td>比分</td>
-        <td>推荐(模型)</td>
+        <td>推荐</td>
     </tr>
 {{with .DataList}}
 {{range .}}
     <tr>
+        <td><span style="color: {{color .AlFlag}}">{{.AlFlag}}</span></td>
         <td>{{.MatchDateStr}}</td>
         <td>{{.LeagueName}}</td>
         <td>{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</td>
@@ -51,7 +53,7 @@
 
         {{end}}
         >
-        {{preResultStr .PreResult .AlFlag}}<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span>
+        {{preResultStr .PreResult .AlFlag}}
         </td>
 
     </tr>
@@ -59,6 +61,3 @@
 {{end}}
 </table>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
-<div>
-    <img src="http://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5R6lNrnAdOpR63megZibx7Gnqj9UlhbGMnKbDYmfkFvIhRsz5LEK27Fukf0sE8NzOlNI2nALx25icQQ/0?wx_fmt=png">
-</div>

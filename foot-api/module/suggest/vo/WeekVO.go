@@ -1,6 +1,7 @@
 package vo
 
 type WeekVO struct {
+	SpiderDateStr string
 	//开始时间
 	BeginDateStr string
 	//结束时间

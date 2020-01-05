@@ -44,9 +44,9 @@ WHERE mh.LeagueId = l.Id
 		sql += " AND mh.`MatchDate` <= '" + param.EndDateStr + "' "
 	}
 	if param.IsDesc {
-		sql += " ORDER BY ar.MatchDate DESC, l.id ASC,mh.MainTeamId asc, ar.PreResult DESC "
+		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate DESC, l.id ASC,mh.MainTeamId asc, ar.PreResult DESC "
 	} else {
-		sql += " ORDER BY ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
+		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
 	}
 	//结果值
 	entitys := make([]*vo2.SuggestVO, 0)
@@ -91,9 +91,9 @@ WHERE mh.LeagueId = l.Id
 		sql += " AND mh.`MatchDate` <= '" + param.EndDateStr + "' "
 	}
 	if param.IsDesc {
-		sql += " ORDER BY ar.MatchDate DESC, l.id ASC,mh.MainTeamId asc, ar.PreResult DESC "
+		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate DESC, l.id ASC,mh.MainTeamId asc, ar.PreResult DESC "
 	} else {
-		sql += " ORDER BY ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
+		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
 	}
 	//结果值
 	entitys := make([]*vo2.SuggestVO, 0)

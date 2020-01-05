@@ -4,6 +4,8 @@ import (
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/launch"
+	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
+	"time"
 )
 
 func Clean(){
@@ -33,4 +35,6 @@ func Spider() {
 	//再对欧赔数据不完整的比赛进行两次抓取
 	Spider_euroHis_Incomplete()
 	Spider_euroHis_Incomplete()
+	//记录数据爬取时间
+	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
 }

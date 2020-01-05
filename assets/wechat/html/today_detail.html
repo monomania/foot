@@ -13,7 +13,8 @@
 </ul>
 <hr/>
 <ul style="font-size: 12px;font-weight: lighter">
-    <li><strong>更新时间:{{.DataDateStr}}</strong></li>
+    <li><strong>数据爬取时间:{{.SpiderDateStr}}</strong></li>
+    <li><strong>微信同步时间:{{.DataDateStr}}</strong></li>
     <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
 </ul>
 <hr/>
@@ -24,7 +25,7 @@
         <li>比赛时间:{{.MatchDateStr}}</li>
         <li>联　　赛:{{.LeagueName}}</li>
         <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
-        <li>算法模型:<span style="color: {{color .AlFlag}}">({{.AlFlag}})</span></li>
+        <li>算法模型:<span style="color: {{color .AlFlag}}">{{.AlFlag}}</span></li>
         <li>球探指数:{{.HitCount}}<span style="color: red;font-weight: bold;">(指数越大,越稳定)</span></li>
         <li>推荐选项:{{preResultStr .PreResult .AlFlag}}</li>
         <li>说　　明:
@@ -43,7 +44,3 @@
 
 <br/>
 <span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>
-{{/*
-<div>
-    <img src="http://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5R6lNrnAdOpR63megZibx7Gnqj9UlhbGMnKbDYmfkFvIhRsz5LEK27Fukf0sE8NzOlNI2nALx25icQQ/0?wx_fmt=png">
-</div>*/}}

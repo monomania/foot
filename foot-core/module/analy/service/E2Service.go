@@ -148,7 +148,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 func (this *E2Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	var globalResult int
-	h2, _ := time.ParseDuration("148m")
+	h2, _ := time.ParseDuration("128m")
 	matchDate := v.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束

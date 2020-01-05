@@ -13,6 +13,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
+	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"time"
 )
@@ -66,6 +67,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	first.ShowCoverPic = 0
 	first.Author = utils.GetVal("wechat", "author")
 	temp := vo.WeekVO{}
+	temp.SpiderDateStr = constants.SpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.MatchCount = int64(len(tempList))

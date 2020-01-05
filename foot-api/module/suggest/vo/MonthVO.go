@@ -1,6 +1,7 @@
 package vo
 
 type MonthVO struct {
+	SpiderDateStr string
 	//开始时间
 	BeginDateStr string
 	//结束时间
@@ -27,6 +28,7 @@ type MonthVO struct {
 	MainBlackCount int64
 	//胜率
 	MainVal string
+
 
 	DataList []SuggestVO
 }
