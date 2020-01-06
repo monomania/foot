@@ -137,12 +137,19 @@ func main() {
 		//	}
 		//}()
 		for {
+			base.Log.Info("--------临场比赛数据更新开始运行--------")
+			launch.Spider_Near()
+			launch2.Analy_Near()
+			base.Log.Info("--------临场比赛数据更新周期结束--------")
+
 			base.Log.Info("--------发布公众号开始运行--------")
 			//3.3 FW001PubApplication 执行发布到雷速
 			materialController := new(controller.MaterialController)
 			materialController.ModifyNewsOnly()
 			base.Log.Info("--------发布公众号周期结束--------")
-			time.Sleep(10 * time.Minute)
+
+
+			time.Sleep(5 * time.Minute)
 		}
 
 	default:
