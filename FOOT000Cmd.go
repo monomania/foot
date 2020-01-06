@@ -13,6 +13,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
+	service3 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-core/module/wechat/controller"
 	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"time"
@@ -125,10 +126,9 @@ HEAD:
 		}()
 		goto HEAD
 	case "auto\n", "auto\r\n":
-		//赔率全量更新
 		go func() {
 			for {
-				base.Log.Info("--------数据更新开始运行--------")
+				base.Log.Info("--------全量数据更新开始运行--------")
 				//1.安装数据库
 				//2.配置好数据库连接,打包程序发布
 				//3.程序执行流程,周期定制定为一天三次
@@ -139,33 +139,15 @@ HEAD:
 				//3.2 FC002AnalyApplication 分析得出推荐列表
 				launch2.Analy()
 				configService := new(service2.ConfService)
-				base.Log.Info("--------数据更新周期结束--------")
+				base.Log.Info("--------全量数据更新周期结束--------")
 
-				base.Log.Info("--------发布公众号开始运行--------")
+				base.Log.Info("--------全量比赛发布公众号开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速
 				materialController := new(controller.MaterialController)
 				materialController.ModifyNewsOnly()
-				base.Log.Info("--------发布公众号周期结束--------")
+				base.Log.Info("--------全量临场比赛发布公众号周期结束--------")
 
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
-			}
-		}()
-		//对当前即时进行的比赛,或正在进行的比赛进行,赔率更新
-		go func() {
-			for {
-				base.Log.Info("--------临场比赛数据更新开始运行--------")
-				launch.Spider_Near()
-				launch2.Analy_Near()
-				base.Log.Info("--------临场比赛数据更新周期结束--------")
-
-				base.Log.Info("--------发布公众号开始运行--------")
-				//3.3 FW001PubApplication 执行发布到雷速
-				materialController := new(controller.MaterialController)
-				materialController.ModifyNewsOnly()
-				base.Log.Info("--------发布公众号周期结束--------")
-
-
-				time.Sleep(5 * time.Minute)
 			}
 		}()
 		//go func() {
@@ -178,6 +160,25 @@ HEAD:
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 		//	}
 		//}()
+		go func() {
+			for {
+				matchLastService := new(service3.MatchLastService)
+				matchLasts := matchLastService.FindNear()
+				if len(matchLasts) > 0 {
+					base.Log.Info("--------临场比赛数据更新开始运行--------")
+					launch.Spider_Near()
+					launch2.Analy_Near()
+					base.Log.Info("--------临场比赛数据更新周期结束--------")
+
+					base.Log.Info("--------临场比赛发布公众号开始运行--------")
+					//3.3 FW001PubApplication 执行发布到雷速
+					materialController := new(controller.MaterialController)
+					materialController.ModifyNewsOnly()
+					base.Log.Info("--------临场比赛发布公众号周期结束--------")
+				}
+				time.Sleep(5 * time.Minute)
+			}
+		}()
 		goto HEAD
 	default:
 		goto HEAD
