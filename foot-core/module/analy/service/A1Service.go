@@ -33,6 +33,16 @@ func (this *A1Service) ModelName() string{
 */
 func (this *A1Service) Analy() {
 	matchList := this.MatchLastService.FindNotFinished()
+	this.Analy_Process(matchList)
+
+}
+
+func (this *A1Service) Analy_Near() {
+	matchList := this.MatchLastService.FindNear()
+	this.Analy_Process(matchList)
+}
+
+func (this *A1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {

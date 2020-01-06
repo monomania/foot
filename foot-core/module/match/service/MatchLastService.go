@@ -30,6 +30,28 @@ func (this *MatchLastService) FindAll() []*pojo.MatchLast {
 }
 
 /**
+获取临场比赛
+*/
+func (this *MatchLastService) FindNear() []*pojo.MatchLast {
+	sql_build := `
+SELECT 
+  la.* 
+FROM
+  foot.t_match_last la 
+WHERE la.MatchDate < NOW() 
+  AND DATE_ADD(
+    la.MatchDate,
+    INTERVAL 25 MINUTE
+  ) > NOW()
+	`
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &dataList)
+	return dataList
+}
+
+/**
 查找未结束的比赛
  */
 func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {

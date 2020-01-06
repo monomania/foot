@@ -38,3 +38,12 @@ func Spider() {
 	//记录数据爬取时间
 	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
 }
+
+
+func Spider_Near() {
+	//Spider_asiaLastNew()
+	Spider_euroLast_near()
+	Spider_euroHis_near()
+	//记录数据爬取时间
+	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
+}

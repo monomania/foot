@@ -42,3 +42,28 @@ func Spider_euroLast() {
 	processer.CompWin007Ids = compIds
 	processer.Startup()
 }
+
+
+//查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
+func Spider_euroLast_near() {
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindNear()
+	if len(matchLasts) <= 0 {
+		return
+	}
+
+	var compIds []string
+	val := utils.GetVal("spider", "euro_comp_ids")
+	if len(val) < 0 {
+		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
+		compService := new(service.CompService)
+		compIds = compService.FindAllIds()
+	}else{
+		compIds = strings.Split(val, ",")
+	}
+
+	processer := proc.GetEuroLastProcesser()
+	processer.MatchLastList = matchLasts
+	processer.CompWin007Ids = compIds
+	processer.Startup()
+}

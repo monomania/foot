@@ -125,6 +125,7 @@ HEAD:
 		}()
 		goto HEAD
 	case "auto\n", "auto\r\n":
+		//赔率全量更新
 		go func() {
 			for {
 				base.Log.Info("--------数据更新开始运行--------")
@@ -139,7 +140,32 @@ HEAD:
 				launch2.Analy()
 				configService := new(service2.ConfService)
 				base.Log.Info("--------数据更新周期结束--------")
+
+				base.Log.Info("--------发布公众号开始运行--------")
+				//3.3 FW001PubApplication 执行发布到雷速
+				materialController := new(controller.MaterialController)
+				materialController.ModifyNewsOnly()
+				base.Log.Info("--------发布公众号周期结束--------")
+
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
+			}
+		}()
+		//对当前即时进行的比赛,或正在进行的比赛进行,赔率更新
+		go func() {
+			for {
+				base.Log.Info("--------临场比赛数据更新开始运行--------")
+				launch.Spider_Near()
+				launch2.Analy_Near()
+				base.Log.Info("--------临场比赛数据更新周期结束--------")
+
+				base.Log.Info("--------发布公众号开始运行--------")
+				//3.3 FW001PubApplication 执行发布到雷速
+				materialController := new(controller.MaterialController)
+				materialController.ModifyNewsOnly()
+				base.Log.Info("--------发布公众号周期结束--------")
+
+
+				time.Sleep(11 * time.Minute)
 			}
 		}()
 		//go func() {
@@ -152,16 +178,6 @@ HEAD:
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 		//	}
 		//}()
-		go func() {
-			for {
-				base.Log.Info("--------发布公众号开始运行--------")
-				//3.3 FW001PubApplication 执行发布到雷速
-				materialController := new(controller.MaterialController)
-				materialController.ModifyNewsOnly()
-				base.Log.Info("--------发布公众号周期结束--------")
-				time.Sleep(10 * time.Minute)
-			}
-		}()
 		goto HEAD
 	default:
 		goto HEAD

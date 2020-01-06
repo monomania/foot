@@ -28,6 +28,19 @@ func (this *E2Service) ModelName() string{
 */
 func (this *E2Service) Analy() {
 	matchList := this.MatchLastService.FindNotFinished()
+	this.Analy_Process(matchList)
+}
+
+
+/**
+计算欧赔81 616的即时盘,和初盘的差异
+*/
+func (this *E2Service) Analy_Near() {
+	matchList := this.MatchLastService.FindNear()
+	this.Analy_Process(matchList)
+}
+
+func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
@@ -62,7 +75,6 @@ func (this *E2Service) Analy() {
 	}
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
-
 }
 
 func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {

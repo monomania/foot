@@ -18,13 +18,23 @@ type Q1Service struct {
 	MaxLetBall float64
 }
 
-func (this *Q1Service) ModelName() string{
+func (this *Q1Service) ModelName() string {
 	return "Q1"
 }
 
-
 func (this *Q1Service) Analy() {
 	matchList := this.MatchLastService.FindNotFinished()
+	this.Analy_Process(matchList)
+
+}
+
+func (this *Q1Service) Analy_Near() {
+	matchList := this.MatchLastService.FindNear()
+	this.Analy_Process(matchList)
+
+}
+
+func (this *Q1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
@@ -35,7 +45,7 @@ func (this *Q1Service) Analy() {
 			if hours > 0 {
 				hours = math.Abs(hours * 0.5)
 				data.THitCount = int(hours)
-			}else{
+			} else {
 				data.THitCount = 1
 			}
 			if stub == 0 {
@@ -50,7 +60,7 @@ func (this *Q1Service) Analy() {
 				hit_count, _ := strconv.Atoi(hit_count_str)
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
-				}else{
+				} else {
 					temp_data.HitCount = 0
 				}
 				this.AnalyService.Modify(temp_data)
@@ -59,7 +69,6 @@ func (this *Q1Service) Analy() {
 	}
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
-
 }
 
 func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
@@ -105,9 +114,9 @@ func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	var preResult int
 	if e1129data.Ep3 > e281data.Ep3 && e1129data.Ep0 < e281data.Ep0 {
 		preResult = 0
-	}else if e1129data.Ep0 > e281data.Ep0 && e1129data.Ep3 < e281data.Ep3 {
+	} else if e1129data.Ep0 > e281data.Ep0 && e1129data.Ep3 < e281data.Ep3 {
 		preResult = 3
-	}else{
+	} else {
 		return -3, nil
 	}
 
