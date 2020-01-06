@@ -38,11 +38,8 @@ SELECT
   la.* 
 FROM
   foot.t_match_last la 
-WHERE la.MatchDate < NOW() 
-  AND DATE_ADD(
-    la.MatchDate,
-    INTERVAL 25 MINUTE
-  ) > NOW()
+WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 10 MINUTE)
 	`
 	//结果值
 	dataList := make([]*pojo.MatchLast, 0)

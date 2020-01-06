@@ -1,0 +1,2991 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script type="text/javascript" src="/script/BomHelper.js"></script>
+    <script type="text/javascript" src="/script/touchAD.js"></script>
+    <script type="text/javascript">
+        var _isCup = false;
+        CheckAdEnabled();
+
+        //初始化广告
+        if (typeof (initAd) != "undefined") {
+            if (ShowAd) initAd(arrImagesAnaly);
+        }
+
+        var _matchState = -1;
+        var _scheInfo = '1740707^31^-1^20200105210000^20200105220334^^^1^2';
+        var language = 0;
+        var isRankShow = findCookie("isRankShow");
+    </script>
+    <link rel="stylesheet" href="/Css/data/main.css" />
+    <link rel="stylesheet" href="/Css/inputUI.css" />
+    <link rel="stylesheet" href="/Css/data/com.css?ver=5" />
+    <title>2019-2020西甲皇家社会 VS 比利亚雷亚尔 足球分析_球探体育</title>
+    <meta name="keywords" content="足球分析" />
+    <meta name="description" content="球探体育网提供全球足球,篮球赛事比分,权威竞彩足球,篮球分析预测,五大联赛即时比分直播,现场同步足球直播,手机看比分首选球探体育比分。" />
+    <style>
+        input[type="checkbox"] + label:before {
+            background: url(/Images/c2.png) no-repeat center center;
+            background-size: 16px 16px;
+        }
+
+        input[type="checkbox"]:checked + label:before {
+            background: url(/Images/c_on2.png) no-repeat center center;
+            background-size: 16px 16px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+<div>
+
+    <script type="text/javascript" src="/script/head.js"></script>
+
+    <script>
+        var _isCup = "1";
+        var SclassID = "31";
+        var matchState =-1;
+        var scheduleId =1740707;
+        var scheduleID = 1740707;
+        var homeTeam = "皇家社会";
+        var guestTeam = "比利亚雷亚尔";
+        var showGuess = "0";
+        var showV = "1";
+    </script>
+    <link rel="stylesheet" href="/Css/data/detail.css" />
+    <link rel="stylesheet" href="/Css/data/font/iconfont.css" />
+    <header id="header">
+        <div class="header ">
+            <link rel="stylesheet" href="/Css/data/com.css?ver=5" />
+            <div class="logowrapper" id="logolink">
+
+                <div class="btns">
+                    <!--<a class="back" href="javascript :;" onClick="javascript :history.back(-1);"></a>-->
+                    <script type="text/javascript">
+
+                        function StorePreviousUrl(pUrl) {
+                            if (typeof (sessionStorage) != "undefined" && pUrl != "") {
+                                pUrl = pUrl.toLowerCase();
+
+                                if (pUrl.indexOf("index.shtml") != -1 || pUrl.indexOf("fixture") != -1
+                                    || pUrl.indexOf("schedule") != -1 || pUrl.indexOf("cupmatch") != -1
+                                    || pUrl.indexOf("odds.") != -1 || pUrl.indexOf("worldcup") != -1
+                                    || pUrl.indexOf("indexnew.shtml") != -1 || pUrl[pUrl.length - 1] == "/")
+                                    sessionStorage.setItem("pTop", pUrl);
+                                else if (pUrl.indexOf("handicap/") != -1 || pUrl.indexOf("overunder/") != -1 || pUrl.indexOf("compensatedetail") != -1)
+                                    sessionStorage.setItem("pTopD", pUrl);
+                            }
+                        }
+
+                        StorePreviousUrl("");
+                        var pUrl;
+                        var zHref = window.location.href.toLowerCase();
+                        if (zHref.indexOf("oudetail") != -1 || zHref.indexOf("asiandetail") != -1) {
+                            if (typeof (sessionStorage) != "undefined") {
+                                var psUrl = sessionStorage.getItem("pTopD");
+                                if (psUrl) {
+                                    pUrl = psUrl;
+                                }
+                            }
+
+                            if (!pUrl) pUrl = "javascript:window.history.back()";
+                        }
+                        else if (zHref.indexOf("compensatedetail") != -1) {
+                            pUrl = "javascript:window.history.back()";
+                        }
+                        else {
+                            pUrl = "/";
+                            if (CheckHzPrefix() != "") pUrl = "/hz/";
+
+                            if (typeof (sessionStorage) != "undefined") {
+                                var psUrl = sessionStorage.getItem("pTop");
+                                if (psUrl) {
+                                    pUrl = psUrl;
+                                }
+                            }
+                        }
+                        if (pUrl.indexOf("cupmatch.aspx") != -1) {
+                            pUrl = "javascript:window.history.back()";
+                        }
+                        document.write("<a class='back' href='" + pUrl + "' onclick='RemoveLive(" + scheduleId + ")'></a>");
+
+                    </script>
+                    <script type="text/javascript">
+                        //if (_isCup != "" &&SclassID!=57) {
+                        //    var jifenLink = _isCup=="2" ? "CupMatch" : "Standings";
+                        //    if (CheckHzPrefix() != "")
+                        //        //document.write("&nbsp;&nbsp;<a href='/hz/info/"+jifenLink+".aspx?sID="+SclassID+"&b=1'><img src='/Images/jfc.png' height='28'></a>");
+                        //        document.write("&nbsp;&nbsp;<div class='btn'><a href='http://m.win007.com/hz/info/" + jifenLink + ".aspx?sID="+SclassID+"&b=1'>积分</a></div>");
+                        //    else {
+                        //        //document.write("&nbsp;&nbsp;<a href='/info/" + jifenLink + ".aspx?sID="+SclassID+"&b=1'><img src='/Images/jfc.png' height='28'></a>");
+                        //        document.write("&nbsp;&nbsp;<div class='btn'><a href='http://m.win007.com/info/" + jifenLink + ".aspx?sID="+SclassID+"&b=1'>积分</a></div>");
+                        //    }
+                        //}
+                        document.write("&nbsp;&nbsp;<div id='integral' class='btn' style='display:none;'></div>");
+
+                        if (showGuess == "1") {
+                            if (CheckHzPrefix() != "")
+                                document.write("&nbsp;&nbsp;<div class='btn'><a href='http://m2.win007.com/hz/guess/GuessDetail.aspx?scheid=" + scheduleId + "'>V猜</a></div>");
+                            else {
+                                document.write("&nbsp;&nbsp;<div class='btn'><a href='http://m2.win007.com/guess/GuessDetail.aspx?scheid=" + scheduleId + "'>V猜</a></div>");
+                            }
+                        }
+
+                        if (showV == "1") {
+                            if (CheckHzPrefix() != "")
+                                document.write("<div class='btn'><a href='http://m2.win007.com/hz/v/search.aspx?k=1&id=" + scheduleId + "'>V推荐</a></div>");
+                            else {
+                                document.write("<div class='btn'><a href='http://m2.win007.com/v/search.aspx?k=1&id=" + scheduleId + "'>V推荐</a></div>");
+                            }
+                        }
+
+                    </script>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </header>
+    <div id="fullHead" class="teamBox match">
+        <div id="head" class="header">
+            <div class="league">
+                西甲&nbsp01-05 21:00&nbsp间中有云 4℃～5℃
+            </div>
+            <div class="home">
+                <img name="" src="http://info.win007.com/Image/team/images/201325150748.jpg" style="width: auto; height: 36px" alt="">
+                <div class="name" id="homeName"><span>皇家社会<script>
+                    if (isRankShow == "1") {
+                        document.write("[5]");
+                    }
+                </script>
+                    </span>
+                </div>
+            </div>
+
+            <div class="vs">
+
+                <div id="scoreState" class="row">
+                    <div class="end">
+                        <div id="homeScore" class="score">1</div>
+                        <div><span id="mState" class="row red">完场</span><span class="row">(1-0)</span></div>
+                        <div id="guestScore" class="score">2</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <span id="tvShow"></span>
+
+
+                </div>
+            </div>
+
+            <div class="guest">
+                <img name="" src="http://info.win007.com/Image/team/images/2013121225846.jpg" style="width: auto; height: 36px" alt="">
+                <div id="guestName"><div class="name">比利亚雷亚尔<script>
+                            if (isRankShow == "1") {
+                                document.write("[10]");
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        GetIntergralUrl();
+        window.onload = function () {
+            SettingTeamName(1);
+        }
+    </script>
+    <script src="/script/jquery.min.js" type="text/javascript"></script>
+    <script src="/script/eventNew.js" type="text/javascript"></script>
+    <link href="/Css/eventStyleNew.css" rel="stylesheet" type="text/css" />
+    <div id="miniHead" style="display: none;">
+        <div class="teamBox mini">
+            <div class="header">
+                <div class="home">
+                    <img name="" src="http://info.win007.com/Image/team/images/201325150748.jpg" width="32" height="32" alt="">
+                    <div class="name" id="homeNameMini"><span>皇家社会<script>
+                        if (isRankShow == "1") {
+                            document.write("[5]");
+                        }
+                    </script>
+                        </span>
+                    </div>
+                </div>
+                <div class="vs">
+                    <div class="row">
+                        <div id="miniScore" class='end'>
+                            <div id="homeScoreMini" class="score">1</div>
+                            <div>
+                            <span id="timeMini" class="time">
+                                <script>
+                                    document.write(showMatchState(-1, new Date("2020/1/6 11:06:44")))
+                                </script>
+                            </span>
+                                <span class="closeBtn" onclick="ChangeHead(1,1740707)">关闭</span>
+                            </div>
+                            <div id="guestScoreMini" class="score">2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="guest">
+                    <img name="" src="http://info.win007.com/Image/team/images/2013121225846.jpg" width="32" height="32" alt="">
+                    <div class="name" id="guestNameMini"><span>比利亚雷亚尔<script>
+                        if (isRankShow == "1") {
+                            document.write("[10]");
+                        }
+                    </script>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ant" onclick="ShowCloseBtn(0)">
+            <div id="closeBtnId" class="showBg" style="display: none;" onclick="HideCloseBtn(event)"></div>
+            <div id="flashCloseBtn" class="closeBtn" onclick="ChangeHead(1,1740707)" style="display: none;">退出播放</div>
+            <!--事件容器开始-->
+            <script type="text/javascript">
+                document.writeln('<div style="height:' + infoHieght + 'px;" class="liveBox" id="flashInfo"></div>');
+            </script>
+        </div>
+    </div>
+    <nav class="more3">
+        <div><a id="menu1" href="/analy/shijian/1740707.htm">直播</a></div>
+        <div><a id="menu2" href="/analy/oddscomp/1740707.htm">概率</a></div>
+        <div><a id="menu3" href="/analy/Analysis/1740707.htm">分析</a></div>
+        <div><a id="menu4" href="/asian/1740707.htm">亚指</a></div>
+        <div><a id="menu5" href="/compensate/1740707.htm">欧指</a></div>
+        <div><a id="menu6" href="/overunder/1740707.htm">大小</a></div>
+    </nav>
+    <script>
+        if (0== "1") {
+            ShowLiveHead(1740707);
+        }
+        SetSelectMenu();
+    </script>
+
+
+</div>
+<div id="content" class="detailtBox">
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        联赛积分排名
+    </div>
+
+    <div class="resultBar">
+        皇家社会
+
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>全场</th>
+            <th>赛</th>
+            <th>胜</th>
+            <th>平</th>
+            <th>负</th>
+            <th>得</th>
+            <th>失</th>
+            <th>净</th>
+            <th>积分</th>
+            <th>排名</th>
+            <th>胜率</th>
+        </tr>
+
+        <tr align="center">
+            <td>
+                总
+            </td>
+            <td>
+                18
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                32
+            </td>
+            <td>
+                23
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                31
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                50%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                主
+            </td>
+            <td>
+                8
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                17
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                8
+            </td>
+            <td>
+                14
+            </td>
+            <td>
+                13
+            </td>
+            <td>
+                50%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                客
+            </td>
+            <td>
+                10
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                15
+            </td>
+            <td>
+                14
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                17
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                50%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                近
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                12
+            </td>
+            <td>
+                10
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+
+            </td>
+            <td>
+                33%
+            </td>
+        </tr>
+
+    </table>
+
+    <div class="resultBar">
+        比利亚雷亚尔
+
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>全场</th>
+            <th>赛</th>
+            <th>胜</th>
+            <th>平</th>
+            <th>负</th>
+            <th>得</th>
+            <th>失</th>
+            <th>净</th>
+            <th>积分</th>
+            <th>排名</th>
+            <th>胜率</th>
+        </tr>
+
+        <tr align="center">
+            <td>
+                总
+            </td>
+            <td>
+                18
+            </td>
+            <td>
+                7
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                7
+            </td>
+            <td>
+                31
+            </td>
+            <td>
+                25
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                25
+            </td>
+            <td>
+                10
+            </td>
+            <td>
+                39%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                主
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                19
+            </td>
+            <td>
+                11
+            </td>
+            <td>
+                8
+            </td>
+            <td>
+                16
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                44%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                客
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                12
+            </td>
+            <td>
+                14
+            </td>
+            <td>
+                -2
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                33%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                近
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                -3
+            </td>
+            <td>
+                7
+            </td>
+            <td>
+
+            </td>
+            <td>
+                33%
+            </td>
+        </tr>
+
+    </table>
+
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        对赛往绩
+
+    </div>
+    <div class="tools">
+        <input type="checkbox" name="ckb_against_result" id="ckb_against_result" onclick="CheckAgainstSame();" />
+        <label for="ckb_against_result">主客相同</label>
+        <input type="checkbox" name="ckb_against_half_result" id="ckb_against_half_result" onclick=" ShowAgainstInfo()" />
+        <label for="ckb_against_half_result">半场</label>
+    </div>
+    <span id="against"></span>
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        近期战绩
+    </div>
+    <div class="tools">
+        <input type="checkbox" name="ckb_recent_result" id="ckb_recent_result" onclick=" RecentResultSameChecked()" />
+        <label for="ckb_recent_result">同主客</label>
+        <input type="checkbox" name="ckb_same_sclass" id="ckb_same_sclass" onclick=" RecentResultSameChecked()" />
+        <label for="ckb_same_sclass">同赛事</label>
+        <input type="checkbox" name="ckb_half_result" id="ckb_half_result" onclick=" RecentResultSameChecked()" />
+        <label for="ckb_half_result">半场</label>
+    </div>
+
+    <div class="resultBar">
+        皇家社会
+
+    </div>
+    <span id="hn"></span>
+
+    <div class="resultBar">
+        比利亚雷亚尔
+
+    </div>
+    <span id="an"></span>
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        联赛盘路走势
+    </div>
+
+    <div class="resultBar">
+        皇家社会
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>全场</th>
+            <th>赢盘</th>
+            <th>走水</th>
+            <th>输盘</th>
+            <th>赢盘率</th>
+            <th>大球</th>
+            <th>大球率</th>
+            <th>小球</th>
+            <th>小球率</th>
+        </tr>
+
+        <tr align="center">
+            <td>
+                全场
+            </td>
+            <td>
+                11
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                7
+            </td>
+            <td>
+                61.1%
+            </td>
+            <td>
+                10
+            </td>
+            <td>
+                55.6%
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                33.3%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                主
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                62.5%
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                62.5%
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                12.5%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                客
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                60.0%
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                50.0%
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                50.0%
+            </td>
+        </tr>
+
+        <tr>
+            <td>近六</td>
+            <td colspan='4'>
+                <div style='color:red;display:inline;'>赢</div><div style='color:red;display:inline;'>赢</div><div style='color:#339900;display:inline;'>输</div><div style='color:red;display:inline;'>赢</div><div style='color:#339900;display:inline;'>输</div><div style='color:#339900;display:inline;'>输</div>
+            </td>
+            <td colspan='4'>
+                <div style='color:red;display:inline;'>大</div><div style='color:red;display:inline;'>大</div><div style='color:#339900;display:inline;'>小</div><div style='color:red;display:inline;'>大</div><div style='color:red;display:inline;'>大</div><div style='color:#339900;display:inline;'>小</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="resultBar">
+        比利亚雷亚尔
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>全场</th>
+            <th>赢盘</th>
+            <th>走水</th>
+            <th>输盘</th>
+            <th>赢盘率</th>
+            <th>大球</th>
+            <th>大球率</th>
+            <th>小球</th>
+            <th>小球率</th>
+        </tr>
+
+        <tr align="center">
+            <td>
+                全场
+            </td>
+            <td>
+                9
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                8
+            </td>
+            <td>
+                50.0%
+            </td>
+            <td>
+                12
+            </td>
+            <td>
+                66.7%
+            </td>
+            <td>
+                6
+            </td>
+            <td>
+                33.3%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                主
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                1
+            </td>
+            <td>
+                3
+            </td>
+            <td>
+                55.6%
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                55.6%
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                44.4%
+            </td>
+        </tr>
+
+        <tr align="center">
+            <td>
+                客
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                5
+            </td>
+            <td>
+                44.4%
+            </td>
+            <td>
+                7
+            </td>
+            <td>
+                77.8%
+            </td>
+            <td>
+                2
+            </td>
+            <td>
+                22.2%
+            </td>
+        </tr>
+
+        <tr>
+            <td>近六</td>
+            <td colspan='4'>
+                <div style='color:red;display:inline;'>赢</div><div style='color:red;display:inline;'>赢</div><div style='color:#0066cc;display:inline;'>走</div><div style='color:#339900;display:inline;'>输</div><div style='color:#339900;display:inline;'>输</div><div style='color:#339900;display:inline;'>输</div>
+            </td>
+            <td colspan='4'>
+                <div style='color:#339900;display:inline;'>小</div><div style='color:red;display:inline;'>大</div><div style='color:#339900;display:inline;'>小</div><div style='color:red;display:inline;'>大</div><div style='color:red;display:inline;'>大</div><div style='color:red;display:inline;'>大</div>
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        相同历史盘口
+    </div>
+
+    <div class="resultBar">
+        皇家社会
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>日期/赛事</th>
+            <th>主队</th>
+            <th>初盘</th>
+            <th>客队</th>
+            <th>比分</th>
+            <th>盘路</th>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-11</div>
+                <div>西甲</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                埃瓦尔
+            </td>
+            <td>
+                4-1
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-10</div>
+                <div>西甲</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                赫塔菲
+            </td>
+            <td>
+                1-2
+            </td>
+            <td>
+                <div style='color:#339900;display:inline;'>输</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-08</div>
+                <div>球会友谊</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                阿拉维斯
+            </td>
+            <td>
+                1-0
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-03</div>
+                <div>西甲</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                莱万特
+            </td>
+            <td>
+                1-1
+            </td>
+            <td>
+                <div style='color:#339900;display:inline;'>输</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-02</div>
+                <div>西甲</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                莱加内斯
+            </td>
+            <td>
+                3-0
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-02</div>
+                <div>西甲</div>
+            </td>
+
+            <td>
+                皇家社会
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                毕尔巴鄂竞技
+            </td>
+            <td>
+                2-1
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+    </table>
+
+    <div class="resultBar">
+        比利亚雷亚尔
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th>日期/赛事</th>
+            <th>主队</th>
+            <th>初盘</th>
+            <th>客队</th>
+            <th>比分</th>
+            <th>盘路</th>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-12</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                巴伦西亚
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                2-1
+            </td>
+            <td>
+                <div style='color:#339900;display:inline;'>输</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-05</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                赫塔菲
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                2-2
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>19-01</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                巴伦西亚
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                3-0
+            </td>
+            <td>
+                <div style='color:#339900;display:inline;'>输</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>18-04</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                塞维利亚
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                2-2
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>16-12</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                -0.5
+            </td>
+            <td>
+                马德里竞技
+            </td>
+            <td>
+                3-0
+            </td>
+            <td>
+                <div style='color:red;display:inline;'>赢</div>
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>16-11</div>
+                <div>西甲</div>
+            </td>
+            <td>
+                毕尔巴鄂竞技
+            </td>
+            <td>
+                0.5
+            </td>
+            <td>
+                比利亚雷亚尔
+            </td>
+            <td>
+                1-0
+            </td>
+            <td>
+                <div style='color:#339900;display:inline;'>输</div>
+            </td>
+        </tr>
+
+    </table>
+
+    <script type="text/javascript">
+        getAd
+        ();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        未来三场
+    </div>
+
+    <div class="resultBar">
+        皇家社会
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th style="width:20%;">日期/赛事</th>
+            <th style="width:35%;">主队</th>
+            <th style="width:35%;">客队</th>
+            <th style="width:10%;">间隔</th>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-12</div>
+                <div>西杯</div>
+            </td>
+            <td >
+                休达
+            </td>
+            <td style='color:red;'>
+                皇家社会
+            </td>
+            <td>
+                7天
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-19</div>
+                <div>西甲</div>
+            </td>
+            <td >
+                皇家贝蒂斯
+            </td>
+            <td style='color:red;'>
+                皇家社会
+            </td>
+            <td>
+                14天
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-27</div>
+                <div>西甲</div>
+            </td>
+            <td style='color:red;'>
+                皇家社会
+            </td>
+            <td >
+                马洛卡
+            </td>
+            <td>
+                21天
+            </td>
+        </tr>
+
+    </table>
+
+    <div class="resultBar">
+        比利亚雷亚尔
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th style="width:20%;">日期/赛事</th>
+            <th style="width:35%;">主队</th>
+            <th style="width:35%;">客队</th>
+            <th style="width:10%;">间隔</th>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-12</div>
+                <div>西杯</div>
+            </td>
+
+            <td >
+                奥瑞韦拉
+            </td>
+            <td style='color:red;'>
+                比利亚雷亚尔
+            </td>
+            <td>
+                6天
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-19</div>
+                <div>西甲</div>
+            </td>
+
+            <td style='color:red;'>
+                比利亚雷亚尔
+            </td>
+            <td >
+                西班牙人
+            </td>
+            <td>
+                14天
+            </td>
+        </tr>
+
+        <tr align='center'>
+            <td>
+                <div>2020-01-26</div>
+                <div>西甲</div>
+            </td>
+
+            <td >
+                阿拉维斯
+            </td>
+            <td style='color:red;'>
+                比利亚雷亚尔
+            </td>
+            <td>
+                20天
+            </td>
+        </tr>
+
+    </table>
+
+    <script type="text/javascript">
+        getAd();
+    </script>
+    <div class="fenxiBar">
+        <div class="up"></div>
+        心水推介
+    </div>
+    <table class="mytable" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th width="33%">球队</th>
+            <th>近期走势</th>
+            <th width="33%">盘路输赢</th>
+        </tr>
+        <tr>
+            <td align="center">
+                皇家苏斯达
+            </td>
+            <td align="center">
+                <span style='color:#0066cc'>D</span><span style='color:#339900'>L</span><span style='color:red'>W</span><span style='color:#0066cc'>D</span><span style='color:#0066cc'>D</span><span style='color:red'>W</span>
+            </td>
+            <td align="center">
+                <span style='color:#339900'>L</span><span style='color:#339900'>L</span><span style='color:red'>W</span><span style='color:#339900'>L</span><span style='color:red'>W</span><span style='color:red'>W</span>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                维拉利尔
+            </td>
+            <td align="center">
+                <span style='color:#339900'>L</span><span style='color:#339900'>L</span><span style='color:#339900'>L</span><span style='color:#0066cc'>D</span><span style='color:red'>W</span><span style='color:red'>W</span>
+            </td>
+            <td align="center">
+                <span style='color:#339900'>L</span><span style='color:#339900'>L</span><span style='color:#339900'>L</span><span style='color:red'>W</span><span style='color:red'>W</span><span style='color:red'>W</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center">
+                信心指数 - 和局 ★★★★对赛成绩 - 皇家苏斯达 3胜 3和 4负，虽然维拉利尔最近状态回勇喜获联赛两连胜，但是对手皇家苏斯达并非善男信女，而且阿诺艾达球场也是魔鬼主场难以攻陷，维拉利尔此行还是以力保不失为首要任务。此外，维拉利尔近5轮联赛当中有4场赛事的全场入球总数均在4球或以上，而维拉利尔也有一定的攻击力，这些数据都是值得大家关注的。
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        if ((curAdList != null) && (typeof (curAdList) != "undefined")) {
+            while (_adIndex < curAdList.length) {
+                getAd();
+            }
+        }
+    </script>
+
+</div>
+<script src="/script/DetailLive.js"></script>
+<div id="footer">
+    <a class="blue3" href="http://www.win007.com/?from=m">电脑版</a>
+    &nbsp;
+    <script type="text/javascript">
+        if (CheckHzPrefix() != "")
+            document.write("<a class='blue' href='/hz/dl.htm'>客户端下载(功能全、体验好)</a>");
+        else {
+            document.write("<a class='blue' href='/Download.htm'>客户端下载(功能全、体验好)</a>");
+        }
+    </script>
+
+    <br />
+    <script type="text/javascript">
+        document.write("Copyright © 2002 - " + new Date().getFullYear() + "球探体育版权所有")
+    </script>
+    <br />
+    粤B1.B2-20060628   粤ICP备09088851号-9 <br />
+    官方QQ群：951991189
+
+    <script type="text/javascript">
+        document.write("<a href='http://m2.win007.com/privacy.html' class='blue' target='_blank'>隐私政策</a>");
+        document.write("<a href='" + CheckHzPrefix() + "/Common/GuangGao.shtml' class='blue'>广告声明</a>");
+        document.write("<a href='/Sitemap.html' class='blue'>导航</a>");
+
+    </script>
+</div>
+
+<script type="text/javascript">
+    var nearInfo = {
+        "HomeInfo": [
+            {
+                "ScheduleID": 1740697,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 94,
+                "GuestTeamID": 106,
+                "HomeTeam": "奥萨苏纳",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 4,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 3,
+                "MatchTimeStr": "20191222210000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1822468,
+                "SclassID": 81,
+                "SclassName": "西杯",
+                "HomeTeamID": 22887,
+                "GuestTeamID": 106,
+                "HomeTeam": "比斯若",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 8,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 2,
+                "MatchTimeStr": "20191220040000",
+                "Letgoal": "-3",
+                "FirstLetgoalHalf": "-1.25",
+                "FirstOU": "4",
+                "FirstOUHalf": "1.75",
+                "IsN": 1,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740688,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 84,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "巴塞罗那",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191214230000",
+                "Letgoal": "-0.75",
+                "FirstLetgoalHalf": "-0.25",
+                "FirstOU": "3",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740679,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 123,
+                "GuestTeamID": 106,
+                "HomeTeam": "瓦拉多利德",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191208230000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740668,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 131,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "埃瓦尔",
+                "MatchState": -1,
+                "HomeScore": 4,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191130230000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740658,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 82,
+                "GuestTeamID": 106,
+                "HomeTeam": "皇家马德里",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191124040000",
+                "Letgoal": "1.5",
+                "FirstLetgoalHalf": "0.5",
+                "FirstOU": "3.25",
+                "FirstOUHalf": "1.5",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1815516,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 94,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "奥萨苏纳",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191114180000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1.25",
+                "IsN": 1,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740649,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 992,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "莱加内斯",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191109040000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740633,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 121,
+                "GuestTeamID": 106,
+                "HomeTeam": "格拉那达",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191104040000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740629,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 103,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "莱万特",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 2,
+                "MatchTimeStr": "20191031020000",
+                "Letgoal": "1",
+                "FirstLetgoalHalf": "0.5",
+                "FirstOU": "3",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "走",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740613,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 114,
+                "GuestTeamID": 106,
+                "HomeTeam": "塞尔塔",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191027190000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740609,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 96,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "皇家贝蒂斯",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 1,
+                "HomeHalfScore": 2,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191020200000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1804519,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 94,
+                "GuestTeamID": 106,
+                "HomeTeam": "奥萨苏纳",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191010170000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 1,
+                "Result": "走",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740598,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 98,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "赫塔菲",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191007003000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740589,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 86,
+                "GuestTeamID": 106,
+                "HomeTeam": "塞维利亚",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190930030000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740578,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 137,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "阿拉维斯",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 0,
+                "HomeHalfScore": 3,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190927030000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740563,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 100,
+                "GuestTeamID": 106,
+                "HomeTeam": "西班牙人",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 3,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 2,
+                "MatchTimeStr": "20190922200000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740559,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 109,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "马德里竞技",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190915003000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "-0.25",
+                "FirstOU": "2",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "走",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1790568,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 137,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "阿拉维斯",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190905235900",
+                "Letgoal": "-0.5",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 1,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740541,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 92,
+                "GuestTeamID": 106,
+                "HomeTeam": "毕尔巴鄂竞技",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 2,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190831040000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740538,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 101,
+                "GuestTeamID": 106,
+                "HomeTeam": "马洛卡",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190825230000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740529,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 91,
+                "GuestTeamID": 106,
+                "HomeTeam": "巴伦西亚",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190818010000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1770951,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 131,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "埃瓦尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190811023000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1769667,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 94,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "奥萨苏纳",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190810013000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 1,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1764444,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 137,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "阿拉维斯",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 0,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190801010000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1749950,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 106,
+                "GuestTeamID": 104,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "桑坦德竞技",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190721010000",
+                "Letgoal": "1",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1583568,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 100,
+                "GuestTeamID": 106,
+                "HomeTeam": "西班牙人",
+                "GuestTeam": "皇家社会",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190518221500",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "3",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1583550,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 82,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "皇家马德里",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190513003000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "3",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1583536,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 98,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "赫塔菲",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190428221500",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1583526,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 107,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190426023000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1583503,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 131,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "埃瓦尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190414221500",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "输",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1583480,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 96,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "皇家贝蒂斯",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190405033000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1583466,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 103,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "莱万特",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190316040000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "输",
+                "ResultOUHalf": "走"
+            }
+        ],
+        "GuestInfo": [
+            {
+                "ScheduleID": 1740700,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 98,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "赫塔菲",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191222013000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1822458,
+                "SclassID": 81,
+                "SclassName": "西杯",
+                "HomeTeamID": 45214,
+                "GuestTeamID": 107,
+                "HomeTeam": "科米利亚斯",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 5,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 2,
+                "MatchTimeStr": "20191219010000",
+                "Letgoal": "-3.25",
+                "FirstLetgoalHalf": "-1.75",
+                "FirstOU": "4.25",
+                "FirstOUHalf": "2",
+                "IsN": 1,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740689,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 86,
+                "GuestTeamID": 107,
+                "HomeTeam": "塞维利亚",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191216013000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740680,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 109,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "马德里竞技",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191207040000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "走",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740670,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 91,
+                "GuestTeamID": 107,
+                "HomeTeam": "巴伦西亚",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191201040000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740660,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 114,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "塞尔塔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 3,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191125013000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740648,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 101,
+                "GuestTeamID": 107,
+                "HomeTeam": "马洛卡",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 1,
+                "HomeHalfScore": 2,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191110190000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740640,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 92,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "毕尔巴鄂竞技",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191103210000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740625,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 131,
+                "GuestTeamID": 107,
+                "HomeTeam": "埃瓦尔",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191101020000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740620,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 137,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "阿拉维斯",
+                "MatchState": -1,
+                "HomeScore": 4,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191026030000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740605,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 100,
+                "GuestTeamID": 107,
+                "HomeTeam": "西班牙人",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191020220000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "输",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1805507,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 107,
+                "GuestTeamID": 103,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "莱万特",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20191010173000",
+                "Letgoal": "",
+                "FirstLetgoalHalf": "",
+                "FirstOU": "",
+                "FirstOUHalf": "",
+                "IsN": 0,
+                "Result": "",
+                "ResultHalf": "",
+                "ResultOU": "",
+                "ResultOUHalf": ""
+            },
+            {
+                "ScheduleID": 1740596,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 94,
+                "GuestTeamID": 107,
+                "HomeTeam": "奥萨苏纳",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20191006030000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740590,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 96,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "皇家贝蒂斯",
+                "MatchState": -1,
+                "HomeScore": 5,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190928030000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740571,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 84,
+                "GuestTeamID": 107,
+                "HomeTeam": "巴塞罗那",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 2,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190925030000",
+                "Letgoal": "1.75",
+                "FirstLetgoalHalf": "0.75",
+                "FirstOU": "3.75",
+                "FirstOUHalf": "1.5",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740570,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 123,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "瓦拉多利德",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190921190000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1740556,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 992,
+                "GuestTeamID": 107,
+                "HomeTeam": "莱加内斯",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 3,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 2,
+                "MatchTimeStr": "20190914220000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.25",
+                "FirstOUHalf": "0.75",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740550,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 82,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "皇家马德里",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190902030000",
+                "Letgoal": "-0.75",
+                "FirstLetgoalHalf": "-0.25",
+                "FirstOU": "3.5",
+                "FirstOUHalf": "1.5",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1740537,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 103,
+                "GuestTeamID": 107,
+                "HomeTeam": "莱万特",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190824040000",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1740530,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 121,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "格拉那达",
+                "MatchState": -1,
+                "HomeScore": 4,
+                "GuestScore": 4,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190818030000",
+                "Letgoal": "1",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1770340,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 185,
+                "GuestTeamID": 107,
+                "HomeTeam": "博洛尼亚",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 4,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190811024500",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1768657,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 10674,
+                "GuestTeamID": 107,
+                "HomeTeam": "拉奴西亚",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 4,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190808013000",
+                "Letgoal": "-2",
+                "FirstLetgoalHalf": "-0.75",
+                "FirstOU": "3.25",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1764406,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 151,
+                "GuestTeamID": 107,
+                "HomeTeam": "沙尔克04",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 1,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190802235900",
+                "Letgoal": "0",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1760083,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 490,
+                "GuestTeamID": 107,
+                "HomeTeam": "科隆",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 3,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190729001500",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 1,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1755941,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 1135,
+                "GuestTeamID": 107,
+                "HomeTeam": "奥格斯堡",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 6,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 3,
+                "MatchTimeStr": "20190726235900",
+                "Letgoal": "-0.5",
+                "FirstLetgoalHalf": "-0.25",
+                "FirstOU": "3",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1749954,
+                "SclassID": 41,
+                "SclassName": "球会友谊",
+                "HomeTeamID": 103,
+                "GuestTeamID": 107,
+                "HomeTeam": "莱万特",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 2,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190721010000",
+                "Letgoal": "-0.25",
+                "FirstLetgoalHalf": "-0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "走"
+            },
+            {
+                "ScheduleID": 1583566,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 98,
+                "GuestTeamID": 107,
+                "HomeTeam": "赫塔菲",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 2,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190518221500",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "赢",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1583557,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 107,
+                "GuestTeamID": 131,
+                "HomeTeam": "比利亚雷亚尔",
+                "GuestTeam": "埃瓦尔",
+                "MatchState": -1,
+                "HomeScore": 1,
+                "GuestScore": 0,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190513003000",
+                "Letgoal": "0.5",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.75",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1583546,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 82,
+                "GuestTeamID": 107,
+                "HomeTeam": "皇家马德里",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 3,
+                "GuestScore": 2,
+                "HomeHalfScore": 2,
+                "GuestHalfScore": 1,
+                "MatchTimeStr": "20190505221500",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "3.25",
+                "FirstOUHalf": "1.25",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "赢",
+                "ResultOUHalf": "赢"
+            },
+            {
+                "ScheduleID": 1583526,
+                "SclassID": 31,
+                "SclassName": "西甲",
+                "HomeTeamID": 106,
+                "GuestTeamID": 107,
+                "HomeTeam": "皇家社会",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 0,
+                "GuestScore": 1,
+                "HomeHalfScore": 0,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190426023000",
+                "Letgoal": "0.25",
+                "FirstLetgoalHalf": "0",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "赢",
+                "ResultHalf": "走",
+                "ResultOU": "输",
+                "ResultOUHalf": "输"
+            },
+            {
+                "ScheduleID": 1686039,
+                "SclassID": 113,
+                "SclassName": "欧罗巴杯",
+                "HomeTeamID": 91,
+                "GuestTeamID": 107,
+                "HomeTeam": "巴伦西亚",
+                "GuestTeam": "比利亚雷亚尔",
+                "MatchState": -1,
+                "HomeScore": 2,
+                "GuestScore": 0,
+                "HomeHalfScore": 1,
+                "GuestHalfScore": 0,
+                "MatchTimeStr": "20190419030000",
+                "Letgoal": "0.75",
+                "FirstLetgoalHalf": "0.25",
+                "FirstOU": "2.5",
+                "FirstOUHalf": "1",
+                "IsN": 0,
+                "Result": "输",
+                "ResultHalf": "输",
+                "ResultOU": "输",
+                "ResultOUHalf": "走"
+            }
+        ]
+    };
+    var homeTeamID = 106;
+    var guestTeamID = 107;
+
+    var vsTeamInfo = [{"Year":"2019","Date":"04-26","League":"西甲","Home":"皇家社会","Guest":"比利亚雷亚尔","HomeTeamId":"106","GuestTeamId":"107","FT":"0-1","HT":"0-0","HColNo":2,"GColNo":0,"HhalfColNo":3,"GhalfColNo":0,"Result":"L","Odds":"0.25","SclassId":"31","ResultHalf":"D","LetgoalHalf":"0","OuResult":"L","Ou":"2.5","OuResultHalf":"L","OuHalf":"1"},{"Year":"2018","Date":"08-19","League":"西甲","Home":"比利亚雷亚尔","Guest":"皇家社会","HomeTeamId":"107","GuestTeamId":"106","FT":"1-2","HT":"1-1","HColNo":0,"GColNo":1,"HhalfColNo":0,"GhalfColNo":3,"Result":"W","Odds":"0.5","SclassId":"31","ResultHalf":"W","LetgoalHalf":"0.25","OuResult":"W","Ou":"2.25","OuResultHalf":"W","OuHalf":"1"},{"Year":"2018","Date":"01-28","League":"西甲","Home":"比利亚雷亚尔","Guest":"皇家社会","HomeTeamId":"107","GuestTeamId":"106","FT":"4-2","HT":"4-1","HColNo":0,"GColNo":2,"HhalfColNo":0,"GhalfColNo":2,"Result":"L","Odds":"0.5","SclassId":"31","ResultHalf":"L","LetgoalHalf":"0.25","OuResult":"W","Ou":"2.75","OuResultHalf":"W","OuHalf":"1"},{"Year":"2017","Date":"08-26","League":"西甲","Home":"皇家社会","Guest":"比利亚雷亚尔","HomeTeamId":"106","GuestTeamId":"107","FT":"3-0","HT":"3-0","HColNo":1,"GColNo":0,"HhalfColNo":1,"GhalfColNo":0,"Result":"W","Odds":"0.25","SclassId":"31","ResultHalf":"W","LetgoalHalf":"0","OuResult":"W","Ou":"2.25","OuResultHalf":"W","OuHalf":"1"},{"Year":"2017","Date":"02-19","League":"西甲","Home":"皇家社会","Guest":"比利亚雷亚尔","HomeTeamId":"106","GuestTeamId":"107","FT":"0-1","HT":"0-0","HColNo":2,"GColNo":0,"HhalfColNo":3,"GhalfColNo":0,"Result":"L","Odds":"0.25","SclassId":"31","ResultHalf":"D","LetgoalHalf":"0","OuResult":"L","Ou":"2.5","OuResultHalf":"L","OuHalf":"1"},{"Year":"2017","Date":"01-12","League":"西杯","Home":"比利亚雷亚尔","Guest":"皇家社会","HomeTeamId":"107","GuestTeamId":"106","FT":"1-1","HT":"1-1","HColNo":0,"GColNo":3,"HhalfColNo":0,"GhalfColNo":3,"Result":"W","Odds":"0.5","SclassId":"81","ResultHalf":"W","LetgoalHalf":"0.25","OuResult":"L","Ou":"2.5","OuResultHalf":"W","OuHalf":"1"},{"Year":"2017","Date":"01-05","League":"西杯","Home":"皇家社会","Guest":"比利亚雷亚尔","HomeTeamId":"106","GuestTeamId":"107","FT":"3-1","HT":"2-0","HColNo":1,"GColNo":0,"HhalfColNo":1,"GhalfColNo":0,"Result":"W","Odds":"0.25","SclassId":"81","ResultHalf":"W","LetgoalHalf":"0","OuResult":"W","Ou":"2.25","OuResultHalf":"W","OuHalf":"0.75"},{"Year":"2016","Date":"09-19","League":"西甲","Home":"比利亚雷亚尔","Guest":"皇家社会","HomeTeamId":"107","GuestTeamId":"106","FT":"2-1","HT":"2-1","HColNo":0,"GColNo":2,"HhalfColNo":0,"GhalfColNo":2,"Result":"L","Odds":"0.5","SclassId":"31","ResultHalf":"L","LetgoalHalf":"0.25","OuResult":"W","Ou":"2.25","OuResultHalf":"W","OuHalf":"1"},{"Year":"2016","Date":"07-24","League":"球会友谊","Home":"皇家社会","Guest":"比利亚雷亚尔","HomeTeamId":"106","GuestTeamId":"107","FT":"1-1","HT":"0-1","HColNo":3,"GColNo":0,"HhalfColNo":2,"GhalfColNo":0,"Result":"W","Odds":"-0.25","SclassId":"41","ResultHalf":"L","LetgoalHalf":"0","OuResult":"L","Ou":"2.5","OuResultHalf":"D","OuHalf":"1"},{"Year":"2016","Date":"04-25","League":"西甲","Home":"比利亚雷亚尔","Guest":"皇家社会","HomeTeamId":"107","GuestTeamId":"106","FT":"0-0","HT":"0-0","HColNo":0,"GColNo":3,"HhalfColNo":0,"GhalfColNo":3,"Result":"W","Odds":"0.75","SclassId":"31","ResultHalf":"W","LetgoalHalf":"0.25","OuResult":"L","Ou":"2.5","OuResultHalf":"L","OuHalf":"1"}];
+    var sclassId = 31;
+    if (document.getElementById("ckb_recent_result") != null) {
+        document.getElementById("ckb_recent_result").checked = (findCookie("RecentCheckZq") == "1");
+    }
+    if (document.getElementById("ckb_against_result") != null) {
+        document.getElementById("ckb_against_result").checked = (findCookie("AgainstCheckZq") == "1");
+    }
+    //近期战绩
+    showNearInfo("hn");
+    showNearInfo("an");
+
+    //对赛往绩
+    ShowAgainstInfo();
+</script>
+</body>
+
+</html>

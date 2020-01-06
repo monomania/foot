@@ -165,7 +165,7 @@ HEAD:
 				base.Log.Info("--------发布公众号周期结束--------")
 
 
-				time.Sleep(11 * time.Minute)
+				time.Sleep(5 * time.Minute)
 			}
 		}()
 		//go func() {
