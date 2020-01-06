@@ -77,10 +77,5 @@ func Analy_Near() {
 	a1 := new(service.A1Service)
 	a1.MaxLetBall = 1
 	a1.Analy_Near()
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------处理结果--------------")
-	base.Log.Info("---------------------------------------------------------------")
-	analyService := new(service.AnalyService)
-	analyService.ModifyResult()
 	mysql.ShowSQL(true)
 }
