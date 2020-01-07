@@ -63,7 +63,7 @@ func buildWinForm() {
 						Text: "清空日志",
 						OnClicked: func() {
 							inTE.SetText("清空日志...\r\n")
-							logFile, err := os.OpenFile(base.LogFile_Path, os.O_WRONLY|os.O_TRUNC, 0777)
+							logFile, err := os.OpenFile(base.output_Path, os.O_WRONLY|os.O_TRUNC, 0777)
 							if err != nil {
 								log.Fatal(err)
 							}
@@ -80,7 +80,7 @@ func buildWinForm() {
 }
 
 func showConsole(edit *walk.TextEdit) {
-	utils.FileMonitoring(base.LogFile_Path, func(bytes []byte) {
+	utils.FileMonitoring(base.output_Path, func(bytes []byte) {
 		str := string(bytes)
 		if strings.TrimSpace(str) == "" {
 			return
@@ -91,7 +91,7 @@ func showConsole(edit *walk.TextEdit) {
 }
 
 func test() {
-	logFile, err := os.OpenFile(base.LogFile_Path, os.O_RDONLY, 0777)
+	logFile, err := os.OpenFile(base.output_Path, os.O_RDONLY, 0777)
 	if err != nil {
 		log.Fatal(err)
 	}

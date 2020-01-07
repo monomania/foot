@@ -45,12 +45,33 @@ WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW()
 	dataList := make([]*pojo.MatchLast, 0)
 	//执行查询
 	this.FindBySQL(sql_build, &dataList)
+
+	//如果数据量过多,则配置分析表重新获取...只默认只处理临场12场
+	if len(dataList) <= 12 {
+		return dataList
+	}
+
+	sql_build = `
+SELECT DISTINCT 
+  la.* 
+FROM
+  foot.t_match_last la,
+  foot.t_analy_result ar 
+WHERE la.Id = ar.MatchId 
+  AND DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 10 MINUTE)
+	`
+	//结果值
+	dataList = make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &dataList)
+
 	return dataList
 }
 
 /**
 查找未结束的比赛
- */
+*/
 func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
 	sql_build := `
 SELECT 
