@@ -1,6 +1,7 @@
 # Binaries for programs and plugins
 *.exe
 *.log
+*.logs
 *.exe~
 *.zip
 *.dll
