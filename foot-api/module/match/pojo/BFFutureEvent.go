@@ -8,14 +8,14 @@ import (
 /**
 未来赛事
 */
-type BaseFaceFutureEvent struct {
+type BFFutureEvent struct {
 	//比赛id
 	MatchId string `xorm:"comment('比赛ID')"`
 
 	/**
 	 * 比赛时间
 	 */
-	EventMatchDate time.Time `xorm:"unique(EventMatchDate_EventMainTeamId_EventGuestTeamId)"`
+	EventMatchDate time.Time `xorm:"unique(EventMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	 * 联赛Id
 	 */
@@ -23,11 +23,11 @@ type BaseFaceFutureEvent struct {
 	/**
 	 * 主队id,目前为主队名称
 	 */
-	EventMainTeamId string `xorm:"unique(EventMatchDate_EventMainTeamId_EventGuestTeamId)"`
+	EventMainTeamId string `xorm:"unique(EventMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	 * 客队id,目前为客队名称
 	 */
-	EventGuestTeamId string `xorm:"unique(EventMatchDate_EventMainTeamId_EventGuestTeamId)"`
+	EventGuestTeamId string `xorm:"unique(EventMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	间隔天数
 	*/

@@ -8,14 +8,14 @@ import (
 /**
 历史对战
 */
-type BaseFaceBattle struct {
+type BFBattle struct {
 	//比赛id
 	MatchId string `xorm:"comment('比赛ID')"`
 
 	/**
 	 * 比赛时间
 	 */
-	BattleMatchDate time.Time `xorm:"unique(BattleMatchDate_BattleMainTeamId_BattleGuestTeamId)"`
+	BattleMatchDate time.Time `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	 * 联赛Id
 	 */
@@ -23,7 +23,7 @@ type BaseFaceBattle struct {
 	/**
 	 * 主队id,目前为主队名称
 	 */
-	BattleMainTeamId string `xorm:"unique(BattleMatchDate_BattleMainTeamId_BattleGuestTeamId)"`
+	BattleMainTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	 * 主队进球数
 	 */
@@ -32,7 +32,7 @@ type BaseFaceBattle struct {
 	/**
 	 * 客队id,目前为客队名称
 	 */
-	BattleGuestTeamId string `xorm:"unique(BattleMatchDate_BattleMainTeamId_BattleGuestTeamId)"`
+	BattleGuestTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
 	/**
 	 * 客队进球数
 	 */

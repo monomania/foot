@@ -5,7 +5,7 @@ import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 /**
 联赛积分
 */
-type BaseFaceScore struct {
+type BFScore struct {
 	//比赛id
 	MatchId string `xorm:"comment('比赛ID')"`
 	/**
@@ -14,7 +14,7 @@ type BaseFaceScore struct {
 	TeamId string `xorm:"comment('球队ID') index"`
 
 	// 0 总 , 1 主 ,2客 3 近
-	Type int `xorm:"comment('类型:0 总 , 1 主 ,2客 3 近') index"`
+	Type int `xorm:"comment('类型:0总,1主,2客,3近') index"`
 
 	//比赛场次
 	MatchCount int `xorm:"comment('比赛场次') index"`
