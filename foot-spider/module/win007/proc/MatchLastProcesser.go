@@ -1,7 +1,6 @@
 package proc
 
 import (
-	"fmt"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
@@ -214,9 +213,6 @@ func (this *MatchPageProcesser) Finish() {
 		matchExt.Sid = v.Id
 		v.Ext = make(map[string]interface{})
 		v.Ext[win007.MODULE_FLAG] = matchExt
-		if v.Id == "1748077" || v.Id == "1748078" || v.Id == "1748079" {
-			fmt.Println("---------------------")
-		}
 		exists := this.MatchLastService.FindExists(v)
 		if exists {
 			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)

@@ -11,7 +11,7 @@ func Before_spider_baseFace(){
 	//抓取前清空当前比较表
 	opsService := new(mysql.DBOpsService)
 	//指定需要清空的数据表
-	opsService.TruncateTable([]string{"t_base_face"})
+	opsService.TruncateTable([]string{"t_b_f_battle","t_b_f_future_event","t_b_f_score"})
 }
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
