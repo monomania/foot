@@ -2,6 +2,7 @@ module tesou.io/platform/foot-parent
 
 require (
 	github.com/astaxie/beego v1.12.0
+	github.com/go-vgo/robotgo v0.0.0-20191226160149-28f256a4c5a0
 	github.com/lxn/walk v0.0.0-20191128110447-55ccb3a9f5c1
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect
 	tesou.io/platform/foot-parent/foot-api v1.0.0

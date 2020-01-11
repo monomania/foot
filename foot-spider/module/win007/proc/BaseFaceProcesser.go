@@ -1,6 +1,7 @@
 package proc
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
@@ -82,15 +83,35 @@ func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []int
 	data_list_slice := make([]interface{}, 0)
 	p.GetHtmlParser().Find(" table.mytable").EachWithBreak(func(i int, selection *goquery.Selection) bool {
 		//只取前两个table
-		if i > 1{
+		if i > 1 {
 			return false
 		}
 
 		ret, _ := selection.Html()
 		fmt.Println(ret)
 
-		selection.Find(" tr ")
+		selection.Find(" tr ").Each(func(i int, selection *goquery.Selection) {
+			if i >= 1 {
+				selection.Text()
+				nodes := selection.Children().Nodes
+				buf := bytes.Buffer{}
+				buf.WriteString(nodes[0].Data)
+				val0 := buf.String()
 
+				buf.Reset()
+				buf.WriteString(nodes[1].Data)
+				val1 := buf.String()
+
+				buf.Reset()
+				buf.WriteString(nodes[2].Data)
+				val2 := buf.String()
+
+				buf.Reset()
+				buf.WriteString(nodes[3].Data)
+				val3 := buf.String()
+				fmt.Println(val0, val1, val2, val3)
+			}
+		})
 		return true
 	})
 	return data_list_slice
