@@ -47,6 +47,8 @@ func preResultStr(val int, al_flag string) string {
 func color(str string) string {
 	if "A1" == str {
 		return "orange"
+	}else if "C1" == str {
+		return "yellow"
 	} else if "E1" == str {
 		return "blue"
 	} else if "E2" == str {
