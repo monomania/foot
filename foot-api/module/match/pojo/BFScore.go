@@ -13,8 +13,8 @@ type BFScore struct {
 	 */
 	TeamId string `xorm:"comment('球队ID') index"`
 
-	// 0 总 , 1 主 ,2客 3 近
-	Type int `xorm:"comment('类型:0总,1主,2客,3近') index"`
+	// 总 , 主 ,客 近
+	Type string `xorm:"comment('类型:总,主,客,近') index"`
 
 	//比赛场次
 	MatchCount int `xorm:"comment('比赛场次') index"`
@@ -34,7 +34,8 @@ type BFScore struct {
 
 	//排名
 	Ranking int `xorm:"comment('排名') index"`
-
+	//胜率
+	WinRate float64 `xorm:"comment('胜率') index"`
 
 
 	pojo.BasePojo `xorm:"extends"`

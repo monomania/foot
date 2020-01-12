@@ -25,7 +25,7 @@ FROM
     FROM
       foot.`t_analy_result` temp
     GROUP BY temp.`MatchId`
-    HAVING COUNT(1) >= 4)) temp
+    HAVING COUNT(1) >= 3)) temp
 WHERE mh.LeagueId = l.Id
   AND mh.Id = ar.MatchId
   AND ar.`Id` = temp.id
