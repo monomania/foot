@@ -7,7 +7,7 @@ import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 */
 type BFScore struct {
 	//比赛id
-	MatchId string `xorm:"comment('比赛ID')"`
+	MatchId string `xorm:"comment('比赛ID') index"`
 	/**
 	 * 主队id,目前为主队名称
 	 */

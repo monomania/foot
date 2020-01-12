@@ -15,7 +15,7 @@ type EuroLastService struct {
 func (this *EuroLastService) FindExists(v *pojo.EuroLast) bool {
 	exist, err := mysql.GetEngine().Get(v)
 	if err != nil {
-		base.Log.Info("FindExists:", err)
+		base.Log.Error("FindExists:", err)
 	}
 	return exist
 }
@@ -25,7 +25,7 @@ func (this *EuroLastService) FindByMatchId(v *pojo.EuroLast) []*pojo.EuroLast {
 	dataList := make([]*pojo.EuroLast, 0)
 	err := mysql.GetEngine().Where(" MatchId = ? ", v.MatchId).Find(dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchId:", err)
+		base.Log.Error("FindByMatchId:", err)
 	}
 	return dataList
 }
@@ -42,7 +42,7 @@ func (this *EuroLastService) FindByMatchIdCompId(matchId string, compIds ...stri
 	sql_build.WriteString(")")
 	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchIdCompId:", err)
+		base.Log.Error("FindByMatchIdCompId:", err)
 	}
 	return dataList
 }

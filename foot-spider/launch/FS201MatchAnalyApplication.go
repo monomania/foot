@@ -10,7 +10,7 @@ import (
 //抓取比赛分析数据
 func spider_match_analy() {
 	matchLastService := new(service.MatchLastService)
-	matchLasts := matchLastService.FindAll()
+	matchLasts := matchLastService.FindNotFinished()
 
 	processer := proc.GetMatchAnalyProcesser()
 	processer.MatchLastList = matchLasts

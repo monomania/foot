@@ -3,7 +3,7 @@ package pojo
 import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 
 /**
-欧赔历史表
+欧赔历史，变化过程表
  */
 type EuroHis struct {
 	/**

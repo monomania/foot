@@ -205,7 +205,7 @@ func (this *BaseFaceProcesser) future_event_process(matchId string, p *page.Page
 				temp.EventLeagueId = val_arr[1]
 				temp.EventMainTeamId = val_arr[2]
 				temp.EventGuestTeamId = val_arr[3]
-				temp_val := strings.Replace(val_arr[4], "天", ":", 1)
+				temp_val := strings.Replace(val_arr[4], "天", "", 1)
 				temp.IntervalDay, _ = strconv.Atoi(temp_val)
 
 				data_list_slice = append(data_list_slice, temp)

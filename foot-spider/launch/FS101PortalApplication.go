@@ -28,6 +28,7 @@ func Spider() {
 	}
 	matchLevel, _ := strconv.Atoi(matchLevelStr)
 	Spider_match(matchLevel)
+	Spider_baseFace()
 	//Spider_asiaLast()
 	Spider_asiaLastNew()
 	Spider_euroLast()

@@ -13,7 +13,7 @@ type MatchHisService struct {
 func (this *MatchHisService) FindExists(v *pojo.MatchHis) bool {
 	has, err := mysql.GetEngine().Table("`t_match_his`").Where(" `Id` = ?  ", v.Id).Exist()
 	if err != nil {
-		base.Log.Info("FindExists", err)
+		base.Log.Error("FindExists", err)
 	}
 	return has
 }
@@ -23,7 +23,7 @@ func (this *MatchHisService) FindById(matchId string) *pojo.MatchHis {
 	data.Id = matchId
 	_, err := mysql.GetEngine().Get(data)
 	if err != nil {
-		base.Log.Info("FindById:", err)
+		base.Log.Error("FindById:", err)
 	}
 	return data
 }

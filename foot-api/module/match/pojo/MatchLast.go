@@ -6,7 +6,7 @@ import (
 )
 
 /**
-比赛当前数据表
+比赛当前数据表,仅存放当前的比赛
  */
 //足球比赛信息
 type MatchLast struct {

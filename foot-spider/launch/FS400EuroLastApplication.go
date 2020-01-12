@@ -25,7 +25,7 @@ func Before_spider_euroLast() {
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 func Spider_euroLast() {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindAll()
+	matchLasts := matchLastService.FindNotFinished()
 
 	var compIds []string
 	val := utils.GetVal("spider", "euro_comp_ids")

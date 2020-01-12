@@ -16,7 +16,7 @@ type AsiaLastService struct {
 func (this *AsiaLastService) FindExists(v *pojo.AsiaLast) bool {
 	exist, err := mysql.GetEngine().Get(&pojo.AsiaLast{MatchId:v.MatchId,CompId:v.CompId})
 	if err != nil {
-		base.Log.Info("错误:", err)
+		base.Log.Error("错误:", err)
 	}
 	return exist
 }
@@ -26,7 +26,7 @@ func (this *AsiaLastService) FindByMatchId(matchId string) []*pojo.AsiaLast {
 	dataList := make([]*pojo.AsiaLast, 0)
 	err := mysql.GetEngine().Where(" MatchId = ? ", matchId).Find(dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchId:", err)
+		base.Log.Error("FindByMatchId:", err)
 	}
 	return dataList
 }
@@ -44,7 +44,7 @@ func (this *AsiaLastService) FindByMatchIdCompId(matchId string, compIds ...stri
 	sql_build.WriteString(")")
 	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchIdCompId:", err)
+		base.Log.Error("FindByMatchIdCompId:", err)
 	}
 	return dataList
 }

@@ -2,7 +2,7 @@ package pojo
 
 import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 /**
-亚赔历史表
+亚赔历史,变化过程表
 */
 type AsiaHis struct {
 	/**

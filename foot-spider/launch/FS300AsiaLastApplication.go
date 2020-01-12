@@ -23,7 +23,7 @@ func Before_spider_asiaLast(){
 //该页面已经被球探网废弃
 func Spider_asiaLast() {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindAll()
+	matchLasts := matchLastService.FindNotFinished()
 
 	processer := proc.GetAsiaLastProcesser()
 	processer.MatchLastList = matchLasts
@@ -32,7 +32,7 @@ func Spider_asiaLast() {
 
 func Spider_asiaLastNew() {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindAll()
+	matchLasts := matchLastService.FindNotFinished()
 
 	processer := proc.GetAsiaLastNewProcesser()
 	processer.MatchLastList = matchLasts

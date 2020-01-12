@@ -13,7 +13,7 @@ type AsiaHisService struct {
 func (this *AsiaHisService) FindExists(v *pojo.AsiaHis) bool {
 	exist, err := mysql.GetEngine().Get(&pojo.AsiaHis{MatchId:v.MatchId,CompId:v.CompId,OddDate:v.OddDate})
 	if err != nil {
-		base.Log.Info("错误:", err)
+		base.Log.Error("错误:", err)
 	}
 	return exist
 }

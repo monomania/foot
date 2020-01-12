@@ -6,6 +6,7 @@ import (
 
 
 func main() {
+	//launch.Clean()
 	launch.Spider()
 }
 

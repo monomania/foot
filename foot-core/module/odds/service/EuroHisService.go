@@ -13,7 +13,7 @@ type EuroHisService struct {
 func (this *EuroHisService) FindExists(v *pojo.EuroHis) bool {
 	exist, err := mysql.GetEngine().Exist(&pojo.EuroHis{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate})
 	if err != nil {
-		base.Log.Info("FindExists:", err)
+		base.Log.Error("FindExists:", err)
 	}
 	return exist
 }

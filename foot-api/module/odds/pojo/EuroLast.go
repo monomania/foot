@@ -4,7 +4,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 /**
-欧赔当前表
+欧赔当前表,仅初盘，即时盘
 */
 type EuroLast struct {
 	//博彩公司id

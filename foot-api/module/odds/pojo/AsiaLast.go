@@ -4,7 +4,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 /**
-亚赔当前表
+亚赔当前表,仅初盘，即时盘
 */
 type AsiaLast struct {
 	//博彩公司id

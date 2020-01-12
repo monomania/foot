@@ -10,7 +10,7 @@ import (
 */
 type BFFutureEvent struct {
 	//比赛id
-	MatchId string `xorm:"comment('比赛ID')"`
+	MatchId string `xorm:"comment('比赛ID') index"`
 
 	/**
 	 * 比赛时间
