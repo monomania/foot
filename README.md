@@ -6,7 +6,7 @@
 ## 项目介绍
    >> 1. 究极足球爱好者,平时也会去体彩店支持一下国足,或是自己喜欢的球队.
    >> 2. 入了门道,就想结合一下所学所专,尝试着分析预测一下足球比赛.最近命中率感觉还可以阿.
-   >> 3. 娱乐娱乐!!!如果该项目对您有帮助,请您给一个star.
+   >> 3. 娱乐至上!!!如果该项目对您有帮助,请您给一个star.
 
 ## 技术选型
 * [xorm](https://github.com/go-xorm/xorm)
@@ -137,6 +137,7 @@ foot-parent
   *  FOOT000TestApplication.go  无用
   *  FS000Application.go        运行数据爬虫
   *  FS001AsiaModifyApplication.go  亚指数据遗漏检测,重新尝试
+  *  FS001BaseFaceApplication.go  基本面数据的获取,目前包含积分榜,过往对战,未来赛事三项
   *  FS001EuroIncompleteApplication.go  欧指数据遗漏检测,重新尝试
   *  FS001EuroModifyApplication.go  欧指数据单独获取
 ## 公众号演示
