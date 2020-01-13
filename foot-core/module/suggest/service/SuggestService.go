@@ -37,6 +37,7 @@ WHERE mh.LeagueId = l.Id
 		for _, v := range param.AlFlags {
 			sql += ",'" + v + "'"
 		}
+		sql += " ) "
 	}
 	if len(param.BeginDateStr) > 0 {
 		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "
