@@ -161,7 +161,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 今日赛事分析
  */
 func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggestDetailVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
@@ -171,7 +171,7 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	//今日推荐
 	param.AlFlag = getAlFlag()
-	tempList := this.SuggestService.Query(param)
+	tempList := this.SuggestService.QueryDetail(param)
 	//更新推送
 	first := material.Article{}
 	first.Title = fmt.Sprintf("赛事解析")
@@ -180,12 +180,12 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TodayDetailVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggestDetailVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e

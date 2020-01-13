@@ -1,6 +1,6 @@
 package vo
 
-type TodayVO struct {
+type TodayDetailVO struct {
 	SpiderDateStr string
 	//开始时间
 	BeginDateStr string
@@ -9,5 +9,6 @@ type TodayVO struct {
 	//数据时间
 	DataDateStr string
 
-	DataList []SuggestVO
+	DataList []SuggestDetailVO
+
 }

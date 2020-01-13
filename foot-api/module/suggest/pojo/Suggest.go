@@ -11,7 +11,5 @@ import (
  */
 type Suggest struct {
 
-
-
 	pojo2.AnalyResult `xorm:"extends"`
 }
