@@ -1,7 +1,13 @@
 package main
 
 import (
-	"syscall"
+	"fmt"
+	"github.com/chanxuehong/wechat/mp/material"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/suggest/service"
+	"time"
 )
 
 func abort(funcname string, err string) {
@@ -15,22 +21,54 @@ func print_version(v uint32) {
 	print("windows version ", major, ".", minor, " (Build ", build, ")\n")
 }
 
-func main() {
-	h, err := syscall.LoadLibrary("kernel32.dll")
-	if err != nil {
-		abort("LoadLibrary", err.Error())
+
+func main(){
+	param := new(vo.SuggestDetailVO)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-24h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("24h")
+	endDate := now.Add(h12)
+	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
+	//今日推荐
+	param.AlFlag = "'A1','E2'"
+	suggestService := service.SuggestService{}
+	tempList := suggestService.QueryDetail(param)
+	//更新推送
+	first := material.Article{}
+	first.Title = fmt.Sprintf("赛事解析")
+	first.Digest = fmt.Sprintf("赛事的模型算法解析")
+	first.Author = utils.GetVal("wechat", "author")
+
+	temp := vo.TodayDetailVO{}
+	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
+	temp.DataList = make([]vo.SuggestDetailVO, len(tempList))
+	for i, e := range tempList {
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
 	}
-	defer syscall.FreeLibrary(h)
-	proc, err := syscall.GetProcAddress(h, "GetVersion")
-	if err != nil {
-		abort("GetProcAddress", err.Error())
-	}
-	r, _, _ := syscall.Syscall(uintptr(proc), 0, 0, 0, 0)
-	print_version(uint32(r))
-
-
-
 }
+
+//func main() {
+//	h, err := syscall.LoadLibrary("kernel32.dll")
+//	if err != nil {
+//		abort("LoadLibrary", err.Error())
+//	}
+//	defer syscall.FreeLibrary(h)
+//	proc, err := syscall.GetProcAddress(h, "GetVersion")
+//	if err != nil {
+//		abort("GetProcAddress", err.Error())
+//	}
+//	r, _, _ := syscall.Syscall(uintptr(proc), 0, 0, 0, 0)
+//	print_version(uint32(r))
+//
+//
+//
+//}
 
 /*
 func main() {
