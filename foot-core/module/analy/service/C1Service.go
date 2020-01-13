@@ -159,7 +159,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	tLetBall := math.Abs(letBall)
 
 	if sLetBall > tLetBall {
-		if eLetBall <= (tLetBall+0.25) {
+		if eLetBall <= (tLetBall+0.24) {
 			if mainLetball{
 				preResult = 3
 			}else{
@@ -187,7 +187,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			}
 		}
 	}else{
-		if eLetBall >= tLetBall {
+		if eLetBall >= (tLetBall-0.24) {
 			if mainLetball{
 				preResult = 3
 			}else{

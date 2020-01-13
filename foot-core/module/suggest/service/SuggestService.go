@@ -31,7 +31,6 @@ FROM
   foot.t_analy_result ar 
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId
-  AND (ar.HitCount < THitCount or ar.HitCount = 0 or ar.AlFlag = 'Q1') 
 	`
 	if len(param.AlFlag) > 0 {
 		sql += " AND ar.AlFlag = '" + param.AlFlag + "' "
