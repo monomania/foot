@@ -10,7 +10,7 @@ import (
 func Clean(){
 	//清空数据表
 	Before_spider_match()
-	Before_spider_baseFace()
+	//Before_spider_baseFace()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
 }

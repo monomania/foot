@@ -29,8 +29,8 @@ func (this *C1Service) ModelName() string {
 }
 
 func (this *C1Service) Analy() {
-	//matchList := this.MatchLastService.FindNotFinished()
-	matchList := this.MatchLastService.FindAll()
+	matchList := this.MatchLastService.FindNotFinished()
+	//matchList := this.MatchLastService.FindAll()
 	this.Analy_Process(matchList)
 
 }
