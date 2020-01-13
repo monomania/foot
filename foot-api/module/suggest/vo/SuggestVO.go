@@ -25,5 +25,8 @@ type SuggestVO struct {
 	//是否倒序
 	IsDesc bool
 
+	//算法标识
+	AlFlags []string
+
 	pojo.Suggest `xorm:"extends"`
 }

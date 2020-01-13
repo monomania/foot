@@ -32,8 +32,11 @@ FROM
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId
 	`
-	if len(param.AlFlag) > 0 {
-		sql += " AND ar.AlFlag = '" + param.AlFlag + "' "
+	if len(param.AlFlags) > 0 {
+		sql += " AND ar.AlFlag in (''"
+		for _, v := range param.AlFlags {
+			sql += ",'" + v + "'"
+		}
 	}
 	if len(param.BeginDateStr) > 0 {
 		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "
@@ -55,7 +58,6 @@ WHERE mh.LeagueId = l.Id
 	return entitys
 
 }
-
 
 func (this *SuggestService) Query(param *vo2.SuggestVO) []*vo2.SuggestVO {
 	sql := `
