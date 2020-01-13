@@ -1,5 +1,5 @@
 ## 项目地址
-* [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
+* [https://github.com/monomania/foot](https://github.com/monomania/foot)
 
 ## 项目己部分闭源,且不会再更新维护
 
