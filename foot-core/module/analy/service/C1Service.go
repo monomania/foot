@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -29,7 +30,8 @@ func (this *C1Service) ModelName() string {
 }
 
 func (this *C1Service) Analy() {
-	matchList := this.MatchLastService.FindNotFinished()
+	//matchList := this.MatchLastService.FindNotFinished()
+	matchList := this.MatchLastService.FindAll()
 	this.Analy_Process(matchList)
 
 }
@@ -86,7 +88,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, nil
 	}
 	a18betData = aList[0]
-	if a18betData.ELetBall > this.MaxLetBall {
+	if matchId == "1738911"{
+
+	}
+	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		return -2, nil
 	}
 
@@ -149,59 +154,47 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	var mainLetball bool
-	if a18betData.SLetBall > 0 {
+	if a18betData.ELetBall > 0 {
 		mainLetball = true
-	}else{
+	} else {
 		mainLetball = false
 	}
 	sLetBall := math.Abs(a18betData.SLetBall)
 	eLetBall := math.Abs(a18betData.ELetBall)
 	tLetBall := math.Abs(letBall)
 
-	if sLetBall > tLetBall {
-		if eLetBall <= (tLetBall+0.24) {
-			if mainLetball{
+	if (sLetBall >= tLetBall && eLetBall >= tLetBall) || (sLetBall < tLetBall && eLetBall >= tLetBall ){
+		if math.Abs(eLetBall-tLetBall) < 0.26 {
+			if mainLetball {
 				preResult = 3
-			}else{
+			} else {
 				preResult = 0
 			}
-		} else {
-			if mainLetball{
+		}else{
+			if mainLetball {
 				preResult = 0
-			}else{
-				preResult = 3
-			}
-		}
-	} else if sLetBall == tLetBall{
-		if eLetBall >= tLetBall {
-			if mainLetball{
-				preResult = 3
-			}else{
-				preResult = 0
-			}
-		} else {
-			if mainLetball{
-				preResult = 0
-			}else{
+			} else {
 				preResult = 3
 			}
 		}
-	}else{
-		if eLetBall >= (tLetBall-0.24) {
-			if mainLetball{
+	}else if (sLetBall < tLetBall && eLetBall < tLetBall) || (sLetBall >= tLetBall && eLetBall < tLetBall ) {
+		if math.Abs(tLetBall-eLetBall) < 0.26 {
+			if mainLetball {
 				preResult = 3
-			}else{
+			} else {
 				preResult = 0
 			}
-		} else {
-			if mainLetball{
+		}else{
+			if mainLetball {
 				preResult = 0
-			}else{
+			} else {
 				preResult = 3
 			}
 		}
+	}else {
+		base.Log.Error("C1分析模型出现错误!!!")
 	}
-	base.Log.Info("计算得出让球为:",letBall,",初盘让球:",a18betData.SLetBall,",即时盘让球:",a18betData.ELetBall)
+	base.Log.Info("计算得出让球为:", letBall, ",初盘让球:", a18betData.SLetBall, ",即时盘让球:", a18betData.ELetBall)
 	var data *entity5.AnalyResult
 	temp_data := this.Find(v.Id, this.ModelName())
 	if len(temp_data.Id) > 0 {

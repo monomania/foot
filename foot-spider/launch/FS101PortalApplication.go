@@ -3,15 +3,14 @@ package launch
 import (
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/launch"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	"time"
 )
 
 func Clean(){
 	//清空数据表
-	launch.TruncateTable()
 	Before_spider_match()
+	Before_spider_baseFace()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
 }

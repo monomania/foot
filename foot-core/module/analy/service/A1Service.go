@@ -112,7 +112,7 @@ func (this *A1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, nil
 	}
 	a18betData = aList[0]
-	if a18betData.ELetBall > this.MaxLetBall {
+	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		return -2, nil
 	}
 

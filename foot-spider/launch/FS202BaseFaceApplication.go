@@ -18,7 +18,8 @@ func Before_spider_baseFace(){
 //该页面已经被球探网废弃
 func Spider_baseFace() {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindNotFinished()
+	//matchLasts := matchLastService.FindNotFinished()
+	matchLasts := matchLastService.FindAll()
 
 	processer := proc.GetBaseFaceProcesser()
 	processer.MatchLastList = matchLasts

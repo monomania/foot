@@ -2,6 +2,7 @@ package proc
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
@@ -180,7 +181,7 @@ func (this *BaseFaceProcesser) future_event_process(matchId string, p *page.Page
 	elem_table_len := len(elem_table.Nodes)
 	elem_table.Each(func(i int, selection *goquery.Selection) {
 		//只取倒数2,3个table
-		if i <= (elem_table_len-3) && i != (elem_table_len-1) {
+		if i < (elem_table_len-3) || i == (elem_table_len-1) {
 			return
 		}
 

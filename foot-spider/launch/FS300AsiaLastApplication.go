@@ -32,7 +32,8 @@ func Spider_asiaLast() {
 
 func Spider_asiaLastNew() {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindNotFinished()
+	//matchLasts := matchLastService.FindNotFinished()
+	matchLasts := matchLastService.FindAll()
 
 	processer := proc.GetAsiaLastNewProcesser()
 	processer.MatchLastList = matchLasts
