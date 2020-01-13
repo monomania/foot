@@ -41,7 +41,8 @@ func Spider() {
 
 
 func Spider_Near() {
-	Spider_baseFace_near()
+	//基本面不会改变
+	//Spider_baseFace_near()
 	Spider_asiaLastNew_near()
 	Spider_euroLast_near()
 	Spider_euroHis_near()
