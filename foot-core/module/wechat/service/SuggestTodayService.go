@@ -275,7 +275,7 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = fmt.Sprintf("A1场次")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = today_tbs_thumbMediaId
+	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEkzOy_14yNC4gTerThOJZH4"
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
@@ -326,7 +326,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 	first := material.Article{}
 	first.Title = fmt.Sprintf("C1场次")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = today_tbs_thumbMediaId
+	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEthz2PGUtpVZdZccay_qCi0"
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
