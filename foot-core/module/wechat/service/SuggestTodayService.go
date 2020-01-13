@@ -77,7 +77,7 @@ func getMainAlFlag() string {
 	return al_flag;
 }
 
-const contentSourceURL = "https://gitee.com/aoe5188/foot"
+const contentSourceURL = "https://github.com/monomania/foot"
 const today_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
 const today_detail_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
 const today_tbs_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI"
