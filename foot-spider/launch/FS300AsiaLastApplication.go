@@ -38,3 +38,12 @@ func Spider_asiaLastNew() {
 	processer.MatchLastList = matchLasts
 	processer.Startup()
 }
+
+func Spider_asiaLastNew_near() {
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindNear()
+
+	processer := proc.GetAsiaLastNewProcesser()
+	processer.MatchLastList = matchLasts
+	processer.Startup()
+}

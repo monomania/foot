@@ -39,7 +39,7 @@ SELECT
 FROM
   foot.t_match_last la 
 WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
-  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 10 MINUTE)
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
 	`
 	//结果值
 	dataList := make([]*pojo.MatchLast, 0)
@@ -47,7 +47,7 @@ WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW()
 	this.FindBySQL(sql_build, &dataList)
 
 	//如果数据量过多,则配置分析表重新获取...只默认只处理临场12场
-	if len(dataList) <= 12 {
+	if len(dataList) <= 10 {
 		return dataList
 	}
 

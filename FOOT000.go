@@ -148,10 +148,10 @@ func main() {
 			matchLastService := new(service3.MatchLastService)
 			matchLasts := matchLastService.FindNear()
 			if len(matchLasts) > 0 {
-				base.Log.Info("--------临场比赛数据更新开始运行--------")
+				base.Log.Info("--------临场比赛,共%d场,更新开始运行--------",len(matchLasts))
 				launch.Spider_Near()
 				launch2.Analy_Near()
-				base.Log.Info("--------临场比赛数据更新周期结束--------")
+				base.Log.Info("--------临场比赛,共%d场,更新周期结束--------",len(matchLasts))
 
 				base.Log.Info("--------临场比赛发布公众号开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速

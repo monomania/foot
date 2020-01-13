@@ -26,3 +26,13 @@ func Spider_baseFace() {
 }
 
 
+
+func Spider_baseFace_near() {
+	matchLastService := new(service2.MatchLastService)
+	matchLasts := matchLastService.FindNear()
+
+	processer := proc.GetBaseFaceProcesser()
+	processer.MatchLastList = matchLasts
+	processer.Startup()
+}
+
