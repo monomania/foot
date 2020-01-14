@@ -87,7 +87,8 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//声明使用变量
 	var a18betData *entity3.AsiaLast
 	//亚赔
-	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "澳门")
+	//aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "澳门")
+	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "Bet365")
 	if len(aList) < 1 {
 		return -1, nil
 	}
@@ -188,11 +189,24 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		letBall += 0.075
 	}
 
-	var mainLetball bool
+	//判断主队是否是让球方
+	mainLetball := true
 	if a18betData.ELetBall > 0 {
 		mainLetball = true
-	} else {
+	} else if a18betData.ELetBall < 0 {
 		mainLetball = false
+	} else {
+		if a18betData.SLetBall > 0 {
+			mainLetball = true
+		} else if a18betData.SLetBall < 0 {
+			mainLetball = false
+		} else {
+			if letBall >= 0 {
+				mainLetball = true
+			} else {
+				mainLetball = false
+			}
+		}
 	}
 
 	if a18betData.ELetBall > 0 && letBall < 0 {
@@ -203,9 +217,23 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		sLetBall := math.Abs(a18betData.SLetBall)
 		eLetBall := math.Abs(a18betData.ELetBall)
 		tLetBall := math.Abs(letBall)
+		ableUpDown := false
+		if math.Abs(sLetBall-eLetBall) <= 0.25 {
+			ableUpDown = true
+		}
 
 		if (sLetBall >= tLetBall && eLetBall >= tLetBall) || (sLetBall < tLetBall && eLetBall >= tLetBall) {
-			if math.Abs(eLetBall-tLetBall) < 0.26 {
+			var seLetBall float64
+			if ableUpDown {
+				if sLetBall > eLetBall {
+					seLetBall = eLetBall
+				} else {
+					seLetBall = sLetBall
+				}
+			}else{
+				seLetBall = eLetBall
+			}
+			if math.Abs(seLetBall-tLetBall) <= 0.25 {
 				if mainLetball {
 					preResult = 3
 				} else {
@@ -219,7 +247,17 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				}
 			}
 		} else if (sLetBall < tLetBall && eLetBall < tLetBall) || (sLetBall >= tLetBall && eLetBall < tLetBall) {
-			if math.Abs(tLetBall-eLetBall) < 0.26 {
+			var seLetBall float64
+			if ableUpDown {
+				if sLetBall > eLetBall {
+					seLetBall = sLetBall
+				} else {
+					seLetBall = eLetBall
+				}
+			}else{
+				seLetBall = eLetBall
+			}
+			if math.Abs(tLetBall-seLetBall) <= 0.25 {
 				if mainLetball {
 					preResult = 3
 				} else {
