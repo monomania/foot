@@ -133,19 +133,19 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 	if temp_val >= rankDiff {
-		letBall += -0.25 - (temp_val/rankDiff)*0.1
+		letBall += -0.125 - (temp_val/rankDiff)*0.125
 	}
 	temp_val = float64(guestZongBfs.Ranking - mainZongBfs.Ranking)
 	if temp_val >= rankDiff {
-		letBall += 0.25 + (temp_val/rankDiff)*0.1
+		letBall += 0.125 + (temp_val/rankDiff)*0.125
 	}
 	temp_val = float64(mainZhuBfs.Ranking - guestKeBfs.Ranking)
 	if temp_val >= rankDiff {
-		letBall += -0.25 - (temp_val/rankDiff)*0.1
+		letBall += -0.125 - (temp_val/rankDiff)*0.125
 	}
 	temp_val = float64(guestKeBfs.Ranking - mainZhuBfs.Ranking)
 	if temp_val >= rankDiff {
-		letBall += 0.25 + (temp_val/rankDiff)*0.1
+		letBall += 0.125 + (temp_val/rankDiff)*0.125
 	}
 
 	//------
@@ -167,21 +167,21 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 	if mainWin > (guestWin + 1) {
-		letBall += 0.25
+		letBall += 0.125
 	}
 	if guestWin > (mainWin + 1) {
-		letBall += -0.25
+		letBall += -0.125
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 	//如果主队下一场打客场,战意充足
 	if v.MainTeamId == bffe_main.EventGuestTeamId {
-		letBall += 0.25
+		letBall += 0.125
 	}
 	//如果客队下一场打主场，战意懈怠
 	if v.GuestTeamId == bffe_guest.EventMainTeamId {
-		letBall += 0.25
+		letBall += 0.125
 	}
 
 	var mainLetball bool
