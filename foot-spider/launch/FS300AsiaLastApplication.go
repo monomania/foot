@@ -1,6 +1,7 @@
 package launch
 
 import (
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
@@ -30,10 +31,14 @@ func Spider_asiaLast() {
 	processer.Startup()
 }
 
-func Spider_asiaLastNew() {
+func Spider_asiaLastNew(spiderAll bool) {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindNotFinished()
-	//matchLasts := matchLastService.FindAll()
+	var matchLasts []*pojo.MatchLast
+	if spiderAll{
+		matchLasts = matchLastService.FindAll()
+	}else{
+		matchLasts = matchLastService.FindNotFinished()
+	}
 
 	processer := proc.GetAsiaLastNewProcesser()
 	processer.MatchLastList = matchLasts

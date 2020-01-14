@@ -29,10 +29,14 @@ func (this *C1Service) ModelName() string {
 	return "C1"
 }
 
-func (this *C1Service) Analy() {
-	matchList := this.MatchLastService.FindNotFinished()
-	//matchList := this.MatchLastService.FindAll()
-	this.Analy_Process(matchList)
+func (this *C1Service) Analy(analyAll bool) {
+	var matchLasts []*pojo.MatchLast
+	if analyAll {
+		matchLasts = this.MatchLastService.FindAll()
+	} else {
+		matchLasts = this.MatchLastService.FindNotFinished()
+	}
+	this.Analy_Process(matchLasts)
 
 }
 
@@ -83,7 +87,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//声明使用变量
 	var a18betData *entity3.AsiaLast
 	//亚赔
-	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "18Bet")
+	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "澳门")
 	if len(aList) < 1 {
 		return -1, nil
 	}
@@ -91,9 +95,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		return -2, nil
 	}
-	if matchId == "1742923" {
-		fmt.Println("-")
-	}
+
 	//得出结果
 	var preResult int
 	letBall := 0.00
@@ -104,7 +106,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//排名越小越好
-	rankDiff := 4.0
+	rankDiff := 5.0
 	var temp_val float64
 	var mainZongBfs *pojo.BFScore
 	var mainZhuBfs *pojo.BFScore
@@ -130,7 +132,9 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if mainZongBfs == nil || guestZongBfs == nil || mainZhuBfs == nil || guestKeBfs == nil {
 		return -1, nil
 	}
-
+	if matchId == "1763590" {
+		fmt.Println("-")
+	}
 	temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 	if temp_val >= rankDiff {
 		letBall += -0.125 - (temp_val/rankDiff)*0.125
@@ -156,13 +160,13 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		if e.BattleMainTeamId == v.MainTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
 			mainWin++
 		}
-		if e.BattleMainTeamId == v.MainTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+		if e.BattleGuestTeamId == v.MainTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
 			mainWin++
 		}
 		if e.BattleMainTeamId == v.GuestTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
 			guestWin++
 		}
-		if e.BattleMainTeamId == v.GuestTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+		if e.BattleGuestTeamId == v.GuestTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
 			guestWin++
 		}
 	}
@@ -177,11 +181,11 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 	//如果主队下一场打客场,战意充足
 	if v.MainTeamId == bffe_main.EventGuestTeamId {
-		letBall += 0.125
+		letBall += 0.075
 	}
 	//如果客队下一场打主场，战意懈怠
 	if v.GuestTeamId == bffe_guest.EventMainTeamId {
-		letBall += 0.125
+		letBall += 0.075
 	}
 
 	var mainLetball bool

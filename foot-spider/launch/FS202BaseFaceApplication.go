@@ -1,6 +1,7 @@
 package launch
 
 import (
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
@@ -16,10 +17,14 @@ func Before_spider_baseFace(){
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 //该页面已经被球探网废弃
-func Spider_baseFace() {
+func Spider_baseFace(spiderAll bool) {
 	matchLastService := new(service2.MatchLastService)
-	matchLasts := matchLastService.FindNotFinished()
-	//matchLasts := matchLastService.FindAll()
+	var matchLasts []*pojo.MatchLast
+	if spiderAll{
+		matchLasts = matchLastService.FindAll()
+	}else{
+		matchLasts = matchLastService.FindNotFinished()
+	}
 
 	processer := proc.GetBaseFaceProcesser()
 	processer.MatchLastList = matchLasts
