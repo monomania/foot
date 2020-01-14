@@ -28,6 +28,8 @@ type AnalyResult struct {
 	AlFlag string `xorm:" comment('算法标识') index"`
 	//算法批次
 	AlSeq string `xorm:" comment('算法批次') index"`
+	//C1模型计算出的合理让球
+	MyLetBall float64 `xorm:" comment('C1模型计算出的合理让球') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }

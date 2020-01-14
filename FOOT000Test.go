@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/chanxuehong/wechat/mp/material"
+	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
@@ -21,8 +22,16 @@ func print_version(v uint32) {
 	print("windows version ", major, ".", minor, " (Build ", build, ")\n")
 }
 
+func Decimal(value float64) float64 {
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+	return value
+}
+
 
 func main(){
+
+	fmt.Println(Decimal(0.65454545))
+
 	param := new(vo.SuggestDetailVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")

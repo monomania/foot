@@ -239,6 +239,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18betData.ELetBall
+		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)
@@ -254,6 +255,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.PreResult = preResult
 		data.HitCount = 1
 		data.LetBall = a18betData.ELetBall
+		data.MyLetBall = Decimal(letBall)
 		//比赛结果
 		data.Result = this.IsRight(a18betData, v, data)
 		return 0, data
