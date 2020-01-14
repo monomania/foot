@@ -15,7 +15,7 @@ type BFBattle struct {
 	/**
 	 * 比赛时间
 	 */
-	BattleMatchDate time.Time `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
+	BattleMatchDate time.Time `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId) index"`
 	/**
 	 * 联赛Id
 	 */
@@ -23,7 +23,7 @@ type BFBattle struct {
 	/**
 	 * 主队id,目前为主队名称
 	 */
-	BattleMainTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
+	BattleMainTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId) index"`
 	/**
 	 * 主队进球数
 	 */
@@ -32,7 +32,7 @@ type BFBattle struct {
 	/**
 	 * 客队id,目前为客队名称
 	 */
-	BattleGuestTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId)"`
+	BattleGuestTeamId string `xorm:"unique(BattleMatchDate_MainTeamId_GuestTeamId) index"`
 	/**
 	 * 客队进球数
 	 */

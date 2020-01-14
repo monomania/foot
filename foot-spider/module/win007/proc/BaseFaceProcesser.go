@@ -67,22 +67,70 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 	matchId := this.Win007idMatchidMap[win007Id]
 
 	//积分榜
+	scoreSaveList := make([]interface{}, 0)
+	scoreModifyList := make([]interface{}, 0)
 	scoreList := this.score_process(matchId, p)
+	for _, e := range scoreList {
+		exist := this.BFScoreService.Exist(e.MatchId, e.TeamId, e.Type)
+		if exist {
+			scoreModifyList = append(scoreModifyList, e)
+		} else {
+			scoreSaveList = append(scoreSaveList, e)
+		}
+	}
+	if len(scoreSaveList) > 0 {
+		this.BFScoreService.SaveList(scoreSaveList)
+	}
+	if len(scoreModifyList) > 0 {
+		this.BFScoreService.ModifyList(scoreModifyList)
+	}
+
 	//对战历史
+	battleSaveList := make([]interface{}, 0)
+	battleModifyList := make([]interface{}, 0)
 	battleList := this.battle_process(matchId, p)
+	for _, e := range battleList {
+		exist := this.BFBattleService.Exist(e.BattleMatchDate, e.BattleMainTeamId, e.BattleGuestTeamId)
+		if exist {
+			battleModifyList = append(battleModifyList, e)
+		} else {
+			battleSaveList = append(battleSaveList, e)
+		}
+	}
+
+	if len(battleSaveList) > 0 {
+		this.BFBattleService.SaveList(battleSaveList)
+	}
+	if len(battleModifyList) > 0 {
+		this.BFBattleService.ModifyList(battleModifyList)
+	}
+
 	//未来对战
+	futureEventSaveList := make([]interface{}, 0)
+	futureEventModifyList := make([]interface{}, 0)
 	futureEventList := this.future_event_process(matchId, p)
-	//保存数据
-	this.BFScoreService.SaveList(scoreList)
-	this.BFBattleService.SaveList(battleList)
-	this.BFFutureEventService.SaveList(futureEventList)
+	for _, e := range futureEventList {
+		exist := this.BFFutureEventService.Exist(e.MatchId,e.TeamId,e.EventMatchDate)
+		if exist {
+			futureEventModifyList = append(futureEventModifyList, e)
+		} else {
+			futureEventSaveList = append(futureEventSaveList, e)
+		}
+	}
+	if len(futureEventSaveList) > 0 {
+		this.BFFutureEventService.SaveList(futureEventSaveList)
+	}
+	if len(futureEventModifyList) > 0 {
+		this.BFFutureEventService.ModifyList(futureEventModifyList)
+	}
 
 }
 
 //处理获取积分榜数据
-func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []interface{} {
-	data_list_slice := make([]interface{}, 0)
-	elem_table := p.GetHtmlParser().Find(" table.mytable")
+func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []*pojo.BFScore {
+	data_list_slice := make([]*pojo.BFScore, 0)
+
+	elem_table := p.GetHtmlParser().Find(" div.fenxiBar:contains('联赛积分排名')~table.mytable")
 	elem_table.EachWithBreak(func(i int, selection *goquery.Selection) bool {
 		//只取前两个table
 		if i > 1 {
@@ -92,31 +140,29 @@ func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []int
 		prev := selection.Prev()
 		tempTeamId := strings.TrimSpace(prev.Text())
 
-		selection.Find(" tr ").Each(func(i int, selection *goquery.Selection) {
-			if i >= 1 {
-				val_arr := make([]string, 0)
-				selection.Children().Each(func(i int, selection *goquery.Selection) {
-					val := selection.Text()
-					val_arr = append(val_arr, strings.TrimSpace(val))
-				})
-				temp := new(pojo.BFScore)
-				temp.MatchId = matchId
-				temp.TeamId = tempTeamId
-				temp.Type = val_arr[0]
-				temp.MatchCount, _ = strconv.Atoi(val_arr[1])
-				temp.WinCount, _ = strconv.Atoi(val_arr[2])
-				temp.DrawCount, _ = strconv.Atoi(val_arr[3])
-				temp.FailCount, _ = strconv.Atoi(val_arr[4])
-				temp.GetGoal, _ = strconv.Atoi(val_arr[5])
-				temp.LossGoal, _ = strconv.Atoi(val_arr[6])
-				temp.DiffGoal, _ = strconv.Atoi(val_arr[7])
-				temp.Score, _ = strconv.Atoi(val_arr[8])
-				temp.Ranking, _ = strconv.Atoi(val_arr[9])
-				temp_val := strings.Replace(val_arr[10], "%", "", 1)
-				temp.WinRate, _ = strconv.ParseFloat(temp_val, 64)
+		selection.Find(" tr[align=center]  ").Each(func(i int, selection *goquery.Selection) {
+			val_arr := make([]string, 0)
+			selection.Children().Each(func(i int, selection *goquery.Selection) {
+				val := selection.Text()
+				val_arr = append(val_arr, strings.TrimSpace(val))
+			})
+			temp := new(pojo.BFScore)
+			temp.MatchId = matchId
+			temp.TeamId = tempTeamId
+			temp.Type = val_arr[0]
+			temp.MatchCount, _ = strconv.Atoi(val_arr[1])
+			temp.WinCount, _ = strconv.Atoi(val_arr[2])
+			temp.DrawCount, _ = strconv.Atoi(val_arr[3])
+			temp.FailCount, _ = strconv.Atoi(val_arr[4])
+			temp.GetGoal, _ = strconv.Atoi(val_arr[5])
+			temp.LossGoal, _ = strconv.Atoi(val_arr[6])
+			temp.DiffGoal, _ = strconv.Atoi(val_arr[7])
+			temp.Score, _ = strconv.Atoi(val_arr[8])
+			temp.Ranking, _ = strconv.Atoi(val_arr[9])
+			temp_val := strings.Replace(val_arr[10], "%", "", 1)
+			temp.WinRate, _ = strconv.ParseFloat(temp_val, 64)
 
-				data_list_slice = append(data_list_slice, temp)
-			}
+			data_list_slice = append(data_list_slice, temp)
 		})
 		return true
 	})
@@ -124,8 +170,8 @@ func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []int
 }
 
 //处理对战数据获取
-func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []interface{} {
-	data_list_slice := make([]interface{}, 0)
+func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []*pojo.BFBattle {
+	data_list_slice := make([]*pojo.BFBattle, 0)
 
 	var hdata_str string
 	p.GetHtmlParser().Find("script").Each(func(i int, selection *goquery.Selection) {
@@ -144,7 +190,6 @@ func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []in
 	temp_arr := strings.Split(hdata_str, "var vsTeamInfo = ")
 	temp_arr = strings.Split(temp_arr[1], ";")
 	hdata_str = strings.TrimSpace(temp_arr[0])
-	base.Log.Info(hdata_str)
 
 	var hdata_list = make([]*vo.BattleData, 0)
 	json.Unmarshal(([]byte)(hdata_str), &hdata_list)
@@ -174,42 +219,42 @@ func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []in
 }
 
 //处理获取示来对战数据
-func (this *BaseFaceProcesser) future_event_process(matchId string, p *page.Page) []interface{} {
-	data_list_slice := make([]interface{}, 0)
-	elem_table := p.GetHtmlParser().Find(" table.mytable")
-	elem_table_len := len(elem_table.Nodes)
+func (this *BaseFaceProcesser) future_event_process(matchId string, p *page.Page) []*pojo.BFFutureEvent {
+	data_list_slice := make([]*pojo.BFFutureEvent, 0)
+
+	elem_table := p.GetHtmlParser().Find(" div.fenxiBar:contains('未来三场')~table.mytable")
 	elem_table.Each(func(i int, selection *goquery.Selection) {
-		//只取倒数2,3个table
-		if i < (elem_table_len-3) || i == (elem_table_len-1) {
+		if i > 1 {
 			return
 		}
+		prev := selection.Prev()
+		tempTeamId := strings.TrimSpace(prev.Text())
 
-		selection.Find(" tr ").Each(func(i int, selection *goquery.Selection) {
-			if i >= 1 {
-				val_arr := make([]string, 0)
-				selection.Children().Each(func(i int, selection *goquery.Selection) {
-					if i == 0 {
-						selection.Find("div").Each(func(i int, selection *goquery.Selection) {
-							val := selection.Text()
-							val_arr = append(val_arr, strings.TrimSpace(val))
-						})
-					} else {
+		selection.Find(" tr[align=center] ").Each(func(i int, selection *goquery.Selection) {
+			val_arr := make([]string, 0)
+			selection.Children().Each(func(i int, selection *goquery.Selection) {
+				if i == 0 {
+					selection.Find("div").Each(func(i int, selection *goquery.Selection) {
 						val := selection.Text()
 						val_arr = append(val_arr, strings.TrimSpace(val))
-					}
+					})
+				} else {
+					val := selection.Text()
+					val_arr = append(val_arr, strings.TrimSpace(val))
+				}
 
-				})
-				temp := new(pojo.BFFutureEvent)
-				temp.MatchId = matchId
-				temp.EventMatchDate, _ = time.ParseInLocation("2006-01-02", val_arr[0], time.Local)
-				temp.EventLeagueId = val_arr[1]
-				temp.EventMainTeamId = val_arr[2]
-				temp.EventGuestTeamId = val_arr[3]
-				temp_val := strings.Replace(val_arr[4], "天", "", 1)
-				temp.IntervalDay, _ = strconv.Atoi(temp_val)
+			})
+			temp := new(pojo.BFFutureEvent)
+			temp.MatchId = matchId
+			temp.TeamId = tempTeamId
+			temp.EventMatchDate, _ = time.ParseInLocation("2006-01-02", val_arr[0], time.Local)
+			temp.EventLeagueId = val_arr[1]
+			temp.EventMainTeamId = val_arr[2]
+			temp.EventGuestTeamId = val_arr[3]
+			temp_val := strings.Replace(val_arr[4], "天", "", 1)
+			temp.IntervalDay, _ = strconv.Atoi(temp_val)
 
-				data_list_slice = append(data_list_slice, temp)
-			}
+			data_list_slice = append(data_list_slice, temp)
 		})
 	})
 	return data_list_slice

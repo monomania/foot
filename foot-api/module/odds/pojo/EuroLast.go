@@ -8,9 +8,9 @@ import (
 */
 type EuroLast struct {
 	//博彩公司id
-	CompId string `xorm:"unique(CompId_MatchId)"`
+	CompId string `xorm:"unique(CompId_MatchId) index"`
 	//比赛id
-	MatchId string `xorm:"unique(CompId_MatchId)"`
+	MatchId string `xorm:"unique(CompId_MatchId) index"`
 
 	/**
 	初盘胜平负赔率

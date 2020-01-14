@@ -13,7 +13,7 @@ type MatchLast struct {
 	/**
 	 * 比赛时间
 	 */
-	MatchDate time.Time `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
+	MatchDate time.Time `xorm:"unique(MatchDate_MainTeamId_GuestTeamId) index"`
 
 	/**
 	数据时间
@@ -26,7 +26,7 @@ type MatchLast struct {
 	/**
 	 * 主队id,目前为主队名称
 	 */
-	MainTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
+	MainTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId) index"`
 	/**
 	 * 主队进球数
 	 */
@@ -34,7 +34,7 @@ type MatchLast struct {
 	/**
 	 * 客队id,目前为客队名称
 	 */
-	GuestTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId)"`
+	GuestTeamId string `xorm:"unique(MatchDate_MainTeamId_GuestTeamId) index"`
 	/**
 	 * 客队进球数
 	 */

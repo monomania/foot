@@ -14,10 +14,20 @@ type BFScoreService struct {
 func (this *BFScoreService) FindByMatchId(matchId string) []*pojo.BFScore {
 	dataList := make([]*pojo.BFScore, 0)
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + matchId+"'")
+	sql_build.WriteString(" MatchId = '" + matchId + "'")
 	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
 	if err != nil {
 		base.Log.Error("FindByMatchId:", err)
 	}
 	return dataList
+}
+
+func (this *BFScoreService) Exist(matchId string, teamId string, types string) bool {
+	sql_build := strings.Builder{}
+	sql_build.WriteString(" MatchId = '" + matchId + "' AND TeamId = '" + teamId + "' AND Type = '" + types + "'")
+	result,err := mysql.GetEngine().Where(sql_build.String()).Exist(new(pojo.BFScore))
+	if err != nil {
+		base.Log.Error("Exist:", err)
+	}
+	return result
 }

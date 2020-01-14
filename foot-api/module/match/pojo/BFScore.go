@@ -7,14 +7,14 @@ import "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 */
 type BFScore struct {
 	//比赛id
-	MatchId string `xorm:"comment('比赛ID') unique(MatchId_TeamId_Type)"`
+	MatchId string `xorm:"comment('比赛ID') unique(MatchId_TeamId_Type) index"`
 	/**
-	 * 主队id,目前为主队名称
+	 * 球队ID
 	 */
-	TeamId string `xorm:"comment('球队ID') unique(MatchId_TeamId_Type)"`
+	TeamId string `xorm:"comment('球队ID') unique(MatchId_TeamId_Type) index"`
 
 	// 总 , 主 ,客 近
-	Type string `xorm:"comment('类型:总,主,客,近') unique(MatchId_TeamId_Type)"`
+	Type string `xorm:"comment('类型:总,主,客,近') unique(MatchId_TeamId_Type) index"`
 
 	//比赛场次
 	MatchCount int `xorm:"comment('比赛场次') index"`

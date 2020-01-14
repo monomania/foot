@@ -21,11 +21,11 @@ type EuroHis struct {
 	Ep0 float64
 
 	//博彩公司id
-	CompId string `xorm:"unique(CompId_MatchId_OddDate)"`
+	CompId string `xorm:"unique(CompId_MatchId_OddDate) index"`
 	//比赛id
-	MatchId string `xorm:"unique(CompId_MatchId_OddDate)"`
+	MatchId string `xorm:"unique(CompId_MatchId_OddDate) index"`
 	//数据时间
-	OddDate string	`xorm:"unique(CompId_MatchId_OddDate)"`
+	OddDate string	`xorm:"unique(CompId_MatchId_OddDate) index"`
 
 	//赔付率
 	Payout float64
