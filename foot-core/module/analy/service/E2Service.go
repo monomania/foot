@@ -153,12 +153,12 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.HitCount = 1
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, data)
+		data.Result = this.IsRight( v, data)
 		return 0, data
 	}
 }
 
-func (this *E2Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy *entity5.AnalyResult) string {
+func (this *E2Service) IsRight(v *pojo.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	var globalResult int
 	h2, _ := time.ParseDuration("128m")
@@ -187,6 +187,6 @@ func (this *E2Service) IsRight(last *entity3.AsiaLast, v *pojo.MatchLast, analy 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
 	matchDateStr := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
 }

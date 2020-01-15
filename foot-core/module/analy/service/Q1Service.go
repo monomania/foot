@@ -129,7 +129,7 @@ func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.LetBall = a18betData.ELetBall
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -143,7 +143,7 @@ func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.HitCount = 1
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, data)
+		data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 }

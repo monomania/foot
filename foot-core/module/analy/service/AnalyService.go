@@ -41,8 +41,6 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	return dataList
 }
 
-
-
 func (this *AnalyService) ModifyResult() {
 	sql_build := `
 SELECT 
@@ -63,7 +61,7 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 	for _, e := range entitys {
 		aList := this.AsiaLastService.FindByMatchIdCompId(e.MatchId, "18Bet")
 		if nil == aList || len(aList) < 1 {
-			aList = make([]*entity3.AsiaLast,1)
+			aList = make([]*entity3.AsiaLast, 1)
 			aList[0] = new(entity3.AsiaLast)
 		}
 		his := this.MatchHisService.FindById(e.MatchId)
@@ -78,10 +76,10 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2"{
-			e.Result = new(E2Service).IsRight(aList[0], last, e)
-		}else{
-			e.Result = this.IsRight(aList[0], last, e)
+		if e.AlFlag == "E2" {
+			e.Result = new(E2Service).IsRight(last, e)
+		} else {
+			e.Result = this.IsRight(last, e)
 		}
 		this.Modify(e)
 	}
@@ -119,7 +117,7 @@ WHERE ml.LeagueId = l.Id
 	}
 	if hitCount > 0 {
 		sql_build += " AND ar.HitCount >= " + strconv.Itoa(hitCount)
-	}else{
+	} else {
 		sql_build += " AND ar.HitCount > 0 "
 	}
 	if option >= 0 {
@@ -156,9 +154,9 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
-func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) string {
+func (this *AnalyService) IsRight(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
-	globalResult := this.ActualResult(last, v,analy)
+	globalResult := this.ActualResult(v, analy)
 	var resultFlag string
 	if globalResult == -1 {
 		resultFlag = "待定"
@@ -173,14 +171,14 @@ func (this *AnalyService) IsRight(last *entity3.AsiaLast, v *entity2.MatchLast, 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
 	matchDate := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(last.ELetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
 }
 
 /**
 比赛的实际结果计算
 */
-func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchLast, analy *entity5.AnalyResult) int {
+func (this *AnalyService) ActualResult(v *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
 	h2, _ := time.ParseDuration("128m")
 	matchDate := v.MatchDate.Add(h2)
@@ -189,15 +187,10 @@ func (this *AnalyService) ActualResult(last *entity3.AsiaLast, v *entity2.MatchL
 		return -1
 	}
 
-	var elb_sum float64
-	if analy.LetBall > 0 {
-		elb_sum = analy.LetBall
-	}else{
-		elb_sum = last.ELetBall
-	}
 	var mainTeamGoals float64
+	elb_sum := analy.LetBall
 	if elb_sum > 0 {
-		mainTeamGoals = float64(v.MainTeamGoals) - elb_sum
+		mainTeamGoals = float64(v.MainTeamGoals) - math.Abs(elb_sum)
 	} else {
 		mainTeamGoals = float64(v.MainTeamGoals) + math.Abs(elb_sum)
 	}
