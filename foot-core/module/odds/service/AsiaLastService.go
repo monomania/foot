@@ -31,7 +31,7 @@ func (this *AsiaLastService) FindByMatchId(matchId string) []*pojo.AsiaLast {
 	return dataList
 }
 
-//根据比赛ID和波菜公司ID查找欧赔
+//根据比赛ID和波菜公司ID查找亚赔
 func (this *AsiaLastService) FindByMatchIdCompId(matchId string, compIds ...string) []*pojo.AsiaLast {
 	dataList := make([]*pojo.AsiaLast, 0)
 	sql_build := strings.Builder{}

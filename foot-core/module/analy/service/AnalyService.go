@@ -21,6 +21,7 @@ type AnalyService struct {
 	service.EuroLastService
 	service.EuroHisService
 	service.AsiaLastService
+	service.AsiaHisService
 	service2.MatchLastService
 	service2.MatchHisService
 	service3.LeagueService

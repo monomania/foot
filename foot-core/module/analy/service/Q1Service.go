@@ -43,8 +43,9 @@ func (this *Q1Service) Analy_Process(matchList []*pojo.MatchLast) {
 		if stub == 0 || stub == 1 {
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				hours = math.Abs(hours * 0.5)
-				data.THitCount = int(hours)
+				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+				hit_count, _ := strconv.Atoi(hit_count_str)
+				data.THitCount = hit_count
 			} else {
 				data.THitCount = 1
 			}

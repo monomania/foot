@@ -54,8 +54,9 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 		if stub == 0 || stub == 1 {
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				hours = math.Abs(hours * 0.5)
-				data.THitCount = int(hours)
+				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+				hit_count, _ := strconv.Atoi(hit_count_str)
+				data.THitCount = hit_count
 			} else {
 				data.THitCount = 1
 			}
@@ -196,11 +197,9 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	} else if a18betData.ELetBall < 0 {
 		mainLetball = false
 	} else {
-		if a18betData.SLetBall > 0 {
-			mainLetball = true
-		} else if a18betData.SLetBall < 0 {
+		if a18betData.SLetBall > 0 && a18betData.ELetBall <= 0 {
 			mainLetball = false
-		} else {
+		}  else {
 			if letBall >= 0 {
 				mainLetball = true
 			} else {
@@ -218,8 +217,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		eLetBall := math.Abs(a18betData.ELetBall)
 		tLetBall := math.Abs(letBall)
 		ableUpDown := false
-		if math.Abs(sLetBall-eLetBall) <= 0.25 {
+		ableOdd := 0.075
+		if math.Abs(sLetBall-eLetBall) <= 0.25 && sLetBall != 0 && eLetBall != 0{
 			ableUpDown = true
+			ableOdd = 0.25
 		}
 
 		if (sLetBall >= tLetBall && eLetBall >= tLetBall) || (sLetBall < tLetBall && eLetBall >= tLetBall) {
@@ -233,7 +234,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			}else{
 				seLetBall = eLetBall
 			}
-			if math.Abs(seLetBall-tLetBall) <= 0.25 {
+			if math.Abs(seLetBall-tLetBall) <= ableOdd{
 				if mainLetball {
 					preResult = 3
 				} else {
@@ -257,7 +258,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			}else{
 				seLetBall = eLetBall
 			}
-			if math.Abs(tLetBall-seLetBall) <= 0.25 {
+			if math.Abs(tLetBall-seLetBall) <= ableOdd {
 				if mainLetball {
 					preResult = 3
 				} else {

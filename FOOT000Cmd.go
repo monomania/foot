@@ -45,6 +45,11 @@ HEAD:
 	case "analy\n", "analy\r\n":
 		launch2.Analy()
 		goto HEAD
+	case "baseFace\n", "baseFace\r\n":
+		launch.Spider_match(4)
+		launch.Spider_asiaLastNew(true)
+		launch.Spider_baseFace(true)
+		goto HEAD
 	case "limit\n", "limit\r\n":
 		pubLimitService := new(service.PubLimitService)
 		publimit := pubLimitService.GetPublimit()

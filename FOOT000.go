@@ -42,6 +42,10 @@ func main() {
 		launch.Spider()
 	case "analy\n", "analy":
 		launch2.Analy()
+	case "baseFace\n", "baseFace":
+		launch.Spider_match(4)
+		launch.Spider_asiaLastNew(true)
+		launch.Spider_baseFace(true)
 	case "limit\n", "limit":
 		pubLimitService := new(service.PubLimitService)
 		publimit := pubLimitService.GetPublimit()
