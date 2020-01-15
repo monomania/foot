@@ -19,7 +19,7 @@ type E2Service struct {
 	MaxLetBall float64
 }
 
-func (this *E2Service) ModelName() string{
+func (this *E2Service) ModelName() string {
 	return "E2"
 }
 
@@ -30,7 +30,6 @@ func (this *E2Service) Analy() {
 	matchList := this.MatchLastService.FindNotFinished()
 	this.Analy_Process(matchList)
 }
-
 
 /**
 计算欧赔81 616的即时盘,和初盘的差异
@@ -139,7 +138,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.LetBall = a18betData.ELetBall
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(a18betData, v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -153,7 +152,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.HitCount = 1
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 }
@@ -178,7 +177,7 @@ func (this *E2Service) IsRight(v *pojo.MatchLast, analy *entity5.AnalyResult) st
 	var resultFlag string
 	if globalResult == -1 {
 		resultFlag = "待定"
-	} else if globalResult == analy.PreResult || globalResult == 1{
+	} else if globalResult == analy.PreResult || globalResult == 1 {
 		resultFlag = "正确"
 	} else {
 		resultFlag = "错误"
