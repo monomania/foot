@@ -273,7 +273,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
-	first.Title = fmt.Sprintf("待选场次")
+	first.Title = fmt.Sprintf("待选场次-E1,E2,Q1")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
 	first.ThumbMediaId = today_tbs_thumbMediaId
 	first.ContentSourceURL = contentSourceURL
