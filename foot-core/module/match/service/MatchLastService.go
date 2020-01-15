@@ -59,7 +59,7 @@ FROM
   foot.t_analy_result ar 
 WHERE la.Id = ar.MatchId 
   AND DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
-  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 10 MINUTE)
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
 	`
 	//结果值
 	dataList = make([]*pojo.MatchLast, 0)
