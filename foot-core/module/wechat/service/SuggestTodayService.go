@@ -323,7 +323,7 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
-	first.Title = fmt.Sprintf("A1场次")
+	first.Title = fmt.Sprintf("待选场次-A1")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEkzOy_14yNC4gTerThOJZH4"
 	first.ContentSourceURL = contentSourceURL
@@ -374,7 +374,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
-	first.Title = fmt.Sprintf("C1场次")
+	first.Title = fmt.Sprintf("待选场次-C1")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
 	first.ThumbMediaId = "chP-LBQxy9SVbAFjwZ4QEthz2PGUtpVZdZccay_qCi0"
 	first.ContentSourceURL = contentSourceURL
