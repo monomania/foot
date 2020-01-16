@@ -111,7 +111,9 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-
+	if matchId == "1723728" {
+		fmt.Println("-")
+	}
 	var temp_val float64
 	var mainZongBfs *pojo.BFScore
 	var mainZhuBfs *pojo.BFScore
@@ -137,9 +139,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if mainZongBfs == nil || guestZongBfs == nil || mainZhuBfs == nil || guestKeBfs == nil {
 		return -1, nil
 	}
-	if matchId == "1825085" {
-		fmt.Println("-")
-	}
+
 	//排名越小越好
 	rankDiff := 5.0
 	temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)

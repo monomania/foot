@@ -8,5 +8,5 @@ import (
 func main() {
 	//开启SQL输出
 
-	launch.Spider_asiaLastNew()
+	launch.Spider_asiaLastNew(true)
 }
