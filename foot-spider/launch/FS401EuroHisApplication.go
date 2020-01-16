@@ -38,7 +38,7 @@ func Spider_euroHis() {
 		compIds = strings.Split(val, ",")
 	}
 
-	processer := proc.GetEuroHisProcesser()
+	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
 	processer.Startup()
@@ -64,7 +64,7 @@ func Spider_euroHis_near() {
 		compIds = strings.Split(val, ",")
 	}
 
-	processer := proc.GetEuroHisProcesser()
+	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
 	processer.Startup()
@@ -85,7 +85,7 @@ func Spider_euroHis_Incomplete() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindEuroIncomplete(len(compIds))
 
-	processer := proc.GetEuroHisProcesser()
+	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
 	processer.Startup()

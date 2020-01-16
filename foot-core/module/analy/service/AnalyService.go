@@ -18,9 +18,7 @@ import (
 
 type AnalyService struct {
 	mysql.BaseService
-	service.EuroLastService
 	service.EuroHisService
-	service.AsiaLastService
 	service.AsiaHisService
 	service2.MatchLastService
 	service2.MatchHisService
@@ -59,10 +57,10 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 		return
 	}
 	for _, e := range entitys {
-		aList := this.AsiaLastService.FindByMatchIdCompId(e.MatchId, "18Bet")
+		aList := this.AsiaHisService.FindByMatchIdCompId(e.MatchId, "18Bet")
 		if nil == aList || len(aList) < 1 {
-			aList = make([]*entity3.AsiaLast, 1)
-			aList[0] = new(entity3.AsiaLast)
+			aList = make([]*entity3.AsiaHis, 1)
+			aList[0] = new(entity3.AsiaHis)
 		}
 		his := this.MatchHisService.FindById(e.MatchId)
 		if nil == his {
@@ -211,7 +209,7 @@ func (this *AnalyService) ActualResult(v *entity2.MatchLast, analy *entity5.Anal
 /**
 1.欧赔是主降还是主升 主降为true
 */
-func EuroMainDown(e81data *entity3.EuroLast, e616data *entity3.EuroLast) int {
+func EuroMainDown(e81data *entity3.EuroHis, e616data *entity3.EuroHis) int {
 	if e81data.Ep3 < e81data.Sp3 && e616data.Ep3 < e616data.Sp3 {
 		return 3
 	} else if e81data.Ep0 < e81data.Sp0 && e616data.Ep0 < e616data.Sp0 {
@@ -223,7 +221,7 @@ func EuroMainDown(e81data *entity3.EuroLast, e616data *entity3.EuroLast) int {
 /**
 2.亚赔是主降还是主升 主降为true
 */
-func AsiaMainDown(a18betData *entity3.AsiaLast) bool {
+func AsiaMainDown(a18betData *entity3.AsiaHis) bool {
 	slb_sum := a18betData.SLetBall
 	elb_sum := a18betData.ELetBall
 

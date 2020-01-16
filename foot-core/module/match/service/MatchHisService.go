@@ -10,6 +10,12 @@ type MatchHisService struct {
 	mysql.BaseService
 }
 
+func (this *MatchHisService) FindAll() []*pojo.MatchHis {
+	dataList := make([]*pojo.MatchHis, 0)
+	mysql.GetEngine().OrderBy("MatchDate").Find(&dataList)
+	return dataList
+}
+
 func (this *MatchHisService) FindExists(v *pojo.MatchHis) bool {
 	has, err := mysql.GetEngine().Table("`t_match_his`").Where(" `Id` = ?  ", v.Id).Exist()
 	if err != nil {

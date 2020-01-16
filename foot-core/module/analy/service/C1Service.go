@@ -32,6 +32,10 @@ func (this *C1Service) ModelName() string {
 func (this *C1Service) Analy(analyAll bool) {
 	var matchLasts []*pojo.MatchLast
 	if analyAll {
+		//matchHis := this.MatchHisService.FindAll()
+		//for _, e := range matchHis {
+		//	matchLasts = append(matchLasts, &e.MatchLast)
+		//}
 		matchLasts = this.MatchLastService.FindAll()
 	} else {
 		matchLasts = this.MatchLastService.FindNotFinished()
@@ -86,10 +90,11 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
-	var a18betData *entity3.AsiaLast
+	var a18betData *entity3.AsiaHis
 	//亚赔
-	//aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "澳门")
-	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "Bet365")
+	//aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "澳门")
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "Bet365")
+	//aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "18Bet")
 	if len(aList) < 1 {
 		return -1, nil
 	}
@@ -107,8 +112,6 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, nil
 	}
 
-	//排名越小越好
-	rankDiff := 5.0
 	var temp_val float64
 	var mainZongBfs *pojo.BFScore
 	var mainZhuBfs *pojo.BFScore
@@ -134,9 +137,11 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if mainZongBfs == nil || guestZongBfs == nil || mainZhuBfs == nil || guestKeBfs == nil {
 		return -1, nil
 	}
-	if matchId == "1763590" {
+	if matchId == "1825085" {
 		fmt.Println("-")
 	}
+	//排名越小越好
+	rankDiff := 5.0
 	temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 	if temp_val >= rankDiff {
 		letBall += -0.125 - (temp_val/rankDiff)*0.125
@@ -156,6 +161,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//------
 	bfb_arr := this.BFBattleService.FindByMatchId(matchId)
+	winCountDiff := 2
 	mainWin := 0
 	guestWin := 0
 	for _, e := range bfb_arr {
@@ -173,10 +179,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 	if mainWin > (guestWin + 1) {
-		letBall += 0.125
+		letBall += 0.125 + float64(mainWin/winCountDiff)*0.125
 	}
 	if guestWin > (mainWin + 1) {
-		letBall += -0.125
+		letBall += -0.125 - float64(guestWin/winCountDiff)*0.125
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
@@ -199,7 +205,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	} else {
 		if a18betData.SLetBall > 0 && a18betData.ELetBall <= 0 {
 			mainLetball = false
-		}  else {
+		} else {
 			if letBall >= 0 {
 				mainLetball = true
 			} else {
@@ -218,7 +224,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		tLetBall := math.Abs(letBall)
 		ableUpDown := false
 		ableOdd := 0.075
-		if math.Abs(sLetBall-eLetBall) <= 0.25 && sLetBall != 0 && eLetBall != 0{
+		if math.Abs(sLetBall-eLetBall) <= 0.25 && sLetBall != 0 && eLetBall != 0 {
 			ableUpDown = true
 			ableOdd = 0.25
 		}
@@ -231,10 +237,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				} else {
 					seLetBall = sLetBall
 				}
-			}else{
+			} else {
 				seLetBall = eLetBall
 			}
-			if math.Abs(seLetBall-tLetBall) <= ableOdd{
+			if math.Abs(seLetBall-tLetBall) <= ableOdd {
 				if mainLetball {
 					preResult = 3
 				} else {
@@ -255,7 +261,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				} else {
 					seLetBall = eLetBall
 				}
-			}else{
+			} else {
 				seLetBall = eLetBall
 			}
 			if math.Abs(tLetBall-seLetBall) <= ableOdd {
@@ -285,7 +291,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -300,7 +306,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.LetBall = a18betData.ELetBall
 		data.MyLetBall = Decimal(letBall)
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 

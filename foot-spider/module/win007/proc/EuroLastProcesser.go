@@ -95,8 +95,8 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 
 	//入库中
 	comp_list_slice := make([]interface{}, 0)
-	euro_list_slice := make([]interface{}, 0)
-	euro_list_update_slice := make([]interface{}, 0)
+	last_slice := make([]interface{}, 0)
+	last_update_slice := make([]interface{}, 0)
 	for _, v := range hdata_list {
 		comp := new(entity2.Comp)
 		comp.Name = v.Cn
@@ -121,28 +121,54 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 			}
 		}
 
-		euro := new(entity3.EuroLast)
-		euro.MatchId = matchId
-		euro.CompId = comp.Id
+		last := new(entity3.EuroLast)
+		last.MatchId = matchId
+		last.CompId = comp.Id
 
-		euro.Sp3 = v.Hw
-		euro.Sp1 = v.So
-		euro.Sp0 = v.Gw
-		euro.Ep3 = v.Rh
-		euro.Ep1 = v.Rs
-		euro.Ep0 = v.Rg
+		last.Sp3 = v.Hw
+		last.Sp1 = v.So
+		last.Sp0 = v.Gw
+		last.Ep3 = v.Rh
+		last.Ep1 = v.Rs
+		last.Ep0 = v.Rg
 
-		euro_exists := this.EuroLastService.FindExists(euro)
-		if !euro_exists {
-			euro_list_slice = append(euro_list_slice, euro)
+		last_exists := this.EuroLastService.FindExists(last)
+		if !last_exists {
+			last_slice = append(last_slice, last)
 		} else {
-			euro_list_update_slice = append(euro_list_update_slice, euro)
+			last_update_slice = append(last_update_slice, last)
 		}
 	}
 
 	this.CompService.SaveList(comp_list_slice)
-	this.EuroLastService.SaveList(euro_list_slice)
-	this.EuroLastService.ModifyList(euro_list_update_slice)
+	//最后数据
+	this.EuroLastService.SaveList(last_slice)
+	this.EuroLastService.ModifyList(last_update_slice)
+	//历史数据
+	his_slice := make([]interface{}, 0)
+	his_update_slice := make([]interface{}, 0)
+	last_all_slice := append(last_slice,last_update_slice)
+	for _,e := range last_all_slice {
+		bytes, _ := json.Marshal(e)
+		temp := new(entity3.EuroLast)
+		json.Unmarshal(bytes, temp)
+		if len(temp.MatchId) <= 0{
+			continue
+		}
+		his := new(entity3.EuroHis)
+		his.EuroLast = *temp
+
+		his_exists := this.EuroHisService.FindExists(his)
+		if !his_exists {
+			his_slice = append(his_slice, his)
+		} else {
+			his_update_slice = append(his_update_slice, his)
+		}
+	}
+	this.EuroHisService.SaveList(his_slice)
+	this.EuroHisService.ModifyList(his_update_slice)
+
+
 }
 
 func (this *EuroLastProcesser) Finish() {

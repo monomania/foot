@@ -54,7 +54,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	}
 
 	//赔率相关表
-	err = engine.Sync2(new(entity2.EuroLast), new(entity2.EuroHis), new(entity2.AsiaLast), new(entity2.AsiaHis))
+	err = engine.Sync2(new(entity2.EuroLast), new(entity2.EuroHis), new(entity2.EuroTrack), new(entity2.AsiaLast), new(entity2.AsiaHis), new(entity2.AsiaTrack))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}

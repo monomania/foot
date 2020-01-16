@@ -80,11 +80,11 @@ func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
-	var e616data *entity3.EuroLast
-	var e104data *entity3.EuroLast
-	var a18betData *entity3.AsiaLast
+	var e616data *entity3.EuroHis
+	var e104data *entity3.EuroHis
+	var a18betData *entity3.AsiaHis
 	//81 -- 伟德
-	eList := this.EuroLastService.FindByMatchIdCompId(matchId, "616", "104")
+	eList := this.EuroHisService.FindByMatchIdCompId(matchId, "616", "104")
 	if len(eList) < 2 {
 		return -1, nil
 	}
@@ -108,7 +108,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//1.有变化,进行以下逻辑
 	//亚赔
-	aList := this.AsiaLastService.FindByMatchIdCompId(matchId, "18Bet")
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "18Bet")
 	if len(aList) < 1 {
 		return -1, nil
 	}

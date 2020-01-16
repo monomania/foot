@@ -18,10 +18,11 @@ import (
 	"time"
 )
 
-type EuroHisProcesser struct {
+type EuroTrackProcesser struct {
 	service.CompService
 	service2.EuroLastService
 	service2.EuroHisService
+	service2.EuroTrackService
 	//博彩公司对应的win007id
 	CompWin007Ids []string
 	MatchLastList []*pojo.MatchLast
@@ -29,14 +30,14 @@ type EuroHisProcesser struct {
 	Win007idMatchidMap map[string]string
 }
 
-func GetEuroHisProcesser() *EuroHisProcesser {
-	return &EuroHisProcesser{}
+func GetEuroTrackProcesser() *EuroTrackProcesser {
+	return &EuroTrackProcesser{}
 }
 
-func (this *EuroHisProcesser) Startup() {
+func (this *EuroTrackProcesser) Startup() {
 	this.Win007idMatchidMap = map[string]string{}
 
-	newSpider := spider.NewSpider(this, "EuroHisProcesser")
+	newSpider := spider.NewSpider(this, "EuroTrackProcesser")
 
 	for _, v := range this.MatchLastList {
 		i := v.Ext[win007.MODULE_FLAG]
@@ -59,7 +60,7 @@ func (this *EuroHisProcesser) Startup() {
 	newSpider.SetThreadnum(1).Run()
 }
 
-func (this *EuroHisProcesser) findParamVal(url string, paramName string) string {
+func (this *EuroTrackProcesser) findParamVal(url string, paramName string) string {
 	paramUrl := strings.Split(url, "?")[1]
 	paramArr := strings.Split(paramUrl, "&")
 	for _, v := range paramArr {
@@ -70,7 +71,7 @@ func (this *EuroHisProcesser) findParamVal(url string, paramName string) string 
 	return ""
 }
 
-func (this *EuroHisProcesser) Process(p *page.Page) {
+func (this *EuroTrackProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
 		base.Log.Info("URL:,", request.Url, p.Errormsg())
@@ -84,7 +85,7 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 
 	win007_betCompId := this.findParamVal(request.Url, "cId")
 
-	var euroHis_list = make([]*entity3.EuroHis, 0)
+	var track_list = make([]*entity3.EuroTrack, 0)
 
 	table_node := p.GetHtmlParser().Find(" table.mytable3 tr")
 	table_node.Each(func(i int, selection *goquery.Selection) {
@@ -92,10 +93,10 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 			return
 		}
 
-		euroHis := new(entity3.EuroHis)
-		euroHis_list = append(euroHis_list, euroHis)
-		euroHis.MatchId = matchId
-		euroHis.CompId = win007_betCompId
+		track := new(entity3.EuroTrack)
+		track_list = append(track_list, track)
+		track.MatchId = matchId
+		track.CompId = win007_betCompId
 
 		td_list_node := selection.Find(" td ")
 		td_list_node.Each(func(ii int, selection *goquery.Selection) {
@@ -107,29 +108,29 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 			switch ii {
 			case 0:
 				temp, _ := strconv.ParseFloat(val, 64)
-				euroHis.Sp3 = temp
+				track.Sp3 = temp
 			case 1:
 				temp, _ := strconv.ParseFloat(val, 64)
-				euroHis.Sp1 = temp
+				track.Sp1 = temp
 			case 2:
 				temp, _ := strconv.ParseFloat(val, 64)
-				euroHis.Sp0 = temp
+				track.Sp0 = temp
 			case 3:
 				temp, _ := strconv.ParseFloat(val, 64)
-				euroHis.Payout = temp
+				track.Payout = temp
 			case 4:
 				selection.Children().Each(func(iii int, selection *goquery.Selection) {
 					val := selection.Text()
 					switch iii {
 					case 0:
 						temp, _ := strconv.ParseFloat(val, 64)
-						euroHis.Kelly3 = temp
+						track.Kelly3 = temp
 					case 1:
 						temp, _ := strconv.ParseFloat(val, 64)
-						euroHis.Kelly1 = temp
+						track.Kelly1 = temp
 					case 2:
 						temp, _ := strconv.ParseFloat(val, 64)
-						euroHis.Kelly0 = temp
+						track.Kelly0 = temp
 					}
 				})
 			case 5:
@@ -144,52 +145,68 @@ func (this *EuroHisProcesser) Process(p *page.Page) {
 						hour_minute = val
 					}
 				})
-				euroHis.OddDate = current_year + "-" + month_day + " " + hour_minute + ":00"
+				track.OddDate = current_year + "-" + month_day + " " + hour_minute + ":00"
 			}
 		})
 	})
 
-	this.euroHis_process(euroHis_list)
+	this.track_process(track_list)
 }
 
-func (this *EuroHisProcesser) euroHis_process(euroHis_lsit []*entity3.EuroHis) {
-	euroHis_lsit_len := len(euroHis_lsit)
-	if euroHis_lsit_len < 1 {
+func (this *EuroTrackProcesser) track_process(track_list []*entity3.EuroTrack) {
+	track_lsit_len := len(track_list)
+	if track_lsit_len < 1 {
 		return
 	}
 
 	//将历史欧赔入库前，生成最后欧赔数据
-	euro_last := euroHis_lsit[0]
-	euro_head := euroHis_lsit[(euroHis_lsit_len - 1)]
-	euro := new(entity3.EuroLast)
-	euro.MatchId = euro_last.MatchId
-	euro.CompId = euro_last.CompId
-	euro_exists := this.EuroLastService.FindExists(euro)
-	euro.Sp3 = euro_head.Sp3
-	euro.Sp1 = euro_head.Sp1
-	euro.Sp0 = euro_head.Sp0
-	euro.Ep3 = euro_last.Sp3
-	euro.Ep1 = euro_last.Sp1
-	euro.Ep0 = euro_last.Sp0
+	track_last := track_list[0]
+	track_head := track_list[(track_lsit_len - 1)]
 
-	if euro_exists {
-		this.EuroLastService.Modify(euro)
+	last := new(entity3.EuroLast)
+	last.MatchId = track_last.MatchId
+	last.CompId = track_last.CompId
+	last_exists := this.EuroLastService.FindExists(last)
+	last.Sp3 = track_head.Sp3
+	last.Sp1 = track_head.Sp1
+	last.Sp0 = track_head.Sp0
+	last.Ep3 = track_last.Sp3
+	last.Ep1 = track_last.Sp1
+	last.Ep0 = track_last.Sp0
+
+	if last_exists {
+		this.EuroLastService.Modify(last)
+		his := new(entity3.EuroHis)
+		his.EuroLast = *last
+		this.EuroHisService.Modify(his)
 	} else {
-		this.EuroLastService.Save(euro)
+		this.EuroLastService.Save(last)
+		his := new(entity3.EuroHis)
+		his.EuroLast = *last
+		this.EuroHisService.Save(his)
+	}
+
+	his := new(entity3.EuroHis)
+	his.EuroLast = *last
+	his_exists := this.EuroHisService.FindExists(his)
+	if his_exists {
+		this.EuroHisService.Modify(his)
+	} else {
+		this.EuroHisService.Save(his)
 	}
 
 	//将历史赔率入库
-	euroHis_list_slice := make([]interface{}, 0)
-	for _, v := range euroHis_lsit {
-		exists := this.EuroHisService.FindExists(v)
+	track_list_slice := make([]interface{}, 0)
+	for _, v := range track_list {
+		exists := this.EuroTrackService.FindExists(v)
 		if !exists {
-			euroHis_list_slice = append(euroHis_list_slice, v)
+			track_list_slice = append(track_list_slice, v)
 		}
 	}
-	this.EuroHisService.SaveList(euroHis_list_slice)
+	this.EuroTrackService.SaveList(track_list_slice)
 }
 
-func (this *EuroHisProcesser) Finish() {
+func (this *EuroTrackProcesser) Finish() {
 	base.Log.Info("欧赔历史抓取解析完成 \r\n")
 
 }
