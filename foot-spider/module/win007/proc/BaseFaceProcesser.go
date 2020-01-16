@@ -78,12 +78,8 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 			scoreSaveList = append(scoreSaveList, e)
 		}
 	}
-	if len(scoreSaveList) > 0 {
-		this.BFScoreService.SaveList(scoreSaveList)
-	}
-	if len(scoreModifyList) > 0 {
-		this.BFScoreService.ModifyList(scoreModifyList)
-	}
+	this.BFScoreService.SaveList(scoreSaveList)
+	this.BFScoreService.ModifyList(scoreModifyList)
 
 	//对战历史
 	battleSaveList := make([]interface{}, 0)
@@ -98,31 +94,23 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 		}
 	}
 
-	if len(battleSaveList) > 0 {
-		this.BFBattleService.SaveList(battleSaveList)
-	}
-	if len(battleModifyList) > 0 {
-		this.BFBattleService.ModifyList(battleModifyList)
-	}
+	this.BFBattleService.SaveList(battleSaveList)
+	this.BFBattleService.ModifyList(battleModifyList)
 
 	//未来对战
 	futureEventSaveList := make([]interface{}, 0)
 	futureEventModifyList := make([]interface{}, 0)
 	futureEventList := this.future_event_process(matchId, p)
 	for _, e := range futureEventList {
-		exist := this.BFFutureEventService.Exist(e.MatchId,e.TeamId,e.EventMatchDate)
+		exist := this.BFFutureEventService.Exist(e.MatchId, e.TeamId, e.EventMatchDate)
 		if exist {
 			futureEventModifyList = append(futureEventModifyList, e)
 		} else {
 			futureEventSaveList = append(futureEventSaveList, e)
 		}
 	}
-	if len(futureEventSaveList) > 0 {
-		this.BFFutureEventService.SaveList(futureEventSaveList)
-	}
-	if len(futureEventModifyList) > 0 {
-		this.BFFutureEventService.ModifyList(futureEventModifyList)
-	}
+	this.BFFutureEventService.SaveList(futureEventSaveList)
+	this.BFFutureEventService.ModifyList(futureEventModifyList)
 
 }
 

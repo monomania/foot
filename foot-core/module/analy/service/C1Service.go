@@ -119,7 +119,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	var mainZhuBfs *pojo.BFScore
 	var guestZongBfs *pojo.BFScore
 	var guestKeBfs *pojo.BFScore
-	for _, e := range bfs_arr {
+	for _, e := range bfs_arr {//bfs_arr有多语言版本,条数很多
 		if e.TeamId == v.MainTeamId {
 			if e.Type == "总" {
 				mainZongBfs = e
@@ -127,7 +127,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			if e.Type == "主" {
 				mainZhuBfs = e
 			}
-		} else {
+		} else if e.TeamId == v.GuestTeamId{
 			if e.Type == "总" {
 				guestZongBfs = e
 			}
