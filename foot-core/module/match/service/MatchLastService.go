@@ -33,7 +33,7 @@ func (this *MatchLastService) FindAll() []*pojo.MatchLast {
 获取临场比赛
 */
 func (this *MatchLastService) FindNear() []*pojo.MatchLast {
-	sql_build := `
+	sql_build_1 := `
 SELECT 
   la.* 
 FROM
@@ -41,17 +41,7 @@ FROM
 WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
   AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
 	`
-	//结果值
-	dataList := make([]*pojo.MatchLast, 0)
-	//执行查询
-	this.FindBySQL(sql_build, &dataList)
-
-	//如果数据量过多,则配置分析表重新获取...只默认只处理临场12场
-	if len(dataList) <= 10 {
-		return dataList
-	}
-
-	sql_build = `
+	sql_build_2 := `
 SELECT DISTINCT 
   la.* 
 FROM
@@ -60,11 +50,22 @@ FROM
 WHERE la.Id = ar.MatchId 
   AND DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
   AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+  AND ar.AlFlag != 'C1'
 	`
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build_1, &dataList)
+
+	//如果数据量过多,则配置分析表重新获取...只默认只处理临场12场
+	if len(dataList) <= 10 {
+		return dataList
+	}
+
 	//结果值
 	dataList = make([]*pojo.MatchLast, 0)
 	//执行查询
-	this.FindBySQL(sql_build, &dataList)
+	this.FindBySQL(sql_build_2, &dataList)
 
 	return dataList
 }
