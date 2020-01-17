@@ -32,15 +32,22 @@ type SuggestDetailVO struct {
 	pojo.Suggest `xorm:"extends"`
 
 	//欧赔
-	EOddList []*pojo2.EuroLast
+	EuroOdd *pojo2.EuroLast
 	//亚赔
-	AOddList []*pojo2.AsiaLast
+	AsiaOdd *pojo2.AsiaLast
+
+	//主队积分排名
+	BFSMainZong *pojo3.BFScore
+	BFSMainZhu  *pojo3.BFScore
+	BFSMainJin  *pojo3.BFScore
+
+	//客队积分排名
+	BFSGuestZong *pojo3.BFScore
+	BFSGuestKe   *pojo3.BFScore
+	BFSGuestJin  *pojo3.BFScore
 
 	//基本面
-	BFSList []*pojo3.BFScore
-	BFBList []*pojo3.BFBattle
+	BFBList  []*pojo3.BFBattle
+
 	BFFEList []*pojo3.BFFutureEvent
-
-
-
 }
