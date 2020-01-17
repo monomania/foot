@@ -160,7 +160,7 @@ func main() {
 	//测试分析结果获取及更新
 
 	analyService := new(service2.AnalyService)
-	list := analyService.ListData("Euro20191206Service", 0, -1)
+	list := analyService.List("Euro20191206Service", 0, -1)
 	result := &list[0].AnalyResult
 	analyService.Modify(result)
 

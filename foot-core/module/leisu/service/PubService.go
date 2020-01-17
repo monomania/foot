@@ -46,7 +46,7 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
-	analyList := this.LeisuService.ListDefaultData()
+	analyList := this.LeisuService.ListPubAbleData()
 	if len(analyList) < 1 {
 		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛!!!!"))
 		return

@@ -7,8 +7,6 @@ import (
 )
 
 func main() {
-	//开启SQL输出
-
 	pubService := new(service.PubService)
 	pubService.PubBJDC()
 

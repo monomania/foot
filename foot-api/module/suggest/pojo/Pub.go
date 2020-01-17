@@ -15,6 +15,7 @@ type Pub struct {
 	Source enums.PubSourceLevel
 	//发布的帐号
 	Account string
+	//发布的赛事ID
 
 
 	pojo.BasePojo `xorm:"extends"`

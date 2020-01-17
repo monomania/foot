@@ -16,14 +16,16 @@ type LeisuService struct {
 }
 
 
-
-func (this *LeisuService) ListDefaultData() []*vo.AnalyResultVO {
+/**
+获取可发布的数据
+ */
+func (this *LeisuService) ListPubAbleData() []*vo.AnalyResultVO {
 	teamOption := this.teamOption()
 	al_flag := utils.GetVal(constants.SECTION_NAME, "al_flag")
 	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.ListData(al_flag, hit_count, teamOption)
+	analyList := this.AnalyService.List(al_flag, hit_count, teamOption)
 	return analyList
 }
 

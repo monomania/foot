@@ -15,7 +15,7 @@ type MessageService struct {
 }
 
 func (this *MessageService) Today() []response.Article {
-	listData := this.LeisuService.ListDefaultData()
+	listData := this.LeisuService.ListPubAbleData()
 	articles := make([]response.Article,len(listData))
 	for i, e := range listData {
 		bytes, _ := json.Marshal(e)
