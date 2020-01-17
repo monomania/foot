@@ -60,16 +60,18 @@ func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			temp_data := this.Find(v.Id, this.ModelName())
-			if len(temp_data.Id) > 0 {
+			if stub != -2{
+				data = this.Find(v.Id, this.ModelName())
+			}
+			if len(data.Id) > 0 {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
-				if temp_data.HitCount >= hit_count {
-					temp_data.HitCount = (hit_count / 2) - 1
+				if data.HitCount >= hit_count {
+					data.HitCount = (hit_count / 2) - 1
 				} else {
-					temp_data.HitCount = 0
+					data.HitCount = 0
 				}
-				this.AnalyService.Modify(temp_data)
+				this.AnalyService.Modify(data)
 			}
 		}
 	}
@@ -77,6 +79,13 @@ func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 	this.AnalyService.ModifyList(data_modify_list_slice)
 }
 
+/**
+  -1 参数错误
+  -2 不符合让球数
+  -3 计算分析错误
+  0  新增的分析结果
+  1  需要更新结果
+ */
 func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
@@ -114,7 +123,9 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	a18betData = aList[0]
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
-		return -2, nil
+		temp_data := this.Find(v.Id, this.ModelName())
+		temp_data.LetBall = a18betData.ELetBall
+		return -2, temp_data
 	}
 
 	//得出结果

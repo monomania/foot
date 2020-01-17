@@ -70,16 +70,18 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			temp_data := this.Find(v.Id, this.ModelName())
-			if len(temp_data.Id) > 0 {
+			if stub != -2 {
+				data = this.Find(v.Id, this.ModelName())
+			}
+			if len(data.Id) > 0 {
 				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 				hit_count, _ := strconv.Atoi(hit_count_str)
-				if temp_data.HitCount >= hit_count {
-					temp_data.HitCount = (hit_count / 2) - 1
+				if data.HitCount >= hit_count {
+					data.HitCount = (hit_count / 2) - 1
 				} else {
-					temp_data.HitCount = 0
+					data.HitCount = 0
 				}
-				this.AnalyService.Modify(temp_data)
+				this.AnalyService.Modify(data)
 			}
 		}
 	}
@@ -87,8 +89,18 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	this.AnalyService.ModifyList(data_modify_list_slice)
 }
 
+/**
+  -1 参数错误
+  -2 不符合让球数
+  -3 计算分析错误
+  0  新增的分析结果
+  1  需要更新结果
+ */
 func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
+	if matchId == "1825138" {
+		fmt.Println("-")
+	}
 	//声明使用变量
 	var a18betData *entity3.AsiaHis
 	//亚赔
@@ -100,7 +112,9 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	a18betData = aList[0]
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
-		return -2, nil
+		temp_data := this.Find(v.Id, this.ModelName())
+		temp_data.LetBall = a18betData.ELetBall
+		return -2, temp_data
 	}
 
 	//得出结果
@@ -111,7 +125,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1723728" {
+	if matchId == "1825138" {
 		fmt.Println("-")
 	}
 	var temp_val float64
@@ -119,7 +133,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	var mainZhuBfs *pojo.BFScore
 	var guestZongBfs *pojo.BFScore
 	var guestKeBfs *pojo.BFScore
-	for _, e := range bfs_arr {//bfs_arr有多语言版本,条数很多
+	for _, e := range bfs_arr { //bfs_arr有多语言版本,条数很多
 		if e.TeamId == v.MainTeamId {
 			if e.Type == "总" {
 				mainZongBfs = e
@@ -127,7 +141,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			if e.Type == "主" {
 				mainZhuBfs = e
 			}
-		} else if e.TeamId == v.GuestTeamId{
+		} else if e.TeamId == v.GuestTeamId {
 			if e.Type == "总" {
 				guestZongBfs = e
 			}
