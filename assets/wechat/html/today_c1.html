@@ -45,8 +45,8 @@
                     <td>{{.LeagueName}}</td>
                     <td>
                         {{if .TOVoid}}<del>{{end}}
-                        {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}(作废)
-                        {{if .TOVoid}}</del>{{end}}
+                        {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
+                        {{if .TOVoid}}(作废)</del>{{end}}
                     </td>
                     <td>
                         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
