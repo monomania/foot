@@ -10,6 +10,7 @@ import (
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	service3 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-core/module/odds/service"
@@ -157,13 +158,13 @@ func (this *AnalyService) IsRight(v *entity2.MatchLast, analy *entity5.AnalyResu
 	globalResult := this.ActualResult(v, analy)
 	var resultFlag string
 	if globalResult == -1 {
-		resultFlag = "待定"
+		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult {
-		resultFlag = "正确"
+		resultFlag = constants.HIT
 	} else if globalResult == 1 {
-		resultFlag = "走盘"
+		resultFlag = constants.WALKING_PLATE
 	} else {
-		resultFlag = "错误"
+		resultFlag = constants.UNHIT
 	}
 
 	//打印数据
@@ -197,11 +198,11 @@ func (this *AnalyService) ActualResult(v *entity2.MatchLast, analy *entity5.Anal
 	//	result = 1
 	//}
 	if mainTeamGoals > float64(v.GuestTeamGoals) {
-		result = 3
+		result = constants.WIN
 	} else if mainTeamGoals < float64(v.GuestTeamGoals) {
-		result = 0
+		result = constants.LOST
 	} else {
-		result = 1
+		result = constants.DRAW
 	}
 	return result
 }

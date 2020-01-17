@@ -30,6 +30,9 @@ type AnalyResult struct {
 	AlSeq string `xorm:" comment('算法批次') index"`
 	//C1模型计算出的合理让球
 	MyLetBall float64 `xorm:" comment('C1模型计算出的合理让球') index"`
+	//是否己经作废,因后续结果不符合要求
+	TOVoid bool `xorm:"bool notnull comment('是否己经作废') index"`
+	TOVoidDesc string `xorm:" comment('作废备注') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }

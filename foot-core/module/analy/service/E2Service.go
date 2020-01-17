@@ -40,16 +40,17 @@ func (this *E2Service) Analy_Near() {
 }
 
 func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
+	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+	hit_count, _ := strconv.Atoi(hit_count_str)
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
 	for _, v := range matchList {
 		stub, data := this.analyStub(v)
 
 		if stub == 0 || stub == 1 {
+			data.TOVoid = false
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-				hit_count, _ := strconv.Atoi(hit_count_str)
 				data.THitCount = hit_count
 			} else {
 				data.THitCount = 1
@@ -62,10 +63,10 @@ func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 		} else {
 			if stub != -2{
 				data = this.Find(v.Id, this.ModelName())
+			}else{
+				data.TOVoid = true
 			}
 			if len(data.Id) > 0 {
-				hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-				hit_count, _ := strconv.Atoi(hit_count_str)
 				if data.HitCount >= hit_count {
 					data.HitCount = (hit_count / 2) - 1
 				} else {
@@ -187,11 +188,11 @@ func (this *E2Service) IsRight(v *pojo.MatchLast, analy *entity5.AnalyResult) st
 	}
 	var resultFlag string
 	if globalResult == -1 {
-		resultFlag = "待定"
+		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult || globalResult == 1 {
-		resultFlag = "正确"
+		resultFlag = constants.HIT
 	} else {
-		resultFlag = "错误"
+		resultFlag = constants.UNHIT
 	}
 
 	//打印数据

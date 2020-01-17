@@ -10,6 +10,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	constants2 "tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
@@ -32,7 +33,7 @@ func preResultStr(val int, al_flag string) string {
 		} else if 0 == val {
 			result = "负平"
 		}
-	}else{
+	} else {
 		if 3 == val {
 			result = "主"
 		} else if 1 == val {
@@ -47,7 +48,7 @@ func preResultStr(val int, al_flag string) string {
 func color(str string) string {
 	if "A1" == str {
 		return "orange"
-	}else if "C1" == str {
+	} else if "C1" == str {
 		return "yellow"
 	} else if "E1" == str {
 		return "blue"
@@ -59,10 +60,22 @@ func color(str string) string {
 	return "XX"
 }
 
+func resultColor(str string) string {
+	if str == constants2.HIT || str == constants2.HIT_1 {
+		return "red"
+	} else if str == constants2.UNHIT {
+		return "gray"
+	} else if str == constants2.WALKING_PLATE {
+		return "greenyellow"
+	}
+	return "XX"
+}
+
 func getFuncMap() map[string]interface{} {
 	funcMap := template.FuncMap{
 		"preResultStr": preResultStr,
 		"color":        color,
+		"resultColor":  resultColor,
 	}
 	return funcMap
 }
@@ -269,7 +282,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	h12, _ = time.ParseDuration("24h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	param.AlFlags = []string{"E1","E2","Q1"}
+	param.AlFlags = []string{"E1", "E2", "Q1"}
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
@@ -305,7 +318,6 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
 
 /**
 今日A1待选池比赛
@@ -355,8 +367,6 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
-
 
 /**
 今日C1待选池比赛

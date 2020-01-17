@@ -50,17 +50,7 @@
         <td>
         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
         </td>
-        <td
-        {{if eq  .Result "正确"}}
-        style="background-color: red"
-        {{else if eq  .Result "错误"}}
-        style="background-color: gray"
-        {{else if eq  .Result "走盘"}}
-        style="background-color: greenyellow"
-        {{else}}
-
-        {{end}}
-        >
+        <td  style="background-color: {{resultColor .Result}}">
         {{preResultStr .PreResult .AlFlag}}
         </td>
 

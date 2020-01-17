@@ -12,6 +12,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
+	constants2 "tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/suggest/service"
@@ -75,11 +76,11 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
 	temp.DataList = make([]vo.SuggestVO, len(tempList))
 	for i, e := range tempList {
-		if strings.EqualFold("正确", e.Result) {
+		if strings.EqualFold(constants2.HIT, e.Result) || strings.EqualFold(constants2.HIT_1, e.Result) {
 			redCount++
 			tempLinkRedCount++
 			tempLinkBlackCount = 0
-		} else if strings.EqualFold("错误", e.Result) {
+		} else if strings.EqualFold(constants2.UNHIT, e.Result) {
 			blackCount++
 			tempLinkBlackCount++
 			tempLinkRedCount = 0
