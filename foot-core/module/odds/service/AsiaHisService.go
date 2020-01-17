@@ -16,9 +16,9 @@ func (this *AsiaHisService) Exist(v *pojo.AsiaHis) (string, bool) {
 	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
 	temp := &pojo.AsiaHis{}
 	var id string
-	exist, err := mysql.GetEngine().Get(temp)
+	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
 	if err != nil {
-		base.Log.Error("ExistByName:", err)
+		base.Log.Error("Exist:", err)
 	}
 	if exist {
 		id = temp.Id

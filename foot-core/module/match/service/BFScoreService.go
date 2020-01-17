@@ -16,7 +16,7 @@ func (this *BFScoreService) Exist(e *pojo.BFScore) (string, bool)  {
 	sql_build.WriteString(" MatchId = '" + e.MatchId + "' AND TeamId = '" + e.TeamId + "' AND Type = '" + e.Type + "'")
 	temp := &pojo.BFScore{}
 	var id string
-	exist, err := mysql.GetEngine().Get(temp)
+	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
 	if err != nil {
 		base.Log.Error("Exist:", err)
 	}

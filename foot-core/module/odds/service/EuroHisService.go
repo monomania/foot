@@ -16,7 +16,7 @@ func (this *EuroHisService) Exist(v *pojo.EuroHis) (string, bool) {
 	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
 	temp := &pojo.EuroHis{}
 	var id string
-	exist, err := mysql.GetEngine().Get(temp)
+	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
 	if err != nil {
 		base.Log.Error("Exist:", err)
 	}

@@ -17,7 +17,7 @@ func (this *BFBattleService) Exist(e *pojo.BFBattle) (string, bool) {
 	sql_build.WriteString(" BattleMatchDate = '" + battleMatchDateStr + "' AND BattleMainTeamId = '" + e.BattleMainTeamId + "' AND BattleGuestTeamId = '" + e.BattleGuestTeamId + "'")
 	temp := &pojo.BFBattle{}
 	var id string
-	exist, err := mysql.GetEngine().Get(temp)
+	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
 	if err != nil {
 		base.Log.Error("Exist:", err)
 	}

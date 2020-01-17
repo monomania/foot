@@ -17,7 +17,7 @@ func (this *BFFutureEventService) Exist(e *pojo.BFFutureEvent) (string, bool) {
 	sql_build.WriteString(" MatchId = '" + e.MatchId + "' AND TeamId = '" + e.TeamId + "' AND EventMatchDate = '" + eventMatchDateStr + "'")
 	temp := &pojo.BFFutureEvent{}
 	var id string
-	exist, err := mysql.GetEngine().Get(temp)
+	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
 	if err != nil {
 		base.Log.Error("Exist:", err)
 	}

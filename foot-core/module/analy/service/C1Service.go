@@ -99,7 +99,7 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
  */
 func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
-	if matchId == "1825138" {
+	if matchId == "1755786" {
 		fmt.Println("-")
 	}
 	//声明使用变量
@@ -124,7 +124,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1825138" {
+	if matchId == "1755786" {
 		fmt.Println("-")
 	}
 	var temp_val float64
