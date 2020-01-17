@@ -100,7 +100,7 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	for _, v := range hdata_list {
 		comp := new(entity2.Comp)
 		comp.Name = v.Cn
-		comp_exists := this.CompService.FindExistsByName(comp)
+		comp_exists := this.CompService.Exist(comp)
 		if !comp_exists {
 			//comp.Id = bson.NewObjectId().Hex()
 			comp.Id = strconv.Itoa(v.CId)
@@ -132,10 +132,11 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		last.Ep1 = v.Rs
 		last.Ep0 = v.Rg
 
-		last_exists := this.EuroLastService.FindExists(last)
+		last_temp_id,last_exists := this.EuroLastService.Exist(last)
 		if !last_exists {
 			last_slice = append(last_slice, last)
 		} else {
+			last.Id = last_temp_id
 			last_update_slice = append(last_update_slice, last)
 		}
 	}
@@ -158,10 +159,11 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		his := new(entity3.EuroHis)
 		his.EuroLast = *temp
 
-		his_exists := this.EuroHisService.FindExists(his)
+		his_temp_id,his_exists := this.EuroHisService.Exist(his)
 		if !his_exists {
 			his_slice = append(his_slice, his)
 		} else {
+			his.Id = his_temp_id
 			his_update_slice = append(his_update_slice, his)
 		}
 	}

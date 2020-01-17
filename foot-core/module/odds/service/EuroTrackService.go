@@ -10,10 +10,15 @@ type EuroTrackService struct {
 	mysql.BaseService
 }
 
-func (this *EuroTrackService) FindExists(v *pojo.EuroTrack) bool {
-	exist, err := mysql.GetEngine().Exist(&pojo.EuroTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate})
+func (this *EuroTrackService) Exist(v *pojo.EuroTrack) (string, bool) {
+	temp := &pojo.EuroTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Error("FindExists:", err)
+		base.Log.Error("Exist:", err)
 	}
-	return exist
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }

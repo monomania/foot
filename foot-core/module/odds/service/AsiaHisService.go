@@ -11,14 +11,19 @@ type AsiaHisService struct {
 	mysql.BaseService
 }
 
-func (this *AsiaHisService) FindExists(v *pojo.AsiaHis) bool {
+func (this *AsiaHisService) Exist(v *pojo.AsiaHis) (string, bool) {
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' AND OddDate = '" + v.OddDate + "'")
-	result, err := mysql.GetEngine().Where(sql_build.String()).Exist(new(pojo.AsiaHis))
+	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
+	temp := &pojo.AsiaHis{}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Error("FindExists:", err)
+		base.Log.Error("ExistByName:", err)
 	}
-	return result
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
 
 //根据比赛ID查找亚赔

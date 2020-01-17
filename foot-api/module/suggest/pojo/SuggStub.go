@@ -9,7 +9,7 @@ import (
 /**
 发布记录
  */
-type Suggest struct {
+type SuggStub struct {
 
 	pojo2.AnalyResult `xorm:"extends"`
 }

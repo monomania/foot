@@ -6,7 +6,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
 )
 
-type SuggestDetailVO struct {
+type SuggStubDetailVO struct {
 	MatchDateStr string
 	//联赛
 	LeagueName string
@@ -29,7 +29,7 @@ type SuggestDetailVO struct {
 	//算法标识
 	AlFlags []string
 
-	pojo.Suggest `xorm:"extends"`
+	pojo.SuggStub `xorm:"extends"`
 
 	//欧赔
 	EuroOdd *pojo2.EuroLast
@@ -45,9 +45,11 @@ type SuggestDetailVO struct {
 	BFSGuestZong *pojo3.BFScore
 	BFSGuestKe   *pojo3.BFScore
 	BFSGuestJin  *pojo3.BFScore
-
-	//基本面
-	BFBList  []*pojo3.BFBattle
-
-	BFFEList []*pojo3.BFFutureEvent
+	//过往战绩对阵
+	BattleCount         int
+	BattleMainWinCount  int
+	BattleGuestWinCount int
+	//下一场比赛
+	MainNextMainTeam  string
+	GuestNextMainTeam string
 }

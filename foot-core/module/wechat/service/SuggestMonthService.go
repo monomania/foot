@@ -47,7 +47,7 @@ func (this *SuggestMonthService) Month(wcClient *core.Client) string {
 }
 
 func (this *SuggestMonthService) ModifyMonth(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h2, _ := time.ParseDuration("-2h")
 	endDate := now.Add(h2)
@@ -67,14 +67,15 @@ func (this *SuggestMonthService) ModifyMonth(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.MonthVO{}
+	temp := vo.TMonthVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.MatchCount = int64(len(tempList))
 
 	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		if strings.EqualFold(constants2.HIT, e.Result) || strings.EqualFold(constants2.HIT_1, e.Result) {
 			redCount++

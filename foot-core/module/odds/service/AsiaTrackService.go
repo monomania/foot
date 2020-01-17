@@ -11,12 +11,17 @@ type AsiaTrackService struct {
 	mysql.BaseService
 }
 
-func (this *AsiaTrackService) FindExists(v *pojo.AsiaTrack) bool {
-	exist, err := mysql.GetEngine().Get(&pojo.AsiaTrack{MatchId:v.MatchId,CompId:v.CompId,OddDate:v.OddDate})
+func (this *AsiaTrackService) Exist(v *pojo.AsiaTrack) (string, bool) {
+	temp := &pojo.AsiaTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Error("FindExists:", err)
+		base.Log.Error("Exist:", err)
 	}
-	return exist
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
 
 //根据比赛ID查找亚赔

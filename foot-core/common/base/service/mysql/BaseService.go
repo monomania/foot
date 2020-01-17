@@ -225,7 +225,7 @@ func (this *BaseService) Exist(entity interface{}) bool {
 	//对象操作
 	exist, err := engine.Exist(entity)
 	if nil != err {
-		base.Log.Info("Exist:" + err.Error())
+		base.Log.Info("ExistByName:" + err.Error())
 	}
 	return exist
 }

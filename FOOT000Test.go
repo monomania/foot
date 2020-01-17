@@ -32,7 +32,7 @@ func main(){
 
 	fmt.Println(Decimal(0.65454545))
 
-	param := new(vo.SuggestDetailVO)
+	param := new(vo.SuggStubDetailVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
@@ -50,12 +50,13 @@ func main(){
 	first.Digest = fmt.Sprintf("赛事的模型算法解析")
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayDetailVO{}
+	temp := vo.TTodayDetailVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestDetailVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubDetailVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -90,7 +91,7 @@ func main() {
 
 	//测试
 	suggestService := new(service3.SuggestService)
-	i := vo.SuggestVO{}
+	i := vo.SuggStubVO{}
 	//i.AlFlag = "Euro20191212Service"
 	i.BeginDateStr = "2019-12-19 00:00:00"
 	query := suggestService.Query(&i)
@@ -104,15 +105,15 @@ func main() {
 	if err != nil {
 		base.Log.Error(err)
 	}
-	weekVO := vo.WeekVO{}
+	weekVO := vo.TWeekVO{}
 	weekVO.MatchCount = 98
 	weekVO.RedCount = 68
 	weekVO.WalkCount = 40
 	weekVO.BlackCount = 20
 	weekVO.LinkRedCount = 10
 	weekVO.LinkBlackCount = 5
-	dataList := make([]vo.SuggestVO, 1)
-	suggestVO := vo.SuggestVO{}
+	dataList := make([]vo.SuggStubVO, 1)
+	suggestVO := vo.SuggStubVO{}
 	suggestVO.LeagueName = "联赛1"
 	suggestVO.MatchDate = time.Now()
 	suggestVO.MainTeam = "主队1"

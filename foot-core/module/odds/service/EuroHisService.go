@@ -11,21 +11,25 @@ type EuroHisService struct {
 	mysql.BaseService
 }
 
-func (this *EuroHisService) FindExists(v *pojo.EuroHis) bool {
+func (this *EuroHisService) Exist(v *pojo.EuroHis) (string, bool) {
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' AND OddDate = '" + v.OddDate + "'")
-	result, err := mysql.GetEngine().Where(sql_build.String()).Exist(new(pojo.EuroHis))
+	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
+	temp := &pojo.EuroHis{}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Error("FindExists:", err)
+		base.Log.Error("Exist:", err)
 	}
-	return result
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
-
 
 //根据比赛ID查找欧赔
 func (this *EuroHisService) FindByMatchId(matchId string) []*pojo.EuroHis {
 	dataList := make([]*pojo.EuroHis, 0)
-	err := mysql.GetEngine().Where(" MatchId = ? ",matchId).Find(dataList)
+	err := mysql.GetEngine().Where(" MatchId = ? ", matchId).Find(dataList)
 	if err != nil {
 		base.Log.Error("FindByMatchId:", err)
 	}

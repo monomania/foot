@@ -15,10 +15,10 @@ type MatchLastService struct {
 /**
 通过比赛时间,主队id,客队id,判断比赛信息是否已经存在
 */
-func (this *MatchLastService) FindExists(v *pojo.MatchLast) bool {
+func (this *MatchLastService) Exist(v *pojo.MatchLast) bool {
 	has, err := mysql.GetEngine().Table("`t_match_last`").Where(" `Id` = ?  ", v.Id).Exist()
 	if err != nil {
-		base.Log.Info("FindExists", err)
+		base.Log.Info("Exist", err)
 	}
 	return has
 }

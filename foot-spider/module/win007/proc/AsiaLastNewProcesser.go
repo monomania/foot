@@ -97,19 +97,21 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 			}
 			last.OddDate = time.Unix(tempMt, 0).Format("2006-01-02 15:04:05")
 		}
-		last_exists := this.AsiaLastService.FindExists(last)
+		last_temp_id,last_exists := this.AsiaLastService.Exist(last)
 		if !last_exists {
 			last_slice = append(last_slice, last)
 		} else {
+			last.Id = last_temp_id
 			last_update_slice = append(last_update_slice, last)
 		}
 
 		his := new(entity2.AsiaHis)
 		his.AsiaLast = *last
-		his_exists := this.AsiaHisService.FindExists(his)
+		his_temp_id,his_exists := this.AsiaHisService.Exist(his)
 		if !his_exists {
 			his_slice = append(his_slice, his)
 		} else {
+			his.Id = his_temp_id
 			his_update_slice = append(his_update_slice, his)
 		}
 
@@ -124,10 +126,11 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 		track.Ep3 = last.Ep3
 		track.ELetBall = last.ELetBall
 
-		track_exists := this.AsiaTrackService.FindExists(track)
+		track_temp_id,track_exists := this.AsiaTrackService.Exist(track)
 		if !track_exists {
 			track_slice = append(track_slice, track)
 		} else {
+			track.Id = track_temp_id
 			track_update_slice = append(track_update_slice, track)
 		}
 	}

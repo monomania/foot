@@ -23,7 +23,7 @@ type SuggestService struct {
 /**
 查询待选池中的比赛
  */
-func (this *SuggestService) QueryTbs(param *vo2.SuggestVO) []*vo2.SuggestVO {
+func (this *SuggestService) QueryTbs(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
   l.Name AS LeagueName,
@@ -59,14 +59,14 @@ WHERE mh.LeagueId = l.Id
 		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
 	}
 	//结果值
-	entitys := make([]*vo2.SuggestVO, 0)
+	entitys := make([]*vo2.SuggStubVO, 0)
 	//执行查询
 	this.FindBySQL(sql, &entitys)
 
 	return entitys
 }
 
-func (this *SuggestService) Query(param *vo2.SuggestVO) []*vo2.SuggestVO {
+func (this *SuggestService) Query(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
   l.Name AS LeagueName,
@@ -104,14 +104,14 @@ WHERE mh.LeagueId = l.Id
 		sql += " ORDER BY ar.`AlFlag` DESC,ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.PreResult DESC "
 	}
 	//结果值
-	entitys := make([]*vo2.SuggestVO, 0)
+	entitys := make([]*vo2.SuggStubVO, 0)
 	//执行查询
 	this.FindBySQL(sql, &entitys)
 
 	return entitys
 }
 
-func (this *SuggestService) QueryDetail(param *vo2.SuggestDetailVO) []*vo2.SuggestDetailVO {
+func (this *SuggestService) QueryDetail(param *vo2.SuggStubDetailVO) []*vo2.SuggStubDetailVO {
 	sql := `
 SELECT 
   l.Name AS LeagueName,
@@ -150,27 +150,22 @@ WHERE mh.LeagueId = l.Id
 	}
 
 	//结果值
-	entitys := make([]*vo2.SuggestDetailVO, 0)
+	entitys := make([]*vo2.SuggStubDetailVO, 0)
 	//执行查询
 	this.FindBySQL(sql, &entitys)
 	if len(entitys) <= 0 {
 		return entitys
 	}
 
-	for _, e := range entitys {
-		matchId := e.MatchId
-		eOddList := this.EuroLastService.FindByMatchId(matchId)
-		aOddList := this.AsiaLastService.FindByMatchId(matchId)
-		bfsList := this.BFScoreService.FindByMatchId(matchId)
-		bfbList := this.BFBattleService.FindByMatchId(matchId)
-		bffeList := this.BFFutureEventService.FindByMatchId(matchId)
-
-		e.EOddList = eOddList
-		e.AOddList = aOddList
-		e.BFSList = bfsList
-		e.BFBList = bfbList
-		e.BFFEList = bffeList
-	}
+	//for _, e := range entitys {
+	//	matchId := e.MatchId
+	//	eOddList := this.EuroLastService.FindByMatchId(matchId)
+	//	aOddList := this.AsiaLastService.FindByMatchId(matchId)
+	//	bfsList := this.BFScoreService.FindByMatchId(matchId)
+	//	bfbList := this.BFBattleService.FindByMatchId(matchId)
+	//	bffeList := this.BFFutureEventService.FindByMatchId(matchId)
+	//
+	//}
 
 	return entitys
 }

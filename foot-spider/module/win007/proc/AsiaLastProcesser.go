@@ -109,10 +109,11 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 			}
 		})
 
-		last_exists := this.AsiaLastService.FindExists(last)
+		last_temp_id,last_exists := this.AsiaLastService.Exist(last)
 		if !last_exists {
 			asia_list_slice = append(asia_list_slice, last)
 		} else {
+			last.Id = last_temp_id
 			asia_list_update_slice = append(asia_list_update_slice, last)
 		}
 
@@ -127,10 +128,11 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 		his.Ep3 = last.Ep3
 		his.ELetBall = last.ELetBall
 
-		his_exists := this.AsiaHisService.FindExists(his)
+		temp_id, his_exists := this.AsiaHisService.Exist(his)
 		if !his_exists {
 			asia_his_slice = append(asia_his_slice, his)
 		} else {
+			his.Id = temp_id
 			asia_his_update_slice = append(asia_his_update_slice, his)
 		}
 

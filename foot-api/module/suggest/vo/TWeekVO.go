@@ -1,11 +1,8 @@
 package vo
 
-type WeekVO struct {
-	SpiderDateStr string
-	//开始时间
-	BeginDateStr string
-	//结束时间
-	EndDateStr string
+type TWeekVO struct {
+	//引入父级属性
+	TBaseVO
 
 	//总场次
 	MatchCount int64
@@ -29,6 +26,5 @@ type WeekVO struct {
 	//胜率
 	MainVal string
 
-
-	DataList []SuggestVO
+	DataList []SuggStubVO
 }

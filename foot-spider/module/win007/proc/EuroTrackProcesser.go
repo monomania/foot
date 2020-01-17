@@ -166,7 +166,7 @@ func (this *EuroTrackProcesser) track_process(track_list []*entity3.EuroTrack) {
 	last := new(entity3.EuroLast)
 	last.MatchId = track_last.MatchId
 	last.CompId = track_last.CompId
-	last_exists := this.EuroLastService.FindExists(last)
+	last_temp_id, last_exists := this.EuroLastService.Exist(last)
 	last.Sp3 = track_head.Sp3
 	last.Sp1 = track_head.Sp1
 	last.Sp0 = track_head.Sp0
@@ -175,21 +175,17 @@ func (this *EuroTrackProcesser) track_process(track_list []*entity3.EuroTrack) {
 	last.Ep0 = track_last.Sp0
 
 	if last_exists {
+		last.Id = last_temp_id
 		this.EuroLastService.Modify(last)
-		his := new(entity3.EuroHis)
-		his.EuroLast = *last
-		this.EuroHisService.Modify(his)
 	} else {
 		this.EuroLastService.Save(last)
-		his := new(entity3.EuroHis)
-		his.EuroLast = *last
-		this.EuroHisService.Save(his)
 	}
 
 	his := new(entity3.EuroHis)
 	his.EuroLast = *last
-	his_exists := this.EuroHisService.FindExists(his)
+	his_temp_id, his_exists := this.EuroHisService.Exist(his)
 	if his_exists {
+		his.Id = his_temp_id
 		this.EuroHisService.Modify(his)
 	} else {
 		this.EuroHisService.Save(his)
@@ -198,7 +194,7 @@ func (this *EuroTrackProcesser) track_process(track_list []*entity3.EuroTrack) {
 	//将历史赔率入库
 	track_list_slice := make([]interface{}, 0)
 	for _, v := range track_list {
-		exists := this.EuroTrackService.FindExists(v)
+		_, exists := this.EuroTrackService.Exist(v)
 		if !exists {
 			track_list_slice = append(track_list_slice, v)
 		}

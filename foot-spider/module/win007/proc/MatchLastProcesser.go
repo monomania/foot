@@ -185,7 +185,7 @@ func (this *MatchPageProcesser) Finish() {
 		}
 		/*	bytes, _ := json.Marshal(v)
 			base.Log.Info(string(bytes))*/
-		exists := this.LeagueService.FindExistsById(v.Id)
+		exists := this.LeagueService.ExistById(v.Id)
 		if exists {
 			continue
 		}
@@ -213,7 +213,7 @@ func (this *MatchPageProcesser) Finish() {
 		matchExt.Sid = v.Id
 		v.Ext = make(map[string]interface{})
 		v.Ext[win007.MODULE_FLAG] = matchExt
-		exists := this.MatchLastService.FindExists(v)
+		exists := this.MatchLastService.Exist(v)
 		if exists {
 			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)
 		}else{
@@ -222,7 +222,7 @@ func (this *MatchPageProcesser) Finish() {
 
 		his := new(pojo.MatchHis)
 		his.MatchLast = *v
-		his_exists := this.MatchHisService.FindExists(his)
+		his_exists := this.MatchHisService.Exist(his)
 		if his_exists {
 			matchHis_modify_list_slice = append(matchHis_modify_list_slice,his)
 		}else{

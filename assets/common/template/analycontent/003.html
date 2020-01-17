@@ -1,0 +1,11 @@
+{{if eq .MainTeam .MainNextMainTeam }}
+下场赛事,主队继续坐阵主场,具备有一定的心理优势.
+{{else}}
+下场赛事,主队转圜客场,主场战意充足.
+{{end}}
+
+{{if eq .GuestTeam .GuestNextMainTeam }}
+下场赛事,客队转回主场作战.
+{{else}}
+下场赛事,客队继续转圜其他客场,不免受行程疲惫影响.
+{{end}}

@@ -1,7 +1,6 @@
 package service
 
 import (
-
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -13,12 +12,17 @@ type AsiaLastService struct {
 }
 
 //查看数据是否已经存在
-func (this *AsiaLastService) FindExists(v *pojo.AsiaLast) bool {
-	exist, err := mysql.GetEngine().Get(&pojo.AsiaLast{MatchId:v.MatchId,CompId:v.CompId})
+func (this *AsiaLastService) Exist(v *pojo.AsiaLast) (string, bool) {
+	temp := &pojo.AsiaLast{MatchId: v.MatchId, CompId: v.CompId}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Error("错误:", err)
+		base.Log.Error("Exist:", err)
 	}
-	return exist
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
 
 //根据比赛ID查找亚赔

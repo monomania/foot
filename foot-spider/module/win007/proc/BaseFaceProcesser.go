@@ -71,8 +71,9 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 	scoreModifyList := make([]interface{}, 0)
 	scoreList := this.score_process(matchId, p)
 	for _, e := range scoreList {
-		exist := this.BFScoreService.Exist(e.MatchId, e.TeamId, e.Type)
+		temp_id, exist := this.BFScoreService.Exist(e)
 		if exist {
+			e.Id = temp_id
 			scoreModifyList = append(scoreModifyList, e)
 		} else {
 			scoreSaveList = append(scoreSaveList, e)
@@ -86,8 +87,9 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 	battleModifyList := make([]interface{}, 0)
 	battleList := this.battle_process(matchId, p)
 	for _, e := range battleList {
-		exist := this.BFBattleService.Exist(e.BattleMatchDate, e.BattleMainTeamId, e.BattleGuestTeamId)
+		temp_id, exist := this.BFBattleService.Exist(e)
 		if exist {
+			e.Id = temp_id
 			battleModifyList = append(battleModifyList, e)
 		} else {
 			battleSaveList = append(battleSaveList, e)
@@ -102,8 +104,9 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 	futureEventModifyList := make([]interface{}, 0)
 	futureEventList := this.future_event_process(matchId, p)
 	for _, e := range futureEventList {
-		exist := this.BFFutureEventService.Exist(e.MatchId, e.TeamId, e.EventMatchDate)
+		temp_id, exist := this.BFFutureEventService.Exist(e)
 		if exist {
+			e.Id = temp_id
 			futureEventModifyList = append(futureEventModifyList, e)
 		} else {
 			futureEventSaveList = append(futureEventSaveList, e)

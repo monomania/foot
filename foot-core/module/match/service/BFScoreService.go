@@ -11,6 +11,21 @@ type BFScoreService struct {
 	mysql.BaseService
 }
 
+func (this *BFScoreService) Exist(e *pojo.BFScore) (string, bool)  {
+	sql_build := strings.Builder{}
+	sql_build.WriteString(" MatchId = '" + e.MatchId + "' AND TeamId = '" + e.TeamId + "' AND Type = '" + e.Type + "'")
+	temp := &pojo.BFScore{}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
+	if err != nil {
+		base.Log.Error("Exist:", err)
+	}
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
+}
+
 func (this *BFScoreService) FindByMatchId(matchId string) []*pojo.BFScore {
 	dataList := make([]*pojo.BFScore, 0)
 	sql_build := strings.Builder{}
@@ -22,12 +37,4 @@ func (this *BFScoreService) FindByMatchId(matchId string) []*pojo.BFScore {
 	return dataList
 }
 
-func (this *BFScoreService) Exist(matchId string, teamId string, types string) bool {
-	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + matchId + "' AND TeamId = '" + teamId + "' AND Type = '" + types + "'")
-	result,err := mysql.GetEngine().Where(sql_build.String()).Exist(new(pojo.BFScore))
-	if err != nil {
-		base.Log.Error("Exist:", err)
-	}
-	return result
-}
+

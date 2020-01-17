@@ -4,7 +4,8 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
 )
 
-type SuggestVO struct {
+type SuggStubVO struct {
+	//比赛时间
 	MatchDateStr string
 	//联赛
 	LeagueName string
@@ -28,5 +29,5 @@ type SuggestVO struct {
 	//算法标识
 	AlFlags []string
 
-	pojo.Suggest `xorm:"extends"`
+	pojo.SuggStub `xorm:"extends"`
 }

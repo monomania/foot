@@ -13,20 +13,20 @@ type LeagueService struct {
 
 /**
  */
-func (this *LeagueService) FindExistsByName(name string) bool {
+func (this *LeagueService) ExistByName(name string) bool {
 	exist, err := mysql.GetEngine().Exist(&pojo.League{Name: name})
 	if err != nil {
-		base.Log.Info("FindExistsByName:", err)
+		base.Log.Info("ExistByName:", err)
 	}
 	return exist
 }
 
-func (this *LeagueService) FindExistsById(id string) bool {
+func (this *LeagueService) ExistById(id string) bool {
 	league := new(pojo.League)
 	league.Id = id
 	exist, err := mysql.GetEngine().Exist(league)
 	if err != nil {
-		base.Log.Info("FindExistsById:", err)
+		base.Log.Info("ExistById:", err)
 	}
 	return exist
 }

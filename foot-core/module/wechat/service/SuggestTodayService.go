@@ -124,7 +124,7 @@ func (this *SuggestTodayService) Today(wcClient *core.Client) string {
 更新今天推荐
  */
 func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
@@ -143,12 +143,13 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TTodayVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -174,7 +175,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 今日赛事分析
  */
 func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
@@ -193,12 +194,13 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TTodayVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -224,7 +226,7 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 今日赛事分析
  */
 func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
-	param := new(vo.SuggestDetailVO)
+	param := new(vo.SuggStubDetailVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
@@ -243,12 +245,13 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayDetailVO{}
+	temp := vo.TTodayDetailVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestDetailVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubDetailVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -274,7 +277,7 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 今日待选池比赛
  */
 func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-48h")
 	beginDate := now.Add(h12)
@@ -292,12 +295,13 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TTodayVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -323,7 +327,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 今日A1待选池比赛
  */
 func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-96h")
 	beginDate := now.Add(h12)
@@ -341,12 +345,13 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TTodayVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
@@ -372,7 +377,7 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 今日C1待选池比赛
  */
 func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
-	param := new(vo.SuggestVO)
+	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-96h")
 	beginDate := now.Add(h12)
@@ -390,12 +395,13 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
-	temp := vo.TodayVO{}
+	temp := vo.TTodayVO{}
 	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
 	temp.BeginDateStr = param.BeginDateStr
 	temp.EndDateStr = param.EndDateStr
 	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggestVO, len(tempList))
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e

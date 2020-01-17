@@ -5,11 +5,26 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
-	"time"
 )
 
 type BFFutureEventService struct {
 	mysql.BaseService
+}
+
+func (this *BFFutureEventService) Exist(e *pojo.BFFutureEvent) (string, bool) {
+	sql_build := strings.Builder{}
+	eventMatchDateStr := e.EventMatchDate.Format("2006-01-02 15:04:05")
+	sql_build.WriteString(" MatchId = '" + e.MatchId + "' AND TeamId = '" + e.TeamId + "' AND EventMatchDate = '" + eventMatchDateStr + "'")
+	temp := &pojo.BFFutureEvent{}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
+	if err != nil {
+		base.Log.Error("Exist:", err)
+	}
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
 
 func (this *BFFutureEventService) FindByMatchId(matchId string) []*pojo.BFFutureEvent {
@@ -34,13 +49,4 @@ func (this *BFFutureEventService) FindNextBattle(matchId string, mainId string) 
 	return data
 }
 
-func (this *BFFutureEventService) Exist(matchId string, teamId string, eventMatchDate time.Time) bool {
-	sql_build := strings.Builder{}
-	eventMatchDateStr := eventMatchDate.Format("2006-01-02 15:04:05")
-	sql_build.WriteString(" MatchId = '" + matchId + "' AND TeamId = '" + teamId + "' AND EventMatchDate = '" + eventMatchDateStr + "'")
-	result, err := mysql.GetEngine().Where(sql_build.String()).Exist(new(pojo.BFFutureEvent))
-	if err != nil {
-		base.Log.Error("Exist:", err)
-	}
-	return result
-}
+
