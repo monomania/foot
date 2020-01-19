@@ -215,9 +215,9 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 1.欧赔是主降还是主升 主降为true
 */
 func EuroMainDown(e81data *entity3.EuroHis, e616data *entity3.EuroHis) int {
-	if e81data.Ep3 < e81data.Sp3 && e616data.Ep3 < e616data.Sp3 {
+	if e81data.Ep3 <= e81data.Sp3 && e616data.Ep3 <= e616data.Sp3 {
 		return 3
-	} else if e81data.Ep0 < e81data.Sp0 && e616data.Ep0 < e616data.Sp0 {
+	} else if e81data.Ep0 <= e81data.Sp0 && e616data.Ep0 <= e616data.Sp0 {
 		return 0
 	}
 	return 1

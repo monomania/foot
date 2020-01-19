@@ -21,7 +21,7 @@ type A1Service struct {
 	MaxLetBall float64
 }
 
-func (this *A1Service) ModelName() string{
+func (this *A1Service) ModelName() string {
 	//alFlag := reflect.TypeOf(*this).Name()
 	return "A1"
 }
@@ -55,7 +55,7 @@ func (this *A1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
 				data.THitCount = hit_count
-			}else{
+			} else {
 				data.THitCount = 1
 			}
 			if stub == 0 {
@@ -64,15 +64,14 @@ func (this *A1Service) Analy_Process(matchList []*pojo.MatchLast) {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			if stub != -2{
+			if stub != -2 {
 				data = this.Find(v.Id, this.ModelName())
-			}else{
-				data.TOVoid = true
 			}
+			data.TOVoid = true
 			if len(data.Id) > 0 {
 				if data.HitCount >= hit_count {
 					data.HitCount = (hit_count / 2) - 1
-				}else{
+				} else {
 					data.HitCount = 0
 				}
 				this.AnalyService.Modify(data)
@@ -130,7 +129,7 @@ func (this *A1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//判断分析logic
-	//1.欧赔是主降还是主升 主降为true
+	//主降为3 客降为0
 	euroMainDown := EuroMainDown(e81data, e616data)
 	//2.亚赔是主降还是主升 主降为true
 	asiaMainDown := AsiaMainDown(a18betData)
@@ -160,7 +159,7 @@ func (this *A1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.LetBall = a18betData.ELetBall
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)

@@ -61,11 +61,10 @@ func (this *E2Service) Analy_Process(matchList []*pojo.MatchLast) {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			if stub != -2{
+			if stub != -2 {
 				data = this.Find(v.Id, this.ModelName())
-			}else{
-				data.TOVoid = true
 			}
+			data.TOVoid = true
 			if len(data.Id) > 0 {
 				if data.HitCount >= hit_count {
 					data.HitCount = (hit_count / 2) - 1

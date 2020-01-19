@@ -57,11 +57,10 @@ func (this *E1Service) Analy_Process(matchList []*pojo.MatchLast) {
 				data_modify_list_slice = append(data_modify_list_slice, data)
 			}
 		} else {
-			if stub != -2{
+			if stub != -2 {
 				data = this.Find(v.Id, this.ModelName())
-			}else{
-				data.TOVoid = true
 			}
+			data.TOVoid = true
 			if len(data.Id) > 0 {
 				if data.HitCount >= hit_count {
 					data.HitCount = (hit_count / 2) - 1
@@ -169,7 +168,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.LetBall = a18betData.ELetBall
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -183,7 +182,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.HitCount = 1
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
-		data.Result = this.IsRight( v, data)
+		data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 }
