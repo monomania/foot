@@ -161,25 +161,26 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if mainZongBfs == nil || guestZongBfs == nil || mainZhuBfs == nil || guestKeBfs == nil {
 		return -1, nil
 	}
-
+	baseVal := 0.075
 	if mainZongBfs.MatchCount >= 10 && guestZongBfs.MatchCount >= 10 {
 		//排名越小越好
 		rankDiff := 5.0
+		
 		temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += -0.125 - (temp_val/rankDiff)*0.125
+			letBall += -baseVal - (temp_val/rankDiff)*baseVal
 		}
 		temp_val = float64(guestZongBfs.Ranking - mainZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += 0.125 + (temp_val/rankDiff)*0.125
+			letBall += baseVal + (temp_val/rankDiff)*baseVal
 		}
 		temp_val = float64(mainZhuBfs.Ranking - guestKeBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += -0.125 - (temp_val/rankDiff)*0.125
+			letBall += -baseVal - (temp_val/rankDiff)*baseVal
 		}
 		temp_val = float64(guestKeBfs.Ranking - mainZhuBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += 0.125 + (temp_val/rankDiff)*0.125
+			letBall += baseVal + (temp_val/rankDiff)*baseVal
 		}
 	}
 
@@ -203,21 +204,21 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 	if mainWin > (guestWin + 1) {
-		letBall += 0.125 + float64(mainWin/winCountDiff)*0.125
+		letBall += baseVal + float64(mainWin/winCountDiff)*baseVal
 	}
 	if guestWin > (mainWin + 1) {
-		letBall += -0.125 - float64(guestWin/winCountDiff)*0.125
+		letBall += -baseVal - float64(guestWin/winCountDiff)*baseVal
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 	//如果主队下一场打客场,战意充足
 	if v.MainTeamId == bffe_main.EventGuestTeamId {
-		letBall += 0.145
+		letBall += baseVal
 	}
 	//如果客队下一场打主场，战意懈怠
 	if v.GuestTeamId == bffe_guest.EventMainTeamId {
-		letBall += 0.145
+		letBall += baseVal
 	}
 
 	//判断主队是否是让球方
@@ -251,15 +252,16 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为1
 		sectionBlock1 = 4
 	}
-	xishu := 1.2
+	xishu_prefix := 0.48
+	xishu_suffix := 1.20
 	tLetBall := math.Abs(letBall)
-	if tLetBall < (0.25 * xishu) {
+	if (0.25*xishu_prefix) < tLetBall && tLetBall < (0.25*xishu_suffix) {
 		sectionBlock2 = 1
-	} else if tLetBall < (0.5 * xishu) {
+	} else if (0.5*xishu_prefix) < tLetBall && tLetBall < (0.5*xishu_suffix) {
 		sectionBlock2 = 2
-	} else if tLetBall < (0.75 * xishu) {
+	} else if (0.75*xishu_prefix) < tLetBall && tLetBall < (0.75*xishu_suffix) {
 		sectionBlock2 = 3
-	} else if tLetBall < (1 * xishu) {
+	} else if (1*xishu_prefix) < tLetBall && tLetBall < (1*xishu_suffix) {
 		sectionBlock2 = 4
 	}
 
