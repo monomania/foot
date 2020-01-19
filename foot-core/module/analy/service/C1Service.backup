@@ -84,8 +84,8 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			}
 		}
 	}
-	this.AnalyService.SaveList(data_list_slice)
-	this.AnalyService.ModifyList(data_modify_list_slice)
+	//this.AnalyService.SaveList(data_list_slice)
+	//this.AnalyService.ModifyList(data_modify_list_slice)
 }
 
 /**
@@ -105,10 +105,12 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//亚赔
 	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
 	if len(aList) < 1 {
+		base.Log.Info(v.MainTeamId + ":" + v.GuestTeamId)
 		return -1, nil
 	}
 	a18betData = aList[0]
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
+		base.Log.Info(v.MainTeamId + ":" + v.GuestTeamId)
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
 		return -2, temp_data
@@ -120,7 +122,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
-		return -2, temp_data
+		//return -2, temp_data
 	}
 
 	//得出结果
@@ -129,6 +131,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//------
 	bfs_arr := this.BFScoreService.FindByMatchId(matchId)
 	if len(bfs_arr) < 1 {
+		base.Log.Info(v.MainTeamId + ":" + v.GuestTeamId)
 		return -1, nil
 	}
 	if matchId == "1734290" {
@@ -237,37 +240,54 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//区间段
 	var sectionBlock1, sectionBlock2 int
-	maxLetBall := math.Max(sLetBall, eLetBall)
-	if maxLetBall <= 0.25 {
+	if sLetBall+eLetBall <= 0.5 {
 		//0 - 0
 		//0 - 0.25
 		//0.25 - 0.25
 		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.25
 		sectionBlock1 = 1
-	} else if maxLetBall <= 0.5 {
+	} else if sLetBall+eLetBall <= 0.75 {
 		//0.25 - 0.5
 		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.5
 		sectionBlock1 = 2
-	} else if maxLetBall <= 0.75 {
+	} else if sLetBall+eLetBall <= 1 {
 		//0.5 - 0.5
 		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.5
 		sectionBlock1 = 3
-	} else if maxLetBall <= 1 {
+	} else if sLetBall+eLetBall <= 1.25 {
 		//0.5 - 0.75
 		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.75
 		sectionBlock1 = 4
+	} else if sLetBall+eLetBall <= 1.5 {
+		//0.75 - 0.75
+		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.75
+		sectionBlock1 = 5
+	} else if sLetBall+eLetBall <= 1.75 {
+		//0.75 - 1
+		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为1
+		sectionBlock1 = 6
+	} else if sLetBall+eLetBall <= 2 {
+		//1- 1
+		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为1
+		sectionBlock1 = 7
 	}
-
-	//--------
+	xishu_prefix := 0.66
+	xishu_suffix := 1.0
 	tLetBall := math.Abs(letBall)
-	if tLetBall <= 0.25 {
-		sectionBlock1 = 1
-	} else if tLetBall <= 0.5 {
-		sectionBlock1 = 2
-	} else if tLetBall <= 0.75 {
-		sectionBlock1 = 3
-	} else if tLetBall <= 1 {
-		sectionBlock1 = 4
+	if 0 < tLetBall && tLetBall < (0.25*xishu_suffix) {
+		sectionBlock2 = 1
+	} else if (0.25*xishu_prefix) < tLetBall && tLetBall < (0.5*xishu_suffix) {
+		sectionBlock2 = 2
+	} else if (0.5*xishu_prefix) < tLetBall && tLetBall < (0.75*xishu_suffix) {
+		sectionBlock2 = 3
+	} else if (0.75*xishu_prefix) < tLetBall && tLetBall < (1*xishu_suffix) {
+		sectionBlock2 = 4
+	} else if (1*xishu_prefix) < tLetBall && tLetBall < (1.25*xishu_suffix) {
+		sectionBlock2 = 5
+	} else if (1.25*xishu_prefix) < tLetBall && tLetBall < (1.5*xishu_suffix) {
+		sectionBlock2 = 6
+	} else if (1.5*xishu_prefix) < tLetBall && tLetBall < (1.75*xishu_suffix) {
+		sectionBlock2 = 7
 	}
 
 	//看两个区间是否属于同一个区间
