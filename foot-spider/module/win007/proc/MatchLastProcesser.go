@@ -29,6 +29,8 @@ type MatchPageProcesser struct {
 	win007Id_leagueId_map map[string]string
 	//比赛数据
 	matchLast_list []*pojo.MatchLast
+	//比赛级别
+	MatchLevel int
 }
 
 func GetMatchPageProcesser() *MatchPageProcesser {
@@ -112,6 +114,10 @@ func (this *MatchPageProcesser) league_process(rawText string) {
 		league := new(entity2.League)
 		league.Id = win007Id
 		league.Name = name
+		if this.MatchLevel > 0 {
+			//设置联赛级别
+			league.LevelAssist = 10000
+		}
 		//league.Ext = make(map[string]interface{})
 		//league.Ext["win007Id"] = win007Id
 		this.win007Id_leagueId_map[win007Id] = league.Id

@@ -14,6 +14,7 @@ type League struct {
 
 	//联赛级别
 	Level int `xorm:" comment('联赛级别') index"`
+	LevelAssist int `xorm:" comment('联赛级别') index"`
 
 	//联赛官网
 	Website string	`xorm:" comment('联赛官网')"`

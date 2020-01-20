@@ -78,8 +78,11 @@ func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
 SELECT 
   la.* 
 FROM
-  foot.t_match_last la 
-  WHERE la.MatchDate > DATE_SUB(NOW(), INTERVAL 2 HOUR)
+  foot.t_match_last la,
+  foot.t_league l 
+WHERE la.LeagueId = l.Id 
+  AND l.LevelAssist > 0  
+  AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 2 HOUR)
 	`
 	//结果值
 	dataList := make([]*pojo.MatchLast, 0)

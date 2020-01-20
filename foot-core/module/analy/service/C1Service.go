@@ -3,6 +3,7 @@ package service
 import (
 	"math"
 	"strconv"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
@@ -31,11 +32,11 @@ func (this *C1Service) ModelName() string {
 func (this *C1Service) Analy(analyAll bool) {
 	var matchLasts []*pojo.MatchLast
 	if analyAll {
-		matchHis := this.MatchHisService.FindAll()
-		for _, e := range matchHis {
-			matchLasts = append(matchLasts, &e.MatchLast)
-		}
-		//matchLasts = this.MatchLastService.FindAll()
+		//matchHis := this.MatchHisService.FindAll()
+		//for _, e := range matchHis {
+		//	matchLasts = append(matchLasts, &e.MatchLast)
+		//}
+		matchLasts = this.MatchLastService.FindAll()
 	} else {
 		matchLasts = this.MatchLastService.FindNotFinished()
 	}
@@ -210,13 +211,24 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
-	//如果主队下一场打客场,战意充足
-	if v.MainTeamId == bffe_main.EventGuestTeamId {
-		letBall += baseVal
+
+	if strings.ContainsAny(bffe_main.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	} else {
+		//如果主队下一场打客场,战意充足
+		if v.MainTeamId == bffe_main.EventGuestTeamId {
+			letBall += baseVal
+		}
 	}
-	//如果客队下一场打主场，战意懈怠
-	if v.GuestTeamId == bffe_guest.EventMainTeamId {
-		letBall += baseVal
+	if strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	} else {
+		//如果客队下一场打主场，战意懈怠
+		if v.GuestTeamId == bffe_guest.EventMainTeamId {
+			letBall += baseVal
+		}
 	}
 
 	//判断主队是否是让球方

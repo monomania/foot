@@ -19,11 +19,11 @@ func Before_spider_match(){
 }
 
 //抓取比赛数据
-func Spider_match(flag int) {
+func Spider_match(matchLevel int) {
 	//开始抓取比赛数据
 	strings := make([]string, 0)
 	//0全部，1一级，2足彩，3竞猜，4单场
-	if flag == 0{
+	if matchLevel == 0{
 	 strings = append(strings, "http://m.win007.com/phone/Schedule_0_0.txt")
 	}
 	//1一级
@@ -33,12 +33,13 @@ func Spider_match(flag int) {
 	//3竞猜
 	//strings = append(strings, "http://m.win007.com/phone/Schedule_0_3.txt")
 	//4单场
-	if flag == 4 {
+	if matchLevel == 4 {
 		strings = append(strings, "http://m.win007.com/phone/Schedule_0_4.txt")
 	}
 	for _, v := range strings {
 		processer := proc.GetMatchPageProcesser()
 		processer.MatchlastUrl = v
+		processer.MatchLevel = matchLevel
 		processer.Startup()
 	}
 }
