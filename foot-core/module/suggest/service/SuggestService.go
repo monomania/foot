@@ -195,30 +195,33 @@ WHERE mh.LeagueId = l.Id
 		}
 		//过往战绩
 		bfbList := this.BFBattleService.FindByMatchId(matchId)
+		battleCount := 0
 		mainWin := 0
-		draw := 0
+		drawCount := 0
 		guestWin := 0
 		for _, e := range bfbList {
-			if e.BattleMainTeamGoals == e.BattleGuestTeamGoals {
-				draw++
-			} else {
-				if e.BattleMainTeamId == v.MainTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
-					mainWin++
-				}
-				if e.BattleGuestTeamId == v.MainTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
-					mainWin++
-				}
-				if e.BattleMainTeamId == v.GuestTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
-					guestWin++
-				}
-				if e.BattleGuestTeamId == v.GuestTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
-					guestWin++
-				}
+			if e.BattleMainTeamId == v.MainTeam || e.BattleMainTeamId == v.GuestTeam {
+				battleCount++
+			}
+			if e.BattleMainTeamId == v.MainTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+				mainWin++
+			}
+			if e.BattleGuestTeamId == v.MainTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+				mainWin++
+			}
+			if e.BattleMainTeamId == v.GuestTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+				guestWin++
+			}
+			if e.BattleGuestTeamId == v.GuestTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+				guestWin++
+			}
+			if (e.BattleMainTeamId == v.MainTeam || e.BattleMainTeamId == v.GuestTeam) && e.BattleMainTeamGoals == e.BattleGuestTeamGoals {
+				drawCount++
 			}
 		}
-		v.BattleCount = len(bfbList)
+		v.BattleCount = battleCount
 		v.BattleMainWinCount = mainWin
-		v.BattleDrawCount = draw
+		v.BattleDrawCount = drawCount
 		v.BattleGuestWinCount = guestWin
 		//未来赛事
 		bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeam)

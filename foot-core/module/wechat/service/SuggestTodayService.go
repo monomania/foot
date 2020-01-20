@@ -262,8 +262,8 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 		"assets/wechat/html/today_detail_new.html",
 		"assets/common/template/analycontent/001.html",
 		"assets/common/template/analycontent/002.html",
-		"assets/common/template/analycontent/003.html",
 		"assets/common/template/analycontent/004.html",
+		"assets/common/template/analycontent/005.html",
 		"assets/common/template/analycontent/footer.html",
 		"assets/common/template/analycontent/wechat_today_detail_new.html",
 	}

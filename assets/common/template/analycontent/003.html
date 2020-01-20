@@ -1,11 +1,2 @@
-{{if eq .MainTeam .MainNextMainTeam }}
-下场赛事,主队继续坐阵主场,具备有一定的心理优势.
-{{else}}
-下场赛事,主队转圜客场,本场不容有失.
-{{end}}
-
-{{if eq .GuestTeam .GuestNextMainTeam }}
-下场赛事,客队转回主场作战.
-{{else}}
-下场赛事,客队继续转圜其他客场,不免受行程疲惫影响.
-{{end}}
+{{.MainTeam}}近{{.BFSMainJin.MatchCount}}场,取得{{.BFSMainJin.WinCount}}胜,{{.BFSMainJin.DrawCount}}平,{{.BFSMainJin.FailCount}}负.
+{{.GuestTeam}}近{{.BFSGuestJin.MatchCount}}场,取得{{.BFSGuestJin.WinCount}}胜,{{.BFSGuestJin.DrawCount}}平,{{.BFSGuestJin.FailCount}}负.

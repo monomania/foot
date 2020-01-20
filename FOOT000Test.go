@@ -24,7 +24,7 @@ func Decimal(value float64) float64 {
 
 
 func main(){
-	new(service.SuggestTodayService).ModifyTodayDetailNew()
+	new(service.SuggestTodayService).ModifyTodayDetailNew(nil)
 }
 
 //func main() {
