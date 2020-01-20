@@ -3,8 +3,6 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"os"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/common/routers"
 )
 
@@ -14,16 +12,6 @@ func init() {
 }
 
 func main() {
-	base.Log.Info(1)
-	base.Log.Info(2)
-	base.Log.Info(3)
-	base.Log.Info(4)
-	base.Log.Info(5)
-	_, err := os.Stat("abss")
-	if err != nil {
-		base.Log.Error(err)
-	}
-
 	beeRun()
 
 }

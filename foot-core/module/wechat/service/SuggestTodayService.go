@@ -6,6 +6,7 @@ import (
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
 	"html/template"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
@@ -257,8 +258,19 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
+	teplate_paths := []string{
+		"assets/wechat/html/today_detail_new.html",
+		"assets/common/template/analycontent/001.html",
+		"assets/common/template/analycontent/002.html",
+		"assets/common/template/analycontent/003.html",
+		"assets/common/template/analycontent/004.html",
+		"assets/common/template/analycontent/footer.html",
+		"assets/common/template/analycontent/wechat_today_detail_new.html",
+	}
+
 	var buf bytes.Buffer
-	tpl, err := template.New("today_detail.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_detail.html")
+	tpl, err := template.New("today_detail_new.html").Funcs(getFuncMap()).ParseFiles(teplate_paths...)
+	//tpl, err := template.New("wechat_today_detail_new.html").Funcs(getFuncMap()).ParseFiles("assets/common/template/wechat_today_detail_new.html")
 	if err != nil {
 		base.Log.Error(err)
 	}
@@ -266,6 +278,8 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 		base.Log.Fatal(err)
 	}
 	first.Content = buf.String()
+	first.Content = strings.TrimSpace(first.Content)
+	first.Content = strings.ReplaceAll(first.Content,"\r\n","")
 
 	err = material.UpdateNews(wcClient, today_mediaId, 1, &first)
 	if err != nil {

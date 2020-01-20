@@ -15,7 +15,7 @@ func (this *MaterialService) ModifyNews(wcClient *core.Client) {
 	this.SuggestTodayService.ModifyTodayA1(wcClient)
 	this.SuggestTodayService.ModifyTodayC1(wcClient)
 	this.SuggestTodayService.ModifyToday(wcClient)
-	this.SuggestTodayService.ModifyTodayDetail(wcClient)
+	this.SuggestTodayService.ModifyTodayDetailNew(wcClient)
 
 	this.SuggestWeekService.ModifyWeek(wcClient)
 	this.SuggestMonthService.ModifyMonth(wcClient)

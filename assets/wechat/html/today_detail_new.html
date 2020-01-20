@@ -1,0 +1,50 @@
+<div>
+    <img src="http://mmbiz.qpic.cn/sz_mmbiz_gif/BePaFicK2B5R6lNrnAdOpR63megZibx7GnwXTAl2yZTEibKIbCFrs0QpsmOWG0CrxWEicHldX2ibqva6Ise5G5vILCQ/0?wx_fmt=gif"/>
+</div>
+<h1 style="color: red;font-weight: bold;font-size: 12px"><strong>注意</strong></h1>
+<ul style="color: red;font-weight: bold;font-size: 12px">
+    <li><strong>1.比赛为程序自动处理,自动更新同步,目前更新周期为60分钟一次,临场比赛(30分钟内开赛)为5分钟一次.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)2.获取最新推荐请点击"今日推荐"菜单按钮.</strong></li>
+    <li><strong>3.推荐的场次为当前时间"往前推24个小时"至"往后推24小时"的场次.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)4.推荐的场次会随指数的变化而变化(即时盘),如再次进入不见上次推荐的比赛,请查看"待选场次".</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)5.以下推荐的场次,当前己被模型认可.如后续被认可失败,则会下放到"待选场次"中.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型为E2,请重点关注.</strong></li>
+    <li><strong>7.推荐选项跟着的字母,如A1 A2 E1 E2,为算法模型标识,仅是为了方便观察不同模型的表现.</strong></li>
+</ul>
+<hr/>
+<ul style="font-size: 12px;font-weight: lighter">
+    <li><strong>全量爬取时间:{{.FullSpiderDateStr}}</strong></li>
+    <li><strong>临场爬取时间:{{.SpiderDateStr}}</strong></li>
+    <li><strong>微信同步时间:{{.DataDateStr}}</strong></li>
+    <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
+</ul>
+<hr/>
+{{if .DataList}}
+    {{with .DataList}}
+    {{range .}}
+    <ul style="font-size: 12px;font-weight: lighter">
+        <li>比赛时间:{{.MatchDateStr}}</li>
+        <li>联　　赛:{{.LeagueName}}</li>
+        <li>对阵双方:{{.MainTeam}}({{.LetBall}}){{.GuestTeam}}</li>
+        <li>算法模型:<span style="color: {{color .AlFlag}}">{{.AlFlag}}</span></li>
+        <li>球探指数:{{.HitCount}}<span style="color: red;font-weight: bold;">(指数越大,越稳定)</span></li>
+        <li>推荐选项:{{preResultStr .PreResult .AlFlag}}</li>
+        <li>说　　明:
+            {{if eq .AlFlag "E2"}}
+            <span style="color: red;font-weight: bold;">程序只分析预测胜负,平局仅作为次防选项.</span>
+            {{end}}
+        </li>
+        <li>分　　析:
+            {{ template "wechat_today_detail_new.html" . }}
+        </li>
+    </ul>
+    <hr/>
+    {{end}}
+    {{end}}
+{{else}}
+<span style="color: red;font-weight: bold;font-size: 12px">暂时没有符合模型的比赛推荐,感谢关注~~~</span>
+{{end}}
+
+
+<br/>
+<span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>

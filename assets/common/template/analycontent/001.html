@@ -1,7 +1,7 @@
 {{.MainTeam}}
-积{{range .BFSMainZong}}{{.Score}}{{end}}分,
-现居排行榜{{range .BFSMainZong}}{{.Ranking}}{{end}}名,
+积{{.BFSMainZong.Score}}分,
+现居排行榜{{.BFSMainZong.Ranking}}名,
 
 {{.GuestTeam}}
-积{{range .BFSGuestZong}}{{.Score}}{{end}}分,
-现居排行榜{{range .BFSGuestZong}}{{.Ranking}}{{end}}名.
+积{{.BFSGuestZong.Score}}分,
+现居排行榜{{.BFSGuestZong.Ranking}}名,

@@ -2,13 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/chanxuehong/wechat/mp/material"
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
-	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
-	"tesou.io/platform/foot-parent/foot-core/module/suggest/service"
-	"time"
+	"tesou.io/platform/foot-parent/foot-core/module/wechat/service"
 )
 
 func abort(funcname string, err string) {
@@ -29,38 +24,7 @@ func Decimal(value float64) float64 {
 
 
 func main(){
-
-	fmt.Println(Decimal(0.65454545))
-
-	param := new(vo.SuggStubDetailVO)
-	now := time.Now()
-	h12, _ := time.ParseDuration("-24h")
-	beginDate := now.Add(h12)
-	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
-	h12, _ = time.ParseDuration("24h")
-	endDate := now.Add(h12)
-	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	//今日推荐
-	param.AlFlag = "'A1','E2'"
-	suggestService := service.SuggestService{}
-	tempList := suggestService.QueryDetail(param)
-	//更新推送
-	first := material.Article{}
-	first.Title = fmt.Sprintf("赛事解析")
-	first.Digest = fmt.Sprintf("赛事的模型算法解析")
-	first.Author = utils.GetVal("wechat", "author")
-
-	temp := vo.TTodayDetailVO{}
-	temp.SpiderDateStr = constants.SpiderDateStr
-	temp.FullSpiderDateStr = constants.FullSpiderDateStr
-	temp.BeginDateStr = param.BeginDateStr
-	temp.EndDateStr = param.EndDateStr
-	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggStubDetailVO, len(tempList))
-	for i, e := range tempList {
-		e.MatchDateStr = e.MatchDate.Format("02号15:04")
-		temp.DataList[i] = *e
-	}
+	new(service.SuggestTodayService).ModifyTodayDetailNew()
 }
 
 //func main() {

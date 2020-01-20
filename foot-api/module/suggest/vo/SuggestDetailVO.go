@@ -37,18 +37,20 @@ type SuggStubDetailVO struct {
 	AsiaOdd *pojo2.AsiaLast
 
 	//主队积分排名
-	BFSMainZong *pojo3.BFScore
-	BFSMainZhu  *pojo3.BFScore
-	BFSMainJin  *pojo3.BFScore
-
 	//客队积分排名
+	BFSMainZong  *pojo3.BFScore
+	BFSMainZhu   *pojo3.BFScore
+	BFSMainJin   *pojo3.BFScore
 	BFSGuestZong *pojo3.BFScore
 	BFSGuestKe   *pojo3.BFScore
 	BFSGuestJin  *pojo3.BFScore
+
 	//过往战绩对阵
 	BattleCount         int
 	BattleMainWinCount  int
+	BattleDrawCount  int
 	BattleGuestWinCount int
+
 	//下一场比赛
 	MainNextMainTeam  string
 	GuestNextMainTeam string

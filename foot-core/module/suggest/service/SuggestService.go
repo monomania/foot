@@ -166,6 +166,65 @@ WHERE mh.LeagueId = l.Id
 	//	bffeList := this.BFFutureEventService.FindByMatchId(matchId)
 	//
 	//}
-
+	for _, v := range entitys {
+		matchId := v.MatchId
+		//积分,排名
+		bfsList := this.BFScoreService.FindByMatchId(matchId)
+		for _, e := range bfsList { //bfs_arr有多语言版本,条数很多
+			if e.TeamId == v.MainTeam {
+				if e.Type == "总" {
+					v.BFSMainZong = e
+				}
+				if e.Type == "主" {
+					v.BFSMainZhu = e
+				}
+				if e.Type == "近" {
+					v.BFSMainJin = e
+				}
+			} else if e.TeamId == v.GuestTeam {
+				if e.Type == "总" {
+					v.BFSGuestZong = e
+				}
+				if e.Type == "客" {
+					v.BFSGuestKe = e
+				}
+				if e.Type == "近" {
+					v.BFSGuestJin = e
+				}
+			}
+		}
+		//过往战绩
+		bfbList := this.BFBattleService.FindByMatchId(matchId)
+		mainWin := 0
+		draw := 0
+		guestWin := 0
+		for _, e := range bfbList {
+			if e.BattleMainTeamGoals == e.BattleGuestTeamGoals {
+				draw++
+			} else {
+				if e.BattleMainTeamId == v.MainTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+					mainWin++
+				}
+				if e.BattleGuestTeamId == v.MainTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+					mainWin++
+				}
+				if e.BattleMainTeamId == v.GuestTeam && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+					guestWin++
+				}
+				if e.BattleGuestTeamId == v.GuestTeam && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+					guestWin++
+				}
+			}
+		}
+		v.BattleCount = len(bfbList)
+		v.BattleMainWinCount = mainWin
+		v.BattleDrawCount = draw
+		v.BattleGuestWinCount = guestWin
+		//未来赛事
+		bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeam)
+		bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeam)
+		v.MainNextMainTeam = bffe_main.EventMainTeamId
+		v.GuestNextMainTeam = bffe_guest.EventMainTeamId
+	}
 	return entitys
 }
