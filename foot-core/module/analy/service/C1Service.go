@@ -32,11 +32,11 @@ func (this *C1Service) ModelName() string {
 func (this *C1Service) Analy(analyAll bool) {
 	var matchLasts []*pojo.MatchLast
 	if analyAll {
-		//matchHis := this.MatchHisService.FindAll()
-		//for _, e := range matchHis {
-		//	matchLasts = append(matchLasts, &e.MatchLast)
-		//}
-		matchLasts = this.MatchLastService.FindAll()
+		matchHis := this.MatchHisService.FindAll()
+		for _, e := range matchHis {
+			matchLasts = append(matchLasts, &e.MatchLast)
+		}
+		//matchLasts = this.MatchLastService.FindAll()
 	} else {
 		matchLasts = this.MatchLastService.FindNotFinished()
 	}
@@ -125,14 +125,14 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//得出结果
-	var preResult int
+	preResult := -1
 	letBall := 0.00
 	//------
 	bfs_arr := this.BFScoreService.FindByMatchId(matchId)
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1734290" {
+	if matchId == "1723449" {
 		base.Log.Info("-")
 	}
 	var temp_val float64
@@ -214,7 +214,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	if strings.ContainsAny(bffe_main.EventLeagueId, "杯") {
 		//下一场打杯赛
-		return -3, nil
+		//return -3, nil
 	} else {
 		//如果主队下一场打客场,战意充足
 		if v.MainTeamId == bffe_main.EventGuestTeamId {
@@ -223,7 +223,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	if strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
 		//下一场打杯赛
-		return -3, nil
+		//return -3, nil
 	} else {
 		//如果客队下一场打主场，战意懈怠
 		if v.GuestTeamId == bffe_guest.EventMainTeamId {
@@ -249,7 +249,8 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//区间段
 	var sectionBlock1, sectionBlock2 int
-	maxLetBall := math.Max(sLetBall, eLetBall)
+	//maxLetBall := math.Max(sLetBall, eLetBall)
+	maxLetBall := eLetBall
 	if maxLetBall <= 0.25 {
 		//0 - 0
 		//0 - 0.25
@@ -273,38 +274,48 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//--------
 	tLetBall := math.Abs(letBall)
 	if tLetBall <= 0.25 {
-		sectionBlock1 = 1
+		sectionBlock2 = 1
 	} else if tLetBall <= 0.5 {
-		sectionBlock1 = 2
+		sectionBlock2 = 2
 	} else if tLetBall <= 0.75 {
-		sectionBlock1 = 3
+		sectionBlock2 = 3
 	} else if tLetBall <= 1 {
-		sectionBlock1 = 4
+		sectionBlock2 = 4
 	}
 
 	//看两个区间是否属于同一个区间
-	if sectionBlock1 == sectionBlock2 {
-		if mainLetball && letBall >= 0 {
+	sectionBlock := math.Abs(float64(sectionBlock1) - float64(sectionBlock2))
+	//看两个区间是否属于同一个区间
+	if sectionBlock <= 0.0 {
+		if mainLetball && letBall >= 0 && a18betData.ELetBall >= a18betData.SLetBall {
 			preResult = 3
-		} else if !mainLetball && letBall <= 0 {
+		} else if !mainLetball && letBall <= 0 && a18betData.ELetBall <= a18betData.SLetBall {
 			preResult = 0
-		} else {
-			return -3, nil
 		}
-	} else {
-		sectionBlock := math.Abs(float64(sectionBlock1) - float64(sectionBlock2))
-		if sectionBlock <= 1.0 {
-			if mainLetball && letBall >= 0 {
-				preResult = 3
-			} else if !mainLetball && letBall <= 0 {
-				preResult = 0
-			} else {
-				return -3, nil
-			}
-		} else {
-			return -3, nil
+	} else if sectionBlock <= 1.0 {
+		if mainLetball && letBall >= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
+			preResult = 3
+		} else if !mainLetball && letBall <= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
+			preResult = 0
 		}
 	}
+
+	if preResult < 0 {
+		return -3, nil
+	}
+
+	if matchId == "1723449" {
+		base.Log.Info("-")
+	}
+
+	if preResult == 3 && strings.ContainsAny(bffe_main.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	} else if preResult == 0 && strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	}
+
 	base.Log.Info("所属于区间:", sectionBlock1, "-", sectionBlock2, ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18betData.SLetBall, ",即时盘让球:", a18betData.ELetBall)
 	var data *entity5.AnalyResult
 	temp_data := this.Find(v.Id, this.ModelName())
