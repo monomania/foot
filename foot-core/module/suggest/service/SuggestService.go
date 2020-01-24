@@ -2,6 +2,7 @@ package service
 
 import (
 	"strconv"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	vo2 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
@@ -170,29 +171,50 @@ WHERE mh.LeagueId = l.Id
 		matchId := v.MatchId
 		//积分,排名
 		bfsList := this.BFScoreService.FindByMatchId(matchId)
-		for _, e := range bfsList { //bfs_arr有多语言版本,条数很多
-			if e.TeamId == v.MainTeam {
-				if e.Type == "总" {
-					v.BFSMainZong = e
-				}
-				if e.Type == "主" {
-					v.BFSMainZhu = e
-				}
-				if e.Type == "近" {
-					v.BFSMainJin = e
-				}
-			} else if e.TeamId == v.GuestTeam {
-				if e.Type == "总" {
-					v.BFSGuestZong = e
-				}
-				if e.Type == "客" {
-					v.BFSGuestKe = e
-				}
-				if e.Type == "近" {
-					v.BFSGuestJin = e
+		if len(bfsList) > 0 {
+			for _, e := range bfsList { //bfs_arr有多语言版本,条数很多
+				if e.TeamId == v.MainTeam {
+					if e.Type == "总" {
+						v.BFSMainZong = e
+					}
+					if e.Type == "主" {
+						v.BFSMainZhu = e
+					}
+					if e.Type == "近" {
+						v.BFSMainJin = e
+					}
+				} else if e.TeamId == v.GuestTeam {
+					if e.Type == "总" {
+						v.BFSGuestZong = e
+					}
+					if e.Type == "客" {
+						v.BFSGuestKe = e
+					}
+					if e.Type == "近" {
+						v.BFSGuestJin = e
+					}
 				}
 			}
 		}
+		if nil == v.BFSMainZong {
+			v.BFSMainZong = new(pojo.BFScore)
+		}
+		if nil == v.BFSMainZhu {
+			v.BFSMainZhu = new(pojo.BFScore)
+		}
+		if nil == v.BFSMainJin {
+			v.BFSMainJin = new(pojo.BFScore)
+		}
+		if nil == v.BFSGuestZong {
+			v.BFSGuestZong = new(pojo.BFScore)
+		}
+		if nil == v.BFSGuestKe {
+			v.BFSGuestKe = new(pojo.BFScore)
+		}
+		if nil == v.BFSGuestJin {
+			v.BFSGuestJin = new(pojo.BFScore)
+		}
+
 		//过往战绩
 		bfbList := this.BFBattleService.FindByMatchId(matchId)
 		battleCount := 0
@@ -225,9 +247,13 @@ WHERE mh.LeagueId = l.Id
 		v.BattleGuestWinCount = guestWin
 		//未来赛事
 		bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeam)
+		if nil != bffe_main {
+			v.MainNextMainTeam = bffe_main.EventMainTeamId
+		}
 		bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeam)
-		v.MainNextMainTeam = bffe_main.EventMainTeamId
-		v.GuestNextMainTeam = bffe_guest.EventMainTeamId
+		if nil != bffe_main {
+			v.GuestNextMainTeam = bffe_guest.EventMainTeamId
+		}
 	}
 	return entitys
 }
