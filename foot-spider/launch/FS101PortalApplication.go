@@ -42,6 +42,13 @@ func Spider() {
 func Spider_Near() {
 	//记录数据爬取时间
 	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
+
+	matchLevelStr := utils.GetVal("spider", "match_level")
+	if len(matchLevelStr) <= 0 {
+		matchLevelStr = "4"
+	}
+	matchLevel, _ := strconv.Atoi(matchLevelStr)
+	Spider_match(matchLevel)
 	//基本面不会改变
 	//Spider_baseFace_near()
 	Spider_asiaLastNew_near()

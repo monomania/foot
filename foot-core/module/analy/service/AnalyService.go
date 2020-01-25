@@ -40,6 +40,53 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	return dataList
 }
 
+
+/**
+更新结果
+ */
+func (this *AnalyService) ModifyAllResult() {
+	sql_build := `
+SELECT 
+  ar.* 
+FROM
+  foot.t_analy_result ar 
+     `
+	//结果值
+	entitys := make([]*entity5.AnalyResult, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &entitys)
+
+	if len(entitys) <= 0 {
+		return
+	}
+	for _, e := range entitys {
+		aList := this.AsiaHisService.FindByMatchIdCompId(e.MatchId, constants.DEFAULT_REFER_ASIA)
+		if nil == aList || len(aList) < 1 {
+			aList = make([]*entity3.AsiaHis, 1)
+			aList[0] = new(entity3.AsiaHis)
+		}
+		his := this.MatchHisService.FindById(e.MatchId)
+		if nil == his {
+			continue
+		}
+		last := new(entity2.MatchLast)
+		last.MatchDate = his.MatchDate
+		last.DataDate = his.DataDate
+		last.LeagueId = his.LeagueId
+		last.MainTeamId = his.MainTeamId
+		last.MainTeamGoals = his.MainTeamGoals
+		last.GuestTeamId = his.GuestTeamId
+		last.GuestTeamGoals = his.GuestTeamGoals
+		if e.AlFlag == "E2" {
+			//E2使用特别自身的验证结果方法
+			e.Result = new(E2Service).IsRight(last, e)
+		} else {
+			e.Result = this.IsRight(last, e)
+		}
+		this.Modify(e)
+	}
+}
+
 /**
 更新结果
  */
@@ -86,7 +133,6 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 		}
 		this.Modify(e)
 	}
-
 }
 
 /**
