@@ -4,7 +4,6 @@ import (
 	"math"
 	"strconv"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -168,35 +167,3 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 }
 
-func (this *E2Service) IsRight(v *pojo.MatchLast, analy *entity5.AnalyResult) string {
-	//比赛结果
-	var globalResult int
-	h2, _ := time.ParseDuration("128m")
-	matchDate := v.MatchDate.Add(h2)
-	if matchDate.After(time.Now()) {
-		//比赛未结束
-		globalResult = -1
-	} else {
-		if v.MainTeamGoals > v.GuestTeamGoals {
-			globalResult = 3
-		} else if v.MainTeamGoals < v.GuestTeamGoals {
-			globalResult = 0
-		} else {
-			globalResult = 1
-		}
-	}
-	var resultFlag string
-	if globalResult == -1 {
-		resultFlag = constants.UNCERTAIN
-	} else if globalResult == analy.PreResult || globalResult == 1 {
-		resultFlag = constants.HIT
-	} else {
-		resultFlag = constants.UNHIT
-	}
-
-	//打印数据
-	league := this.LeagueService.FindById(v.LeagueId)
-	matchDateStr := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
-	return resultFlag
-}

@@ -77,9 +77,9 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" {
+		if e.AlFlag == "E2" || e.AlFlag == "C1"{
 			//E2使用特别自身的验证结果方法
-			e.Result = new(E2Service).IsRight(last, e)
+			e.Result = this.IsRight2Option(last, e)
 		} else {
 			e.Result = this.IsRight(last, e)
 		}
@@ -125,9 +125,9 @@ WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 2 HOUR)
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" {
+		if e.AlFlag == "E2" || e.AlFlag == "C1"{
 			//E2使用特别自身的验证结果方法
-			e.Result = new(E2Service).IsRight(last, e)
+			e.Result = this.IsRight2Option(last, e)
 		} else {
 			e.Result = this.IsRight(last, e)
 		}
@@ -203,6 +203,40 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
+
+func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
+	//比赛结果
+	var globalResult int
+	h2, _ := time.ParseDuration("240m")
+	matchDate := v.MatchDate.Add(h2)
+	if matchDate.After(time.Now()) {
+		//比赛未结束
+		globalResult = -1
+	} else {
+		if v.MainTeamGoals > v.GuestTeamGoals {
+			globalResult = 3
+		} else if v.MainTeamGoals < v.GuestTeamGoals {
+			globalResult = 0
+		} else {
+			globalResult = 1
+		}
+	}
+	var resultFlag string
+	if globalResult == -1 {
+		resultFlag = constants.UNCERTAIN
+	} else if globalResult == analy.PreResult || globalResult == 1 {
+		resultFlag = constants.HIT
+	} else {
+		resultFlag = constants.UNHIT
+	}
+
+	//打印数据
+	league := this.LeagueService.FindById(v.LeagueId)
+	matchDateStr := v.MatchDate.Format("2006-01-02 15:04:05")
+	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	return resultFlag
+}
+
 func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	globalResult := this.ActualResult(last, analy)
@@ -229,7 +263,7 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 */
 func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
-	h2, _ := time.ParseDuration("128m")
+	h2, _ := time.ParseDuration("240m")
 	matchDate := last.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束
