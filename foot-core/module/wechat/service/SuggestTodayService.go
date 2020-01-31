@@ -94,6 +94,7 @@ func getMainAlFlag() string {
 const contentSourceURL = "https://github.com/monomania/foot"
 const today_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEuxc8rI6Dy-bm5n3yZbsuJA"
 const today_detail_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
+const today_c1_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEgIU_dXnFnXHvYzocwCpkM4"
 const today_tbs_thumbMediaId = "chP-LBQxy9SVbAFjwZ4QEpOPdIm42ibP0pbNFt6VtAI"
 const today_mediaId = "chP-LBQxy9SVbAFjwZ4QEoZGbUZaNED2Mf9jJauKvGo"
 
@@ -403,9 +404,9 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
-	first.Title = fmt.Sprintf("待选场次-C1")
+	first.Title = fmt.Sprintf("推荐场次-C1")
 	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = today_tbs_thumbMediaId
+	first.ThumbMediaId = today_c1_thumbMediaId
 	first.ContentSourceURL = contentSourceURL
 	first.Author = utils.GetVal("wechat", "author")
 
