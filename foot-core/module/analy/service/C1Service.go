@@ -321,7 +321,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	temp_data := this.Find(v.Id, this.ModelName())
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
-		temp_data.HitCount = temp_data.HitCount + 1
+		temp_data.HitCount = temp_data.HitCount + 10
 		temp_data.LetBall = a18betData.ELetBall
 		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
@@ -337,7 +337,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
-		data.HitCount = 1
+		data.HitCount = 10
 		data.LetBall = a18betData.ELetBall
 		data.MyLetBall = Decimal(letBall)
 		//比赛结果

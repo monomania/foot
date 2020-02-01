@@ -96,8 +96,7 @@ SELECT
   ar.* 
 FROM
   foot.t_analy_result ar 
-WHERE ar.MatchDate < DATE_SUB(NOW(), INTERVAL 3 HOUR)
-  AND ar.Result = '待定' 
+WHERE DATE_ADD(ar.MatchDate, INTERVAL 3 HOUR) > NOW()
      `
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
