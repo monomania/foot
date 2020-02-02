@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-core/module/wechat/service"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 )
 
 func abort(funcname string, err string) {
@@ -24,7 +24,8 @@ func Decimal(value float64) float64 {
 
 
 func main(){
-	new(service.SuggestTodayService).ModifyTodayDetailNew(nil)
+	flag := new(service2.AnalyService).FindOtherAlFlag("1721915", "C1", 3)
+	fmt.Println(flag)
 }
 
 //func main() {

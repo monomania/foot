@@ -40,6 +40,28 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	return dataList
 }
 
+/**
+C1使用的检查是否存在其他模型存在互斥选项
+ */
+func (this *AnalyService) FindOtherAlFlag(matchId string, alFlag string, preResult int) bool {
+	sql_build := `
+SELECT 
+  ar.* 
+FROM
+  foot.t_analy_result ar 
+WHERE ar.MatchId = ? 
+  AND ar.AlFlag != ? 
+  AND ar.PreResult != ?
+     `
+	//结果值
+	entitys := make([]*vo.AnalyResultVO, 0)
+	//执行查询
+	mysql.GetEngine().SQL(sql_build, matchId, alFlag, preResult).Find(&entitys)
+	if len(entitys) > 0 {
+		return true
+	}
+	return false
+}
 
 /**
 更新结果
@@ -77,7 +99,7 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" || e.AlFlag == "C1"{
+		if e.AlFlag == "E2" || e.AlFlag == "C1" {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -124,7 +146,7 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 3 HOUR) > NOW()
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" || e.AlFlag == "C1"{
+		if e.AlFlag == "E2" || e.AlFlag == "C1" {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -202,11 +224,10 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
-
 func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	var globalResult int
-	h2, _ := time.ParseDuration("240m")
+	h2, _ := time.ParseDuration("158m")
 	matchDate := v.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束
@@ -262,7 +283,7 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 */
 func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
-	h2, _ := time.ParseDuration("240m")
+	h2, _ := time.ParseDuration("158m")
 	matchDate := last.MatchDate.Add(h2)
 	if matchDate.After(time.Now()) {
 		//比赛未结束

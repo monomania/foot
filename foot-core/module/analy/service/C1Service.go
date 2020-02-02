@@ -65,6 +65,13 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			} else {
 				data.THitCount = 1
 			}
+			//如其他模型存在互斥选项，设置为作废
+			diff_preResult := this.FindOtherAlFlag(data.MatchId, data.AlFlag, data.PreResult)
+			if diff_preResult{
+				data.TOVoid = true
+				data.TOVoidDesc = "与其他模型互斥"
+			}
+
 			if stub == 0 {
 				data_list_slice = append(data_list_slice, data)
 			} else if stub == 1 {
@@ -326,7 +333,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		data.Result = this.IsRight2Option(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -341,7 +348,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.LetBall = a18betData.ELetBall
 		data.MyLetBall = Decimal(letBall)
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		data.Result = this.IsRight2Option(v, data)
 		return 0, data
 	}
 
