@@ -84,6 +84,7 @@ WHERE mh.LeagueId = l.Id
   AND mh.Id = ar.MatchId
   AND ar.HitCount > 0 
   AND ar.HitCount >= ar.THitCount
+  AND ar.TOVoid IS FALSE
 	`
 	if param.HitCount > 0 {
 		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "

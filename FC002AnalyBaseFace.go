@@ -14,7 +14,7 @@ func main() {
 	base.Log.Info("---------------------------------------------------------------")
 	c1 := new(service.C1Service)
 	c1.MaxLetBall = 1
-	c1.Analy(false)
+	c1.Analy(true)
 	//关闭SQL输出
 	mysql.ShowSQL(true)
 }
