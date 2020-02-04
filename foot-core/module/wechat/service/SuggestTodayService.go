@@ -173,6 +173,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	}
 }
 
+
 /**
 今日赛事分析
  */
@@ -223,58 +224,6 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
-
-/**
-今日C1待选池比赛
- */
-func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
-	param := new(vo.SuggStubVO)
-	now := time.Now()
-	h12, _ := time.ParseDuration("-12h")
-	beginDate := now.Add(h12)
-	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
-	h12, _ = time.ParseDuration("24h")
-	endDate := now.Add(h12)
-	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	param.AlFlags = []string{"C1"}
-	tempList := this.SuggestService.QueryTbs(param)
-	//更新推送
-	first := material.Article{}
-	first.Title = fmt.Sprintf("推荐场次-C1")
-	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
-	first.ThumbMediaId = today_c1_thumbMediaId
-	first.ContentSourceURL = contentSourceURL
-	first.Author = utils.GetVal("wechat", "author")
-
-	temp := vo.TTodayVO{}
-	temp.SpiderDateStr = constants.SpiderDateStr
-	temp.FullSpiderDateStr = constants.FullSpiderDateStr
-	temp.BeginDateStr = param.BeginDateStr
-	temp.EndDateStr = param.EndDateStr
-	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
-	temp.DataList = make([]vo.SuggStubVO, len(tempList))
-	for i, e := range tempList {
-		e.MatchDateStr = e.MatchDate.Format("02号15:04")
-		temp.DataList[i] = *e
-	}
-
-	var buf bytes.Buffer
-	tpl, err := template.New("today_c1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c1.html")
-	if err != nil {
-		base.Log.Error(err)
-	}
-	if err := tpl.Execute(&buf, &temp); err != nil {
-		base.Log.Fatal(err)
-	}
-	first.Content = buf.String()
-
-	err = material.UpdateNews(wcClient, today_mediaId, 1, &first)
-	if err != nil {
-		base.Log.Error(err)
-	}
-}
-
 
 /**
 今日赛事分析
@@ -333,6 +282,107 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 	first.Content = buf.String()
 	first.Content = strings.TrimSpace(first.Content)
 	first.Content = strings.ReplaceAll(first.Content,"\r\n","")
+
+	err = material.UpdateNews(wcClient, today_mediaId, 2, &first)
+	if err != nil {
+		base.Log.Error(err)
+	}
+}
+
+/**
+今日C1比赛
+ */
+func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
+	param := new(vo.SuggStubVO)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-12h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("24h")
+	endDate := now.Add(h12)
+	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
+	param.AlFlags = []string{"C1"}
+	tempList := this.SuggestService.QueryTbs(param)
+	//更新推送
+	first := material.Article{}
+	first.Title = fmt.Sprintf("推荐场次-C1")
+	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
+	first.ThumbMediaId = today_c1_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
+	first.Author = utils.GetVal("wechat", "author")
+
+	temp := vo.TTodayVO{}
+	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
+	for i, e := range tempList {
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
+	}
+
+	var buf bytes.Buffer
+	tpl, err := template.New("today_c1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c1.html")
+	if err != nil {
+		base.Log.Error(err)
+	}
+	if err := tpl.Execute(&buf, &temp); err != nil {
+		base.Log.Fatal(err)
+	}
+	first.Content = buf.String()
+
+	err = material.UpdateNews(wcClient, today_mediaId, 1, &first)
+	if err != nil {
+		base.Log.Error(err)
+	}
+}
+
+
+
+/**
+今日稳胆比赛
+ */
+func (this *SuggestTodayService) ModifyTodayGuts(wcClient *core.Client) {
+	param := new(vo.SuggStubVO)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-96h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("24h")
+	endDate := now.Add(h12)
+	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
+	tempList := this.SuggestService.QueryGuts(param)
+	//更新推送
+	first := material.Article{}
+	first.Title = fmt.Sprintf("稳胆场次-C1,E2")
+	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
+	first.ThumbMediaId = today_c1_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
+	first.Author = utils.GetVal("wechat", "author")
+
+	temp := vo.TTodayVO{}
+	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
+	for i, e := range tempList {
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
+	}
+
+	var buf bytes.Buffer
+	tpl, err := template.New("today_guts.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts.html")
+	if err != nil {
+		base.Log.Error(err)
+	}
+	if err := tpl.Execute(&buf, &temp); err != nil {
+		base.Log.Fatal(err)
+	}
+	first.Content = buf.String()
 
 	err = material.UpdateNews(wcClient, today_mediaId, 2, &first)
 	if err != nil {
