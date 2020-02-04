@@ -128,7 +128,7 @@ func (this *SuggestTodayService) Today(wcClient *core.Client) string {
 func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-24h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -179,7 +179,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-24h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -231,7 +231,7 @@ func (this *SuggestTodayService) ModifyTodayDetail(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-96h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -282,7 +282,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 	param := new(vo.SuggStubDetailVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-24h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -347,7 +347,7 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-96h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -397,7 +397,7 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-48h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
