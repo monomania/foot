@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"strconv"
-	service2 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
+	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/wechat/service"
+	"time"
 )
 
 func abort(funcname string, err string) {
@@ -23,9 +25,21 @@ func Decimal(value float64) float64 {
 }
 
 
+var aaa int
+
+func set()  {
+	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
+	constants.FullSpiderDateStr = constants.SpiderDateStr
+}
+
+
 func main(){
-	flag := new(service2.AnalyService).FindOtherAlFlag("1721915", "C1", 3)
-	fmt.Println(flag)
+	go func() {
+		set()
+		new(service.SuggestTodayService).Print11()
+	}()
+	time.Sleep(1 * time.Second)
+
 }
 
 //func main() {

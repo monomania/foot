@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
@@ -99,7 +100,7 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" || e.AlFlag == "C1" {
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -146,7 +147,7 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 3 HOUR) > NOW()
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if e.AlFlag == "E2" || e.AlFlag == "C1" {
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -227,9 +228,10 @@ WHERE ml.id = el.matchid
 func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	//比赛结果
 	var globalResult int
-	h2, _ := time.ParseDuration("158m")
-	matchDate := v.MatchDate.Add(h2)
-	if matchDate.After(time.Now()) {
+	h2, _ := time.ParseDuration("129m")
+	//比赛结束的时间点
+	matchEndDate := v.MatchDate.Add(h2)
+	if matchEndDate.Before(time.Now()) {
 		//比赛未结束
 		globalResult = -1
 	} else {
@@ -283,9 +285,9 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 */
 func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
-	h2, _ := time.ParseDuration("158m")
-	matchDate := last.MatchDate.Add(h2)
-	if matchDate.After(time.Now()) {
+	h2, _ := time.ParseDuration("129m")
+	matchEndDate := last.MatchDate.Add(h2)
+	if matchEndDate.Before(time.Now()) {
 		//比赛未结束
 		return -1
 	}

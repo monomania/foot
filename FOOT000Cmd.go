@@ -165,6 +165,7 @@ HEAD:
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 		//	}
 		//}()
+		time.Sleep(1 * time.Second)
 		go func() {
 			for {
 				matchLastService := new(service3.MatchLastService)

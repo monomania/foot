@@ -148,6 +148,7 @@ func main() {
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 		//	}
 		//}()
+		time.Sleep(1 * time.Second)
 		for {
 			matchLastService := new(service3.MatchLastService)
 			matchLasts := matchLastService.FindNear()

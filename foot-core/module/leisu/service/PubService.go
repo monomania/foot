@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
+	vo3 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
@@ -46,8 +46,8 @@ func (this *PubService) CycleTime() int64 {
 */
 func (this *PubService) PubBJDC() {
 	//获取分析计算出的比赛列表
-	analyList := this.LeisuService.ListPubAbleData()
-	if len(analyList) < 1 {
+	tempList := this.LeisuService.ListPubAbleData()
+	if len(tempList) < 1 {
 		base.Log.Info(fmt.Sprintf("1.当前没有可发布的比赛!!!!"))
 		return
 	}
@@ -55,24 +55,24 @@ func (this *PubService) PubBJDC() {
 	//获取发布池的比赛列表
 	matchPool := this.MatchPoolService.GetMatchList()
 	//适配比赛,获取发布列表
-	pubList := make(map[*vo.AnalyResultVO]*vo2.MatchVO, 0)
-	for _, analy := range analyList {
-		analy_mainTeam := analy.MainTeamId
-		analy_guestTeam := analy.GuestTeamId
+	pubList := make(map[*vo3.SuggStubDetailVO]*vo2.MatchVO, 0)
+	for _, temp := range tempList {
+		analy_mainTeam := temp.MainTeam
+		analy_guestTeam := temp.GuestTeam
 		for _, match := range matchPool {
 			if strings.EqualFold(analy_mainTeam, match.MainTeam) {
-				pubList[analy] = match
+				pubList[temp] = match
 				break;
 			}
 			if strings.EqualFold(analy_guestTeam, match.GuestTeam) {
-				pubList[analy] = match
+				pubList[temp] = match
 				break;
 			}
 		}
 	}
 
 	if len(pubList) <= 0 {
-		base.Log.Info(fmt.Sprintf("2.当前无可发布的比赛!!!!比赛池size:%d,分析赛果size:%d", len(matchPool), len(analyList)))
+		base.Log.Info(fmt.Sprintf("2.当前无可发布的比赛!!!!比赛池size:%d,分析赛果size:%d", len(matchPool), len(tempList)))
 		return
 	}
 	//打印要发布的比赛
@@ -99,7 +99,7 @@ func (this *PubService) PubBJDC() {
 			case 0, 100002:
 				//0 成功 100002 每场比赛同一种玩法只可选择1次
 				analy.LeisuPubd = true
-				this.AnalyService.Modify(&analy.AnalyResult)
+				//this.AnalyService.Modify(&analy.AnalyResult)
 			case 100003:
 				//100003 标题长度不正确
 			default:

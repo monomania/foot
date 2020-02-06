@@ -23,7 +23,7 @@ func (this *MessageService) Today() []response.Article {
 		matchDateStr := e.MatchDate.Format("01月02日15点04分")
 		article := response.Article{}
 		article.Title = fmt.Sprintf("%v", matchDateStr)
-		article.Description = fmt.Sprintf("%v %v vs %v", e.LeagueName, e.MainTeamId, e.GuestTeamId)
+		article.Description = fmt.Sprintf("%v %v vs %v", e.LeagueName, e.MainTeam, e.GuestTeam)
 		article.PicURL = "http://mmbiz.qpic.cn/sz_mmbiz_jpg/BePaFicK2B5QZuw0bf1HsiarnqQXzuWxE9XYC25oe2mVLeguvo6Rd1j1D2ibRibfmpu8eDqs0lfXaEfXR2bhslrPKQ/0?wx_fmt=jpeg"
 		article.URL = "https://gitee.com/aoe5188/foot-parent"
 		articles[i] = article

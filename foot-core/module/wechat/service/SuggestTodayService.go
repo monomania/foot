@@ -440,7 +440,10 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
+func (this *SuggestTodayService)  Print11(){
+	fmt.Println(constants.SpiderDateStr)
+	fmt.Println(constants.FullSpiderDateStr)
+}
 /**
 今日待选池比赛
  */

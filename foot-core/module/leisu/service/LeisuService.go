@@ -3,32 +3,47 @@ package service
 import (
 	"strconv"
 	"strings"
-	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
+	vo2 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
-	"tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"time"
 )
 
-
 type LeisuService struct {
-	service.AnalyService
+	service.SuggestService
 }
-
 
 /**
 获取可发布的数据
  */
-func (this *LeisuService) ListPubAbleData() []*vo.AnalyResultVO {
-	teamOption := this.teamOption()
-	al_flag := utils.GetVal(constants.SECTION_NAME, "al_flag")
-	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
-	hit_count, _ := strconv.Atoi(hit_count_str)
+func (this *LeisuService) ListPubAbleData() []*vo2.SuggStubDetailVO {
 	//获取分析计算出的比赛列表
-	analyList := this.AnalyService.List(al_flag, hit_count, teamOption)
-	return analyList
+	param := new(vo2.SuggStubDetailVO)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-1h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("24h")
+	endDate := now.Add(h12)
+	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
+	//只推送稳胆
+	tempList := this.SuggestService.QueryLeisu(param)
+	if len(tempList) <= 0 {
+		return tempList
+	}
+	//过滤重复选项
+	dataList := make([]*vo2.SuggStubDetailVO, 0)
+	for _, e := range tempList {
+		for _, e2 := range dataList {
+			if strings.EqualFold(e.MatchId, e2.MatchId) {
+				continue
+			}
+			dataList = append(dataList, e)
+		}
+	}
+	return dataList
 }
-
 
 /**
 ###推送的主客队选项,

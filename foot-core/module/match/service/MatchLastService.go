@@ -82,7 +82,7 @@ FROM
   foot.t_league l 
 WHERE la.LeagueId = l.Id 
   AND l.LevelAssist > 0  
-  AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 3 HOUR)
+  AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 6 HOUR)
  ORDER BY la.MatchDate ASC
 	`
 	//结果值
