@@ -11,7 +11,8 @@ func main() {
 	base.Log.Info("---------------处理结果--------------")
 	base.Log.Info("---------------------------------------------------------------")
 	analyService := new(service.AnalyService)
-	analyService.ModifyAllResult()
+	//analyService.ModifyAllResult()
+	analyService.ModifyResult()
 	mysql.ShowSQL(true)
 }
 

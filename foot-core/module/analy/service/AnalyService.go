@@ -11,6 +11,7 @@ import (
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	service3 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
@@ -93,6 +94,7 @@ FROM
 			continue
 		}
 		last := new(entity2.MatchLast)
+		last.Id = his.Id
 		last.MatchDate = his.MatchDate
 		last.DataDate = his.DataDate
 		last.LeagueId = his.LeagueId
@@ -119,7 +121,7 @@ SELECT
   ar.* 
 FROM
   foot.t_analy_result ar 
-WHERE DATE_ADD(ar.MatchDate, INTERVAL 3 HOUR) > NOW()
+WHERE DATE_ADD(ar.MatchDate, INTERVAL 6 HOUR) > NOW()
      `
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
@@ -140,6 +142,7 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 3 HOUR) > NOW()
 			continue
 		}
 		last := new(entity2.MatchLast)
+		last.Id = his.Id
 		last.MatchDate = his.MatchDate
 		last.DataDate = his.DataDate
 		last.LeagueId = his.LeagueId
@@ -226,12 +229,12 @@ WHERE ml.id = el.matchid
 }
 
 func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
+	if strings.EqualFold(analy.MatchId, "1826976") {
+		fmt.Println("--")
+	}
 	//比赛结果
 	var globalResult int
-	h2, _ := time.ParseDuration("129m")
-	//比赛结束的时间点
-	matchEndDate := v.MatchDate.Add(h2)
-	if matchEndDate.Before(time.Now()) {
+	if utils.GetHourDiffer(time.Now(), v.MatchDate) < 2 {
 		//比赛未结束
 		globalResult = -1
 	} else {
@@ -285,9 +288,7 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 */
 func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.AnalyResult) int {
 	var result int
-	h2, _ := time.ParseDuration("129m")
-	matchEndDate := last.MatchDate.Add(h2)
-	if matchEndDate.Before(time.Now()) {
+	if utils.GetHourDiffer(time.Now(), last.MatchDate) < 2 {
 		//比赛未结束
 		return -1
 	}

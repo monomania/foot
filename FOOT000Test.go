@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
-	"tesou.io/platform/foot-parent/foot-core/module/wechat/service"
 	"time"
 )
 
@@ -34,12 +33,10 @@ func set()  {
 
 
 func main(){
-	go func() {
-		set()
-		new(service.SuggestTodayService).Print11()
-	}()
-	time.Sleep(1 * time.Second)
-
+	h2, _ := time.ParseDuration("129m")
+	//比赛结束的时间点
+	matchEndDate := time.Now().Add(h2)
+	fmt.Println(matchEndDate.Format("2006-01-02 15:04:05"))
 }
 
 //func main() {
