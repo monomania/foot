@@ -54,8 +54,19 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
+	var rightCount = 0
+	var errorCount = 0
+
 	for _, v := range matchList {
 		stub, data := this.analyStub(v)
+		if nil != data {
+			if strings.EqualFold(data.Result, "命中") {
+				rightCount++
+			}
+			if strings.EqualFold(data.Result, "错误") {
+				errorCount++
+			}
+		}
 
 		if stub == 0 || stub == 1 {
 			data.TOVoid = false
@@ -92,6 +103,13 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			}
 		}
 	}
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("GOOOO场次:", rightCount)
+	base.Log.Info("X0000场次:", errorCount)
+	base.Log.Info("------------------")
+
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
 }
@@ -120,6 +138,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
 		return -2, temp_data
+		//return -2, nil
 	}
 
 	//限制初盘,即时盘让球在0.25以内
@@ -129,6 +148,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
 		return -2, temp_data
+		//return -2, nil
 	}
 
 	//得出结果
@@ -139,7 +159,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1723449" {
+	if matchId == "1770548" {
 		base.Log.Info("-")
 	}
 	var temp_val float64
@@ -167,7 +187,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if mainZongBfs == nil || guestZongBfs == nil || mainZhuBfs == nil || guestKeBfs == nil {
 		return -1, nil
 	}
-	baseVal := 0.075
+	baseVal := 0.068
 	rankDiff := 3.0
 	if mainZongBfs.MatchCount >= 8 && guestZongBfs.MatchCount >= 8 {
 		//排名越小越好
@@ -192,7 +212,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//------
 	//只取近5场
-	bfb_arr := this.BFBattleService.FindNearByMatchId(matchId, 3)
+	bfb_arr := this.BFBattleService.FindNearByMatchId(matchId, 4)
 	mainWin := 0
 	guestWin := 0
 	for _, e := range bfb_arr {
@@ -210,10 +230,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 	if mainWin > guestWin {
-		letBall += baseVal + float64(mainWin-guestWin) * baseVal
+		letBall += baseVal + float64(mainWin-guestWin)*baseVal
 	}
 	if guestWin > mainWin {
-		letBall -= baseVal +  float64(guestWin-mainWin) * baseVal
+		letBall -= baseVal + float64(guestWin-mainWin)*baseVal
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
@@ -225,7 +245,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	} else {
 		//如果主队下一场打客场,战意充足
 		if v.MainTeamId == bffe_main.EventGuestTeamId {
-			letBall += baseVal
+			letBall += (baseVal)
 		}
 	}
 	if strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
@@ -234,11 +254,11 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	} else {
 		//如果客队下一场打主场，战意懈怠
 		if v.GuestTeamId == bffe_guest.EventMainTeamId {
-			letBall += baseVal
+			letBall += (baseVal)
 		}
 	}
 
-	//判断主队是否是让球方
+	//1.0判断主队是否是让球方
 	mainLetball := true
 	if a18betData.ELetBall > 0 {
 		mainLetball = true
@@ -254,58 +274,53 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 
-	//区间段
+	//2.0区间段
 	var sectionBlock1, sectionBlock2 int
+	tLetBall := math.Abs(letBall)
 	//maxLetBall := math.Max(sLetBall, eLetBall)
-	maxLetBall := eLetBall
-	if maxLetBall <= 0.25 {
-		//0 - 0
-		//0 - 0.25
-		//0.25 - 0.25
-		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.25
+	tempLetball1 := math.Abs(sLetBall - tLetBall)
+	if tempLetball1 < 0.25 {
 		sectionBlock1 = 1
-	} else if maxLetBall <= 0.5 {
-		//0.25 - 0.5
-		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.5
+	} else if tempLetball1 < 0.5 {
 		sectionBlock1 = 2
-	} else if maxLetBall <= 0.75 {
-		//0.5 - 0.5
-		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.5
+	} else if tempLetball1 < 0.75 {
 		sectionBlock1 = 3
-	} else if maxLetBall <= 1 {
-		//0.5 - 0.75
-		//由于初盘和即时盘相差最大不能超过0.25,这里两个让球中最大可能让球为0.75
+	} else if tempLetball1 < 1 {
 		sectionBlock1 = 4
 	}
 
-	//--------
-	tLetBall := math.Abs(letBall)
-	if tLetBall <= 0.25 {
+	tempLetball2 := math.Abs(eLetBall - tLetBall)
+	if tempLetball2 < 0.25 {
 		sectionBlock2 = 1
-	} else if tLetBall <= 0.5 {
+	} else if tempLetball2 < 0.5 {
 		sectionBlock2 = 2
-	} else if tLetBall <= 0.75 {
+	} else if tempLetball2 < 0.75 {
 		sectionBlock2 = 3
-	} else if tLetBall <= 1 {
+	} else if tempLetball2 < 1 {
 		sectionBlock2 = 4
 	}
 
+	//3.0即时盘赔率大于等于初盘赔率
+	endUp := eLetBall >= sLetBall
+	//3.1即时盘初盘非0
+	notZero := eLetBall > 0 && sLetBall > 0
+
 	//看两个区间是否属于同一个区间
-	sectionBlock := math.Abs(float64(sectionBlock1) - float64(sectionBlock2))
-	//看两个区间是否属于同一个区间
-	if sectionBlock <= 0.0 {
-		if mainLetball && letBall >= 0 && a18betData.ELetBall >= a18betData.SLetBall {
+	//if sectionBlock1 == 1 && sectionBlock2 == 1 {
+	if sectionBlock1 < 2 && sectionBlock2 < 2 {
+		if mainLetball && letBall > 0.1 && endUp && notZero {
 			preResult = 3
-		} else if !mainLetball && letBall <= 0 && a18betData.ELetBall <= a18betData.SLetBall {
-			preResult = 0
-		}
-	} else if sectionBlock <= 1.0 {
-		if mainLetball && letBall >= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-			preResult = 3
-		} else if !mainLetball && letBall <= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-			preResult = 0
+		} else if !mainLetball && letBall < -0.1 && endUp && notZero {
+			//preResult = 0
 		}
 	}
+	//else if sectionBlock <= 1.0 {
+	//	if mainLetball && letBall >= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
+	//		preResult = 3
+	//	} else if !mainLetball && letBall <= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
+	//		preResult = 0
+	//	}
+	//}
 
 	if preResult < 0 {
 		return -3, nil
@@ -351,5 +366,4 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.Result = this.IsRight2Option(v, data)
 		return 0, data
 	}
-
 }

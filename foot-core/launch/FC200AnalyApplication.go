@@ -35,7 +35,7 @@ func Analy() {
 	e1 := new(service.E1Service)
 	e1.MaxLetBall = maxLetBall
 	e1.PrintOddData = printOddData
-	e1.Analy()
+	e1.Analy(false)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------A1模型--------------")
 	base.Log.Info("---------------------------------------------------------------")

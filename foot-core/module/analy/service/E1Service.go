@@ -4,6 +4,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -25,9 +26,18 @@ func (this *E1Service) ModelName() string {
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */
-func (this *E1Service) Analy() {
-	matchList := this.MatchLastService.FindNotFinished()
-	this.Analy_Process(matchList)
+func (this *E1Service) Analy(analyAll bool) {
+	var matchLasts []*pojo.MatchLast
+	if analyAll {
+		matchHis := this.MatchHisService.FindAll()
+		for _, e := range matchHis {
+			matchLasts = append(matchLasts, &e.MatchLast)
+		}
+		//matchLasts = this.MatchLastService.FindAll()
+	} else {
+		matchLasts = this.MatchLastService.FindNotFinished()
+	}
+	this.Analy_Process(matchLasts)
 }
 
 func (this *E1Service) Analy_Near() {
@@ -40,9 +50,18 @@ func (this *E1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
+	var rightCount = 0
+	var errorCount = 0
 	for _, v := range matchList {
 		stub, data := this.analyStub(v)
-
+		if nil != data {
+			if strings.EqualFold(data.Result, "命中") {
+				rightCount++
+			}
+			if strings.EqualFold(data.Result, "错误") {
+				errorCount++
+			}
+		}
 		if stub == 0 || stub == 1 {
 			data.TOVoid = false
 			hours := v.MatchDate.Sub(time.Now()).Hours()
@@ -71,6 +90,14 @@ func (this *E1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			}
 		}
 	}
+
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("GOOOO场次:", rightCount)
+	base.Log.Info("X0000场次:", errorCount)
+	base.Log.Info("------------------")
+
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
 }
