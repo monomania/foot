@@ -81,7 +81,6 @@ FROM
   foot.t_match_last la,
   foot.t_league l 
 WHERE la.LeagueId = l.Id 
-  AND l.LevelAssist > 0  
   AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 6 HOUR)
  ORDER BY la.MatchDate ASC
 	`

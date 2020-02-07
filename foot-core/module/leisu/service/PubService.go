@@ -98,7 +98,7 @@ func (this *PubService) PubBJDC() {
 			switch action.Code {
 			case 0, 100002:
 				//0 成功 100002 每场比赛同一种玩法只可选择1次
-				analy.LeisuPubd = true
+				//analy.LeisuPubd = true
 				//this.AnalyService.Modify(&analy.AnalyResult)
 			case 100003:
 				//100003 标题长度不正确

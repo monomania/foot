@@ -67,7 +67,7 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			}
 			//如其他模型存在互斥选项，设置为作废
 			diff_preResult := this.FindOtherAlFlag(data.MatchId, data.AlFlag, data.PreResult)
-			if diff_preResult{
+			if diff_preResult {
 				data.TOVoid = true
 				data.TOVoidDesc = "与其他模型互斥"
 			}
@@ -105,7 +105,7 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
  */
 func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
-	if matchId == "1755786" {
+	if matchId == "1836932" {
 		base.Log.Info("-")
 	}
 	//声明使用变量
@@ -169,30 +169,30 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	baseVal := 0.075
 	rankDiff := 3.0
-	if mainZongBfs.MatchCount >= 10 && guestZongBfs.MatchCount >= 10 {
+	if mainZongBfs.MatchCount >= 8 && guestZongBfs.MatchCount >= 8 {
 		//排名越小越好
 
 		temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall -= baseVal + (temp_val/rankDiff)*baseVal
+			letBall -= (temp_val / rankDiff) * baseVal
 		}
 		temp_val = float64(guestZongBfs.Ranking - mainZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += baseVal + (temp_val/rankDiff)*baseVal
+			letBall += (temp_val / rankDiff) * baseVal
 		}
 		temp_val = float64(mainZhuBfs.Ranking - guestKeBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall -= baseVal + (temp_val/rankDiff)*baseVal
+			letBall -= (temp_val / rankDiff) * baseVal
 		}
 		temp_val = float64(guestKeBfs.Ranking - mainZhuBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += baseVal + (temp_val/rankDiff)*baseVal
+			letBall += (temp_val / rankDiff) * baseVal
 		}
 	}
 
 	//------
-	bfb_arr := this.BFBattleService.FindByMatchId(matchId)
-	winCountDiff := 1.5
+	//只取近5场
+	bfb_arr := this.BFBattleService.FindNearByMatchId(matchId, 3)
 	mainWin := 0
 	guestWin := 0
 	for _, e := range bfb_arr {
@@ -209,11 +209,11 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			guestWin++
 		}
 	}
-	if mainWin > (guestWin + 1) {
-		letBall += baseVal + float64(mainWin)/winCountDiff*baseVal
+	if mainWin > guestWin {
+		letBall += baseVal + float64(mainWin-guestWin) * baseVal
 	}
-	if guestWin > (mainWin + 1) {
-		letBall -= baseVal + float64(guestWin)/winCountDiff*baseVal
+	if guestWin > mainWin {
+		letBall -= baseVal +  float64(guestWin-mainWin) * baseVal
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)

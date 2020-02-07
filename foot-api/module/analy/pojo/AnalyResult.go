@@ -10,7 +10,7 @@ import (
  */
 type AnalyResult struct {
 	//是否已经发布到雷速
-	LeisuPubd bool `xorm:"bool notnull comment('是否已经发布到雷速') index"`
+	//LeisuPubd bool `xorm:"bool notnull comment('是否已经发布到雷速') index"`
 	//比赛id
 	MatchId string `xorm:" comment('比赛id') index"`
 	//比赛时间,比较便利的冗余

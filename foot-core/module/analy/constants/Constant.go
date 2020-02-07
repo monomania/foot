@@ -3,13 +3,13 @@ package constants
 const (
 	SECTION_NAME = "analy"
 	/**
-	默认参考有亚赔公司-- 澳门,Bet365,18Bet
+	默认参考有亚赔公司-- Bet365,澳门,18Bet
 	 */
-	DEFAULT_REFER_ASIA = "Bet365"
+	DEFAULT_REFER_ASIA = "18Bet"
 	/**
-	C1算法,参考的亚赔公司-- 澳门,Bet365,18Bet
+	C1算法,参考的亚赔公司-- Bet365,澳门,18Bet,10BET,12bet
 	 */
-	C1_REFER_ASIA = "Bet365"
+	C1_REFER_ASIA = "18Bet"
 )
 
 const (

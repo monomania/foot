@@ -182,8 +182,7 @@ FROM
 WHERE ml.LeagueId = l.Id 
   AND ml.Id = ar.MatchId 
   AND ar.HitCount >= THitCount
-  AND ar.LeisuPubd IS FALSE 
-  AND ar.MatchDate > NOW()
+  AND ar.MatchDate > NOW()4e43
      `
 
 	if len(alName) > 0 {

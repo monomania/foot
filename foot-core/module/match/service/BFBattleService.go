@@ -37,3 +37,13 @@ func (this *BFBattleService) FindByMatchId(matchId string) []*pojo.BFBattle {
 	}
 	return dataList
 }
+func (this *BFBattleService) FindNearByMatchId(matchId string,count int) []*pojo.BFBattle {
+	dataList := make([]*pojo.BFBattle, 0)
+	sql_build := strings.Builder{}
+	sql_build.WriteString(" MatchId = '" + matchId + "'")
+	err := mysql.GetEngine().Where(sql_build.String()).OrderBy("BattleMatchDate DESC").Limit(count,0).Find(&dataList)
+	if err != nil {
+		base.Log.Error("FindByMatchId:", err)
+	}
+	return dataList
+}
