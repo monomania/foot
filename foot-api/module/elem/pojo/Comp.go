@@ -4,7 +4,9 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
 
-//菠菜公司
+/**
+欧赔菠菜公司表
+ */
 //不管是从哪个平台抓取的数据，都使用win007的菠菜公司的ID数据
 type Comp struct {
 	//名称

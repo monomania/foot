@@ -1,7 +1,6 @@
 package service
 
 import (
-
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -12,20 +11,25 @@ type EuroLastService struct {
 	mysql.BaseService
 }
 
-func (this *EuroLastService) FindExists(v *pojo.EuroLast) bool {
-	exist, err := mysql.GetEngine().Get(v)
+func (this *EuroLastService) Exist(v *pojo.EuroLast) (string, bool) {
+	temp := &pojo.EuroLast{MatchId: v.MatchId, CompId: v.CompId}
+	var id string
+	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
-		base.Log.Info("FindExists:", err)
+		base.Log.Error("Exist:", err)
 	}
-	return exist
+	if exist {
+		id = temp.Id
+	}
+	return id, exist
 }
 
 //根据比赛ID查找欧赔
-func (this *EuroLastService) FindByMatchId(v *pojo.EuroLast) []*pojo.EuroLast {
+func (this *EuroLastService) FindByMatchId(matchId string) []*pojo.EuroLast {
 	dataList := make([]*pojo.EuroLast, 0)
-	err := mysql.GetEngine().Where(" MatchId = ? ", v.MatchId).Find(dataList)
+	err := mysql.GetEngine().Where(" MatchId = ? ", matchId).Find(dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchId:", err)
+		base.Log.Error("FindByMatchId:", err)
 	}
 	return dataList
 }
@@ -42,7 +46,7 @@ func (this *EuroLastService) FindByMatchIdCompId(matchId string, compIds ...stri
 	sql_build.WriteString(")")
 	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
 	if err != nil {
-		base.Log.Info("FindByMatchIdCompId:", err)
+		base.Log.Error("FindByMatchIdCompId:", err)
 	}
 	return dataList
 }

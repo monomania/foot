@@ -1,7 +1,6 @@
 package proc
 
 import (
-	"fmt"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
@@ -30,6 +29,8 @@ type MatchPageProcesser struct {
 	win007Id_leagueId_map map[string]string
 	//比赛数据
 	matchLast_list []*pojo.MatchLast
+	//比赛级别
+	MatchLevel int
 }
 
 func GetMatchPageProcesser() *MatchPageProcesser {
@@ -113,6 +114,10 @@ func (this *MatchPageProcesser) league_process(rawText string) {
 		league := new(entity2.League)
 		league.Id = win007Id
 		league.Name = name
+		if this.MatchLevel > 0 {
+			//设置联赛级别
+			league.LevelAssist = 10000
+		}
 		//league.Ext = make(map[string]interface{})
 		//league.Ext["win007Id"] = win007Id
 		this.win007Id_leagueId_map[win007Id] = league.Id
@@ -186,7 +191,7 @@ func (this *MatchPageProcesser) Finish() {
 		}
 		/*	bytes, _ := json.Marshal(v)
 			base.Log.Info(string(bytes))*/
-		exists := this.LeagueService.FindExistsById(v.Id)
+		exists := this.LeagueService.ExistById(v.Id)
 		if exists {
 			continue
 		}
@@ -214,10 +219,7 @@ func (this *MatchPageProcesser) Finish() {
 		matchExt.Sid = v.Id
 		v.Ext = make(map[string]interface{})
 		v.Ext[win007.MODULE_FLAG] = matchExt
-		if v.Id == "1748077" || v.Id == "1748078" || v.Id == "1748079" {
-			fmt.Println("---------------------")
-		}
-		exists := this.MatchLastService.FindExists(v)
+		exists := this.MatchLastService.Exist(v)
 		if exists {
 			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)
 		}else{
@@ -226,7 +228,7 @@ func (this *MatchPageProcesser) Finish() {
 
 		his := new(pojo.MatchHis)
 		his.MatchLast = *v
-		his_exists := this.MatchHisService.FindExists(his)
+		his_exists := this.MatchHisService.Exist(his)
 		if his_exists {
 			matchHis_modify_list_slice = append(matchHis_modify_list_slice,his)
 		}else{

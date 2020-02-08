@@ -5,9 +5,12 @@ import (
 	"time"
 )
 
+/**
+分析结果表
+ */
 type AnalyResult struct {
 	//是否已经发布到雷速
-	LeisuPubd bool `xorm:"bool notnull comment('是否已经发布到雷速') index"`
+	//LeisuPubd bool `xorm:"bool notnull comment('是否已经发布到雷速') index"`
 	//比赛id
 	MatchId string `xorm:" comment('比赛id') index"`
 	//比赛时间,比较便利的冗余
@@ -25,6 +28,11 @@ type AnalyResult struct {
 	AlFlag string `xorm:" comment('算法标识') index"`
 	//算法批次
 	AlSeq string `xorm:" comment('算法批次') index"`
+	//C1模型计算出的合理让球
+	MyLetBall float64 `xorm:" comment('C1模型计算出的合理让球') index"`
+	//是否己经作废,因后续结果不符合要求
+	TOVoid bool `xorm:"bool notnull comment('是否己经作废') index"`
+	TOVoidDesc string `xorm:" comment('作废备注') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }

@@ -1,5 +1,5 @@
 ## 项目地址
-* [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
+* [https://github.com/monomania/foot](https://github.com/monomania/foot)
 
 ## 公众号演示
  * 公众号: ai00268
@@ -8,11 +8,12 @@
 <img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
 <img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
 
+## 公众号内留言可联系作者
 
 ## 项目介绍
    >> 1. 究极足球爱好者,平时也会去体彩店支持一下国足,或是自己喜欢的球队.
    >> 2. 入了门道,就想结合一下所学所专,尝试着分析预测一下足球比赛.最近命中率感觉还可以阿.
-   >> 3. 娱乐娱乐!!!如果该项目对您有帮助,请您给一个star.
+   >> 3. 娱乐至上!!!如果该项目对您有帮助,请您给一个star.
 
 ## 技术选型
 * [xorm](https://github.com/go-xorm/xorm)
@@ -143,9 +144,8 @@ foot-parent
   *  FOOT000TestApplication.go  无用
   *  FS000Application.go        运行数据爬虫
   *  FS001AsiaModifyApplication.go  亚指数据遗漏检测,重新尝试
+  *  FS001BaseFaceApplication.go  基本面数据的获取,目前包含积分榜,过往对战,未来赛事三项
   *  FS001EuroIncompleteApplication.go  欧指数据遗漏检测,重新尝试
   *  FS001EuroModifyApplication.go  欧指数据单独获取
-
-
 
  

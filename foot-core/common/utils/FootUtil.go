@@ -3,6 +3,7 @@ package utils
 import (
 	"runtime"
 	"strings"
+	"time"
 )
 
 /**
@@ -15,4 +16,18 @@ func RunFuncName() string {
 	funcName := f.Name()
 	funcName = funcName[strings.LastIndex(funcName, ".")+1:]
 	return funcName
+}
+
+//获取相差时间
+func GetHourDiffer(t1, t2 time.Time) int64 {
+	var hour int64
+	if t1.After(t2) {
+		diff := t1.Unix() - t2.Unix()
+		hour = diff / 3600
+		return hour
+	} else {
+		diff := t2.Unix() - t1.Unix()
+		hour = diff / 3600
+		return 0 - hour
+	}
 }

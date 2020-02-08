@@ -15,12 +15,59 @@ type MatchLastService struct {
 /**
 通过比赛时间,主队id,客队id,判断比赛信息是否已经存在
 */
-func (this *MatchLastService) FindExists(v *pojo.MatchLast) bool {
+func (this *MatchLastService) Exist(v *pojo.MatchLast) bool {
 	has, err := mysql.GetEngine().Table("`t_match_last`").Where(" `Id` = ?  ", v.Id).Exist()
 	if err != nil {
-		base.Log.Info("FindExists", err)
+		base.Log.Info("Exist", err)
 	}
 	return has
+}
+
+func (this *MatchLastService) FindAll() []*pojo.MatchLast {
+	dataList := make([]*pojo.MatchLast, 0)
+	mysql.GetEngine().OrderBy("MatchDate").Find(&dataList)
+	return dataList
+}
+
+/**
+获取临场比赛
+*/
+func (this *MatchLastService) FindNear() []*pojo.MatchLast {
+	sql_build_1 := `
+SELECT 
+  la.* 
+FROM
+  foot.t_match_last la 
+WHERE DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+	`
+	sql_build_2 := `
+SELECT DISTINCT 
+  la.* 
+FROM
+  foot.t_match_last la,
+  foot.t_analy_result ar 
+WHERE la.Id = ar.MatchId 
+  AND DATE_ADD(la.MatchDate, INTERVAL 6 MINUTE) >= NOW() 
+  AND la.MatchDate <= DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+  AND ar.AlFlag != 'C1'
+	`
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build_1, &dataList)
+
+	//如果数据量过多,则配置分析表重新获取...只默认只处理临场12场
+	if len(dataList) <= 10 {
+		return dataList
+	}
+
+	//结果值
+	dataList = make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build_2, &dataList)
+
+	return dataList
 }
 
 /**
@@ -31,19 +78,16 @@ func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
 SELECT 
   la.* 
 FROM
-  foot.t_match_last la 
-  WHERE la.MatchDate > DATE_SUB(NOW(), INTERVAL 2 HOUR)
+  foot.t_match_last la,
+  foot.t_league l 
+WHERE la.LeagueId = l.Id 
+  AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 6 HOUR)
+ ORDER BY la.MatchDate ASC
 	`
 	//结果值
 	dataList := make([]*pojo.MatchLast, 0)
 	//执行查询
 	this.FindBySQL(sql_build, &dataList)
-	return dataList
-}
-
-func (this *MatchLastService) FindAll() []*pojo.MatchLast {
-	dataList := make([]*pojo.MatchLast, 0)
-	mysql.GetEngine().OrderBy("MatchDate").Find(&dataList)
 	return dataList
 }
 

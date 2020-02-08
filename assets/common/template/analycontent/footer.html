@@ -1,0 +1,15 @@
+{{ $PreResultMain := eq .PreResult  3}}
+{{ $BattleMain := gt .BattleMainWinCount  .BattleGuestWinCount}}
+{{if $PreResultMain}}
+    {{if $BattleMain}}
+    本场个人看好主队继续打出.
+    {{else}}
+    结合赔率变化,本场个人认为主队打出.
+    {{end}}
+{{else}}
+    {{if $BattleMain}}
+    结合赔率变化,本场个人认为客队至少不败.
+    {{else}}
+    本场个人认为客队至少不败.
+    {{end}}
+{{end}}

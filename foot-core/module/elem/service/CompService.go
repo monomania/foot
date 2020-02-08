@@ -11,10 +11,10 @@ type CompService struct {
 	mysql.BaseService
 }
 
-func (this *CompService) FindExistsByName(v *pojo.Comp) bool {
+func (this *CompService) Exist(v *pojo.Comp) bool {
 	exist, err := mysql.GetEngine().Get(v)
 	if err != nil {
-		base.Log.Info("FindExistsByName:", err)
+		base.Log.Info("ExistByName:", err)
 	}
 	return exist
 }

@@ -85,7 +85,7 @@ func ReadLine(filePth string, hookfn func([]byte)) error {
 func FileMonitoring(filePth string, hookfn func([]byte)) {
 	f, err := os.OpenFile(filePth, os.O_RDONLY, 0777)
 	if err != nil {
-		base.Log.Fatalln(err)
+		base.Log.Fatal(err.Error())
 	}
 	defer f.Close()
 
@@ -98,7 +98,7 @@ func FileMonitoring(filePth string, hookfn func([]byte)) {
 			time.Sleep(1 * time.Second)
 			continue;
 		} else if err != nil {
-			base.Log.Fatalln(err)
+			base.Log.Fatal(err.Error())
 		}
 		go hookfn(line)
 	}

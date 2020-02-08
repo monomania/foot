@@ -3,12 +3,14 @@ package pojo
 import (
 	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 )
-
+/**
+欧赔当前表,仅初盘，即时盘
+*/
 type EuroLast struct {
 	//博彩公司id
-	CompId string `xorm:"unique(CompId_MatchId)"`
+	CompId string `xorm:"unique(CompId_MatchId) index"`
 	//比赛id
-	MatchId string `xorm:"unique(CompId_MatchId)"`
+	MatchId string `xorm:"unique(CompId_MatchId) index"`
 
 	/**
 	初盘胜平负赔率

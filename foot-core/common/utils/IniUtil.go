@@ -13,7 +13,7 @@ var (
 func init() {
 	file, e := ini.Load("conf/app.ini")
 	if e != nil {
-		base.Log.Info("Fail to load conf/app.ini", e.Error())
+		base.Log.Info("Fail to load conf/app.ini" + e.Error())
 		return
 	}
 	iniFile = file
@@ -22,7 +22,7 @@ func init() {
 func GetSection(sectionName string) *ini.Section {
 	section, e := iniFile.GetSection(sectionName)
 	if e != nil {
-		base.Log.Info("未找到对应的配置信息:", sectionName, e.Error())
+		base.Log.Info("未找到对应的配置信息:" + sectionName + e.Error())
 		return nil
 	}
 	return section
@@ -31,7 +31,7 @@ func GetSection(sectionName string) *ini.Section {
 func GetSectionMap(sectionName string) map[string]string {
 	section, e := iniFile.GetSection(sectionName)
 	if e != nil {
-		base.Log.Info("未找到对应的配置信息:", sectionName, e.Error())
+		base.Log.Info("未找到对应的配置信息:" + sectionName + e.Error())
 		return nil
 	}
 	section_map := make(map[string]string, 0)
