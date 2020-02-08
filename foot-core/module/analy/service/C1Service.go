@@ -137,6 +137,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
+		//temp_data.Result =""
 		return -2, temp_data
 		//return -2, nil
 	}
@@ -147,6 +148,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
+		//temp_data.Result =""
 		return -2, temp_data
 		//return -2, nil
 	}
@@ -159,7 +161,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1770548" {
+	if matchId == "1742969" {
 		base.Log.Info("-")
 	}
 	var temp_val float64
@@ -191,23 +193,38 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	rankDiff := 3.0
 	if mainZongBfs.MatchCount >= 8 && guestZongBfs.MatchCount >= 8 {
 		//排名越小越好
-
 		temp_val = float64(mainZongBfs.Ranking - guestZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall -= (temp_val / rankDiff) * baseVal
+			xishu := 1.0
+			if temp_val > 11 {
+				xishu = 3.0
+			} else if temp_val > 5 {
+				xishu = 2.0
+			}
+			letBall -= (temp_val / rankDiff) * baseVal * xishu
 		}
 		temp_val = float64(guestZongBfs.Ranking - mainZongBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += (temp_val / rankDiff) * baseVal
+			xishu := 1.0
+			if temp_val > 11 {
+				xishu = 3.0
+			} else if temp_val > 5 {
+				xishu = 2.0
+			}
+			letBall += (temp_val / rankDiff) * baseVal * xishu
 		}
 		temp_val = float64(mainZhuBfs.Ranking - guestKeBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall -= (temp_val / rankDiff) * baseVal
+			xishu := 1.0
+			letBall -= (temp_val / rankDiff / 2) * baseVal * xishu
 		}
 		temp_val = float64(guestKeBfs.Ranking - mainZhuBfs.Ranking)
 		if temp_val >= rankDiff {
-			letBall += (temp_val / rankDiff) * baseVal
+			xishu := 1.0
+			letBall += (temp_val / rankDiff / 2) * baseVal * xishu
 		}
+	} else {
+		//return -1, nil
 	}
 
 	//------
@@ -230,10 +247,10 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 	if mainWin > guestWin {
-		letBall += baseVal + float64(mainWin-guestWin)*baseVal
+		letBall += baseVal + float64(mainWin-guestWin)*baseVal*3
 	}
 	if guestWin > mainWin {
-		letBall -= baseVal + float64(guestWin-mainWin)*baseVal
+		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*3
 	}
 	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
@@ -279,25 +296,29 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	tLetBall := math.Abs(letBall)
 	//maxLetBall := math.Max(sLetBall, eLetBall)
 	tempLetball1 := math.Abs(sLetBall - tLetBall)
-	if tempLetball1 < 0.25 {
+	if tempLetball1 < 0.1 {
 		sectionBlock1 = 1
-	} else if tempLetball1 < 0.5 {
+	} else if tempLetball1 < 0.25 {
 		sectionBlock1 = 2
-	} else if tempLetball1 < 0.75 {
+	} else if tempLetball1 < 0.45 {
 		sectionBlock1 = 3
-	} else if tempLetball1 < 1 {
+	} else if tempLetball1 < 0.7 {
 		sectionBlock1 = 4
+	} else {
+		sectionBlock1 = 10000
 	}
 
 	tempLetball2 := math.Abs(eLetBall - tLetBall)
-	if tempLetball2 < 0.25 {
+	if tempLetball2 < 0.1 {
 		sectionBlock2 = 1
-	} else if tempLetball2 < 0.5 {
+	} else if tempLetball2 < 0.25 {
 		sectionBlock2 = 2
-	} else if tempLetball2 < 0.75 {
+	} else if tempLetball2 < 0.45 {
 		sectionBlock2 = 3
-	} else if tempLetball2 < 1 {
+	} else if tempLetball2 < 0.7 {
 		sectionBlock2 = 4
+	} else {
+		sectionBlock2 = 10000
 	}
 
 	//3.0即时盘赔率大于等于初盘赔率
@@ -307,7 +328,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//看两个区间是否属于同一个区间
 	//if sectionBlock1 == 1 && sectionBlock2 == 1 {
-	if sectionBlock1 < 2 && sectionBlock2 < 2 {
+	if sectionBlock1 <= 3 && sectionBlock2 <= 3 {
 		if mainLetball && letBall > 0.1 && endUp && notZero {
 			preResult = 3
 		} else if !mainLetball && letBall < -0.1 && endUp && notZero {
