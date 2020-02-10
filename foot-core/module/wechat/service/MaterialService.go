@@ -19,4 +19,5 @@ func (this *MaterialService) ModifyNews(wcClient *core.Client) {
 
 	this.SuggestWeekService.ModifyWeek(wcClient)
 	this.SuggestMonthService.ModifyMonth(wcClient)
+	this.SuggestMonthService.ModifyGutsMonth(wcClient)
 }

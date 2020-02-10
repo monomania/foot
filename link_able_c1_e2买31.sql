@@ -1,5 +1,6 @@
-SELECT 
-  ar.`MatchDate`,
+SELECT  ar.`MatchDate`,
+ar.`TOVoid`,
+ ar.`TOVoidDesc`,
   ar.`AlFlag`,
   ar.`PreResult`,
   ar.`Result`,
@@ -21,16 +22,15 @@ FROM
     foot.`t_analy_result` ar1,
     foot.`t_analy_result` ar2
   WHERE ar1.`MatchId` = ar2.`MatchId`
-    AND ar1.`AlFlag` = ''E2''
-    AND ar2.`AlFlag` = ''C1''
+    AND ar1.`AlFlag` = 'E2'
+    AND ar2.`AlFlag` = 'C1'
     AND ar1.`PreResult` = ar2.`PreResult`
-    AND ar1.`HitCount` > 0
-    AND ar2.`HitCount` > 0
+
     ) temp
 WHERE mh.LeagueId = l.Id
   AND mh.Id = ar.MatchId
   AND ar.`MatchId` = temp.MatchId
-  AND ar.`AlFlag` IN (''E2'' ,''C1'')
+  AND ar.`AlFlag` IN ('E2' ,'C1')
 
 ORDER BY ar.MatchDate DESC,
   l.id ASC,

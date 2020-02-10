@@ -347,7 +347,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayGuts(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-96h")
+	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -397,7 +397,7 @@ func (this *SuggestTodayService) ModifyTodayGuts(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-96h")
+	h12, _ := time.ParseDuration("-24h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")

@@ -8,6 +8,7 @@ type SuggStubVO struct {
 	//比赛时间
 	MatchDateStr string
 	//联赛
+	LeagueId string
 	LeagueName string
 	//主队
 	MainTeam string

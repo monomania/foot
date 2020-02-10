@@ -28,6 +28,7 @@ type SuggestService struct {
 func (this *SuggestService) QueryGuts(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
+  l.Id AS LeagueId,
   l.Name AS LeagueName,
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,
@@ -79,6 +80,7 @@ WHERE mh.LeagueId = l.Id
 func (this *SuggestService) QueryTbs(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
+  l.Id AS LeagueId,
   l.Name AS LeagueName,
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,
@@ -122,6 +124,7 @@ WHERE mh.LeagueId = l.Id
 func (this *SuggestService) Query(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
+  l.Id AS LeagueId,
   l.Name AS LeagueName,
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,
@@ -168,6 +171,7 @@ WHERE mh.LeagueId = l.Id
 func (this *SuggestService) QueryDetail(param *vo2.SuggStubDetailVO) []*vo2.SuggStubDetailVO {
 	sql := `
 SELECT 
+  l.Id AS LeagueId,
   l.Name AS LeagueName,
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,
@@ -315,6 +319,7 @@ WHERE mh.LeagueId = l.Id
 func (this *SuggestService) QueryLeisu(param *vo2.SuggStubDetailVO) []*vo2.SuggStubDetailVO {
 	sql := `
 SELECT 
+  l.Id AS LeagueId,
   l.Name AS LeagueName,
   mh.MainTeamId AS MainTeam,
   mh.GuestTeamId AS GuestTeam,

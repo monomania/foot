@@ -161,9 +161,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(bfs_arr) < 1 {
 		return -1, nil
 	}
-	if matchId == "1742969" {
-		base.Log.Info("-")
-	}
+
 	var temp_val float64
 	var mainZongBfs *pojo.BFScore
 	var mainZhuBfs *pojo.BFScore

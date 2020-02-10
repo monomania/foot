@@ -101,6 +101,10 @@ func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			continue
 		}
 	}
+	if e281data == nil || e1129data == nil  {
+		return -1, nil
+	}
+
 	//0.没有变化则跳过
 	if e281data.Ep3 == e281data.Sp3 || e281data.Ep0 == e281data.Sp0 {
 		return -3, nil

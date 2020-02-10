@@ -4,6 +4,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -31,9 +32,18 @@ func (this *A1Service) ModelName() string {
 ( 1.欧赔降水,亚赔反之,以亚赔为准)
 ( 2.欧赔升水,亚赔反之,以亚赔为准)
 */
-func (this *A1Service) Analy() {
-	matchList := this.MatchLastService.FindNotFinished()
-	this.Analy_Process(matchList)
+func (this *A1Service) Analy(analyAll bool) {
+	var matchLasts []*pojo.MatchLast
+	if analyAll {
+		matchHis := this.MatchHisService.FindAll()
+		for _, e := range matchHis {
+			matchLasts = append(matchLasts, &e.MatchLast)
+		}
+		//matchLasts = this.MatchLastService.FindAll()
+	} else {
+		matchLasts = this.MatchLastService.FindNotFinished()
+	}
+	this.Analy_Process(matchLasts)
 
 }
 
@@ -47,8 +57,20 @@ func (this *A1Service) Analy_Process(matchList []*pojo.MatchLast) {
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	data_list_slice := make([]interface{}, 0)
 	data_modify_list_slice := make([]interface{}, 0)
+	var rightCount = 0
+	var errorCount = 0
+
 	for _, v := range matchList {
 		stub, data := this.analyStub(v)
+
+		if nil != data {
+			if strings.EqualFold(data.Result, "命中") {
+				rightCount++
+			}
+			if strings.EqualFold(data.Result, "错误") {
+				errorCount++
+			}
+		}
 
 		if stub == 0 || stub == 1 {
 			data.TOVoid = false
@@ -78,6 +100,14 @@ func (this *A1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			}
 		}
 	}
+
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("GOOOO场次:", rightCount)
+	base.Log.Info("X0000场次:", errorCount)
+	base.Log.Info("------------------")
+
 	this.AnalyService.SaveList(data_list_slice)
 	this.AnalyService.ModifyList(data_modify_list_slice)
 }
@@ -116,6 +146,13 @@ func (this *A1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		//}
 	}
 
+	if e81data == nil || e616data == nil   {
+		return -1, nil
+	}
+	if matchId == "1724454" {
+		base.Log.Info("-")
+	}
+
 	//亚赔
 	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "18Bet")
 	if len(aList) < 1 {
@@ -125,6 +162,7 @@ func (this *A1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
+		//temp_data.Result = ""
 		return -2, temp_data
 	}
 
