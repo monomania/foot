@@ -42,10 +42,11 @@
         <td>{{.MatchDateStr}}</td>
         <td>{{.LeagueName}}</td>
         <td>
-        {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
+            {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
+            {{if .TOVoid}}<span style="color: red;">{{if .TOVoidDesc}}斥{{end}}</span></del>{{end}}
         </td>
         <td>
-        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+            {{.MainTeamGoal}}:{{.GuestTeamGoal}}
         </td>
         <td style="background-color: {{resultColor .Result}}">
         {{preResultStr .PreResult .AlFlag}}
