@@ -19,6 +19,7 @@ type TWeekVO struct {
 	//胜率
 	Val string
 
+	MainAlflag string
 	//红
 	MainRedCount int64
 	//黑

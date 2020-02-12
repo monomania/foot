@@ -9,6 +9,7 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
+	service4 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/core/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
@@ -42,6 +43,10 @@ func main() {
 		launch.Spider()
 	case "analy\n", "analy":
 		launch2.Analy()
+	case "mr\n", "mr":
+		//更新结果
+		analyService := new(service4.AnalyService)
+		analyService.ModifyAllResult()
 	case "baseFace\n", "baseFace":
 		launch.Spider_match(4)
 		launch.Spider_asiaLastNew(true)

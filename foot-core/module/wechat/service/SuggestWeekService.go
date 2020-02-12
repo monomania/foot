@@ -111,18 +111,30 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	temp.Val = strconv.FormatFloat(val, 'f', -1, 64) + "%"
 
 	//计算主要模型胜率
-	param.AlFlag = getMainAlFlag()
-	mainTempList := this.SuggestService.Query(param)
+	temp_main_alflag := getMainAlFlag()
+	//计算单方向胜率
 	var mainRedCount, mainBlackCount int64
-	for _, e := range mainTempList {
-		if e.PreResult == 3 && e.MainTeamGoal >= e.GuestTeamGoal{
+	for _, e := range tempList {
+		if !strings.ContainsAny(temp_main_alflag,e.AlFlag){
+			continue
+		}
+		last := new(pojo.MatchLast)
+		last.Id = e.MatchId
+		last.LeagueId = e.LeagueName
+		last.MatchDate = e.MatchDate
+		last.MainTeamId = e.MainTeam
+		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
+		last.GuestTeamId = e.GuestTeam
+		last.GuestTeamGoals, _ = strconv.Atoi(e.GuestTeamGoal)
+		option := this.AnalyService.IsRight(last, &e.AnalyResult)
+		if option == constants2.HIT ||  option == constants2.HIT_1{
 			mainRedCount++
-		}else if e.PreResult == 0 && e.MainTeamGoal <= e.GuestTeamGoal{
-			mainRedCount++
-		}else{
+		}
+		if option == constants2.UNHIT {
 			mainBlackCount++
 		}
 	}
+	temp.MainAlflag = temp_main_alflag
 	temp.MainRedCount = mainRedCount
 	temp.MainBlackCount = mainBlackCount
 	mainVal := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100

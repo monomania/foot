@@ -26,7 +26,7 @@ type SuggestTodayService struct {
 
 func preResultStr(val int, al_flag string) string {
 	var result string
-	if "E2" == al_flag {
+	if "E2" == al_flag || "C1" == al_flag {
 		if 3 == val {
 			result = "胜平"
 		} else if 1 == val {
