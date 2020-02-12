@@ -317,7 +317,7 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 1.欧赔是主降还是主升 主降为true
 */
 func EuroMainDown(e81 *entity3.EuroHis, e616 *entity3.EuroHis) int {
-	if e81.Ep3 <= e81.Sp3 && e616.Ep3 <= e616.Sp3 && e616.Ep3 <= e81.Ep3{
+	if e81.Ep3 <= e81.Sp3 && e616.Ep3 <= e616.Sp3 && e616.Ep3 <= e81.Ep3 {
 		return 3
 	} else if e81.Ep0 <= e81.Sp0 && e616.Ep0 <= e616.Sp0 && e616.Ep0 <= e81.Ep0 {
 		return 0
@@ -328,18 +328,34 @@ func EuroMainDown(e81 *entity3.EuroHis, e616 *entity3.EuroHis) int {
 /**
 2.亚赔是主降还是主升 主降为true
 */
-func AsiaMainDown(his *entity3.AsiaHis) bool {
-	slb_sum := his.SLetBall
-	elb_sum := his.ELetBall
-
-	if elb_sum > slb_sum {
-		return true
-	} else if elb_sum < slb_sum {
-		return false
-	} else {
-		//初始让球和即时让球一致
-		if his.Ep3 < his.Sp3 {
+func AsiaMainDown(ahis *entity3.AsiaHis) bool {
+	slb := ahis.SLetBall
+	elb := ahis.ELetBall
+	if elb > 0 {
+		if elb > slb {
 			return true
+		} else if elb < slb {
+			return false
+		} else {
+			//初始让球和即时让球一致
+			if ahis.Ep3-ahis.Sp3 > 0 {
+				return false
+			} else {
+				return true
+			}
+		}
+	} else {
+		if elb < slb {
+			return false
+		} else if elb > slb {
+			return true
+		} else {
+			//初始让球和即时让球一致
+			if ahis.Ep0-ahis.Sp0 > 0 {
+				return true
+			} else {
+				return false
+			}
 		}
 	}
 	return false

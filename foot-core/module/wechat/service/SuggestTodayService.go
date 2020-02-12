@@ -86,6 +86,11 @@ func getAlFlag() string {
 	return al_flag;
 }
 
+func getStatAlFlag() string {
+	al_flag := utils.GetVal("wechat", "stat_al_flag")
+	return al_flag;
+}
+
 func getMainAlFlag() string {
 	al_flag := utils.GetVal("wechat", "main_al_flag")
 	return al_flag;
