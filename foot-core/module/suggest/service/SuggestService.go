@@ -344,6 +344,7 @@ WHERE mh.LeagueId = l.Id
   AND mh.Id = ar.MatchId 
   AND ar.MatchId = temp.MatchId 
   AND ar.AlFlag IN ('E2' ,'C1')
+  AND mh.Id NOT IN (SELECT matchId FROM foot.t_pub p WHERE p.CreateTime > DATE_SUB(NOW(),INTERVAL 2 DAY))
 	`
 	if len(param.BeginDateStr) > 0 {
 		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "

@@ -1,8 +1,12 @@
 package service
 
 import (
+	"bytes"
+	"html/template"
+	"math/rand"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	vo2 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
@@ -32,15 +36,54 @@ func (this *LeisuService) ListPubAbleData() []*vo2.SuggStubDetailVO {
 	if len(tempList) <= 0 {
 		return tempList
 	}
-	//过滤重复选项
+	//过滤重复选项,只取c1
 	dataList := make([]*vo2.SuggStubDetailVO, 0)
 	for _, e := range tempList {
-		for _, e2 := range dataList {
-			if strings.EqualFold(e.MatchId, e2.MatchId) {
-				continue
-			}
+
+		if strings.EqualFold(e.AlFlag,"C1"){
 			dataList = append(dataList, e)
 		}
+	}
+	//生成内容
+	template_paths := []string{
+		"assets/common/template/analycontent/001.html",
+		"assets/common/template/analycontent/002.html",
+		"assets/common/template/analycontent/003.html",
+		"assets/common/template/analycontent/004.html",
+		"assets/common/template/analycontent/005.html",
+		"assets/common/template/analycontent/footer.html",
+	}
+
+	for _, e := range dataList {
+		var parent_template_path_suffix string
+		intn := rand.Intn(23)
+		if intn < 10 {
+			parent_template_path_suffix = "10" + strconv.Itoa(intn) + ".html"
+		} else {
+			parent_template_path_suffix = "1" + strconv.Itoa(intn) + ".html"
+		}
+
+		parent_template_path := "assets/common/template/analycontent/" + parent_template_path_suffix
+		template_paths = append(template_paths, parent_template_path)
+		var buf bytes.Buffer
+		tpl, err := template.New(parent_template_path_suffix).ParseFiles(template_paths...)
+		if err != nil {
+			base.Log.Error(err)
+		}
+		if err := tpl.Execute(&buf, e); err != nil {
+			base.Log.Fatal(err)
+		}
+		e.SContent = buf.String()
+		e.SContent = strings.TrimSpace(e.SContent)
+		e.SContent = strings.ReplaceAll(e.SContent, " ", "")
+		e.SContent = strings.ReplaceAll(e.SContent, "\r", "")
+		e.SContent = strings.ReplaceAll(e.SContent, "\n", "")
+
+		base.Log.Info("---------------------------")
+		base.Log.Info(parent_template_path_suffix)
+		base.Log.Info(e.SContent)
+		base.Log.Info("---------------------------")
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 	}
 	return dataList
 }

@@ -5,8 +5,6 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/enums"
 )
 
-
-
 /**
 发布记录
  */
@@ -16,7 +14,9 @@ type Pub struct {
 	//发布的帐号
 	Account string
 	//发布的赛事ID
-
+	MatchId string
+	//发布的analy表的ID
+	AnalyId string
 
 	pojo.BasePojo `xorm:"extends"`
 }

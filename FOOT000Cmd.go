@@ -51,7 +51,7 @@ HEAD:
 		launch.Spider_baseFace(true)
 		goto HEAD
 	case "limit\n", "limit\r\n":
-		pubLimitService := new(service.PubLimitService)
+		pubLimitService := new(service.PushLimitService)
 		publimit := pubLimitService.GetPublimit()
 		bytes, _ := json.Marshal(publimit)
 		fmt.Println("发布限制信息为:" + string(bytes))
@@ -86,7 +86,7 @@ HEAD:
 		}
 		goto HEAD
 	case "pub\n", "pub\r\n":
-		pubService := new(service.PubService)
+		pubService := new(service.PushService)
 		pubService.PubBJDC()
 		goto HEAD
 	case "autospider\n", "autospider\r\n":
@@ -111,7 +111,7 @@ HEAD:
 			for {
 				base.Log.Info("--------发布开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速
-				pubService := new(service.PubService)
+				pubService := new(service.PushService)
 				pubService.PubBJDC()
 				base.Log.Info("--------发布周期结束--------")
 				time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
@@ -159,7 +159,7 @@ HEAD:
 		//	for {
 		//		base.Log.Info("--------发布开始运行--------")
 		//		//3.3 FW001PubApplication 执行发布到雷速
-		//		pubService := new(service.PubService)
+		//		pubService := new(service.PushService)
 		//		pubService.PubBJDC()
 		//		base.Log.Info("--------发布周期结束--------")
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)

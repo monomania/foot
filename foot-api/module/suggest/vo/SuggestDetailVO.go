@@ -54,4 +54,7 @@ type SuggStubDetailVO struct {
 	//下一场比赛
 	MainNextMainTeam  string
 	GuestNextMainTeam string
+
+	//生成的推荐内容
+	SContent string
 }

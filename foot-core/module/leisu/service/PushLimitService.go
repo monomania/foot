@@ -11,14 +11,14 @@ import (
 /**
 发布前,需要查询限制
  */
-type PubLimitService struct {
+type PushLimitService struct {
 	//mysql.BaseService
 }
 
 /**
 获取发布次数
  */
-func (this *PubLimitService) GetPublimit() *vo2.PubLimitVO {
+func (this *PushLimitService) GetPublimit() *vo2.PubLimitVO {
 	data := utils2.GetText(constants2.PUB_LIMIT_URL)
 	if len(data) <= 0 {
 		base.Log.Error("GetPublimit:获取到的数据为空")
@@ -32,7 +32,7 @@ func (this *PubLimitService) GetPublimit() *vo2.PubLimitVO {
 /**
 是否还有发布次数
  */
-func (this *PubLimitService) HasPubCount() bool{
+func (this *PushLimitService) HasPubCount() bool{
 	data := this.GetPublimit()
 	if data.Remain_times > 0 {
 		return true;

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	pubService := new(service.PubService)
+	pubService := new(service.PushService)
 	pubService.PubBJDC()
 
 }

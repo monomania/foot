@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	"time"
@@ -31,13 +32,19 @@ func set()  {
 	constants.FullSpiderDateStr = constants.SpiderDateStr
 }
 
-
-func main(){
-	h2, _ := time.ParseDuration("129m")
-	//比赛结束的时间点
-	matchEndDate := time.Now().Add(h2)
-	fmt.Println(matchEndDate.Format("2006-01-02 15:04:05"))
+func main()  {
+	for ; ;  {
+		fmt.Println(rand.Intn(7))
+		time.Sleep(1 * time.Second)
+	}
 }
+
+//func main(){
+//	h2, _ := time.ParseDuration("129m")
+//	//比赛结束的时间点
+//	matchEndDate := time.Now().Add(h2)
+//	fmt.Println(matchEndDate.Format("2006-01-02 15:04:05"))
+//}
 
 //func main() {
 //	h, err := syscall.LoadLibrary("kernel32.dll")

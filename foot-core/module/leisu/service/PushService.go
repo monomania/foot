@@ -7,28 +7,32 @@ import (
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/enums"
+	"tesou.io/platform/foot-parent/foot-api/module/suggest/pojo"
 	vo3 "tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	constants2 "tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	utils2 "tesou.io/platform/foot-parent/foot-core/module/leisu/utils"
 	vo2 "tesou.io/platform/foot-parent/foot-core/module/leisu/vo"
+	"tesou.io/platform/foot-parent/foot-core/module/suggest/service"
 	"time"
 )
 
 /**
 发布推荐
 */
-type PubService struct {
+type PushService struct {
 	LeisuService
 	MatchPoolService
-	PubLimitService
+	PushLimitService
 	PriceService
+	service.PubService
 }
 
 /**
 获取周期间隔时间
 */
-func (this *PubService) CycleTime() int64 {
+func (this *PushService) CycleTime() int64 {
 	var result int64
 	temp_val := utils.GetVal(constants2.SECTION_NAME, "cycle_time")
 	if len(temp_val) > 0 {
@@ -44,7 +48,7 @@ func (this *PubService) CycleTime() int64 {
 /**
 发布北京单场胜负过关
 */
-func (this *PubService) PubBJDC() {
+func (this *PushService) PubBJDC() {
 	//获取分析计算出的比赛列表
 	tempList := this.LeisuService.ListPubAbleData()
 	if len(tempList) < 1 {
@@ -83,7 +87,7 @@ func (this *PubService) PubBJDC() {
 	//发布比赛
 	for analy, match := range pubList {
 		//检查是否还有发布次数
-		count := this.PubLimitService.HasPubCount()
+		count := this.PushLimitService.HasPubCount()
 		if !count {
 			base.Log.Error("已经没有发布次数啦,请更换cookies帐号!")
 			hours, _ := strconv.Atoi(time.Now().Format("15"))
@@ -93,13 +97,19 @@ func (this *PubService) PubBJDC() {
 		//检查是否是重复发布
 
 		//------------------------------------------------
-		action := this.BJDCAction(match, analy.PreResult)
+		action := this.BJDCAction(analy, match)
 		if nil != action {
 			switch action.Code {
 			case 0, 100002:
 				//0 成功 100002 每场比赛同一种玩法只可选择1次
-				//analy.LeisuPubd = true
-				//this.AnalyService.Modify(&analy.AnalyResult)
+				pub := new(pojo.Pub)
+				pub.MatchId = analy.MatchId
+				pub.AnalyId = analy.Id
+				pub.Source = enums.LEISU
+				_, exist := this.PubService.Exist(analy.MatchId)
+				if !exist {
+					this.PubService.Save(pub)
+				}
 			case 100003:
 				//100003 标题长度不正确
 			default:
@@ -116,7 +126,7 @@ func (this *PubService) PubBJDC() {
 /**
 获取标题
 */
-func (this *PubService) title(param *vo2.MatchVO) string {
+func (this *PushService) title(param *vo2.MatchVO) string {
 	var title string
 	matchDate := param.MatchDate.Format("20060102150405")
 	titleTpl := utils.GetVal(constants2.SECTION_NAME, "title_tpl")
@@ -146,7 +156,8 @@ const pubContent = `
 经近三个月的实验准确率一直能维持在一个较高的水平.
 依据该项目为依托已经吸引了不少朋友,现目前通过雷速号再次验证程序的准确率,望大家长期关注校验.!
 `
-func (this *PubService) content(param *vo2.MatchVO) string {
+
+func (this *PushService) content(param *vo2.MatchVO) string {
 	var content string
 	matchDate := param.MatchDate.Format("20060102150405")
 	contentTpl := utils.GetVal(constants2.SECTION_NAME, "content_tpl")
@@ -167,20 +178,20 @@ func (this *PubService) content(param *vo2.MatchVO) string {
 /**
 发布比赛
 */
-func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespVO {
+func (this *PushService) BJDCAction(sugg *vo3.SuggStubDetailVO, match *vo2.MatchVO) *vo2.PubRespVO {
 	pubVO := new(vo2.PubVO)
-	pubVO.Title = this.title(param)
-	pubVO.Content = this.content(param)
+	pubVO.Title = this.title(match)
+	pubVO.Content = sugg.SContent
 	pubVO.Multiple = 0
 	pubVO.Price = this.PriceService.GetPriceVal()
 	//设置赔率
-	oddData := param.GetBJDCOddData(option)
+	oddData := match.GetBJDCOddData(sugg.PreResult)
 	if oddData == nil {
 		//没有找到北单胜负过关的选项
 		return nil;
 	}
 	infvo := vo2.MatchINFVO{}
-	infvo.Id = param.DataId
+	infvo.Id = match.DataId
 	infvo.Selects = []int{oddData.DataSelects}
 	infvo.Values = []float64{oddData.DataOdd}
 	pubVO.Data = []vo2.MatchINFVO{infvo}
@@ -193,7 +204,7 @@ func (this *PubService) BJDCAction(param *vo2.MatchVO, option int) *vo2.PubRespV
 /**
 处理http post
 */
-func (this *PubService) PubPost(param *vo2.PubVO) *vo2.PubRespVO {
+func (this *PushService) PubPost(param *vo2.PubVO) *vo2.PubRespVO {
 	data := utils2.Post(constants2.PUB_URL, param)
 	if len(data) <= 0 {
 		base.Log.Error("PubPost:获取到的数据为空")
