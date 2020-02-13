@@ -322,7 +322,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//3.0即时盘赔率大于等于初盘赔率
 	endUp := eLetBall >= sLetBall
 	//3.1即时盘初盘非0
-	notZero := eLetBall > 0 && sLetBall > 0
+	notZero := eLetBall >= 0 && sLetBall >= 0
 
 	//看两个区间是否属于同一个区间
 	//if sectionBlock1 == 1 && sectionBlock2 == 1 {
