@@ -338,13 +338,18 @@ FROM
   WHERE ar1.MatchId = ar2.MatchId 
     AND ar1.AlFlag = 'E2' 
     AND ar2.AlFlag = 'C1' 
-    AND ar1.PreResult = ar2.PreResult
-    ) temp 
+    AND ar2.TOVoid IS FALSE 
+    AND ar1.PreResult = ar2.PreResult) temp 
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId 
   AND ar.MatchId = temp.MatchId 
-  AND ar.AlFlag IN ('E2' ,'C1')
-  AND mh.Id NOT IN (SELECT matchId FROM foot.t_pub p WHERE p.CreateTime > DATE_SUB(NOW(),INTERVAL 2 DAY))
+  AND ar.AlFlag IN ('E2', 'C1') 
+  AND mh.Id NOT IN 
+  (SELECT 
+    matchId 
+  FROM
+    foot.t_pub p 
+  WHERE p.CreateTime > DATE_SUB(NOW(), INTERVAL 2 DAY))
 	`
 	if len(param.BeginDateStr) > 0 {
 		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "
