@@ -102,7 +102,7 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1"){
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -316,49 +316,91 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 /**
 1.欧赔是主降还是主升 主降为true
 */
-func EuroMainDown(e81 *entity3.EuroHis, e616 *entity3.EuroHis) int {
-	if e81.Ep3 <= e81.Sp3 && e616.Ep3 <= e616.Sp3 && e616.Ep3 <= e81.Ep3 {
+func (this *AnalyService) EuroDirection(e81 *entity3.EuroHis, e616 *entity3.EuroHis) int {
+	//val_diff := 0.3
+	//e81_3_diff := math.Abs(e81.Ep3 - e81.Sp3)
+	//e81_0_diff := math.Abs(e81.Ep0 - e81.Sp0)
+	e81_ep3_small := e81.Ep3 <= e81.Sp3
+	e81_ep0_small := e81.Ep0 <= e81.Sp0
+	//e616_3_diff := math.Abs(e616.Ep3 - e616.Sp3)
+	//e616_0_diff := math.Abs(e616.Ep0 - e616.Sp0)
+	e616_ep3_small := e616.Ep3 <= e616.Sp3
+	e616_ep0_small := e616.Ep0 <= e616.Sp0
+
+	if e616_ep3_small && !e616_ep0_small && e81_ep3_small && !e81_ep0_small && e616.Ep3 <= e81.Ep3 {
 		return 3
-	} else if e81.Ep0 <= e81.Sp0 && e616.Ep0 <= e616.Sp0 && e616.Ep0 <= e81.Ep0 {
+	}
+	if !e616_ep3_small && e616_ep0_small && !e81_ep3_small && e81_ep0_small && e616.Ep0 <= e81.Ep0 {
 		return 0
 	}
-	return 1
+	return -1
 }
 
 /**
 2.亚赔是主降还是主升 主降为true
 */
-func AsiaMainDown(ahis *entity3.AsiaHis) bool {
+func (this *AnalyService) AsiaDirectionMulti(matchId string) int {
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "Crown", "明陞", "金宝博", "12bet", "盈禾", "18Bet")
+	if len(aList) < 3 {
+		return -1
+	}
+
+	var mainCount, guestCount int
+	for _, e := range aList {
+		direction := this.AsiaDirection(e)
+		if direction == 3 {
+			mainCount++
+		} else if direction == 0 {
+			guestCount++
+		}
+	}
+
+	if mainCount-guestCount > 1 {
+		return 3
+	}
+	if mainCount-guestCount < -1 {
+		return 0
+	}
+	return -1
+}
+
+/**
+2.亚赔是主降还是主升 主降为true
+*/
+func (this *AnalyService) AsiaDirection(ahis *entity3.AsiaHis) int {
+	mark := -1
 	slb := ahis.SLetBall
 	elb := ahis.ELetBall
+	ep3_small := ahis.Ep3 < ahis.Sp3
+	ep0_small := ahis.Ep0 < ahis.Sp0
 	if elb > 0 {
 		if elb > slb {
-			return true
+			mark = 3
 		} else if elb < slb {
-			return false
+			mark = 0
 		} else {
 			//初始让球和即时让球一致
-			if ahis.Ep3-ahis.Sp3 > 0 {
-				return false
-			} else {
-				return true
+			if ep3_small && !ep0_small {
+				mark = 3
+			} else if !ep3_small && ep0_small {
+				mark = 0
 			}
 		}
 	} else {
 		if elb < slb {
-			return false
+			mark = 0
 		} else if elb > slb {
-			return true
+			mark = 3
 		} else {
 			//初始让球和即时让球一致
-			if ahis.Ep0-ahis.Sp0 > 0 {
-				return true
-			} else {
-				return false
+			if ep3_small && !ep0_small {
+				mark = 3
+			} else if !ep3_small && ep0_small {
+				mark = 0
 			}
 		}
 	}
-	return false
+	return mark
 }
 
 /**

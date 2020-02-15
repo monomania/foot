@@ -112,10 +112,10 @@ func (this *E1Service) Analy_Process(matchList []*pojo.MatchLast) {
 func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
 	//声明使用变量
-	var e81data *entity3.EuroHis
-	var e616data *entity3.EuroHis
-	var e104data *entity3.EuroHis
-	var a18betData *entity3.AsiaHis
+	var e81 *entity3.EuroHis
+	var e616 *entity3.EuroHis
+	var e104 *entity3.EuroHis
+	var a18bet *entity3.AsiaHis
 	//81 -- 伟德
 	eList := this.EuroHisService.FindByMatchIdCompId(matchId, "81", "616", "104")
 	if len(eList) < 3 {
@@ -123,27 +123,27 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	for _, ev := range eList {
 		if strings.EqualFold(ev.CompId, "81") {
-			e81data = ev
+			e81 = ev
 			continue
 		}
 		if strings.EqualFold(ev.CompId, "616") {
-			e616data = ev
+			e616 = ev
 			continue
 		}
 		if strings.EqualFold(ev.CompId, "104") {
-			e104data = ev
+			e104 = ev
 			continue
 		}
 	}
 
-	if e81data == nil || e616data == nil  || e104data == nil  {
+	if e81 == nil || e616 == nil  || e104 == nil  {
 		return -1, nil
 	}
 	//0.没有变化则跳过
-	if e81data.Ep3 == e81data.Sp3 || e81data.Ep0 == e81data.Sp0 {
+	if e81.Ep3 == e81.Sp3 || e81.Ep0 == e81.Sp0 {
 		return -3, nil
 	}
-	if e616data.Ep3 == e616data.Sp3 || e616data.Ep0 == e616data.Sp0 {
+	if e616.Ep3 == e616.Sp3 || e616.Ep0 == e616.Sp0 {
 		return -3, nil
 	}
 
@@ -153,19 +153,20 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(aList) < 1 {
 		return -1, nil
 	}
-	a18betData = aList[0]
-	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
+	a18bet = aList[0]
+	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
 		temp_data := this.Find(v.Id, this.ModelName())
-		temp_data.LetBall = a18betData.ELetBall
+		temp_data.LetBall = a18bet.ELetBall
+		//temp_data.Result = ""
 		return -2, temp_data
 	}
 	//2.亚赔是主降还是主升 主降为true
 	//得出结果
 	var preResult int
-	asiaMainDown := AsiaMainDown(a18betData)
-	if asiaMainDown {
+	asiaMainDown := this.AsiaDirection(a18bet)
+	if asiaMainDown == 3 {
 		//主降
-		if (e616data.Sp3-e616data.Ep3 > e81data.Sp3-e81data.Ep3) && (e616data.Ep0 > e616data.Sp0) && (e616data.Ep0-e616data.Sp0 > e81data.Ep0-e81data.Sp0) {
+		if (e616.Sp3-e616.Ep3 > e81.Sp3-e81.Ep3) && (e616.Ep0 > e616.Sp0) && (e616.Ep0-e616.Sp0 > e81.Ep0-e81.Sp0) {
 			//主队有希望
 			preResult = 3
 		} else {
@@ -174,7 +175,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	} else {
 		//主升
-		if (e616data.Sp0-e616data.Ep0 > e81data.Sp0-e81data.Ep0) && (e616data.Ep3 > e616data.Sp3) && (e616data.Ep3-e616data.Sp3 > e81data.Ep3-e81data.Sp3) {
+		if (e616.Sp0-e616.Ep0 > e81.Sp0-e81.Ep0) && (e616.Ep3 > e616.Sp3) && (e616.Ep3-e616.Sp3 > e81.Ep3-e81.Sp3) {
 			//客队有希望
 			preResult = 0
 		} else {
@@ -184,10 +185,10 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//增加104 --Interwetten过滤
-	if preResult == 3 && (e616data.Ep3 > e104data.Ep3 || e104data.Ep0 < e104data.Sp0) {
+	if preResult == 3 && (e616.Ep3 > e104.Ep3 || e104.Ep0 < e104.Sp0) {
 		return -3, nil
 	}
-	if preResult == 0 && (e616data.Ep0 > e104data.Ep0 || e104data.Ep3 < e104data.Sp3) {
+	if preResult == 0 && (e616.Ep0 > e104.Ep0 || e104.Ep3 < e104.Sp3) {
 		return -3, nil
 	}
 
@@ -196,7 +197,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18betData.ELetBall
+		temp_data.LetBall = a18bet.ELetBall
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -205,13 +206,13 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = a18bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 1
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = a18bet.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(v, data)
 		return 0, data
