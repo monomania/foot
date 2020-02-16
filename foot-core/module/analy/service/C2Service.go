@@ -179,6 +179,15 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult2 = 3
 			}
 		}
+		bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
+		for _, e := range bfj_guest {
+			if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
+				preResult2 = -1
+			}
+			if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
+				preResult2 = -1
+			}
+		}
 	} else {
 		bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
 		for _, e := range bfj_guest {
@@ -187,6 +196,15 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			}
 			if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
 				preResult2 = 0
+			}
+		}
+		bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 1)
+		for _, e := range bfj_main {
+			if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
+				preResult2 = -1
+			}
+			if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
+				preResult2 = -1
 			}
 		}
 	}
