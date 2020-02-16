@@ -48,7 +48,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	var err error
 	//sync model
 	//比赛相关表  基本面相关表
-	err = engine.Sync2(new(entity1.MatchLast), new(entity1.MatchHis), new(entity1.BFBattle), new(entity1.BFFutureEvent), new(entity1.BFScore))
+	err = engine.Sync2(new(entity1.MatchLast), new(entity1.MatchHis), new(entity1.BFBattle), new(entity1.BFJin), new(entity1.BFFutureEvent), new(entity1.BFScore))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}

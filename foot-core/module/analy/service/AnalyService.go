@@ -327,10 +327,10 @@ func (this *AnalyService) EuroDirection(e81 *entity3.EuroHis, e616 *entity3.Euro
 	e616_ep3_small := e616.Ep3 <= e616.Sp3
 	e616_ep0_small := e616.Ep0 <= e616.Sp0
 
-	if e616_ep3_small && !e616_ep0_small && e81_ep3_small && !e81_ep0_small && e616.Ep3 <= e81.Ep3 {
+	if e616_ep3_small && e81_ep3_small && e616.Ep3 <= e81.Ep3 {
 		return 3
 	}
-	if !e616_ep3_small && e616_ep0_small && !e81_ep3_small && e81_ep0_small && e616.Ep0 <= e81.Ep0 {
+	if e616_ep0_small && e81_ep0_small && e616.Ep0 <= e81.Ep0 {
 		return 0
 	}
 	return -1

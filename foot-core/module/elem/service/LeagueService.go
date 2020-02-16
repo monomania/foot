@@ -40,3 +40,13 @@ func (this *LeagueService) FindById(id string) *pojo.League {
 	}
 	return league
 }
+
+func (this *LeagueService) FindByName(name string) *pojo.League {
+	league := new(pojo.League)
+	league.Name = name
+	_, err := mysql.GetEngine().Get(league)
+	if err != nil {
+		base.Log.Info("FindByName:", err)
+	}
+	return league
+}

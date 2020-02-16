@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
+	service2 "tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
@@ -22,7 +23,9 @@ import (
 type BaseFaceProcesser struct {
 	service.BFScoreService
 	service.BFBattleService
+	service.BFJinService
 	service.BFFutureEventService
+	service2.LeagueService
 
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
@@ -98,6 +101,26 @@ func (this *BaseFaceProcesser) Process(p *page.Page) {
 
 	this.BFBattleService.SaveList(battleSaveList)
 	this.BFBattleService.ModifyList(battleModifyList)
+
+	//近期对战
+	jinSaveList := make([]interface{}, 0)
+	jinModifyList := make([]interface{}, 0)
+	jinList := this.jin_process(matchId, p)
+	for _, e := range jinList {
+		if len(string(e.ScheduleID)) <= 0 {
+			continue
+		}
+		temp_id, exist := this.BFJinService.Exist(e)
+		if exist {
+			e.Id = temp_id
+			jinModifyList = append(jinModifyList, e)
+		} else {
+			jinSaveList = append(jinSaveList, e)
+		}
+	}
+
+	this.BFJinService.SaveList(jinSaveList)
+	this.BFJinService.ModifyList(jinModifyList)
 
 	//未来对战
 	futureEventSaveList := make([]interface{}, 0)
@@ -207,6 +230,61 @@ func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []*p
 	}
 
 	return data_list_slice
+}
+
+//处理对战数据获取
+func (this *BaseFaceProcesser) jin_process(matchId string, p *page.Page) []*pojo.BFJin {
+	data_list_slice := make([]*pojo.BFJin, 0)
+
+	var hdata_str string
+	p.GetHtmlParser().Find("script").Each(func(i int, selection *goquery.Selection) {
+		text := selection.Text()
+		if hdata_str == "" && strings.Contains(text, "var nearInfo") {
+			hdata_str = text
+		} else {
+			return
+		}
+	})
+	if hdata_str == "" {
+		return data_list_slice
+	}
+
+	// 获取script脚本中的，博彩公司信息
+	temp_arr := strings.Split(hdata_str, "var nearInfo = ")
+	temp_arr = strings.Split(temp_arr[1], ";")
+	hdata_str = strings.TrimSpace(temp_arr[0])
+
+	data := new(vo.JinData)
+	json.Unmarshal(([]byte)(hdata_str), &data)
+
+	for _, v := range data.HomeInfo {
+		data_list_slice = append(data_list_slice, v)
+	}
+	for _, v := range data.GuestInfo {
+		data_list_slice = append(data_list_slice, v)
+	}
+
+	return data_list_slice
+}
+
+/**
+将让球转换类型
+*/
+func (this *BaseFaceProcesser) ConvertLetball(letball string) float64 {
+	var lb_sum float64
+	slb_arr := strings.Split(letball, "/")
+	slb_arr_0, _ := strconv.ParseFloat(slb_arr[0], 10)
+	if len(slb_arr) > 1 {
+		if strings.Index(slb_arr[0], "-") != -1 {
+			lb_sum = slb_arr_0 - 0.25
+		} else {
+			lb_sum = slb_arr_0 + 0.25
+		}
+	} else {
+		lb_sum = slb_arr_0
+	}
+
+	return lb_sum
 }
 
 //处理获取示来对战数据
