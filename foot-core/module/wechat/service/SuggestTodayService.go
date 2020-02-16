@@ -51,6 +51,8 @@ func color(str string) string {
 		return "orange"
 	} else if "C1" == str {
 		return "yellow"
+	} else if "C2" == str {
+		return "yellowgreen"
 	} else if "E1" == str {
 		return "blue"
 	} else if "E2" == str {
@@ -329,7 +331,7 @@ func (this *SuggestTodayService) ModifyTodayC2(wcClient *core.Client) {
 	}
 
 	var buf bytes.Buffer
-	tpl, err := template.New("today_c1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c1.html")
+	tpl, err := template.New("today_c2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c2.html")
 	if err != nil {
 		base.Log.Error(err)
 	}

@@ -49,6 +49,12 @@ func Analy() {
 	c1.MaxLetBall = maxLetBall
 	c1.Analy(false)
 	base.Log.Info("---------------------------------------------------------------")
+	base.Log.Info("---------------C2模型--------------")
+	base.Log.Info("---------------------------------------------------------------")
+	c2 := new(service.C2Service)
+	c2.MaxLetBall = maxLetBall
+	c2.Analy(false)
+	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------处理结果--------------")
 	base.Log.Info("---------------------------------------------------------------")
 	analyService := new(service.AnalyService)

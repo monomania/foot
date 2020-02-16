@@ -123,7 +123,7 @@ func (this *C2Service) Analy_Process(matchList []*pojo.MatchLast) {
  */
 func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
-	if matchId == "1836932" {
+	if matchId == "1770574" {
 		base.Log.Info("-")
 	}
 	//声明使用变量
@@ -139,7 +139,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.LetBall = a18betData.ELetBall
 		return -2, temp_data
 	}
-	if matchId == "1753237"{
+	if matchId == "1770574"{
 		fmt.Println("--------------")
 	}
 	preResult := -1
