@@ -9,6 +9,7 @@ import (
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	launch2 "tesou.io/platform/foot-parent/foot-core/launch"
+	service4 "tesou.io/platform/foot-parent/foot-core/module/analy/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/core/service"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/constants"
 	"tesou.io/platform/foot-parent/foot-core/module/leisu/service"
@@ -132,6 +133,11 @@ HEAD:
 		goto HEAD
 	case "auto\n", "auto\r\n":
 		go func() {
+			go func() {
+				time.Sleep(24 * time.Hour)
+				new(service4.AnalyService).DelTovoidData()
+			}()
+
 			for {
 				base.Log.Info("--------全量数据更新开始运行--------")
 				//1.安装数据库

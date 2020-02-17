@@ -227,6 +227,18 @@ WHERE ml.id = el.matchid
 	return entitys
 }
 
+//测试加载数据
+func (this *AnalyService) DelTovoidData() {
+	//E2 C1 不可删除
+	sql_build := `
+DELETE FROM foot.t_analy_result  WHERE AlFlag IN ("A1","C2","E1","Q1") AND TOVoid IS TRUE
+	`
+	_, err := mysql.GetEngine().Exec(sql_build)
+	if nil != err {
+		base.Log.Error("DelTovoidData" + err.Error())
+	}
+}
+
 func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	if strings.EqualFold(analy.MatchId, "1826976") {
 		fmt.Println("--")

@@ -120,6 +120,10 @@ func main() {
 		}
 	case "auto\n", "auto":
 		go func() {
+			time.Sleep(24 * time.Hour)
+			new(service4.AnalyService).DelTovoidData()
+		}()
+		go func() {
 			for {
 				base.Log.Info("--------全量数据更新开始运行--------")
 				//1.安装数据库
