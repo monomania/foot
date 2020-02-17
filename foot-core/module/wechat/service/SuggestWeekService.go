@@ -115,7 +115,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 	//计算单方向胜率
 	var mainRedCount, mainBlackCount int64
 	for _, e := range tempList {
-		if !strings.ContainsAny(temp_main_alflag,e.AlFlag){
+		if !strings.Contains(temp_main_alflag,e.AlFlag){
 			continue
 		}
 		last := new(pojo.MatchLast)

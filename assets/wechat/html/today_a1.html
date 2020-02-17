@@ -18,6 +18,19 @@
     <li><strong>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</strong></li>
 </ul>
 <hr/>
+<ul style="font-size: 12px;font-weight: lighter">
+    <li>全模型统计,
+        <span style="color: red; ">红:{{.RedCount}},</span>
+        <span style="color: gray; ">黑:{{.BlackCount}},</span>
+        胜率:{{.RedCount}}/({{.RedCount}}+{{.BlackCount}})={{.Val}}
+    </li>
+    <li>{{.MainAlflag}}单方向统计,
+        <span style="color: red; ">红:{{.MainRedCount}},</span>
+        <span style="color: gray; ">黑:{{.MainBlackCount}},</span>
+        胜率:{{.MainRedCount}}/({{.MainRedCount}}+{{.MainBlackCount}})={{.MainVal}}
+    </li>
+</ul>
+<hr/>
 <h1 style="margin-top: 5px">
     <div style="float: left;width: 40%"><strong>赛事列表</strong></div>
     <div style="float: right;width: 40%;font-weight: bold;font-size: 12px">

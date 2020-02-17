@@ -214,11 +214,11 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
-	if strings.ContainsAny(bffe_main.EventLeagueId, "杯") {
+	if strings.Contains(bffe_main.EventLeagueId, "杯") {
 		//下一场打杯赛
 		return -3, nil
 	}
-	if strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
+	if strings.Contains(bffe_guest.EventLeagueId, "杯") {
 		//下一场打杯赛
 		return -3, nil
 	}

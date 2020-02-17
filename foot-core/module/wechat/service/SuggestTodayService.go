@@ -6,8 +6,10 @@ import (
 	"github.com/chanxuehong/wechat/mp/core"
 	"github.com/chanxuehong/wechat/mp/material"
 	"html/template"
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/suggest/vo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
@@ -164,6 +166,8 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
+	this.StatWinOdd_Today(&temp,tempList,"C1")
+
 	var buf bytes.Buffer
 	tpl, err := template.New("today.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today.html")
 	if err != nil {
@@ -302,7 +306,7 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayC2(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-24h")
+	h12, _ := time.ParseDuration("-12h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
@@ -329,6 +333,8 @@ func (this *SuggestTodayService) ModifyTodayC2(wcClient *core.Client) {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
 	}
+
+	this.StatWinOdd_Today(&temp,tempList,"C2")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_c2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c2.html")
@@ -381,6 +387,8 @@ func (this *SuggestTodayService) ModifyTodayGuts(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
+	this.StatWinOdd_Today(&temp,tempList,"C1")
+
 	var buf bytes.Buffer
 	tpl, err := template.New("today_guts.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts.html")
 	if err != nil {
@@ -431,6 +439,8 @@ func (this *SuggestTodayService) ModifyTodayA1(wcClient *core.Client) {
 		e.MatchDateStr = e.MatchDate.Format("02号15:04")
 		temp.DataList[i] = *e
 	}
+
+	this.StatWinOdd_Today(&temp,tempList,"A1")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_a1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_a1.html")
@@ -485,6 +495,8 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
+	this.StatWinOdd_Today(&temp,tempList,"E2")
+
 	var buf bytes.Buffer
 	tpl, err := template.New("today_tbs.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_tbs.html")
 	if err != nil {
@@ -501,3 +513,147 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	}
 }
 
+/**
+胜率统计
+ */
+func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*vo.SuggStubVO,temp_main_alflag string){
+	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
+	for i, e := range tempList {
+		if strings.EqualFold(constants2.HIT, e.Result) || strings.EqualFold(constants2.HIT_1, e.Result) {
+			redCount++
+			tempLinkRedCount++
+			tempLinkBlackCount = 0
+		} else if strings.EqualFold(constants2.UNHIT, e.Result) {
+			blackCount++
+			tempLinkBlackCount++
+			tempLinkRedCount = 0
+		} else {
+			walkCount++
+		}
+
+		if tempLinkRedCount > linkRedCount {
+			linkRedCount = tempLinkRedCount
+		}
+		if tempLinkBlackCount > linkBlackCount {
+			linkBlackCount = tempLinkBlackCount
+		}
+
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
+	}
+	temp.RedCount = redCount
+	temp.WalkCount = walkCount
+	temp.BlackCount = blackCount
+	temp.LinkRedCount = linkRedCount
+	temp.LinkBlackCount = linkBlackCount
+	val := float64(redCount) / (float64(redCount) + float64(blackCount)) * 100
+	val, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", val), 64)
+	temp.Val = strconv.FormatFloat(val, 'f', -1, 64) + "%"
+
+	//计算主要模型胜率
+	if len(temp_main_alflag) <= 0 {
+		return
+	}
+	//计算单方向胜率
+	var mainRedCount, mainBlackCount int64
+	for _, e := range tempList {
+		if !strings.Contains(temp_main_alflag,e.AlFlag){
+			continue
+		}
+		last := new(pojo.MatchLast)
+		last.Id = e.MatchId
+		last.LeagueId = e.LeagueName
+		last.MatchDate = e.MatchDate
+		last.MainTeamId = e.MainTeam
+		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
+		last.GuestTeamId = e.GuestTeam
+		last.GuestTeamGoals, _ = strconv.Atoi(e.GuestTeamGoal)
+		option := this.AnalyService.IsRight(last, &e.AnalyResult)
+		if option == constants2.HIT ||  option == constants2.HIT_1{
+			mainRedCount++
+		}
+		if option == constants2.UNHIT {
+			mainBlackCount++
+		}
+	}
+	temp.MainAlflag = temp_main_alflag
+	temp.MainRedCount = mainRedCount
+	temp.MainBlackCount = mainBlackCount
+	mainVal := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100
+	mainVal, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", mainVal), 64)
+	temp.MainVal = strconv.FormatFloat(mainVal, 'f', -1, 64) + "%"
+}
+
+
+/**
+胜率统计
+ */
+func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO,tempList []*vo.SuggStubVO,temp_main_alflag string){
+	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
+	for i, e := range tempList {
+		if strings.EqualFold(constants2.HIT, e.Result) || strings.EqualFold(constants2.HIT_1, e.Result) {
+			redCount++
+			tempLinkRedCount++
+			tempLinkBlackCount = 0
+		} else if strings.EqualFold(constants2.UNHIT, e.Result) {
+			blackCount++
+			tempLinkBlackCount++
+			tempLinkRedCount = 0
+		} else {
+			walkCount++
+		}
+
+		if tempLinkRedCount > linkRedCount {
+			linkRedCount = tempLinkRedCount
+		}
+		if tempLinkBlackCount > linkBlackCount {
+			linkBlackCount = tempLinkBlackCount
+		}
+
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
+	}
+	temp.RedCount = redCount
+	temp.WalkCount = walkCount
+	temp.BlackCount = blackCount
+	temp.LinkRedCount = linkRedCount
+	temp.LinkBlackCount = linkBlackCount
+	val := float64(redCount) / (float64(redCount) + float64(blackCount)) * 100
+	val, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", val), 64)
+	temp.Val = strconv.FormatFloat(val, 'f', -1, 64) + "%"
+
+	//计算主要模型胜率
+	if len(temp_main_alflag) <= 0 {
+		return
+	}
+	//计算单方向胜率
+	var mainRedCount, mainBlackCount int64
+	for _, e := range tempList {
+		if !strings.Contains(temp_main_alflag,e.AlFlag){
+			continue
+		}
+		last := new(pojo.MatchLast)
+		last.Id = e.MatchId
+		last.LeagueId = e.LeagueName
+		last.MatchDate = e.MatchDate
+		last.MainTeamId = e.MainTeam
+		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
+		last.GuestTeamId = e.GuestTeam
+		last.GuestTeamGoals, _ = strconv.Atoi(e.GuestTeamGoal)
+		option := this.AnalyService.IsRight(last, &e.AnalyResult)
+		if option == constants2.HIT ||  option == constants2.HIT_1{
+			mainRedCount++
+		}
+		if option == constants2.UNHIT {
+			mainBlackCount++
+		}
+	}
+	temp.MainAlflag = temp_main_alflag
+	temp.MainRedCount = mainRedCount
+	temp.MainBlackCount = mainBlackCount
+	mainVal := float64(mainRedCount) / (float64(mainRedCount) + float64(mainBlackCount)) * 100
+	mainVal, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", mainVal), 64)
+	temp.MainVal = strconv.FormatFloat(mainVal, 'f', -1, 64) + "%"
+}
