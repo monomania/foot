@@ -261,7 +261,16 @@ func (this *BaseFaceProcesser) jin_process(matchId string, p *page.Page) []*pojo
 		data_list_slice = append(data_list_slice, v)
 	}
 	for _, v := range data.GuestInfo {
-		data_list_slice = append(data_list_slice, v)
+		var exist bool
+		for _, v2 := range data_list_slice {
+			if v.ScheduleID == v2.ScheduleID {
+				exist = true
+				break
+			}
+		}
+		if !exist {
+			data_list_slice = append(data_list_slice, v)
+		}
 	}
 
 	return data_list_slice

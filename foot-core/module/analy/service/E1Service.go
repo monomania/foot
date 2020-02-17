@@ -211,7 +211,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
-		data.HitCount = 1
+		data.HitCount = 3
 		data.LetBall = a18bet.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(v, data)

@@ -146,11 +146,11 @@ HEAD:
 				configService := new(service2.ConfService)
 				base.Log.Info("--------全量数据更新周期结束--------")
 
-				base.Log.Info("--------全量比赛发布公众号开始运行--------")
+				base.Log.Info("--------全量数据发布公众号开始运行--------")
 				//3.3 FW001PubApplication 执行发布到雷速
 				materialController := new(controller.MaterialController)
 				materialController.ModifyNewsOnly()
-				base.Log.Info("--------全量比赛发布公众号周期结束--------")
+				base.Log.Info("--------全量数据发布公众号周期结束--------")
 
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
 			}

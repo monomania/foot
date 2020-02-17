@@ -19,6 +19,7 @@ type C2Service struct {
 	AnalyService
 	service.BFBattleService
 	service.BFJinService
+	service.BFFutureEventService
 
 	//最大让球数据
 	MaxLetBall float64
@@ -169,8 +170,9 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	preResult2 := -1
+	bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 1)
+	bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
 	if preResult == 3 {
-		bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 1)
 		for _, e := range bfj_main {
 			if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
 				preResult2 = 3
@@ -179,7 +181,6 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult2 = 3
 			}
 		}
-		bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
 		for _, e := range bfj_guest {
 			if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
 				preResult2 = -1
@@ -189,7 +190,6 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			}
 		}
 	} else {
-		bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
 		for _, e := range bfj_guest {
 			if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
 				preResult2 = 0
@@ -198,7 +198,6 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult2 = 0
 			}
 		}
-		bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 1)
 		for _, e := range bfj_main {
 			if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
 				preResult2 = -1
@@ -210,6 +209,17 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	if preResult != preResult2 {
+		return -3, nil
+	}
+
+	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
+	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
+	if strings.ContainsAny(bffe_main.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	}
+	if strings.ContainsAny(bffe_guest.EventLeagueId, "杯") {
+		//下一场打杯赛
 		return -3, nil
 	}
 
@@ -232,7 +242,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
-		data.HitCount = 10
+		data.HitCount = 3
 		data.LetBall = a18betData.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(v, data)
