@@ -265,6 +265,11 @@ func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.An
 	} else {
 		resultFlag = constants.UNHIT
 	}
+	analy.Result = resultFlag
+	league := this.LeagueService.FindById(last.LeagueId)
+	if strings.Contains(league.Name,"杯"){
+		analy.TOVoid = true
+	}
 
 	//打印数据
 	league := this.LeagueService.FindById(v.LeagueId)
@@ -286,9 +291,15 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	} else {
 		resultFlag = constants.UNHIT
 	}
+	analy.Result = resultFlag
+
+	league := this.LeagueService.FindById(last.LeagueId)
+	if strings.Contains(league.Name,"杯"){
+		analy.TOVoid = true
+	}
+
 
 	//打印数据
-	league := this.LeagueService.FindById(last.LeagueId)
 	matchDate := last.MatchDate.Format("2006-01-02 15:04:05")
 	base.Log.Info("比赛Id:" + last.Id + ",比赛时间:" + matchDate + ",联赛:" + league.Name + ",对阵:" + last.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + last.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(last.MainTeamGoals) + "-" + strconv.Itoa(last.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag

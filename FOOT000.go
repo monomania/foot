@@ -120,7 +120,7 @@ func main() {
 		}
 	case "auto\n", "auto":
 		go func() {
-			time.Sleep(24 * time.Hour)
+			time.Sleep(12 * time.Hour)
 			new(service4.AnalyService).DelTovoidData()
 		}()
 		go func() {
