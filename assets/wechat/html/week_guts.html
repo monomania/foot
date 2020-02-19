@@ -42,7 +42,7 @@
         <td>
             {{if .TOVoid}}<del>{{end}}
             {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
-            {{if .TOVoid}}<span style="color: red;">(作废){{if .TOVoidDesc}}斥{{end}}</span></del>{{end}}
+            {{if .TOVoid}}<span style="color: red;">(作废){{.TOVoidDesc}}</span></del>{{end}}
         </td>
         <td>
         {{.MainTeamGoal}}:{{.GuestTeamGoal}}

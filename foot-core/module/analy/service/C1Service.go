@@ -80,7 +80,8 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
 			diff_preResult := this.FindOtherAlFlag(data.MatchId, data.AlFlag, data.PreResult)
 			if diff_preResult {
 				data.TOVoid = true
-				data.TOVoidDesc = "与其他模型互斥"
+				//与其他模型互斥
+				data.TOVoidDesc = "斥"
 			}
 
 			if stub == 0 {

@@ -118,9 +118,11 @@ func main() {
 			base.Log.Info("--------发布公众号周期结束--------")
 			time.Sleep(10 * time.Minute)
 		}
+	case "delvoid\n", "delvoid":
+		new(service4.AnalyService).DelTovoidData()
 	case "auto\n", "auto":
 		go func() {
-			time.Sleep(12 * time.Hour)
+			time.Sleep(6 * time.Hour)
 			new(service4.AnalyService).DelTovoidData()
 		}()
 		go func() {

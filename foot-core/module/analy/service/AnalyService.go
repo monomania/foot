@@ -267,8 +267,9 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 	}
 	analy.Result = resultFlag
 	league := this.LeagueService.FindById(last.LeagueId)
-	if strings.Contains(league.Name,"杯"){
+	if strings.Contains(league.Name,"杯") || strings.Contains(league.Name,"赛"){
 		analy.TOVoid = true
+		analy.TOVoidDesc = "杯赛不建议参考"
 	}
 
 	//打印数据
@@ -293,8 +294,9 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	analy.Result = resultFlag
 
 	league := this.LeagueService.FindById(last.LeagueId)
-	if strings.Contains(league.Name,"杯"){
+	if strings.Contains(league.Name,"杯") || strings.Contains(league.Name,"赛"){
 		analy.TOVoid = true
+		analy.TOVoidDesc = "杯赛"
 	}
 
 	//打印数据
