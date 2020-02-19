@@ -269,7 +269,7 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 	league := this.LeagueService.FindById(last.LeagueId)
 	if strings.Contains(league.Name,"杯") || strings.Contains(league.Name,"赛"){
 		analy.TOVoid = true
-		analy.TOVoidDesc = "杯赛不建议参考"
+		analy.TOVoidDesc = "杯赛"
 	}
 
 	//打印数据
