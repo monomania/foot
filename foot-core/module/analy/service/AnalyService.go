@@ -239,19 +239,19 @@ DELETE FROM foot.t_analy_result  WHERE AlFlag IN ("A1","C2","E1","Q1") AND TOVoi
 	}
 }
 
-func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.AnalyResult) string {
+func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5.AnalyResult) string {
 	if strings.EqualFold(analy.MatchId, "1826976") {
 		fmt.Println("--")
 	}
 	//比赛结果
 	var globalResult int
-	if utils.GetHourDiffer(time.Now(), v.MatchDate) < 2 {
+	if utils.GetHourDiffer(time.Now(), last.MatchDate) < 2 {
 		//比赛未结束
 		globalResult = -1
 	} else {
-		if v.MainTeamGoals > v.GuestTeamGoals {
+		if last.MainTeamGoals > last.GuestTeamGoals {
 			globalResult = 3
-		} else if v.MainTeamGoals < v.GuestTeamGoals {
+		} else if last.MainTeamGoals < last.GuestTeamGoals {
 			globalResult = 0
 		} else {
 			globalResult = 1
@@ -272,9 +272,8 @@ func (this *AnalyService) IsRight2Option(v *entity2.MatchLast, analy *entity5.An
 	}
 
 	//打印数据
-	league := this.LeagueService.FindById(v.LeagueId)
-	matchDateStr := v.MatchDate.Format("2006-01-02 15:04:05")
-	base.Log.Info("比赛Id:" + v.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + v.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + v.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(v.MainTeamGoals) + "-" + strconv.Itoa(v.GuestTeamGoals) + " (" + resultFlag + ")")
+	matchDateStr := last.MatchDate.Format("2006-01-02 15:04:05")
+	base.Log.Info("比赛Id:" + last.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + last.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + last.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(last.MainTeamGoals) + "-" + strconv.Itoa(last.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
 }
 
@@ -297,7 +296,6 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	if strings.Contains(league.Name,"杯"){
 		analy.TOVoid = true
 	}
-
 
 	//打印数据
 	matchDate := last.MatchDate.Format("2006-01-02 15:04:05")
