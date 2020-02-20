@@ -231,7 +231,7 @@ WHERE ml.id = el.matchid
 func (this *AnalyService) DelTovoidData() {
 	//E2 C1 不可删除
 	sql_build := `
-DELETE FROM foot.t_analy_result  WHERE AlFlag IN ("A1","C2","E1","Q1") AND TOVoid IS TRUE
+DELETE FROM foot.t_analy_result  WHERE AlFlag IN ("A1","E1","Q1") AND TOVoid IS TRUE
 	`
 	_, err := mysql.GetEngine().Exec(sql_build)
 	if nil != err {
