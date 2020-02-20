@@ -102,7 +102,7 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") {
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1")  || strings.EqualFold(e.AlFlag, "C2"){
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -150,7 +150,7 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 6 HOUR) > NOW()
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") {
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") || strings.EqualFold(e.AlFlag, "C2") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
