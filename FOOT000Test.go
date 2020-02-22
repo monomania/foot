@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	"time"
 )
@@ -33,6 +34,7 @@ func set()  {
 }
 
 func main()  {
+	base.Log.Error("22222222222222222222")
 	for ; ;  {
 		fmt.Println(rand.Intn(7))
 		time.Sleep(1 * time.Second)
