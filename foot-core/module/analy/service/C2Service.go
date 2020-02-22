@@ -409,21 +409,22 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	for _, e := range temp_bfj_main {
 		if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
 			continue
-		}
-		if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
+		}else if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
 			continue
+		}else{
+			return -3, nil
 		}
 	}
 	for _, e := range temp_bfj_guest {
 		if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
 			return -3, nil
-		}
-		if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
+		}else if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
 			return -3, nil
+		}else{
+			continue
 		}
 	}
 
-	base.Log.Info("所属于区间:", sectionBlock1, "-", sectionBlock2, ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18betData.SLetBall, ",即时盘让球:", a18betData.ELetBall)
 	var data *entity5.AnalyResult
 	temp_data := this.Find(v.Id, this.ModelName())
 	if len(temp_data.Id) > 0 {
