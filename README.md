@@ -1,5 +1,5 @@
 ## 项目地址
-* [https://github.com/monomania/foot](https://github.com/monomania/foot)
+* [https://github.com/monomania/foot-parent](https://github.com/monomania/foot-parent)
 
 ## 公众号演示
  * 公众号: ai00268
