@@ -10,8 +10,7 @@
     <li><strong>5.以下推荐的场次,当前己被模型认可.如后续被认可失败,则会下放到"待选场次"中.</strong></li>
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型在"稳胆场次"中,请重点关注.</strong></li>
     <li><strong>7.推荐选项跟着的字母,如A1 A2 E1 E2,为算法模型标识,仅是为了方便观察不同模型的表现.</strong></li>
-    <li style="text-shadow: 0 0 7px blue"><strong>(重要)8."作废"场次每间隔6个小时,清理一次.但不包含"稳胆场次"中的场次.</strong></li>
-    <li style="text-shadow: 0 0 7px blue"><strong>(重要)9."杯赛"不要参考,出现<span style="color: red; ">"斥"</span>可反买.</strong></li>
+    <li style="text-shadow: 0 0 7px blue"><strong>(重要)8."杯赛"不要参考,出现<span style="color: red; ">"斥"</span>可反买.</strong></li>
 </ul>
 <hr/>
 <ul style="font-size: 12px;font-weight: lighter">
@@ -62,7 +61,7 @@
         <td>
             {{if .TOVoid}}<del>{{end}}
             {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
-                {{if .TOVoid}}<span style="color: red;">(作废){{.TOVoidDesc}}</span></del>{{end}}
+                {{if .TOVoid}}<span style="color: red;">{{if .TOVoidDesc}}({{.TOVoidDesc}}){{end}}</span></del>{{end}}
         </td>
         <td>
             {{.MainTeamGoal}}:{{.GuestTeamGoal}}

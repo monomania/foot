@@ -9,7 +9,6 @@
     <li><strong>4.待选的场次会随指数的变化而变化(即时盘),包含"今日推荐"中的比赛.</strong></li>
     <li><strong>5.以下待选的场次,未被模型认可.如被后续被认可成功,则会上升到"今日推荐"中.</strong></li>
     <li style="text-shadow: 0 0 7px blue"><strong>(重要)6.公众号主推模型在"稳胆场次"中,请重点关注.</strong></li>
-    <li style="text-shadow: 0 0 7px blue"><strong>(重要)7."作废"场次每间隔6个小时,清理一次.但不包含"稳胆场次"中的场次.</strong></li>
 </ul>
 <hr/>
 <ul style="font-size: 12px;font-weight: lighter">
@@ -60,7 +59,7 @@
                     <td>
                         {{if .TOVoid}}<del>{{end}}
                         {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
-                            {{if .TOVoid}}<span style="color: red;">(作废){{.TOVoidDesc}}</span></del>{{end}}
+                            {{if .TOVoid}}<span style="color: red;">{{if .TOVoidDesc}}({{.TOVoidDesc}}){{end}}</span></del>{{end}}
                     </td>
                     <td>
                         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
