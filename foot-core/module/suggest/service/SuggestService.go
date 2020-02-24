@@ -25,7 +25,61 @@ type SuggestService struct {
 /**
 查询待选池中的比赛
  */
-func (this *SuggestService) QueryGuts(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
+func (this *SuggestService) QueryGutsC2E2(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
+	sql := `
+SELECT 
+  l.Id AS LeagueId,
+  l.Name AS LeagueName,
+  mh.MainTeamId AS MainTeam,
+  mh.GuestTeamId AS GuestTeam,
+  mh.MainTeamGoals AS MainTeamGoal,
+  mh.GuestTeamGoals AS GuestTeamGoal,
+  ar.* 
+FROM
+  foot.t_league l,
+  foot.t_match_his mh,
+  foot.t_analy_result ar,
+  (SELECT 
+    ar1.MatchId 
+  FROM
+    foot.t_analy_result ar1,
+    foot.t_analy_result ar2 
+  WHERE ar1.MatchId = ar2.MatchId 
+    AND ar1.AlFlag = 'E2' 
+    AND ar2.AlFlag = 'C2' 
+    AND ar1.PreResult = ar2.PreResult
+    ) temp 
+WHERE mh.LeagueId = l.Id 
+  AND mh.Id = ar.MatchId 
+  AND ar.MatchId = temp.MatchId 
+  AND ar.AlFlag IN ('E2' ,'C2')
+	`
+	if len(param.BeginDateStr) > 0 {
+		sql += " AND mh.`MatchDate` >= '" + param.BeginDateStr + "' "
+	}
+
+	if len(param.EndDateStr) > 0 {
+		sql += " AND mh.`MatchDate` <= '" + param.EndDateStr + "' "
+	}
+	if param.IsDesc {
+		sql += " ORDER BY ar.MatchDate DESC, l.id ASC,mh.MainTeamId asc, ar.`AlFlag` DESC,ar.PreResult DESC "
+	} else {
+		sql += " ORDER BY ar.MatchDate ASC,  l.id ASC,mh.MainTeamId asc,ar.`AlFlag` DESC,ar.PreResult DESC "
+	}
+	//结果值
+	dataList := make([]*vo2.SuggStubVO, 0)
+	//执行查询
+	this.FindBySQL(sql, &dataList)
+
+	return dataList
+}
+
+
+
+/**
+查询待选池中的比赛
+ */
+func (this *SuggestService) QueryGutsC1E2(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
 	sql := `
 SELECT 
   l.Id AS LeagueId,
