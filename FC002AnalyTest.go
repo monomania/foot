@@ -12,16 +12,16 @@ func main() {
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------C1模型--------------")
 	base.Log.Info("---------------------------------------------------------------")
-	c1 := new(service.C2Service)
+	c1 := new(service.C3Service)
 	c1.MaxLetBall = 1
-	c1.Analy(true)
+	//c1.Analy(true)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------E1模型--------------")
 	base.Log.Info("---------------------------------------------------------------")
-	e1 := new(service.E1Service)
+	e1 := new(service.E3Service)
 	e1.MaxLetBall = 1
 	e1.PrintOddData = true
-	//e1.Analy(true)
+	e1.Analy(true)
 	//关闭SQL输出
 	mysql.ShowSQL(true)
 }

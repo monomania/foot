@@ -57,9 +57,9 @@
                     <td>{{.MatchDateStr}}</td>
                     <td>{{.LeagueName}}</td>
                     <td>
-                        {{if .TOVoid}}<del>{{end}}
+                        {{if .TOVoid}}<del><span style="color: red;">{{end}}
                         {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
-                            {{if .TOVoid}}<span style="color: red;">{{if .TOVoidDesc}}({{.TOVoidDesc}}){{end}}</span></del>{{end}}
+                            {{if .TOVoid}}{{if .TOVoidDesc}}({{.TOVoidDesc}}){{end}}</span></del>{{end}}
                     </td>
                     <td>
                         {{.MainTeamGoal}}:{{.GuestTeamGoal}}
