@@ -325,26 +325,26 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	tLetBall := math.Abs(letBall)
 	//maxLetBall := math.Max(sLetBall, eLetBall)
 	tempLetball1 := math.Abs(sLetBall - tLetBall)
-	if tempLetball1 < 0.1 {
+	if tempLetball1 < 0.0 {
 		sectionBlock1 = 1
-	} else if tempLetball1 < 0.25 {
+	} else if tempLetball1 < 0.29 {
 		sectionBlock1 = 2
-	} else if tempLetball1 < 0.45 {
+	} else if tempLetball1 < 0.51 {
 		sectionBlock1 = 3
-	} else if tempLetball1 < 0.7 {
+	} else if tempLetball1 < 0.76 {
 		sectionBlock1 = 4
 	} else {
 		sectionBlock1 = 10000
 	}
 
 	tempLetball2 := math.Abs(eLetBall - tLetBall)
-	if tempLetball2 < 0.1 {
+	if tempLetball2 < 0.0 {
 		sectionBlock2 = 1
-	} else if tempLetball2 < 0.25 {
+	} else if tempLetball2 < 0.29 {
 		sectionBlock2 = 2
-	} else if tempLetball2 < 0.45 {
+	} else if tempLetball2 < 0.51 {
 		sectionBlock2 = 3
-	} else if tempLetball2 < 0.7 {
+	} else if tempLetball2 < 0.76 {
 		sectionBlock2 = 4
 	} else {
 		sectionBlock2 = 10000

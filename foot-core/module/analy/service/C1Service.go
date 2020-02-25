@@ -295,26 +295,26 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	tLetBall := math.Abs(letBall)
 	//maxLetBall := math.Max(sLetBall, eLetBall)
 	tempLetball1 := math.Abs(sLetBall - tLetBall)
-	if tempLetball1 < 0.1 {
+	if tempLetball1 < 0.0 {
 		sectionBlock1 = 1
-	} else if tempLetball1 < 0.25 {
+	} else if tempLetball1 < 0.26 {
 		sectionBlock1 = 2
-	} else if tempLetball1 < 0.45 {
+	} else if tempLetball1 < 0.51 {
 		sectionBlock1 = 3
-	} else if tempLetball1 < 0.7 {
+	} else if tempLetball1 < 0.76 {
 		sectionBlock1 = 4
 	} else {
 		sectionBlock1 = 10000
 	}
 
 	tempLetball2 := math.Abs(eLetBall - tLetBall)
-	if tempLetball2 < 0.1 {
+	if tempLetball2 < 0.0 {
 		sectionBlock2 = 1
-	} else if tempLetball2 < 0.25 {
+	} else if tempLetball2 < 0.26 {
 		sectionBlock2 = 2
-	} else if tempLetball2 < 0.45 {
+	} else if tempLetball2 < 0.51 {
 		sectionBlock2 = 3
-	} else if tempLetball2 < 0.7 {
+	} else if tempLetball2 < 0.76 {
 		sectionBlock2 = 4
 	} else {
 		sectionBlock2 = 10000
@@ -327,7 +327,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//看两个区间是否属于同一个区间
 	//if sectionBlock1 == 1 && sectionBlock2 == 1 {
-	if sectionBlock1 <= 3 && sectionBlock2 <= 3 {
+	if sectionBlock1 <= 2 && sectionBlock2 <= 2 {
 		if mainLetball && letBall > 0.1 && endUp && notZero {
 			preResult = 3
 		} else if !mainLetball && letBall < -0.1 && endUp && notZero {
