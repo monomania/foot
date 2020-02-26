@@ -252,7 +252,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if guestWin > mainWin {
 		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*3
 	}
-	//历史战绩
+	//
 	bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 4)
 	bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 4)
 	bfj_mainWin := 0
