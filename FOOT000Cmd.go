@@ -187,8 +187,10 @@ HEAD:
 					materialController := new(controller.MaterialController)
 					materialController.ModifyNewsOnly()
 					base.Log.Info("--------临场比赛发布公众号周期结束--------")
+					time.Sleep(5 * 2 * time.Minute)
+				}else{
+					time.Sleep(5 * time.Minute)
 				}
-				time.Sleep(5 * time.Minute)
 			}
 		}()
 		goto HEAD
