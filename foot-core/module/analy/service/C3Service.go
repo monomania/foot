@@ -250,8 +250,8 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*3
 	}
 
-	bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 1)
-	bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 1)
+	bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 1)
+	bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 1)
 	bfj_mainWin := 0
 	bfj_guestWin := 0
 	for _, e := range bfj_main {

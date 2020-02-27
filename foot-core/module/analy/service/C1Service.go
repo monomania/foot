@@ -238,8 +238,8 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		letBall -= baseVal
 	}
 	//近期战绩
-	bfj_main := this.BFJinService.FindNearByTeamName(v.MainTeamId, 4)
-	bfj_guest := this.BFJinService.FindNearByTeamName(v.GuestTeamId, 4)
+	bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 4)
+	bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 4)
 	bfj_mainWin := 0
 	bfj_guestWin := 0
 	for _, e := range bfj_main {

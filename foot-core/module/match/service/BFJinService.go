@@ -5,6 +5,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
+	"time"
 )
 
 type BFJinService struct {
@@ -47,10 +48,11 @@ func (this *BFJinService) FindNearByMatchId(matchId string,count int) []*pojo.BF
 	return dataList
 }
 
-func (this *BFJinService) FindNearByTeamName(teamName string,count int) []*pojo.BFJin {
+func (this *BFJinService) FindNearByTeamName(matchDate time.Time,teamName string,count int) []*pojo.BFJin {
+	matchDateStr := matchDate.Format("2006-01-02 15:04:05")
 	dataList := make([]*pojo.BFJin, 0)
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" HomeTeam = '" + teamName + "' OR GuestTeam = '" + teamName + "'")
+	sql_build.WriteString("  STR_TO_DATE(MatchTimeStr, '%Y%m%d%H%i%s') < '"+ matchDateStr +"' AND ( HomeTeam = '" + teamName + "' OR  GuestTeam = '" + teamName + "') ")
 	err := mysql.GetEngine().Where(sql_build.String()).OrderBy("MatchTimeStr DESC").Limit(count,0).Find(&dataList)
 	if err != nil {
 		base.Log.Error("FindNearByTeamName:", err)
