@@ -151,7 +151,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18betData.ELetBall
 		//temp_data.Result =""
-		return -2, temp_data
+		//return -2, temp_data
 		//return -2, nil
 	}
 

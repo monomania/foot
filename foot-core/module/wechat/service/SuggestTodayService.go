@@ -166,7 +166,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"E2")
+	this.StatWinOdd_Today(&temp,tempList,"C1")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today.html")
