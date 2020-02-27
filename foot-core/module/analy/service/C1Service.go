@@ -126,32 +126,32 @@ func (this *C1Service) Analy_Process(matchList []*pojo.MatchLast) {
  */
 func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
-	if matchId == "1779520"{
+	if matchId == "1779520" {
 		fmt.Println("-------------------")
 	}
 	//声明使用变量
-	var a18betData *entity3.AsiaHis
+	var a18bet *entity3.AsiaHis
 	//亚赔
 	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, nil
 	}
-	a18betData = aList[0]
-	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
+	a18bet = aList[0]
+	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
 		temp_data := this.Find(v.Id, this.ModelName())
-		temp_data.LetBall = a18betData.ELetBall
-		//temp_data.Result =""
+		temp_data.LetBall = a18bet.ELetBall
+		//temp_data.Result = ""
 		return -2, temp_data
 		//return -2, nil
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	sLetBall := math.Abs(a18betData.SLetBall)
-	eLetBall := math.Abs(a18betData.ELetBall)
+	sLetBall := math.Abs(a18bet.SLetBall)
+	eLetBall := math.Abs(a18bet.ELetBall)
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
 		temp_data := this.Find(v.Id, this.ModelName())
-		temp_data.LetBall = a18betData.ELetBall
-		temp_data.Result =""
+		temp_data.LetBall = a18bet.ELetBall
+		//temp_data.Result = ""
 		return -2, temp_data
 		//return -2, nil
 	}
@@ -190,22 +190,23 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, nil
 	}
 	baseVal := 0.25
+	xishu := 5.0
 	//积分排名----排名越小越好
 	if mainZongBfs.MatchCount >= 8 && guestZongBfs.MatchCount >= 8 {
 		temp_val := math.Abs(float64(mainZongBfs.Ranking - guestZongBfs.Ranking))
-		if temp_val > 4 {
+		if temp_val > xishu {
 			if mainZongBfs.Ranking < guestZongBfs.Ranking {
-				letBall += baseVal
+				letBall += baseVal * (temp_val / xishu)
 			} else {
-				letBall -= baseVal
+				letBall -= baseVal * (temp_val / xishu)
 			}
 		}
 		temp_val = math.Abs(float64(guestZongBfs.Ranking - mainZongBfs.Ranking))
-		if temp_val > 4 {
+		if temp_val > xishu {
 			if mainZongBfs.Ranking < guestZongBfs.Ranking {
-				letBall += baseVal
+				letBall += baseVal * (temp_val / xishu)
 			} else {
-				letBall -= baseVal
+				letBall -= baseVal * (temp_val / xishu)
 			}
 		}
 	} else {
@@ -273,76 +274,84 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	} else {
 		//如果主队下一场打客场,战意充足
 		if v.MainTeamId == bffe_main.EventGuestTeamId {
-			letBall += 0.075
+			letBall += 0.125
 		}
 	}
 	if strings.Contains(bffe_guest.EventLeagueId, "杯") {
 		//下一场打杯赛
-			return -3, nil
+		return -3, nil
 	} else {
 		//如果客队下一场打主场，战意懈怠
 		if v.GuestTeamId == bffe_guest.EventMainTeamId {
-			letBall += 0.075
+			letBall += 0.125
 		}
 	}
 
 	//1.0判断主队是否是让球方
-	//mainLetball := true
-	//if a18betData.ELetBall > 0 {
-	//	mainLetball = true
-	//} else if a18betData.ELetBall < 0 {
-	//	mainLetball = false
-	//} else {
-	//	if letBall > 0{
-	//		mainLetball = false
-	//	} else {
-	//		mainLetball = true
-	//	}
-	//}
-	//2.0区间段
-	var sectionBlock1, sectionBlock2 int
-	//maxLetBall := math.Max(sLetBall, eLetBall)
-	tempLetball1 := math.Abs(a18betData.SLetBall - letBall)
-	if tempLetball1 < 0.0 {
-		sectionBlock1 = 1
-	} else if tempLetball1 < 0.26 {
-		sectionBlock1 = 2
-	} else if tempLetball1 < 0.51 {
-		sectionBlock1 = 3
-	} else if tempLetball1 < 0.76 {
-		sectionBlock1 = 4
+	mainLetball := true
+	if a18bet.ELetBall > 0 {
+		mainLetball = true
+	} else if a18bet.ELetBall < 0 {
+		mainLetball = false
 	} else {
-		sectionBlock1 = 10000
+		if letBall > 0 {
+			mainLetball = false
+		} else {
+			mainLetball = true
+		}
 	}
 
-	tempLetball2 := math.Abs(a18betData.ELetBall - letBall)
-	if tempLetball2 < 0.0 {
-		sectionBlock2 = 0
-	}else if tempLetball2 < 0.1 {
-		sectionBlock2 = 1
-	} else if tempLetball2 < 0.26 {
-		sectionBlock2 = 2
-	} else if tempLetball2 < 0.51 {
-		sectionBlock2 = 3
-	} else if tempLetball2 < 0.76 {
-		sectionBlock2 = 4
-	} else {
-		sectionBlock2 = 10000
+	val_range := 0.375
+	if mainLetball {
+		if letBall > 0 {
+			if a18bet.ELetBall > 0 {
+				tempLetball1 := math.Abs(a18bet.ELetBall - letBall)
+				if tempLetball1 < val_range {
+					preResult = 3
+				} else {
+					//preResult = 0
+				}
+			} else if a18bet.ELetBall < 0 {
+				//preResult = 0
+			}
+		}
+		if letBall < 0 {
+			if a18bet.ELetBall < 0 {
+				tempLetball1 := math.Abs(a18bet.ELetBall - letBall)
+				if tempLetball1 < val_range {
+					//preResult = 0
+				} else {
+					//preResult = 3
+				}
+			} else if a18bet.ELetBall > 0 {
+				//preResult = 3
+			}
+		}
 	}
-
-	//3.0即时盘赔率大于等于初盘赔率
-	endUp := eLetBall >= sLetBall
-
-	//看两个区间是否属于同一个区间
-	if  sectionBlock2 == 0 ||  sectionBlock2 == 2 && endUp{
-		if letBall > 0 && a18betData.ELetBall > 0{
-			preResult = 3
-		}else if letBall > 0 && a18betData.ELetBall < 0{
-			preResult = 3
-		}else if letBall < 0 && a18betData.ELetBall < 0{
-			preResult = 0
-		}else if letBall < 0 && a18betData.ELetBall > 0{
-			preResult = 0
+	if !mainLetball {
+		if letBall < 0 {
+			if a18bet.ELetBall < 0 {
+				tempLetball1 := math.Abs(a18bet.ELetBall - letBall)
+				if tempLetball1 < val_range {
+					//preResult = 0
+				} else {
+					//preResult = 3
+				}
+			} else if a18bet.ELetBall > 0 {
+				//preResult = 3
+			}
+		}
+		if letBall > 0 {
+			if a18bet.ELetBall > 0 {
+				tempLetball1 := math.Abs(a18bet.ELetBall - letBall)
+				if tempLetball1 < val_range {
+					preResult = 3
+				} else {
+					//preResult = 0
+				}
+			} else if a18bet.ELetBall < 0 {
+				//preResult = 0
+			}
 		}
 	}
 
@@ -350,32 +359,32 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -3, nil
 	}
 
-	base.Log.Info("所属于区间:", sectionBlock1, "-", sectionBlock2, ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18betData.SLetBall, ",即时盘让球:", a18betData.ELetBall)
+	base.Log.Info("所属于区间:", ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18bet.SLetBall, ",即时盘让球:", a18bet.ELetBall)
 	var data *entity5.AnalyResult
 	temp_data := this.Find(v.Id, this.ModelName())
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18betData.ELetBall
+		temp_data.LetBall = a18bet.ELetBall
 		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		data.Result = this.IsRight2Option(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = a18bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 3
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = a18bet.ELetBall
 		data.MyLetBall = Decimal(letBall)
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		data.Result = this.IsRight2Option(v, data)
 		return 0, data
 	}
 }

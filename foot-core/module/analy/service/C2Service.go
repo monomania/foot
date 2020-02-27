@@ -287,7 +287,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	if strings.Contains(bffe_main.EventLeagueId, "杯") {
 		//下一场打杯赛
-		//return -3, nil
+		return -3, nil
 	} else {
 		//如果主队下一场打客场,战意充足
 		if v.MainTeamId == bffe_main.EventGuestTeamId {
@@ -296,7 +296,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 	if strings.Contains(bffe_guest.EventLeagueId, "杯") {
 		//下一场打杯赛
-		//return -3, nil
+		return -3, nil
 	} else {
 		//如果客队下一场打主场，战意懈怠
 		if v.GuestTeamId == bffe_guest.EventMainTeamId {
@@ -364,27 +364,8 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			//preResult = 0
 		}
 	}
-	//else if sectionBlock <= 1.0 {
-	//	if mainLetball && letBall >= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-	//		preResult = 3
-	//	} else if !mainLetball && letBall <= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-	//		preResult = 0
-	//	}
-	//}
 
 	if preResult < 0 {
-		return -3, nil
-	}
-
-	if matchId == "1723449" {
-		base.Log.Info("-")
-	}
-
-	if preResult == 3 && strings.Contains(bffe_main.EventLeagueId, "杯") {
-		//下一场打杯赛
-		return -3, nil
-	} else if preResult == 0 && strings.Contains(bffe_guest.EventLeagueId, "杯") {
-		//下一场打杯赛
 		return -3, nil
 	}
 
