@@ -23,6 +23,7 @@ type RobotHelper struct {
 //}
 
 func (this *RobotHelper) Tips() {
+	//测试
 	robotgo.TypeStr("推荐己更新:")
 	robotgo.KeyTap("enter", "control")
 	robotgo.TypeStr("今日推荐,请查看https://mp.weixin.qq.com/s/yjsG81TVgWprRLKKzhon5A")
