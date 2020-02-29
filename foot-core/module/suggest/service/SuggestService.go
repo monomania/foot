@@ -176,6 +176,26 @@ WHERE mh.LeagueId = l.Id
 }
 
 func (this *SuggestService) Query(param *vo2.SuggStubVO) []*vo2.SuggStubVO {
+//	sql := `
+//SELECT
+//  l.Id AS LeagueId,
+//  l.Name AS LeagueName,
+//  mh.MainTeamId AS MainTeam,
+//  mh.GuestTeamId AS GuestTeam,
+//  mh.MainTeamGoals AS MainTeamGoal,
+//  mh.GuestTeamGoals AS GuestTeamGoal,
+//  ar.*
+//FROM
+//  foot.t_league l,
+//  foot.t_match_his mh,
+//  foot.t_analy_result ar
+//WHERE mh.LeagueId = l.Id
+//  AND mh.Id = ar.MatchId
+//  AND ar.HitCount > 0
+//  AND ar.HitCount >= ar.THitCount
+//  AND ar.TOVoidDesc = ''
+//	`
+
 	sql := `
 SELECT 
   l.Id AS LeagueId,
@@ -191,10 +211,9 @@ FROM
   foot.t_analy_result ar 
 WHERE mh.LeagueId = l.Id 
   AND mh.Id = ar.MatchId
-  AND ar.HitCount > 0 
-  AND ar.HitCount >= ar.THitCount
-  AND ar.TOVoid IS FALSE
+  AND ar.TOVoidDesc = ''
 	`
+
 	if param.HitCount > 0 {
 		sql += " AND ar.HitCount >= '" + strconv.Itoa(param.HitCount) + "' "
 	}

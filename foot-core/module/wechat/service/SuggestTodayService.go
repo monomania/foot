@@ -405,9 +405,9 @@ func (this *SuggestTodayService) ModifyTodayGutsC2E2(wcClient *core.Client) {
 }
 
 /**
-今日稳胆比赛
+今日稳胆比赛c1e2
  */
-func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
+func (this *SuggestTodayService) __ModifyTodayGutsC1E2(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
 	h12, _ := time.ParseDuration("-24h")
@@ -456,6 +456,58 @@ func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
 }
 
 
+/**
+今日稳胆比赛c1e2
+ */
+func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
+	param := new(vo.SuggStubVO)
+	now := time.Now()
+	h12, _ := time.ParseDuration("-720h")
+	beginDate := now.Add(h12)
+	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
+	h12, _ = time.ParseDuration("24h")
+	endDate := now.Add(h12)
+	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
+	param.AlFlags = []string{"C1"}
+	param.IsDesc = true
+	tempList := this.SuggestService.QueryTbs(param)
+	//更新推送
+	first := material.Article{}
+	first.Title = fmt.Sprintf("推荐场次-C1")
+	first.Digest = fmt.Sprintf("%d场赛事", len(tempList))
+	first.ThumbMediaId = today_c1_thumbMediaId
+	first.ContentSourceURL = contentSourceURL
+	first.Author = utils.GetVal("wechat", "author")
+
+	temp := vo.TTodayVO{}
+	temp.SpiderDateStr = constants.SpiderDateStr
+	temp.FullSpiderDateStr = constants.FullSpiderDateStr
+	temp.BeginDateStr = param.BeginDateStr
+	temp.EndDateStr = param.EndDateStr
+	temp.DataDateStr = now.Format("2006-01-02 15:04:05")
+	temp.DataList = make([]vo.SuggStubVO, len(tempList))
+	for i, e := range tempList {
+		e.MatchDateStr = e.MatchDate.Format("02号15:04")
+		temp.DataList[i] = *e
+	}
+
+	this.StatWinOdd_Today(&temp,tempList,"C1")
+
+	var buf bytes.Buffer
+	tpl, err := template.New("today_c1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c1.html")
+	if err != nil {
+		base.Log.Error(err)
+	}
+	if err := tpl.Execute(&buf, &temp); err != nil {
+		base.Log.Fatal(err)
+	}
+	first.Content = buf.String()
+
+	err = material.UpdateNews(wcClient, today_mediaId, 3, &first)
+	if err != nil {
+		base.Log.Error(err)
+	}
+}
 
 
 /**

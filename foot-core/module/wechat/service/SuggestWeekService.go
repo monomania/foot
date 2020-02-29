@@ -168,7 +168,7 @@ func (this *SuggestMonthService) ModifyGutsWeek(wcClient *core.Client) {
 	beginDate := now.Add(h168)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	param.IsDesc = true
-	tempList := this.SuggestService.QueryGutsC1E2(param)
+	tempList := this.SuggestService.QueryGutsC2E2(param)
 	//更新推送
 	first := material.Article{}
 	first.Title = "稳胆七天战绩"
