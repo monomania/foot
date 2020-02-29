@@ -1,6 +1,5 @@
 @echo off
 echo=
-
 set GOOS=linux
 set GOARCH=amd64
 

@@ -1,6 +1,5 @@
 @echo off
 echo=
-
 if not exist %cd%\bin\conf\ md %cd%\bin\conf\
 xcopy /Y /S %cd%\conf %cd%\bin\conf\
 xcopy /Y /S %cd%\conf\app_prod.ini %cd%\bin\conf\app.ini
