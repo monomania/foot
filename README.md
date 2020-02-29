@@ -1,7 +1,7 @@
 
 
 ## 项目地址
-* [https://github.com/monomania/foot-parent](https://github.com/monomania/foot-parent)
+* [https://github.com/monomania/foot](https://github.com/monomania/foot)
 
 ## 项目介绍
 ```
