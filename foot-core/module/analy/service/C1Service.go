@@ -152,7 +152,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data := this.Find(v.Id, this.ModelName())
 		temp_data.LetBall = a18bet.ELetBall
 		//temp_data.Result = ""
-		return -2, temp_data
+		//return -2, temp_data
 		//return -2, nil
 	}
 
@@ -357,6 +357,41 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	if preResult < 0 {
 		return -3, nil
+	}
+	temp_bfb_arr := this.BFBattleService.FindNearByMatchId(matchId, 1)
+	for _, e := range temp_bfb_arr {
+		if e.BattleMainTeamId == v.MainTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+			continue
+		}
+		if e.BattleGuestTeamId == v.MainTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+			continue
+		}
+		if e.BattleMainTeamId == v.GuestTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
+			return -3, nil
+		}
+		if e.BattleGuestTeamId == v.GuestTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
+			return -3, nil
+		}
+	}
+	temp_bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 1)
+	temp_bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 1)
+	for _, e := range temp_bfj_main {
+		if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
+			continue
+		}else if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
+			continue
+		}else{
+			return -3, nil
+		}
+	}
+	for _, e := range temp_bfj_guest {
+		if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
+			return -3, nil
+		}else if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
+			return -3, nil
+		}else{
+			continue
+		}
 	}
 
 	base.Log.Info("所属于区间:", ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18bet.SLetBall, ",即时盘让球:", a18bet.ELetBall)
