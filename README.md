@@ -30,9 +30,6 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 ## 公众号演示
  * 公众号: AI球探(ai00268)
  >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
-## 战绩截图
-<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
-<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
 
 ##目前程序已经完成了对很多足球相关数据荐的收集,包括且不仅限于:
 * 所有的联赛信息,
