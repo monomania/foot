@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
+
 	launch.Analy()
 }
 

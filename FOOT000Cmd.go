@@ -54,6 +54,7 @@ HEAD:
 		bytes, _ := json.Marshal(publimit)
 		fmt.Println("发布限制信息为:" + string(bytes))
 		goto HEAD
+
 	case "price\n", "price\r\n":
 		priceService := new(service.PriceService)
 		price := priceService.GetPrice()

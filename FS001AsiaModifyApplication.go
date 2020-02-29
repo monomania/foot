@@ -6,6 +6,7 @@ import (
 
 
 func main() {
+
 	//开启SQL输出
 	launch.Spider_asiaLastNew(true)
 }

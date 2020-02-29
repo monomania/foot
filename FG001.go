@@ -27,6 +27,7 @@ func main() {
 }
 
 func buildWinForm() {
+
 	var inTE *walk.TextEdit
 	window := MainWindow{
 		Title:   "FOOT000GUI",

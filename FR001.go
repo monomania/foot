@@ -15,7 +15,6 @@ func main() {
 	util := &helper.RobotHelper{}
 	util.Tips()
 }
-
 func tes11t(){
 	robotgo.Sleep(1)
 

@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	//关闭SQL输出
 	mysql.ShowSQL(false)
 	base.Log.Info("---------------------------------------------------------------")

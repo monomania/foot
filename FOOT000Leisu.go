@@ -19,6 +19,7 @@ import (
 )
 
 func main() {
+
 HEAD:
 	inputReader := bufio.NewReader(os.Stdin)
 	fmt.Printf("Please enter:")

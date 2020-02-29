@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	launch.Clean()
 	matchLevelStr := utils.GetVal("spider", "match_level")
 	if len(matchLevelStr) <= 0 {

@@ -17,6 +17,7 @@ func main() {
 }
 
 func beeRun() {
+
 	beego.LoadAppConfig("ini", "conf/app.conf")
 	logs.SetLogger(logs.AdapterConsole, `{"level":1,"color":true}`)
 	//logs.SetLogger(logs.AdapterFile,`{"filename":"foot-web.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10,"color":true}`)
