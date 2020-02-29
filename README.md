@@ -256,7 +256,7 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 ~~~
 1. 创建数据库foot
 2. FC001DBInitApplication.go  同步数据库表
-3. FS000Application.go 同步数据库表
+3. FS000Application.go 运行数据爬虫
 4. FC002AnalyApplication 分析得出推荐列表
 ~~~
 ## 打包部署

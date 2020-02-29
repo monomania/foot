@@ -3,7 +3,6 @@
 *.log
 *.logs
 *.exe~
-*.zip
 *.dll
 *.so
 *.dylib
