@@ -242,20 +242,26 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 * 同步数据库表
      * FC001DBInitApplication.go 
       
-## 运行入口
+## 主要入口
   *  build_linux.bat            一键打包linux发布程序
   *  build_windows.bat          一键打包windows发布程序
   *  FC000Application.go        运行beego
   *  FC001DBInitApplication.go  数据库表同步初始化
   *  FC002AnalyApplication.go   运行结果分析    
-  *  FC003PubApplication.go     发布数据到互联网平台
   *  FOOT000.go                 linux入口（主要使用）
   *  FOOT000CmdApplication.go   windows入口（主要使用）
-  *  FOOT000TestApplication.go  无用
   *  FS000Application.go        运行数据爬虫
-  *  FS001AsiaModifyApplication.go  亚指数据遗漏检测,重新尝试
-  *  FS001BaseFaceApplication.go  基本面数据的获取,目前包含积分榜,过往对战,未来赛事三项
-  *  FS001EuroIncompleteApplication.go  欧指数据遗漏检测,重新尝试
-  *  FS001EuroModifyApplication.go  欧指数据单独获取
 
+## 本地调试运行
+~~~
+1. 创建数据库foot
+2. FC001DBInitApplication.go  同步数据库表
+3. FS000Application.go 同步数据库表
+4. FC002AnalyApplication 分析得出推荐列表
+~~~
+## 打包部署
+~~~
+1.运行build_linux.bat 进行打包
+2.FOOT000 auto        启动
+~~~
  
