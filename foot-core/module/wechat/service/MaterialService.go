@@ -12,7 +12,7 @@ type MaterialService struct {
 
 func (this *MaterialService) ModifyNews(wcClient *core.Client) {
 	this.SuggestTodayService.ModifyTodayTbs(wcClient)
-	this.SuggestTodayService.ModifyTodayGutsC1E2(wcClient)
+	this.SuggestTodayService.ModifyTodayC2(wcClient)
 	this.SuggestTodayService.ModifyTodayGutsC2E2(wcClient)
 	this.SuggestTodayService.ModifyTodayC2(wcClient)
 	this.SuggestTodayService.ModifyToday(wcClient)
