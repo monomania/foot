@@ -1,0 +1,60 @@
+<div>
+    <img src="http://mmbiz.qpic.cn/sz_mmbiz_gif/BePaFicK2B5R6lNrnAdOpR63megZibx7GnwXTAl2yZTEibKIbCFrs0QpsmOWG0CrxWEicHldX2ibqva6Ise5G5vILCQ/0?wx_fmt=gif"/>
+</div>
+<h1><strong>概况</strong></h1>
+<ul style="font-size: 12px;font-weight: bold">
+    <li>日期:{{.BeginDateStr}} 至 {{.EndDateStr}}</li>
+    <li>总场次:{{.MatchCount}}</li>
+    <li><span style="color: greenyellow; ">走:{{.WalkCount}}</span></li>
+    <li><span style="color: red; ">最长连红:{{.LinkRedCount}}</span></li>
+    <li><span style="color: gray; ">最长连黑:{{.LinkBlackCount}}</span></li>
+    <li>全模型统计,
+        <span style="color: red; ">红:{{.RedCount}},</span>
+        <span style="color: gray; ">黑:{{.BlackCount}},</span>
+        胜率:{{.RedCount}}/({{.RedCount}}+{{.BlackCount}})={{.Val}}
+    </li>
+    <li>{{.MainAlflag}}单方向统计,
+        <span style="color: red; ">红:{{.MainRedCount}},</span>
+        <span style="color: gray; ">黑:{{.MainBlackCount}},</span>
+        胜率:{{.MainRedCount}}/({{.MainRedCount}}+{{.MainBlackCount}})={{.MainVal}}
+    </li>
+</ul>
+<hr/>
+<h1 style="margin-top: 5px">
+    <div style="float: left;width: 50%"><strong>赛事列表</strong></div>
+</h1>
+<table style="font-size: 12px;font-weight: bold">
+    <tr>
+        <td>模型</td>
+        <td>时间</td>
+        <td>联赛</td>
+        <td>主队(让球)客队</td>
+        <td>比分</td>
+        <td>推荐</td>
+        <td style="min-width: 48px">BF让球</td>
+    </tr>
+{{with .DataList}}
+{{range .}}
+    <tr style="font-weight: bold;font-size: 10px">
+        <td><span style="color: {{color .AlFlag}}">{{.AlFlag}}</span></td>
+        <td>{{.MatchDateStr}}</td>
+        <td>{{.LeagueName}}</td>
+        <td>
+            {{if .TOVoid}}<del><span style="color: red;">{{end}}
+            {{.MainTeam}}({{.LetBall}}){{.GuestTeam}}
+            {{if .TOVoid}}{{if .TOVoidDesc}}({{.TOVoidDesc}}){{end}}</span></del>{{end}}
+        </td>
+        <td>
+        {{.MainTeamGoal}}:{{.GuestTeamGoal}}
+        </td>
+        <td  style="background-color: {{resultColor .Result}}">
+        {{preResultStr .PreResult .AlFlag}}
+        </td>
+        <td style="color: red;font-weight: bold;font-size: 10px">
+        {{if eq .AlFlag "C2"}}{{.MyLetBall}}{{end}}
+        </td>
+    </tr>
+{{end}}
+{{end}}
+</table>
+<span style="color: red;font-weight: bold;font-size: 12px">声明:彩市有风险,购彩需谨慎.AI球探只提供预测参考,不构成购彩建议,据AI球探购彩者风险自担.</span>

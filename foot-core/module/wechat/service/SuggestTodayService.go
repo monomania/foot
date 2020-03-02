@@ -389,7 +389,7 @@ func (this *SuggestTodayService) ModifyTodayGutsC2E2(wcClient *core.Client) {
 	this.StatWinOdd_Today(&temp,tempList,"C2")
 
 	var buf bytes.Buffer
-	tpl, err := template.New("today_guts.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts.html")
+	tpl, err := template.New("today_guts_c2e2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts_c2e2.html")
 	if err != nil {
 		base.Log.Error(err)
 	}
@@ -440,7 +440,7 @@ func (this *SuggestTodayService) __ModifyTodayGutsC1E2(wcClient *core.Client) {
 	this.StatWinOdd_Today(&temp,tempList,"C1")
 
 	var buf bytes.Buffer
-	tpl, err := template.New("today_guts.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts.html")
+	tpl, err := template.New("today_guts_c1e2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts_c1e2.html")
 	if err != nil {
 		base.Log.Error(err)
 	}
@@ -462,14 +462,14 @@ func (this *SuggestTodayService) __ModifyTodayGutsC1E2(wcClient *core.Client) {
 func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h12, _ := time.ParseDuration("-720h")
+	h12, _ := time.ParseDuration("-48h")
 	beginDate := now.Add(h12)
 	param.BeginDateStr = beginDate.Format("2006-01-02 15:04:05")
 	h12, _ = time.ParseDuration("24h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	param.AlFlags = []string{"C1"}
-	param.IsDesc = true
+	param.IsDesc = false
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
