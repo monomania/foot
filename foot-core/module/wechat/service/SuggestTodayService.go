@@ -579,7 +579,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	h12, _ = time.ParseDuration("24h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	param.AlFlags = []string{"E1", "E2", "Q1","A1"}
+	param.AlFlags = []string{"E1", "E2", "Q1","A1","A3"}
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
@@ -601,7 +601,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"E2")
+	this.StatWinOdd_Today(&temp,tempList,"A3")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_tbs.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_tbs.html")

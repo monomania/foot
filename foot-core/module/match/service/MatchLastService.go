@@ -78,7 +78,7 @@ func (this *MatchLastService) FindNotFinished() []*pojo.MatchLast {
 SELECT 
   la.* 
 FROM
-  foot.t_match_last la,
+  foot.t_match_his la,
   foot.t_league l 
 WHERE la.LeagueId = l.Id 
   AND la.MatchDate > DATE_SUB(NOW(), INTERVAL 6 HOUR)
