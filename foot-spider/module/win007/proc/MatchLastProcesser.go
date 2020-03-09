@@ -37,10 +37,9 @@ func GetMatchPageProcesser() *MatchPageProcesser {
 	return &MatchPageProcesser{}
 }
 
-
 func (this *MatchPageProcesser) Startup() {
 	//联赛数据
-	this.league_list           = make([]*entity2.League, 0)
+	this.league_list = make([]*entity2.League, 0)
 	this.win007Id_leagueId_map = make(map[string]string)
 	//比赛数据
 	this.matchLast_list = make([]*pojo.MatchLast, 0)
@@ -85,6 +84,46 @@ func (this *MatchPageProcesser) Process(p *page.Page) {
 		league_str = rawText_arr[1]
 		match_str = rawText_arr[2]
 	}
+
+	base.Log.Info("联赛信息:", league_str)
+	this.league_process(league_str)
+	base.Log.Info("比赛信息:", match_str)
+	this.match_process(match_str)
+
+	now := time.Now()
+	//获取明天赛程
+	h24h, _ := time.ParseDuration("24h")
+	t_1_date := now.Add(h24h).Format("2006-01-02")
+	this.futrueMatch(t_1_date)
+	//获取后天赛程
+	h24h, _ = time.ParseDuration("48h")
+	t_1_date = now.Add(h24h).Format("2006-01-02")
+	this.futrueMatch(t_1_date)
+
+}
+
+type TomoReq struct {
+	Date string `json:"date"`
+}
+
+func (this *MatchPageProcesser) futrueMatch(date string) {
+	req := TomoReq{}
+	req.Date = date
+	rawText := GetText("http://m.win007.com/ChangeDate.ashx?date=" + date)
+	//rawText := Post("http://m.win007.com/ChangeDate.ashx", &req)
+
+	if rawText == "" {
+		return
+	}
+
+	rawText_arr := strings.Split(rawText, "$")
+	if len(rawText_arr) < 2 {
+		base.Log.Info("URL:,解析失败,rawTextArr长度为:,小于所必需要的长度3", len(rawText_arr))
+		return
+	}
+
+	league_str := rawText_arr[0]
+	match_str := rawText_arr[1]
 
 	base.Log.Info("联赛信息:", league_str)
 	this.league_process(league_str)
@@ -221,8 +260,8 @@ func (this *MatchPageProcesser) Finish() {
 		v.Ext[win007.MODULE_FLAG] = matchExt
 		exists := this.MatchLastService.Exist(v)
 		if exists {
-			matchLast_modify_list_slice = append(matchLast_modify_list_slice,v)
-		}else{
+			matchLast_modify_list_slice = append(matchLast_modify_list_slice, v)
+		} else {
 			matchLast_list_slice = append(matchLast_list_slice, v)
 		}
 
@@ -230,8 +269,8 @@ func (this *MatchPageProcesser) Finish() {
 		his.MatchLast = *v
 		his_exists := this.MatchHisService.Exist(his)
 		if his_exists {
-			matchHis_modify_list_slice = append(matchHis_modify_list_slice,his)
-		}else{
+			matchHis_modify_list_slice = append(matchHis_modify_list_slice, his)
+		} else {
 			matchHis_list_slice = append(matchHis_list_slice, his)
 		}
 	}

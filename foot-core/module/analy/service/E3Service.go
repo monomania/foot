@@ -10,11 +10,16 @@ import (
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/match/service"
 	"time"
 )
 
 type E3Service struct {
 	AnalyService
+	service.BFScoreService
+	service.BFBattleService
+	service.BFJinService
+	service.BFFutureEventService
 	//最大让球数据
 	MaxLetBall float64
 }
@@ -114,62 +119,83 @@ func (this *E3Service) Analy_Process(matchList []*pojo.MatchLast) {
  */
 func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	matchId := v.Id
+
+	//未来赛事
+	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
+	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
+
+	if strings.Contains(bffe_main.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	}
+	if strings.Contains(bffe_guest.EventLeagueId, "杯") {
+		//下一场打杯赛
+		return -3, nil
+	}
+
 	//声明使用变量
-	var e616 *entity3.EuroHis
-	var e104 *entity3.EuroHis
-	var a18betData *entity3.AsiaHis
-	//81 -- 伟德
-	eList := this.EuroHisService.FindByMatchIdCompId(matchId, "616", "104")
+	var e281_1 *entity3.EuroTrack
+	var e281_2 *entity3.EuroTrack
+	var aBet365 *entity3.AsiaHis
+	eList := this.EuroTrackService.FindByMatchIdCompId(matchId, "281")
 	if len(eList) < 2 {
 		return -1, nil
 	}
-	for _, ev := range eList {
-		if strings.EqualFold(ev.CompId, "616") {
-			e616 = ev
-			continue
-		}
-		if strings.EqualFold(ev.CompId, "104") {
-			e104 = ev
-			continue
-		}
-	}
-
-	if e616 == nil || e104 == nil  {
-		return -1, nil
-	}
-
-	//0.没有变化则跳过
-	if e104.Ep3 == e104.Sp3 || e104.Ep0 == e104.Sp0 {
-		return -3, nil
-	}
-	if e616.Ep3 == e616.Sp3 || e616.Ep0 == e616.Sp0 {
-		return -3, nil
-	}
+	e281_1 = eList[0]
+	e281_2 = eList[1]
 
 	//1.有变化,进行以下逻辑
 	//亚赔
-	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "18Bet")
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "Bet365")
 	if len(aList) < 1 {
 		return -1, nil
 	}
-	a18betData = aList[0]
-	if math.Abs(a18betData.ELetBall) > this.MaxLetBall {
+	aBet365 = aList[0]
+	if math.Abs(aBet365.ELetBall) > this.MaxLetBall {
 		temp_data := this.Find(v.Id, this.ModelName())
-		temp_data.LetBall = a18betData.ELetBall
+		temp_data.LetBall = aBet365.ELetBall
 		return -2, temp_data
 	}
 
+
 	//得出结果
-	if e616.Ep0 < e616.Sp0 && e616.Ep0 < e104.Sp0 {
-		return -3, nil
-	}
-	var preResult int
-	if e616.Ep3 > e616.Sp3 && e104.Ep3 < e104.Sp3 {
-		preResult = 3
-	} else if e616.Ep3 < e616.Sp3 && e104.Ep3 < e104.Sp3 && e616.Ep3 < e104.Ep3 {
-		preResult = 3
+	//1.0判断主队是否是让球方
+	mainLetball := true
+	if aBet365.ELetBall > 0 {
+		mainLetball = true
+	} else if aBet365.ELetBall < 0 {
+		mainLetball = false
 	} else {
-		return -3, nil
+		//EletBall == 0
+		//通过赔率确立
+		if aBet365.Ep3 > aBet365.Ep0 {
+			mainLetball = false
+		} else {
+			mainLetball = true
+		}
+	}
+
+	preResult := -1
+	if mainLetball{
+		if aBet365.Ep3 > aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 > e281_2.Kelly3{
+			preResult = 0
+		}
+		if aBet365.Ep3 > aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 < e281_2.Kelly3{
+			preResult = 3
+		}
+		if aBet365.Ep3 < aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 > e281_2.Kelly3{
+			preResult = 0
+		}
+	}else{
+		if aBet365.Ep0 > aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 > e281_2.Kelly0{
+			preResult = 3
+		}
+		if aBet365.Ep0 > aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 < e281_2.Kelly0{
+			preResult = 0
+		}
+		if aBet365.Ep0 < aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 > e281_2.Kelly0{
+			preResult = 3
+		}
 	}
 
 	var data *entity5.AnalyResult
@@ -177,7 +203,7 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18betData.ELetBall
+		temp_data.LetBall = aBet365.ELetBall
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -186,13 +212,13 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = aBet365.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 3
-		data.LetBall = a18betData.ELetBall
+		data.LetBall = aBet365.ELetBall
 		//比赛结果
 		data.Result = this.IsRight(v, data)
 		return 0, data

@@ -22,6 +22,7 @@ import (
 type AnalyService struct {
 	mysql.BaseService
 	service.EuroHisService
+	service.EuroTrackService
 	service.AsiaHisService
 	service2.MatchLastService
 	service2.MatchHisService

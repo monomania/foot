@@ -160,7 +160,7 @@ func (this *SuggestMonthService) ModifyMonth(wcClient *core.Client) {
 func (this *SuggestMonthService) ModifyGutsMonth(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
 	now := time.Now()
-	h2, _ := time.ParseDuration("-2h")
+	h2, _ := time.ParseDuration("100h")
 	endDate := now.Add(h2)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
 	h168, _ := time.ParseDuration("-720h")

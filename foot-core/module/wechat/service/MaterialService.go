@@ -11,11 +11,11 @@ type MaterialService struct {
 }
 
 func (this *MaterialService) ModifyNews(wcClient *core.Client) {
-	this.SuggestTodayService.ModifyTodayTbs(wcClient)
-	this.SuggestTodayService.ModifyTodayC2(wcClient)
-	this.SuggestTodayService.ModifyTodayGutsC2E2(wcClient)
-	this.SuggestTodayService.ModifyTodayC1(wcClient)
 	this.SuggestTodayService.ModifyToday(wcClient)
+	this.SuggestTodayService.ModifyTodayC1(wcClient)
+	this.SuggestTodayService.ModifyTodayC2(wcClient)
+	this.SuggestTodayService.ModifyTodayTbsA1A3(wcClient)
+	this.SuggestTodayService.ModifyTodayTbs(wcClient)
 
 	this.SuggestWeekService.ModifyWeek(wcClient)
 	this.SuggestMonthService.ModifyMonth(wcClient)
