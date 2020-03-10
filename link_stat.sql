@@ -41,4 +41,4 @@ GROUP BY ar.`AlFlag`,
   ar.`LetBall`
 ORDER BY ar.`AlFlag`,
   DATE_FORMAT(ar.`MatchDate`, '%w'),
-  ar.`LetBall` 
+  ar.`LetBall`
