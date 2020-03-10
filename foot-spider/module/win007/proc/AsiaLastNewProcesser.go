@@ -2,7 +2,6 @@ package proc
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
@@ -57,7 +56,7 @@ func (this *AsiaLastNewProcesser) Startup() {
 func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		base.Log.Info("URL:,", request.Url, p.Errormsg())
+		base.Log.Error("URL:", request.Url, p.Errormsg())
 		return
 	}
 
@@ -67,10 +66,14 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 	his_update_slice := make([]interface{}, 0)
 	track_slice := make([]interface{}, 0)
 	track_update_slice := make([]interface{}, 0)
-	str := p.GetBodyStr()
-	fmt.Println(str)
+	hdata_str := p.GetBodyStr()
+	if hdata_str == "" {
+		base.Log.Error("hdata_str:为空,URL:", request.Url)
+		return
+	}
+
 	asiaData := &vo.AsiaData{}
-	json.Unmarshal([]byte(str), asiaData)
+	json.Unmarshal([]byte(hdata_str), asiaData)
 
 	matchId := this.Win007idMatchidMap[strconv.Itoa(asiaData.ScheduleID)]
 	//没有数据,则返回

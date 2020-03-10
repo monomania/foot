@@ -60,7 +60,7 @@ func (this *EuroLastProcesser) Startup() {
 func (this *EuroLastProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		base.Log.Info("URL:,", request.Url, p.Errormsg())
+		base.Log.Error("URL:", request.Url, p.Errormsg())
 		return
 	}
 
@@ -74,14 +74,18 @@ func (this *EuroLastProcesser) Process(p *page.Page) {
 		}
 	})
 	if hdata_str == "" {
+		base.Log.Error("hdata_str:为空,URL:", request.Url)
 		return
 	}
 
+	base.Log.Info("hdata_str",hdata_str,"URL:", request.Url)
 	// 获取script脚本中的，博彩公司信息
 	hdata_str = strings.Replace(hdata_str, ";", "", 1)
 	hdata_str = strings.Replace(hdata_str, "var hData = ", "", 1)
-	base.Log.Info(hdata_str)
-
+	if hdata_str == "" {
+		base.Log.Info("hdata_str:解析失败,",hdata_str,"URL:", request.Url)
+		return
+	}
 	this.hdata_process(request.Url, hdata_str)
 }
 

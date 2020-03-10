@@ -61,7 +61,7 @@ func (this *BaseFaceProcesser) Startup() {
 func (this *BaseFaceProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		base.Log.Info("URL:,", request.Url, p.Errormsg())
+		base.Log.Error("URL:", request.Url, p.Errormsg())
 		return
 	}
 
@@ -185,6 +185,7 @@ func (this *BaseFaceProcesser) score_process(matchId string, p *page.Page) []*po
 
 //处理对战数据获取
 func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []*pojo.BFBattle {
+	request := p.GetRequest()
 	data_list_slice := make([]*pojo.BFBattle, 0)
 
 	var hdata_str string
@@ -197,14 +198,19 @@ func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []*p
 		}
 	})
 	if hdata_str == "" {
+		base.Log.Error("hdata_str:为空,URL:", request.Url)
 		return data_list_slice
 	}
 
+	base.Log.Info("hdata_str",hdata_str,"URL:", request.Url)
 	// 获取script脚本中的，博彩公司信息
 	temp_arr := strings.Split(hdata_str, "var vsTeamInfo = ")
 	temp_arr = strings.Split(temp_arr[1], ";")
 	hdata_str = strings.TrimSpace(temp_arr[0])
-
+	if hdata_str == "" {
+		base.Log.Info("hdata_str:解析失败,",hdata_str,"URL:", request.Url)
+		return data_list_slice
+	}
 	var hdata_list = make([]*vo.BattleData, 0)
 	json.Unmarshal(([]byte)(hdata_str), &hdata_list)
 

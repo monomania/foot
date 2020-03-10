@@ -31,6 +31,7 @@ type MatchLast struct {
 	 * 主队进球数
 	 */
 	MainTeamGoals int	`xorm:" comment('主队进球数') index"`
+	MainTeamHalfGoals int	`xorm:" comment('主队半场进球数') index"`
 	/**
 	 * 客队id,目前为客队名称
 	 */
@@ -39,6 +40,7 @@ type MatchLast struct {
 	 * 客队进球数
 	 */
 	GuestTeamGoals int	`xorm:" comment('客队进球数') index"`
+	GuestTeamHalfGoals int	`xorm:" comment('客队半场进球数') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }

@@ -58,19 +58,19 @@ func (this *MatchPageProcesser) Startup() {
 func (this *MatchPageProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		base.Log.Info("URL:,", request.Url, p.Errormsg())
+		base.Log.Error("URL:,", request.Url, p.Errormsg())
 		return
 	}
 
 	rawText := p.GetBodyStr()
 	if rawText == "" {
-		base.Log.Info("URL:,内容为空", request.Url)
+		base.Log.Error("rawText:为空.url:", request.Url)
 		return
 	}
 
 	rawText_arr := strings.Split(rawText, "$$")
 	if len(rawText_arr) < 2 {
-		base.Log.Info("URL:,解析失败,rawTextArr长度为:,小于所必需要的长度3", request.Url, len(rawText_arr))
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",request.Url,"内容:", rawText_arr)
 		return
 	}
 
@@ -85,9 +85,9 @@ func (this *MatchPageProcesser) Process(p *page.Page) {
 		match_str = rawText_arr[2]
 	}
 
-	base.Log.Info("联赛信息:", league_str)
+	base.Log.Info("日期:TODAY","联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("比赛信息:", match_str)
+	base.Log.Info("日期:TODAY","比赛信息:", match_str)
 	this.match_process(match_str)
 
 	now := time.Now()
@@ -109,25 +109,28 @@ type TomoReq struct {
 func (this *MatchPageProcesser) futrueMatch(date string) {
 	req := TomoReq{}
 	req.Date = date
-	rawText := GetText("http://m.win007.com/ChangeDate.ashx?date=" + date)
+
+	url := "http://m.win007.com/ChangeDate.ashx?date=" + date
+	rawText := GetText(url)
 	//rawText := Post("http://m.win007.com/ChangeDate.ashx", &req)
 
 	if rawText == "" {
+		base.Log.Error("rawText:为空.url:", url)
 		return
 	}
 
 	rawText_arr := strings.Split(rawText, "$")
 	if len(rawText_arr) < 2 {
-		base.Log.Info("URL:,解析失败,rawTextArr长度为:,小于所必需要的长度3", len(rawText_arr))
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",url,"内容:", rawText_arr)
 		return
 	}
 
 	league_str := rawText_arr[0]
 	match_str := rawText_arr[1]
 
-	base.Log.Info("联赛信息:", league_str)
+	base.Log.Info("日期:",date,"联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("比赛信息:", match_str)
+	base.Log.Info("日期:",date,"比赛信息:", match_str)
 	this.match_process(match_str)
 }
 
@@ -187,14 +190,18 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		index := 0
 		win007Id := match_info_arr[index]
 		//matchLast.Ext["win007Id"] = win007Id
+		//比赛ID
 		matchLast.Id = win007Id
+		//联赛ID
 		index++
 		matchLast.LeagueId = this.win007Id_leagueId_map[match_info_arr[index]]
 		index++
+		//比赛日期
 		index++
 		match_date_str := match_info_arr[index]
 		matchLast.MatchDate, _ = time.ParseInLocation("20060102150405", match_date_str, time.Local)
 		index++
+		//主队客队名称
 		index++
 		matchLast.MainTeamId = match_info_arr[index]
 		/*		if regexp.MustCompile("^\\d*$").MatchString(dataDate_or_mainTeamName) {
@@ -205,6 +212,7 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 				}*/
 		index++
 		matchLast.GuestTeamId = match_info_arr[index]
+		//全场进球
 		index++
 		mainTeamGoals_str := match_info_arr[index]
 		mainTeamGoals, _ := strconv.Atoi(mainTeamGoals_str)
@@ -213,7 +221,15 @@ func (this *MatchPageProcesser) match_process(rawText string) {
 		guestTeamGoals_str := match_info_arr[index]
 		guestTeamGoals, _ := strconv.Atoi(guestTeamGoals_str)
 		matchLast.GuestTeamGoals = guestTeamGoals
-
+		//半场进球
+		index++
+		mainTeamHalfGoals_str := match_info_arr[index]
+		mainTeamHalfGoals, _ := strconv.Atoi(mainTeamHalfGoals_str)
+		matchLast.MainTeamHalfGoals = mainTeamHalfGoals
+		index++
+		guestTeamHalfGoals_str := match_info_arr[index]
+		guestTeamHalfGoals, _ := strconv.Atoi(guestTeamHalfGoals_str)
+		matchLast.GuestTeamHalfGoals = guestTeamHalfGoals
 		//最后加入数据中
 		this.matchLast_list = append(this.matchLast_list, matchLast)
 	}

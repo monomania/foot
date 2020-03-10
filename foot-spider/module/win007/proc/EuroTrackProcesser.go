@@ -74,7 +74,7 @@ func (this *EuroTrackProcesser) findParamVal(url string, paramName string) strin
 func (this *EuroTrackProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
-		base.Log.Info("URL:,", request.Url, p.Errormsg())
+		base.Log.Error("URL:", request.Url, p.Errormsg())
 		return
 	}
 
