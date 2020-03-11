@@ -4,8 +4,8 @@ SELECT
   ar.`LetBall` AS '让球',
   COUNT(1) AS '总场次',
   SUM(IF (ar.`Result` = "命中", 1, 0)) AS '命中',
-  SUM(IF (ar.`Result` = "走盘", 1, 0)) AS '走盘',
   SUM(IF (ar.`Result` = "错误", 1, 0)) AS '错误',
+  SUM(IF (ar.`Result` = "走盘", 1, 0)) AS '走盘',
   SUM(
     IF (
       mh.`MainTeamGoals` > mh.`GuestTeamGoals`,

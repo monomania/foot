@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-type MatchLastProcesser struct {
+type MatchHisProcesser struct {
 	service.MatchLastService
 	service.MatchHisService
 	service2.LeagueService
@@ -33,11 +33,11 @@ type MatchLastProcesser struct {
 	MatchLevel int
 }
 
-func GetMatchLastProcesser() *MatchLastProcesser {
-	return &MatchLastProcesser{}
+func GetMatchHisProcesser() *MatchHisProcesser {
+	return &MatchHisProcesser{}
 }
 
-func (this *MatchLastProcesser) Startup() {
+func (this *MatchHisProcesser) Startup() {
 	//联赛数据
 	this.league_list = make([]*entity2.League, 0)
 	this.win007Id_leagueId_map = make(map[string]string)
@@ -48,14 +48,14 @@ func (this *MatchLastProcesser) Startup() {
 		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
 	this.MatchlastUrl = this.MatchlastUrl + "?flesh=" + strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
-	newSpider := spider.NewSpider(this, "MatchLastProcesser")
+	newSpider := spider.NewSpider(this, "MatchHisProcesser")
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 	newSpider.SetThreadnum(1).Run()
 }
 
-func (this *MatchLastProcesser) Process(p *page.Page) {
+func (this *MatchHisProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
 		base.Log.Error("URL:,", request.Url, p.Errormsg())
@@ -102,14 +102,7 @@ func (this *MatchLastProcesser) Process(p *page.Page) {
 
 }
 
-type TomoReq struct {
-	Date string `json:"date"`
-}
-
-func (this *MatchLastProcesser) futrueMatch(date string) {
-	req := TomoReq{}
-	req.Date = date
-
+func (this *MatchHisProcesser) futrueMatch(date string) {
 	url := "http://m.win007.com/ChangeDate.ashx?date=" + date
 	rawText := GetText(url)
 	//rawText := Post("http://m.win007.com/ChangeDate.ashx", &req)
@@ -134,13 +127,13 @@ func (this *MatchLastProcesser) futrueMatch(date string) {
 	this.match_process(match_str)
 }
 
-func (this *MatchLastProcesser) findParamVal(url string) string {
+func (this *MatchHisProcesser) findParamVal(url string) string {
 	paramUrl := strings.Split(url, "_")[2]
 	paramArr := strings.Split(paramUrl, ".")
 	return paramArr[0]
 }
 
-func (this *MatchLastProcesser) league_process(rawText string) {
+func (this *MatchHisProcesser) league_process(rawText string) {
 	league_arr := strings.Split(rawText, "!")
 
 	this.league_list = make([]*entity2.League, len(league_arr))
@@ -176,7 +169,7 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 /**
 处理比赛信息
 */
-func (this *MatchLastProcesser) match_process(rawText string) {
+func (this *MatchHisProcesser) match_process(rawText string) {
 	match_arr := strings.Split(rawText, "!")
 	match_len := len(match_arr)
 	for i := 0; i < match_len; i++ {
@@ -236,7 +229,7 @@ func (this *MatchLastProcesser) match_process(rawText string) {
 
 }
 
-func (this *MatchLastProcesser) Finish() {
+func (this *MatchHisProcesser) Finish() {
 	base.Log.Info("比赛抓取解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)

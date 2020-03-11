@@ -37,7 +37,7 @@ func Spider_match(matchLevel int) {
 		strings = append(strings, "http://m.win007.com/phone/Schedule_0_4.txt")
 	}
 	for _, v := range strings {
-		processer := proc.GetMatchPageProcesser()
+		processer := proc.GetMatchLastProcesser()
 		processer.MatchlastUrl = v
 		processer.MatchLevel = matchLevel
 		processer.Startup()
