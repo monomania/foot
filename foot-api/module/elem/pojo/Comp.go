@@ -11,6 +11,8 @@ import (
 type Comp struct {
 	//名称
 	Name string `xorm:" comment('名称') index"`
+	//1欧盘, 2亚盘
+	Type int `xorm:" comment('1欧盘, 2亚盘') index"`
 	//公司网址
 	Wesite string `xorm:" comment('公司网址')"`
 

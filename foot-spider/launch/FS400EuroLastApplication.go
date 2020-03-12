@@ -32,7 +32,7 @@ func Spider_euroLast() {
 	if len(val) < 0 {
 		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 		compService := new(service.CompService)
-		compIds = compService.FindAllIds()
+		compIds = compService.FindEuroIds()
 	}else{
 		compIds = strings.Split(val, ",")
 	}
@@ -57,7 +57,7 @@ func Spider_euroLast_near() {
 	if len(val) < 0 {
 		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 		compService := new(service.CompService)
-		compIds = compService.FindAllIds()
+		compIds = compService.FindEuroIds()
 	}else{
 		compIds = strings.Split(val, ",")
 	}

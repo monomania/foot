@@ -13,12 +13,13 @@ type League struct {
 	Name string `xorm:" comment('联赛名称') index"`
 
 	//联赛级别
-	Level int `xorm:" comment('联赛级别') index"`
+	Level       int `xorm:" comment('联赛级别') index"`
 	LevelAssist int `xorm:" comment('联赛级别') index"`
-
 	//联赛官网
-	Website string	`xorm:" comment('联赛官网')"`
+	Website string `xorm:" comment('联赛官网')"`
+	//SID
+	SName string `xorm:" comment('赛事类别') index"`
+	Sid   string `xorm:" comment('赛事类别Id') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }
-

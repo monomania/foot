@@ -70,7 +70,7 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 
 	rawText_arr := strings.Split(rawText, "$$")
 	if len(rawText_arr) < 2 {
-		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",request.Url,"内容:", rawText_arr)
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:", request.Url, "内容:", rawText_arr)
 		return
 	}
 
@@ -85,9 +85,9 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		match_str = rawText_arr[2]
 	}
 
-	base.Log.Info("日期:TODAY","联赛信息:", league_str)
+	base.Log.Info("日期:TODAY", "联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("日期:TODAY","比赛信息:", match_str)
+	base.Log.Info("日期:TODAY", "比赛信息:", match_str)
 	this.match_process(match_str)
 
 	now := time.Now()
@@ -114,16 +114,16 @@ func (this *MatchHisProcesser) futrueMatch(date string) {
 
 	rawText_arr := strings.Split(rawText, "$")
 	if len(rawText_arr) < 2 {
-		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",url,"内容:", rawText_arr)
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:", url, "内容:", rawText_arr)
 		return
 	}
 
 	league_str := rawText_arr[0]
 	match_str := rawText_arr[1]
 
-	base.Log.Info("日期:",date,"联赛信息:", league_str)
+	base.Log.Info("日期:", date, "联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("日期:",date,"比赛信息:", match_str)
+	base.Log.Info("日期:", date, "比赛信息:", match_str)
 	this.match_process(match_str)
 }
 
@@ -143,9 +143,12 @@ func (this *MatchHisProcesser) league_process(rawText string) {
 		if len(league_info_arr) < 3 {
 			continue
 		}
-		name := league_info_arr[0]
-		win007Id := league_info_arr[1]
-
+		i := 0
+		//联赛名称
+		name := league_info_arr[i]
+		//联赛ID
+		i++
+		win007Id := league_info_arr[i]
 		league := new(entity2.League)
 		league.Id = win007Id
 		league.Name = name
@@ -156,10 +159,19 @@ func (this *MatchHisProcesser) league_process(rawText string) {
 		//league.Ext = make(map[string]interface{})
 		//league.Ext["win007Id"] = win007Id
 		this.win007Id_leagueId_map[win007Id] = league.Id
-
-		level_str := league_info_arr[2]
+		//联赛级别
+		i++
+		level_str := league_info_arr[i]
 		level, _ := strconv.Atoi(level_str)
 		league.Level = level
+		//占位
+		i++
+		//赛事类别ID
+		i++
+		league.Sid = league_info_arr[i]
+		//赛事名称
+		i++
+		league.SName = league_info_arr[i]
 
 		this.league_list[index] = league
 		index++

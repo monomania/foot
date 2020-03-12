@@ -19,10 +19,16 @@ func (this *CompService) Exist(v *pojo.Comp) bool {
 	return exist
 }
 
-func (this *CompService) FindAllIds() []string {
+func (this *CompService) FindEuroIds() []string {
+	sql_build_1 := ` 
+		SELECT tc.* FROM foot.t_comp tc WHERE tc.type = 1 
+	`
+	//结果值
 	dataList := make([]*pojo.Comp, 0)
+	//执行查询
+	this.FindBySQL(sql_build_1, &dataList)
+
 	dataIdArr := make([]string, 0)
-	mysql.GetEngine().Find(&dataList)
 	for _, v := range dataList {
 		dataIdArr = append(dataIdArr, v.Id)
 	}

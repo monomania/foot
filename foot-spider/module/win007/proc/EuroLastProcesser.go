@@ -104,6 +104,7 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	for _, v := range hdata_list {
 		comp := new(entity2.Comp)
 		comp.Name = v.Cn
+		comp.Type = 1
 		comp_exists := this.CompService.Exist(comp)
 		if !comp_exists {
 			//comp.Id = bson.NewObjectId().Hex()

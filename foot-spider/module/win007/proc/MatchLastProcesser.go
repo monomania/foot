@@ -150,9 +150,12 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		if len(league_info_arr) < 3 {
 			continue
 		}
-		name := league_info_arr[0]
-		win007Id := league_info_arr[1]
-
+		i := 0
+		//联赛名称
+		name := league_info_arr[i]
+		//联赛ID
+		i++
+		win007Id := league_info_arr[i]
 		league := new(entity2.League)
 		league.Id = win007Id
 		league.Name = name
@@ -163,10 +166,19 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		//league.Ext = make(map[string]interface{})
 		//league.Ext["win007Id"] = win007Id
 		this.win007Id_leagueId_map[win007Id] = league.Id
-
-		level_str := league_info_arr[2]
+		//联赛级别
+		i++
+		level_str := league_info_arr[i]
 		level, _ := strconv.Atoi(level_str)
 		league.Level = level
+		//占位
+		i++
+		//赛事类别ID
+		i++
+		league.Sid = league_info_arr[i]
+		//赛事名称
+		i++
+		league.SName = league_info_arr[i]
 
 		this.league_list[index] = league
 		index++
