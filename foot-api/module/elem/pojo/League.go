@@ -12,6 +12,7 @@ type League struct {
 	//联赛名称
 	Name string `xorm:" comment('联赛名称') index"`
 	ShortName string `xorm:" comment('联赛名简称') index"`
+	ShortUrl string `xorm:" comment('联赛入口路径') index"`
 
 	//联赛级别
 	Level       int `xorm:" comment('联赛级别') index"`

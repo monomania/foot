@@ -13,7 +13,7 @@ import (
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 )
 
-type LeagueProcesser struct {
+type LeagueStubProcesser struct {
 	service2.LeagueService
 	service2.CompService
 	//联赛数据
@@ -22,16 +22,16 @@ type LeagueProcesser struct {
 	sUrl_Name map[string]string
 }
 
-func GetLeagueProcesser() *LeagueProcesser {
-	return &LeagueProcesser{}
+func GetLeagueStubProcesser() *LeagueStubProcesser {
+	return &LeagueStubProcesser{}
 }
 
-func (this *LeagueProcesser) Startup() {
+func (this *LeagueStubProcesser) Startup() {
 	//初始化参数值
 	this.league_list = make([]*entity2.League, 0)
 	this.sUrl_Id = make(map[string]string)
 	this.sUrl_Name = make(map[string]string)
-	newSpider := spider.NewSpider(this, "LeagueProcesser")
+	newSpider := spider.NewSpider(this, "LeagueStubProcesser")
 	//sid 数据
 	sid_stat_url := "http://m.win007.com/info.htm#section0";
 	document, _ := GetDocument(sid_stat_url)
@@ -50,7 +50,7 @@ func (this *LeagueProcesser) Startup() {
 	newSpider.SetThreadnum(1).Run()
 }
 
-func (this *LeagueProcesser) Process(p *page.Page) {
+func (this *LeagueStubProcesser) Process(p *page.Page) {
 	request := p.GetRequest()
 	if !p.IsSucc() {
 		base.Log.Error("URL:,", request.Url, p.Errormsg())
@@ -84,7 +84,7 @@ func (this *LeagueProcesser) Process(p *page.Page) {
 	})
 }
 
-func (this *LeagueProcesser) Finish() {
+func (this *LeagueStubProcesser) Finish() {
 	base.Log.Info("联赛解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)
