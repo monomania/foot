@@ -308,7 +308,7 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 		analy.TOVoid = true
 		analy.TOVoidDesc = "杯赛"
 	}else{
-		analy.TOVoidDesc = "杯赛"
+		analy.TOVoidDesc = ""
 	}
 
 	//打印数据
