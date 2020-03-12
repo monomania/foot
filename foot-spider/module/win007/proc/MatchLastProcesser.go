@@ -52,6 +52,7 @@ func (this *MatchLastProcesser) Startup() {
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand",100,2000)
 	newSpider.SetThreadnum(1).Run()
 }
 
@@ -158,7 +159,7 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		win007Id := league_info_arr[i]
 		league := new(entity2.League)
 		league.Id = win007Id
-		league.Name = name
+		league.ShortName = name
 		if this.MatchLevel > 0 {
 			//设置联赛级别
 			league.LevelAssist = 10000
@@ -176,7 +177,7 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		//赛事类别ID
 		i++
 		league.Sid = league_info_arr[i]
-		//赛事名称
+		//赛事类别名称
 		i++
 		league.SName = league_info_arr[i]
 

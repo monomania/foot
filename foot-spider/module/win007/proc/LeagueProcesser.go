@@ -27,6 +27,8 @@ func GetLeagueProcesser() *LeagueProcesser {
 }
 
 func (this *LeagueProcesser) Startup() {
+	//初始化参数值
+	this.league_list = make([]*entity2.League, 0)
 	this.sUrl_Id = make(map[string]string)
 	this.sUrl_Name = make(map[string]string)
 	newSpider := spider.NewSpider(this, "LeagueProcesser")
@@ -38,12 +40,13 @@ func (this *LeagueProcesser) Startup() {
 		sId := strings.Split(sUrl, "sid=")[1]
 		sName := strings.TrimSpace(selection.Text())
 		base.Log.Info("sId:", sId, ",sName:", sName, ",sUrl:"+sUrl)
-		this.sUrl_Id[sUrl] = sId
-		this.sUrl_Name[sUrl] = sName
+		this.sUrl_Id[win007.WIN007_BASE_URL+sUrl] = sId
+		this.sUrl_Name[win007.WIN007_BASE_URL+sUrl] = sName
 		newSpider = newSpider.AddUrl(win007.WIN007_BASE_URL+sUrl, "html")
 	})
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand",100,2000)
 	newSpider.SetThreadnum(1).Run()
 }
 
@@ -64,7 +67,6 @@ func (this *LeagueProcesser) Process(p *page.Page) {
 	sId := this.sUrl_Id[sUrl]
 	sName := this.sUrl_Name[sUrl]
 
-	this.league_list = make([]*entity2.League, 0)
 	p.GetHtmlParser().Find("a.gameItem[href*='info'][href*='htm']").Each(func(i int, selection *goquery.Selection) {
 		lUrl, _ := selection.Attr("href")
 		l_arr := strings.Split(lUrl, "/")
@@ -79,7 +81,6 @@ func (this *LeagueProcesser) Process(p *page.Page) {
 		league.SName = sName
 		this.league_list = append(this.league_list,league)
 	})
-
 }
 
 func (this *LeagueProcesser) Finish() {
@@ -91,8 +92,6 @@ func (this *LeagueProcesser) Finish() {
 		if nil == v {
 			continue
 		}
-		/*	bytes, _ := json.Marshal(v)
-			base.Log.Info(string(bytes))*/
 		exists := this.LeagueService.ExistById(v.Id)
 		if exists {
 			league_modify_list_slice = append(league_modify_list_slice,v)
