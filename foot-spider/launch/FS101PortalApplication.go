@@ -63,7 +63,7 @@ func Spider_History() {
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据
 	//执行抓取欧赔历史
-	Spider_match(matchLevel)
+	Spider_match_his()
 	Spider_baseFace(false)
 	Spider_asiaLastNew(false)
 	Spider_euroLast()

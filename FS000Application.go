@@ -6,7 +6,6 @@ import (
 
 
 func main() {
-	launch.Clean()
-	launch.Spider()
+	launch.Spider_league()
 }
 

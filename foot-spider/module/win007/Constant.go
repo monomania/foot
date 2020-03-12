@@ -2,6 +2,8 @@ package win007
 
 const MODULE_FLAG = "win007"
 
+const WIN007_BASE_URL  = "http://m.win007.com/"
+
 /**
  * 比赛分析页面数据
  */

@@ -252,6 +252,7 @@ func (this *MatchLastProcesser) Finish() {
 	base.Log.Info("比赛抓取解析完成,执行入库 \r\n")
 
 	league_list_slice := make([]interface{}, 0)
+	league_modify_list_slice := make([]interface{}, 0)
 	for _, v := range this.league_list {
 		if nil == v {
 			continue
@@ -260,11 +261,13 @@ func (this *MatchLastProcesser) Finish() {
 			base.Log.Info(string(bytes))*/
 		exists := this.LeagueService.ExistById(v.Id)
 		if exists {
+			league_modify_list_slice = append(league_modify_list_slice,v)
 			continue
 		}
 		league_list_slice = append(league_list_slice, v)
 	}
 	this.LeagueService.SaveList(league_list_slice)
+	this.LeagueService.ModifyList(league_modify_list_slice)
 
 	matchLast_list_slice := make([]interface{}, 0)
 	matchLast_modify_list_slice := make([]interface{}, 0)
