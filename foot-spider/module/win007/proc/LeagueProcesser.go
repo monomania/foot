@@ -80,6 +80,13 @@ func (this *LeagueProcesser) Process(p *page.Page) {
 		league.Sid = sId
 		league.SName = sName
 		league.ShortUrl = lUrl
+		if strings.Contains(lUrl,"Cup"){
+			league.Cup = true
+		}
+		if strings.Contains(lUrl,"-"){
+			league.SeasonCross = true
+		}
+
 		this.league_list = append(this.league_list,league)
 	})
 }

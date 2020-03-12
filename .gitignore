@@ -15,3 +15,4 @@ bin
 *.out
 .idea/
 logs/
+.err

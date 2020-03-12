@@ -5,17 +5,14 @@ import (
 )
 
 /**
-联赛子表表
+联赛赛季表,,
  */
-//不管是从哪个平台抓取的数据，都使用win007的联赛的ID数据
-type LeagueStub struct {
+type LeagueSeason struct {
 	//联赛id
 	LeagueId string  `xorm:" comment('LeagueId') index"`
-	//年份,使用,间隔
-	Season string `xorm:" comment('Season')"`
-	//subs
-	SubIds []string `xorm:" comment('Subs')"`
-	//--
+	//赛季
+	Season string  `xorm:" comment('Season') index"`
+	//最大的回合数
 	Round int `xorm:" comment('最大的回合数')"`
 
 	pojo.BasePojo `xorm:"extends"`

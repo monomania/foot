@@ -60,7 +60,7 @@ func (this *DBOpsService) SyncTableStruct() {
 	}
 
 	//波菜公司，联赛其他数据表
-	err = engine.Sync2(new(entity3.Comp), new(entity3.League))
+	err = engine.Sync2(new(entity3.Comp), new(entity3.League), new(entity3.LeagueSeason), new(entity3.LeagueSub))
 	if nil != err {
 		base.Log.Error(err.Error())
 	}
