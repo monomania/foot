@@ -21,11 +21,11 @@ type LeagueSeasonProcesser struct {
 
 	//联赛次级数据
 	leagueSeason_list []*pojo.LeagueSeason
-	leagueSub_list []*pojo.LeagueSub
+	leagueSub_list    []*pojo.LeagueSub
 	sUrl_leagueId     map[string]string
 }
 
-func GetLeagueSubProcesser() *LeagueSeasonProcesser {
+func GetLeagueSeasonProcesser() *LeagueSeasonProcesser {
 	return &LeagueSeasonProcesser{}
 }
 
@@ -44,7 +44,7 @@ func (this *LeagueSeasonProcesser) Startup() {
 	//index := 0
 	for _, v := range leaguesList {
 		//先不处理杯赛....
-		if v.Cup{
+		if v.Cup {
 			continue
 		}
 		//index++
@@ -83,9 +83,47 @@ func (this *LeagueSeasonProcesser) Process(p *page.Page) {
 		base.Log.Error("rawText:为空.url:", request.Url)
 		return
 	}
-	leagueId := this.sUrl_leagueId[request.Url]
 	//1.处理season
 	htmlParser := p.GetHtmlParser()
+	this.season_process(htmlParser, request.Url)
+
+}
+
+func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, url string) {
+	leagueId := this.sUrl_leagueId[url]
+
+	//获取赛季开始的月份
+	var beginMonth int
+	if strings.Contains(url, "-") {
+		htmlParser.Find("table[id='mainTable'] tr[onclick]").Each(func(i int, selection *goquery.Selection) {
+			temp_id, exist := selection.Attr("onclick")
+			if !exist {
+				return
+			}
+			temp_id = strings.Replace(temp_id, "ToAnaly(", "", 1)
+			temp_id = strings.Replace(temp_id, ",-1)", "", 1)
+			temp_id = strings.TrimSpace(temp_id)
+			base.Log.Info("比赛ID为:", temp_id)
+
+			val_arr := make([]string, 0)
+			selection.Find("td").Each(func(i int, selection *goquery.Selection) {
+				val := selection.Text()
+				val_arr = append(val_arr, strings.TrimSpace(val))
+			})
+
+			if len(val_arr) != 5 {
+				return
+			}
+
+			index := 0
+			//比赛时间
+			index++
+			temp_matchDate := val_arr[index]
+			month, _ := strconv.Atoi(temp_matchDate[:1])
+			beginMonth = month
+		})
+	}
+
 	htmlParser.Find("select[id='selSeason'] option").Each(func(i int, selection *goquery.Selection) {
 		temp_maxRound := 1
 		temp_season := strings.TrimSpace(selection.Text())
@@ -104,11 +142,12 @@ func (this *LeagueSeasonProcesser) Process(p *page.Page) {
 			leagueSub := new(pojo.LeagueSub)
 			leagueSub.LeagueId = leagueId
 			leagueSub.Season = temp_season
+			leagueSub.BeginMonth = beginMonth
 			leagueSub.Round = temp_maxRound
 			leagueSub.SubId = val
 			leagueSub.SubName = temp_subName
 			this.leagueSub_list = append(this.leagueSub_list, leagueSub)
-			
+
 		})
 		//3.处理round
 		htmlParser.Find("select[id='selRound'] option").Each(func(i int, selection *goquery.Selection) {
@@ -125,10 +164,10 @@ func (this *LeagueSeasonProcesser) Process(p *page.Page) {
 		leagueSeason := new(pojo.LeagueSeason)
 		leagueSeason.LeagueId = leagueId
 		leagueSeason.Season = temp_season
+		leagueSeason.BeginMonth = beginMonth
 		leagueSeason.Round = temp_maxRound
 		this.leagueSeason_list = append(this.leagueSeason_list, leagueSeason)
 	})
-
 }
 
 func (this *LeagueSeasonProcesser) Finish() {
@@ -169,6 +208,5 @@ func (this *LeagueSeasonProcesser) Finish() {
 
 	this.LeagueSubService.SaveList(leagueSub_list_slice)
 	this.LeagueSubService.ModifyList(leagueSub_modify_list_slice)
-
 
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func Spider_leagueSeason() {
-	processer := proc.GetLeagueSubProcesser()
+	processer := proc.GetLeagueSeasonProcesser()
 	processer.Startup()
 }
 

@@ -37,3 +37,14 @@ func (this *LeagueSeasonService) FindByLeagueId(id string) []*pojo.LeagueSeason 
 	}
 	return dataList
 }
+
+func (this *LeagueSeasonService) FindBySeason(season string) []*pojo.LeagueSeason {
+	dataList := make([]*pojo.LeagueSeason, 0)
+	sql_build := strings.Builder{}
+	sql_build.WriteString(" Season = '" + season + "' OR Season like '%-"+season+"'")
+	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
+	if err != nil {
+		base.Log.Error("FindBySeason:", err)
+	}
+	return dataList
+}

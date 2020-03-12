@@ -12,6 +12,8 @@ type LeagueSub struct {
 	LeagueId string  `xorm:" comment('LeagueId') index"`
 	//赛季
 	Season string `xorm:" comment('Season') index"`
+	//赛季开始的月份
+	BeginMonth int `xorm:" comment('BeginMonth') index"`
 
 	SubId string  `xorm:" comment('SubId') index"`
 	SubName string  `xorm:" comment('SubName') index"`

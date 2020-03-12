@@ -12,6 +12,9 @@ type LeagueSeason struct {
 	LeagueId string  `xorm:" comment('LeagueId') index"`
 	//赛季
 	Season string  `xorm:" comment('Season') index"`
+	//赛季开始的月份
+	BeginMonth int `xorm:" comment('BeginMonth') index"`
+
 	//最大的回合数
 	Round int `xorm:" comment('最大的回合数')"`
 
