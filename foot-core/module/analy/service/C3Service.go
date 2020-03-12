@@ -282,7 +282,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 
-	if strings.Contains(bffe_main.EventLeagueId, "杯") {
+	if this.IsCupMatch(bffe_main.EventLeagueId){
 		//下一场打杯赛
 		//return -3, nil
 	} else {
@@ -291,7 +291,8 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			letBall += (baseVal)
 		}
 	}
-	if strings.Contains(bffe_guest.EventLeagueId, "杯") {
+
+		if this.IsCupMatch(bffe_guest.EventLeagueId){
 		//下一场打杯赛
 		//return -3, nil
 	} else {
@@ -377,10 +378,10 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		base.Log.Info("-")
 	}
 
-	if preResult == 3 && strings.Contains(bffe_main.EventLeagueId, "杯") {
+	if preResult == 3 && this.IsCupMatch(bffe_main.EventLeagueId) {
 		//下一场打杯赛
 		return -3, nil
-	} else if preResult == 0 && strings.Contains(bffe_guest.EventLeagueId, "杯") {
+	} else if preResult == 0 && this.IsCupMatch(bffe_guest.EventLeagueId) {
 		//下一场打杯赛
 		return -3, nil
 	}

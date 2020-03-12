@@ -268,15 +268,24 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 	}
 	analy.Result = resultFlag
 	league := this.LeagueService.FindById(last.LeagueId)
-	if strings.Contains(league.Name,"杯") || strings.Contains(league.Name,"赛"){
+	if this.IsCupMatch(league.Name){
 		analy.TOVoid = true
 		analy.TOVoidDesc = "杯赛"
+	}else{
+		analy.TOVoidDesc = ""
 	}
 
 	//打印数据
 	matchDateStr := last.MatchDate.Format("2006-01-02 15:04:05")
 	base.Log.Info("比赛Id:" + last.Id + ",比赛时间:" + matchDateStr + ",联赛:" + league.Name + ",对阵:" + last.MainTeamId + "(" + strconv.FormatFloat(analy.LetBall, 'f', -1, 64) + ")" + last.GuestTeamId + ",预算结果:" + strconv.Itoa(analy.PreResult) + ",已得结果:" + strconv.Itoa(last.MainTeamGoals) + "-" + strconv.Itoa(last.GuestTeamGoals) + " (" + resultFlag + ")")
 	return resultFlag
+}
+
+func (this *AnalyService) IsCupMatch(leagueName string) bool {
+	if strings.Contains(leagueName,"杯") || strings.Contains(leagueName,"锦"){
+		return true;
+	}
+	return false;
 }
 
 func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyResult) string {
@@ -295,8 +304,10 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	analy.Result = resultFlag
 
 	league := this.LeagueService.FindById(last.LeagueId)
-	if strings.Contains(league.Name,"杯") || strings.Contains(league.Name,"赛"){
+	if this.IsCupMatch(league.Name){
 		analy.TOVoid = true
+		analy.TOVoidDesc = "杯赛"
+	}else{
 		analy.TOVoidDesc = "杯赛"
 	}
 
