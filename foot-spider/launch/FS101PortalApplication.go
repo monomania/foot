@@ -56,8 +56,11 @@ func Spider_Near() {
 }
 
 func Spider_History() {
-	Spider_league()
-	Spider_leagueSeason()
+	league_switch := utils.GetVal("spider", "league_switch")
+	if len(league_switch) > 0 && strings.EqualFold(league_switch, "true") {
+		Spider_league()
+		Spider_leagueSeason()
+	}
 	//执行抓取比赛数据
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据

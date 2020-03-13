@@ -15,8 +15,8 @@ func main() {
 	fmt.Println(parse)
 	fmt.Println(parse2)
 	//launch.Spider_match_his("2019")
-	//launch.Spider_History()
-	launch.Spider_leagueSeason()
+	launch.Spider_History()
+	//launch.Spider_leagueSeason()
 
 }
 
