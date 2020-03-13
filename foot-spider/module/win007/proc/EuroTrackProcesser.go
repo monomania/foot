@@ -31,34 +31,44 @@ type EuroTrackProcesser struct {
 }
 
 func GetEuroTrackProcesser() *EuroTrackProcesser {
-	return &EuroTrackProcesser{}
+	processer := &EuroTrackProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *EuroTrackProcesser) Init() {
+	//初始化参数值
+	this.Win007idMatchidMap = map[string]string{}
 }
 
 func (this *EuroTrackProcesser) Startup() {
-	this.Win007idMatchidMap = map[string]string{}
+	for i, v := range this.MatchLastList {
 
-	newSpider := spider.NewSpider(this, "EuroTrackProcesser")
+		var processer *EuroTrackProcesser
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
+			processer = GetEuroTrackProcesser()
+		}
+		newSpider := spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
 
-	for _, v := range this.MatchLastList {
-		i := v.Ext[win007.MODULE_FLAG]
-		bytes, _ := json.Marshal(i)
+		temp_flag := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(temp_flag)
 		matchExt := new(pojo.MatchExt)
 		json.Unmarshal(bytes, matchExt)
-
 		win007_id := matchExt.Sid
-
-		this.Win007idMatchidMap[win007_id] = v.Id
+		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		base_url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", win007_id, 1)
 		for _, v := range this.CompWin007Ids {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}
+
+		newSpider.SetDownloader(down.NewMWin007Downloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 1000, 20000)
+		newSpider.SetThreadnum(1).Run()
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand",100,2000)
-	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *EuroTrackProcesser) findParamVal(url string, paramName string) string {

@@ -26,52 +26,63 @@ type MatchHisProcesser struct {
 
 	Season string
 	//比赛数据
-	matchHis_list []*pojo2.MatchHis
+	MatchHis_list []*pojo2.MatchHis
 
 	//联赛次级数据
-	leagueSeason_list []*pojo.LeagueSeason
-	leagueSub_list    []*pojo.LeagueSub
-	sUrl_leagueId     map[string]string
-	sUrl_Season       map[string]*pojo.LeagueSeason
+	LeagueSeason_list []*pojo.LeagueSeason
+	LeagueSub_list    []*pojo.LeagueSub
+	SUrl_leagueId     map[string]string
+	SUrl_Season       map[string]*pojo.LeagueSeason
 	//----------------------
 }
 
 func GetMatchHisProcesser() *MatchHisProcesser {
-	return &MatchHisProcesser{}
+	processer := &MatchHisProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *MatchHisProcesser) Init() {
+	//初始化参数值
+	this.LeagueSeason_list = make([]*pojo.LeagueSeason, 0)
+	this.LeagueSub_list = make([]*pojo.LeagueSub, 0)
+	this.MatchHis_list = make([]*pojo2.MatchHis, 0)
+	this.SUrl_leagueId = make(map[string]string)
+	this.SUrl_Season = make(map[string]*pojo.LeagueSeason)
 }
 
 func (this *MatchHisProcesser) Startup() {
-	//初始化参数值
-	this.leagueSeason_list = make([]*pojo.LeagueSeason, 0)
-	this.leagueSub_list = make([]*pojo.LeagueSub, 0)
-	this.matchHis_list = make([]*pojo2.MatchHis, 0)
-	this.sUrl_leagueId = make(map[string]string)
-	this.sUrl_Season = make(map[string]*pojo.LeagueSeason)
 
 	//1.获取所有的联赛赛季信息
 	seasonList := this.LeagueSeasonService.FindBySeason(this.Season)
-
 	//2.配置要抓取的路径
-	newSpider := spider.NewSpider(this, "MatchHisProcesser")
-	for _, v := range seasonList {
+	for i, v := range seasonList {
+
+		var processer *MatchHisProcesser
+		if i%1000 == 0 { //1000个比赛一个spider,一个赛季大概有30万场比赛,最多300条线程
+			processer = GetMatchHisProcesser()
+		}
+		newSpider := spider.NewSpider(processer, "MatchHisProcesser"+strconv.Itoa(i))
+
 		url := win007.WIN007_MATCH_HIS_PATTERN
 		url = strings.Replace(url, "${season}", v.Season, 1)
 		url = strings.Replace(url, "${leagueId}", v.LeagueId, 1)
 		url = strings.Replace(url, "${subId}", "0", 1)
 
-		i := 1
-		for ; i <= v.Round; i++ {
-			round_url := strings.Replace(url, "${round}", strconv.Itoa(i), 1)
-			this.sUrl_leagueId[round_url] = v.LeagueId
-			this.sUrl_Season[round_url] = v
+		index := 1
+		for ; index <= v.Round; i++ {
+			round_url := strings.Replace(url, "${round}", strconv.Itoa(index), 1)
+			processer.SUrl_leagueId[round_url] = v.LeagueId
+			processer.SUrl_Season[round_url] = v
 			newSpider = newSpider.AddUrl(round_url, "html")
 		}
+
+		newSpider.SetDownloader(down.NewMWin007Downloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 1000, 20000)
+		newSpider.SetThreadnum(1).Run()
 	}
 
-	newSpider.SetDownloader(down.NewMWin007Downloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1000, 10000)
-	newSpider.SetThreadnum(1).Run()
 }
 
 func (this *MatchHisProcesser) Process(p *page.Page) {
@@ -88,12 +99,12 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 	}
 	//1.处理season
 	htmlParser := p.GetHtmlParser()
-	leagueId := this.sUrl_leagueId[request.Url]
+	leagueId := this.SUrl_leagueId[request.Url]
 	this.LeagueSeasonProcesser.Init()
 	this.LeagueSeasonProcesser.season_process(htmlParser, leagueId, request.Url)
 
 	//1.处理比赛
-	season := this.sUrl_Season[request.Url]
+	season := this.SUrl_Season[request.Url]
 	htmlParser.Find("table[id='mainTable'] tr[onclick]").Each(func(i int, selection *goquery.Selection) {
 		temp_id, exist := selection.Attr("onclick")
 		if !exist {
@@ -158,7 +169,7 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		his.Id = temp_id
 		his.LeagueId = season.LeagueId
 
-		this.matchHis_list = append(this.matchHis_list, his)
+		this.MatchHis_list = append(this.MatchHis_list, his)
 	})
 
 }
@@ -169,7 +180,7 @@ func (this *MatchHisProcesser) Finish() {
 
 	matchHis_list_slice := make([]interface{}, 0)
 	matchHis_modify_list_slice := make([]interface{}, 0)
-	for _, v := range this.matchHis_list {
+	for _, v := range this.MatchHis_list {
 		if nil == v {
 			continue
 		}

@@ -26,7 +26,9 @@ type LeagueSeasonProcesser struct {
 }
 
 func GetLeagueSeasonProcesser() *LeagueSeasonProcesser {
-	return &LeagueSeasonProcesser{}
+	processer := &LeagueSeasonProcesser{}
+	processer.Init()
+	return processer
 }
 
 func (this *LeagueSeasonProcesser) Init() {
@@ -34,19 +36,15 @@ func (this *LeagueSeasonProcesser) Init() {
 	this.leagueSeason_list = make([]*pojo.LeagueSeason, 0)
 	this.leagueSub_list = make([]*pojo.LeagueSub, 0)
 	this.sUrl_leagueId = make(map[string]string)
-
 }
 
 func (this *LeagueSeasonProcesser) Startup() {
-	this.Init()
-
 	//1.获取所有的联赛
 	leaguesList := make([]*pojo.League, 0)
 	this.LeagueService.FindAll(&leaguesList)
 	//2.配置要抓取的路径
-	newSpider := spider.NewSpider(this, "LeagueSeasonProcesser")
 	//index := 0
-	for _, v := range leaguesList {
+	for i, v := range leaguesList {
 		//先不处理杯赛....
 		if v.Cup {
 			continue
@@ -55,6 +53,12 @@ func (this *LeagueSeasonProcesser) Startup() {
 		//if index > 10{
 		//	break
 		//}
+		var processer *LeagueSeasonProcesser
+		if i % 100 == 0 {//100个联赛一个spider,总数1000多个联赛
+			processer = GetLeagueSeasonProcesser()
+		}
+		newSpider := spider.NewSpider(processer, "LeagueSeasonProcesser"+strconv.Itoa(i))
+
 		url := win007.WIN007_MATCH_HIS_PATTERN
 		if v.SeasonCross {
 			url = strings.Replace(url, "${season}", "2018-2019", 1)
@@ -65,14 +69,15 @@ func (this *LeagueSeasonProcesser) Startup() {
 		url = strings.Replace(url, "${subId}", "0", 1)
 		url = strings.Replace(url, "${round}", "1", 1)
 
-		this.sUrl_leagueId[url] = v.Id
+		processer.sUrl_leagueId[url] = v.Id
 		newSpider = newSpider.AddUrl(url, "html")
+
+		newSpider.SetDownloader(down.NewMWin007Downloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 1000, 20000)
+		newSpider.SetThreadnum(1).Run()
 	}
 
-	newSpider.SetDownloader(down.NewMWin007Downloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 100, 2000)
-	newSpider.SetThreadnum(1).Run()
 }
 
 func (this *LeagueSeasonProcesser) Process(p *page.Page) {
@@ -90,11 +95,11 @@ func (this *LeagueSeasonProcesser) Process(p *page.Page) {
 	//1.处理season
 	leagueId := this.sUrl_leagueId[request.Url]
 	htmlParser := p.GetHtmlParser()
-	this.season_process(htmlParser,leagueId, request.Url)
+	this.season_process(htmlParser, leagueId, request.Url)
 
 }
 
-func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, leagueId string,url string) {
+func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, leagueId string, url string) {
 	//获取赛季开始的月份
 	var beginMonth int
 	if strings.Contains(url, "-") {
@@ -152,8 +157,8 @@ func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, 
 		})
 		//3.处理round
 		htmlParser.Find("select[id='selRound'] option").Each(func(i int, selection *goquery.Selection) {
-			temp_round_str , exist := selection.Attr("value")
-			if !exist{
+			temp_round_str, exist := selection.Attr("value")
+			if !exist {
 				return;
 			}
 			if len(temp_round_str) <= 0 {

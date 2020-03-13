@@ -23,8 +23,18 @@ type LeagueProcesser struct {
 }
 
 func GetLeagueProcesser() *LeagueProcesser {
-	return &LeagueProcesser{}
+	processer := &LeagueProcesser{}
+	processer.Init()
+	return processer
 }
+
+func (this *LeagueProcesser) Init() {
+	//初始化参数值
+	this.league_list = make([]*entity2.League, 0)
+	this.sUrl_Id = make(map[string]string)
+	this.sUrl_Name = make(map[string]string)
+}
+
 
 func (this *LeagueProcesser) Startup() {
 	//初始化参数值
