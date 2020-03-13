@@ -29,16 +29,20 @@ func GetLeagueSeasonProcesser() *LeagueSeasonProcesser {
 	return &LeagueSeasonProcesser{}
 }
 
-func (this *LeagueSeasonProcesser) Startup() {
+func (this *LeagueSeasonProcesser) Init() {
 	//初始化参数值
 	this.leagueSeason_list = make([]*pojo.LeagueSeason, 0)
 	this.leagueSub_list = make([]*pojo.LeagueSub, 0)
 	this.sUrl_leagueId = make(map[string]string)
 
+}
+
+func (this *LeagueSeasonProcesser) Startup() {
+	this.Init()
+
 	//1.获取所有的联赛
 	leaguesList := make([]*pojo.League, 0)
 	this.LeagueService.FindAll(&leaguesList)
-
 	//2.配置要抓取的路径
 	newSpider := spider.NewSpider(this, "LeagueSeasonProcesser")
 	//index := 0
@@ -84,14 +88,13 @@ func (this *LeagueSeasonProcesser) Process(p *page.Page) {
 		return
 	}
 	//1.处理season
+	leagueId := this.sUrl_leagueId[request.Url]
 	htmlParser := p.GetHtmlParser()
-	this.season_process(htmlParser, request.Url)
+	this.season_process(htmlParser,leagueId, request.Url)
 
 }
 
-func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, url string) {
-	leagueId := this.sUrl_leagueId[url]
-
+func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, leagueId string,url string) {
 	//获取赛季开始的月份
 	var beginMonth int
 	if strings.Contains(url, "-") {

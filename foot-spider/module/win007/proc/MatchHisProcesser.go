@@ -88,7 +88,9 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 	}
 	//1.处理season
 	htmlParser := p.GetHtmlParser()
-	this.season_process(htmlParser, request.Url)
+	leagueId := this.sUrl_leagueId[request.Url]
+	this.LeagueSeasonProcesser.Init()
+	this.LeagueSeasonProcesser.season_process(htmlParser, leagueId,request.Url)
 
 	//1.处理比赛
 	season := this.sUrl_Season[request.Url]
