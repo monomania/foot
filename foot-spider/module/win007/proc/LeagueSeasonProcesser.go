@@ -59,7 +59,7 @@ func (this *LeagueSeasonProcesser) Startup() {
 		//if index > 10{
 		//	break
 		//}
-		if i % 100 == 0 {//100个联赛一个spider,总数1000多个联赛
+		if i % 10 == 0 {//10个联赛一个spider,总数1000多个联赛,最多100spider
 			processer = GetLeagueSeasonProcesser()
 			processer.Setup(this)
 		}
