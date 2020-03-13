@@ -59,9 +59,9 @@ func (this *MatchHisProcesser) Startup() {
 		url = strings.Replace(url, "${leagueId}", v.LeagueId, 1)
 		url = strings.Replace(url, "${subId}", "0", 1)
 
-		var i int
-		for ; i < v.Round; i++ {
-			round_url := strings.Replace(url, "${round}", "1", 1)
+		i := 1
+		for ; i <= v.Round; i++ {
+			round_url := strings.Replace(url, "${round}", strconv.Itoa(i), 1)
 			this.sUrl_leagueId[round_url] = v.LeagueId
 			this.sUrl_Season[round_url] = v
 			newSpider = newSpider.AddUrl(round_url, "html")
@@ -70,7 +70,7 @@ func (this *MatchHisProcesser) Startup() {
 
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetSleepTime("rand", 1000, 10000)
 	newSpider.SetThreadnum(1).Run()
 }
 
@@ -90,7 +90,7 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 	htmlParser := p.GetHtmlParser()
 	leagueId := this.sUrl_leagueId[request.Url]
 	this.LeagueSeasonProcesser.Init()
-	this.LeagueSeasonProcesser.season_process(htmlParser, leagueId,request.Url)
+	this.LeagueSeasonProcesser.season_process(htmlParser, leagueId, request.Url)
 
 	//1.处理比赛
 	season := this.sUrl_Season[request.Url]
@@ -102,7 +102,7 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		temp_id = strings.Replace(temp_id, "ToAnaly(", "", 1)
 		temp_id = strings.Replace(temp_id, ",-1)", "", 1)
 		temp_id = strings.TrimSpace(temp_id)
-		base.Log.Info("比赛ID为:", temp_id)
+		base.Log.Info("比赛ID为:", temp_id, ",URL:"+request.Url)
 
 		val_arr := make([]string, 0)
 		selection.Find("td").Each(func(i int, selection *goquery.Selection) {

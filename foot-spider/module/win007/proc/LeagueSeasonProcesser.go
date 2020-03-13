@@ -152,7 +152,10 @@ func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, 
 		})
 		//3.处理round
 		htmlParser.Find("select[id='selRound'] option").Each(func(i int, selection *goquery.Selection) {
-			temp_round_str := strings.TrimSpace(selection.Text())
+			temp_round_str , exist := selection.Attr("value")
+			if !exist{
+				return;
+			}
 			if len(temp_round_str) <= 0 {
 				return
 			}
