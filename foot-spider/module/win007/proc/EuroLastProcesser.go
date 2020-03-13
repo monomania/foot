@@ -49,9 +49,9 @@ func (this *EuroLastProcesser) Setup(temp *EuroLastProcesser) {
 
 func (this *EuroLastProcesser) Startup() {
 
+	var processer *EuroLastProcesser
 	for i, v := range this.MatchLastList {
 
-		var processer *EuroLastProcesser
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetEuroLastProcesser()
 			processer.Setup(this)

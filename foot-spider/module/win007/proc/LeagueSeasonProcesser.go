@@ -48,6 +48,7 @@ func (this *LeagueSeasonProcesser) Startup() {
 	leaguesList := make([]*pojo.League, 0)
 	this.LeagueService.FindAll(&leaguesList)
 	//2.配置要抓取的路径
+	var processer *LeagueSeasonProcesser
 	//index := 0
 	for i, v := range leaguesList {
 		//先不处理杯赛....
@@ -58,7 +59,6 @@ func (this *LeagueSeasonProcesser) Startup() {
 		//if index > 10{
 		//	break
 		//}
-		var processer *LeagueSeasonProcesser
 		if i % 100 == 0 {//100个联赛一个spider,总数1000多个联赛
 			processer = GetLeagueSeasonProcesser()
 			processer.Setup(this)

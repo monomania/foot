@@ -43,9 +43,9 @@ func (this *AsiaLastNewProcesser) Setup(temp *AsiaLastNewProcesser) {
 
 func (this *AsiaLastNewProcesser) Startup() {
 
+	var processer *AsiaLastNewProcesser
 	for i, v := range this.MatchLastList {
 
-		var processer *AsiaLastNewProcesser
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetAsiaLastNewProcesser()
 			processer.Setup(this)

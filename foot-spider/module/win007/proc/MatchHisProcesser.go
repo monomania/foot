@@ -60,9 +60,9 @@ func (this *MatchHisProcesser) Startup() {
 	//1.获取所有的联赛赛季信息
 	seasonList := this.LeagueSeasonService.FindBySeason(this.Season)
 	//2.配置要抓取的路径
+	var processer *MatchHisProcesser
 	for i, v := range seasonList {
 
-		var processer *MatchHisProcesser
 		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
 			processer = GetMatchHisProcesser()
 			processer.Setup(this)
