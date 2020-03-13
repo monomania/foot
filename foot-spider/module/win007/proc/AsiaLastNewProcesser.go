@@ -27,31 +27,47 @@ type AsiaLastNewProcesser struct {
 }
 
 func GetAsiaLastNewProcesser() *AsiaLastNewProcesser {
-	return &AsiaLastNewProcesser{}
+	processer := &AsiaLastNewProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *AsiaLastNewProcesser) Init() {
+	//初始化参数值
+	this.Win007idMatchidMap = map[string]string{}
+}
+
+func (this *AsiaLastNewProcesser) Setup(temp *AsiaLastNewProcesser) {
+	//设置参数值
 }
 
 func (this *AsiaLastNewProcesser) Startup() {
-	this.Win007idMatchidMap = map[string]string{}
 
-	newSpider := spider.NewSpider(this, "AsiaLastNewProcesser")
+	for i, v := range this.MatchLastList {
 
-	for _, v := range this.MatchLastList {
-		i := v.Ext[win007.MODULE_FLAG]
-		bytes, _ := json.Marshal(i)
+		var processer *AsiaLastNewProcesser
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
+			processer = GetAsiaLastNewProcesser()
+			processer.Setup(this)
+		}
+		newSpider := spider.NewSpider(processer, "AsiaLastNewProcesser"+strconv.Itoa(i))
+
+		temp_flag := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(temp_flag)
 		matchExt := new(pojo.MatchExt)
 		json.Unmarshal(bytes, matchExt)
-
 		win007_id := matchExt.Sid
 
-		this.Win007idMatchidMap[win007_id] = v.Id
+		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_ASIAODD_NEW_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "json")
+		newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 1000, 20000)
+		newSpider.SetThreadnum(1).Run()
 	}
-	newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand",100,2000)
-	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *AsiaLastNewProcesser) Process(p *page.Page) {
@@ -101,7 +117,7 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 			}
 			last.OddDate = time.Unix(tempMt, 0).Format("2006-01-02 15:04:05")
 		}
-		last_temp_id,last_exists := this.AsiaLastService.Exist(last)
+		last_temp_id, last_exists := this.AsiaLastService.Exist(last)
 		if !last_exists {
 			last_slice = append(last_slice, last)
 		} else {
@@ -111,7 +127,7 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 
 		his := new(entity2.AsiaHis)
 		his.AsiaLast = *last
-		his_temp_id,his_exists := this.AsiaHisService.Exist(his)
+		his_temp_id, his_exists := this.AsiaHisService.Exist(his)
 		if !his_exists {
 			his_slice = append(his_slice, his)
 		} else {
@@ -130,7 +146,7 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 		track.Ep3 = last.Ep3
 		track.ELetBall = last.ELetBall
 
-		track_temp_id,track_exists := this.AsiaTrackService.Exist(track)
+		track_temp_id, track_exists := this.AsiaTrackService.Exist(track)
 		if !track_exists {
 			track_slice = append(track_slice, track)
 		} else {

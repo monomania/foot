@@ -32,31 +32,48 @@ type BaseFaceProcesser struct {
 }
 
 func GetBaseFaceProcesser() *BaseFaceProcesser {
-	return &BaseFaceProcesser{}
+	processer := &BaseFaceProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *BaseFaceProcesser) Init() {
+	//初始化参数值
+	this.Win007idMatchidMap = map[string]string{}
+}
+
+func (this *BaseFaceProcesser) Setup(temp *BaseFaceProcesser) {
+	//设置参数值
 }
 
 func (this *BaseFaceProcesser) Startup() {
-	this.Win007idMatchidMap = map[string]string{}
 
-	newSpider := spider.NewSpider(this, "BaseFaceProcesser")
+	for i, v := range this.MatchLastList {
 
-	for _, v := range this.MatchLastList {
-		i := v.Ext[win007.MODULE_FLAG]
-		bytes, _ := json.Marshal(i)
+		var processer *BaseFaceProcesser
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
+			processer = GetBaseFaceProcesser()
+			processer.Setup(this)
+		}
+		newSpider := spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
+
+		temp_flag := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(temp_flag)
 		matchLastExt := new(pojo.MatchExt)
 		json.Unmarshal(bytes, matchLastExt)
-
 		win007_id := matchLastExt.Sid
 
-		this.Win007idMatchidMap[win007_id] = v.Id
+		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_BASE_FACE_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
+
+		newSpider.SetDownloader(down.NewMWin007Downloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 1000, 20000)
+		newSpider.SetThreadnum(1).Run()
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand",100,2000)
-	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *BaseFaceProcesser) Process(p *page.Page) {
@@ -203,13 +220,13 @@ func (this *BaseFaceProcesser) battle_process(matchId string, p *page.Page) []*p
 		return data_list_slice
 	}
 
-	base.Log.Info("hdata_str",hdata_str,"URL:", request.Url)
+	base.Log.Info("hdata_str", hdata_str, "URL:", request.Url)
 	// 获取script脚本中的，博彩公司信息
 	temp_arr := strings.Split(hdata_str, "var vsTeamInfo = ")
 	temp_arr = strings.Split(temp_arr[1], ";")
 	hdata_str = strings.TrimSpace(temp_arr[0])
 	if hdata_str == "" {
-		base.Log.Info("hdata_str:解析失败,",hdata_str,"URL:", request.Url)
+		base.Log.Info("hdata_str:解析失败,", hdata_str, "URL:", request.Url)
 		return data_list_slice
 	}
 	var hdata_list = make([]*vo.BattleData, 0)

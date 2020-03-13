@@ -23,10 +23,10 @@ type EuroTrackProcesser struct {
 	service2.EuroLastService
 	service2.EuroHisService
 	service2.EuroTrackService
-	//博彩公司对应的win007id
-	CompWin007Ids []string
+	//入参
 	MatchLastList []*pojo.MatchLast
-
+	//博彩公司对应的win007id
+	CompWin007Ids      []string
 	Win007idMatchidMap map[string]string
 }
 
@@ -41,12 +41,19 @@ func (this *EuroTrackProcesser) Init() {
 	this.Win007idMatchidMap = map[string]string{}
 }
 
+func (this *EuroTrackProcesser) Setup(temp *EuroTrackProcesser) {
+	//设置参数值
+	this.CompWin007Ids = temp.CompWin007Ids
+}
+
 func (this *EuroTrackProcesser) Startup() {
+
 	for i, v := range this.MatchLastList {
 
 		var processer *EuroTrackProcesser
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
 			processer = GetEuroTrackProcesser()
+			processer.Setup(this)
 		}
 		newSpider := spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
 
@@ -58,7 +65,7 @@ func (this *EuroTrackProcesser) Startup() {
 		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		base_url := strings.Replace(win007.WIN007_EUROODD_BET_URL_PATTERN, "${scheid}", win007_id, 1)
-		for _, v := range this.CompWin007Ids {
+		for _, v := range processer.CompWin007Ids {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}

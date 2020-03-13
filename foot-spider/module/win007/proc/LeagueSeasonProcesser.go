@@ -38,6 +38,11 @@ func (this *LeagueSeasonProcesser) Init() {
 	this.sUrl_leagueId = make(map[string]string)
 }
 
+func (this *LeagueSeasonProcesser) Setup(temp *LeagueSeasonProcesser) {
+	//设置参数值
+}
+
+
 func (this *LeagueSeasonProcesser) Startup() {
 	//1.获取所有的联赛
 	leaguesList := make([]*pojo.League, 0)
@@ -56,6 +61,7 @@ func (this *LeagueSeasonProcesser) Startup() {
 		var processer *LeagueSeasonProcesser
 		if i % 100 == 0 {//100个联赛一个spider,总数1000多个联赛
 			processer = GetLeagueSeasonProcesser()
+			processer.Setup(this)
 		}
 		newSpider := spider.NewSpider(processer, "LeagueSeasonProcesser"+strconv.Itoa(i))
 

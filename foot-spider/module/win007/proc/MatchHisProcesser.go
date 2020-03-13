@@ -51,6 +51,10 @@ func (this *MatchHisProcesser) Init() {
 	this.SUrl_Season = make(map[string]*pojo.LeagueSeason)
 }
 
+func (this *MatchHisProcesser) Setup(temp *MatchHisProcesser) {
+	//设置参数值
+}
+
 func (this *MatchHisProcesser) Startup() {
 
 	//1.获取所有的联赛赛季信息
@@ -61,6 +65,7 @@ func (this *MatchHisProcesser) Startup() {
 		var processer *MatchHisProcesser
 		if i%1000 == 0 { //1000个比赛一个spider,一个赛季大概有30万场比赛,最多300条线程
 			processer = GetMatchHisProcesser()
+			processer.Setup(this)
 		}
 		newSpider := spider.NewSpider(processer, "MatchHisProcesser"+strconv.Itoa(i))
 

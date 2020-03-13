@@ -6,17 +6,17 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
-	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"regexp"
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/elem/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/odds/service"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007"
+	"tesou.io/platform/foot-parent/foot-spider/module/win007/down"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/vo"
 )
 
@@ -24,38 +24,56 @@ type EuroLastProcesser struct {
 	service.CompService
 	service2.EuroLastService
 	service2.EuroHisService
+	//入参
+	MatchLastList      []*pojo.MatchLast
 	//博彩公司对应的win007id
 	CompWin007Ids      []string
-	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
 }
 
 func GetEuroLastProcesser() *EuroLastProcesser {
-	return &EuroLastProcesser{}
+	processer := &EuroLastProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *EuroLastProcesser) Init() {
+	//初始化参数值
+	this.Win007idMatchidMap = map[string]string{}
+}
+
+func (this *EuroLastProcesser) Setup(temp *EuroLastProcesser) {
+	//设置参数值
+	this.CompWin007Ids = temp.CompWin007Ids
 }
 
 func (this *EuroLastProcesser) Startup() {
-	this.Win007idMatchidMap = map[string]string{}
 
-	newSpider := spider.NewSpider(this, "EuroLastProcesser")
+	for i, v := range this.MatchLastList {
 
-	for _, v := range this.MatchLastList {
-		i := v.Ext[win007.MODULE_FLAG]
-		bytes, _ := json.Marshal(i)
+		var processer *EuroLastProcesser
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
+			processer = GetEuroLastProcesser()
+			processer.Setup(this)
+		}
+		newSpider := spider.NewSpider(processer, "EuroLastProcesser"+strconv.Itoa(i))
+
+		temp_flag := v.Ext[win007.MODULE_FLAG]
+		bytes, _ := json.Marshal(temp_flag)
 		matchExt := new(pojo.MatchExt)
 		json.Unmarshal(bytes, matchExt)
-
 		win007_id := matchExt.Sid
 
-		this.Win007idMatchidMap[win007_id] = v.Id
+		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_EUROODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
+		newSpider.SetDownloader(down.NewMWin007Downloader())
+		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+		newSpider.SetSleepTime("rand", 100, 2000)
+		newSpider.SetThreadnum(1).Run()
 	}
-	newSpider.SetDownloader(down.NewMWin007Downloader())
-	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand",100,2000)
-	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *EuroLastProcesser) Process(p *page.Page) {
@@ -79,12 +97,12 @@ func (this *EuroLastProcesser) Process(p *page.Page) {
 		return
 	}
 
-	base.Log.Info("hdata_str",hdata_str,"URL:", request.Url)
+	base.Log.Info("hdata_str", hdata_str, "URL:", request.Url)
 	// 获取script脚本中的，博彩公司信息
 	hdata_str = strings.Replace(hdata_str, ";", "", 1)
 	hdata_str = strings.Replace(hdata_str, "var hData = ", "", 1)
 	if hdata_str == "" {
-		base.Log.Info("hdata_str:解析失败,",hdata_str,"URL:", request.Url)
+		base.Log.Info("hdata_str:解析失败,", hdata_str, "URL:", request.Url)
 		return
 	}
 	this.hdata_process(request.Url, hdata_str)
@@ -138,7 +156,7 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 		last.Ep1 = v.Rs
 		last.Ep0 = v.Rg
 
-		last_temp_id,last_exists := this.EuroLastService.Exist(last)
+		last_temp_id, last_exists := this.EuroLastService.Exist(last)
 		if !last_exists {
 			last_slice = append(last_slice, last)
 		} else {
@@ -154,18 +172,18 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	//历史数据
 	his_slice := make([]interface{}, 0)
 	his_update_slice := make([]interface{}, 0)
-	last_all_slice := append(last_slice,last_update_slice)
-	for _,e := range last_all_slice {
+	last_all_slice := append(last_slice, last_update_slice)
+	for _, e := range last_all_slice {
 		bytes, _ := json.Marshal(e)
 		temp := new(entity3.EuroLast)
 		json.Unmarshal(bytes, temp)
-		if len(temp.MatchId) <= 0{
+		if len(temp.MatchId) <= 0 {
 			continue
 		}
 		his := new(entity3.EuroHis)
 		his.EuroLast = *temp
 
-		his_temp_id,his_exists := this.EuroHisService.Exist(his)
+		his_temp_id, his_exists := this.EuroHisService.Exist(his)
 		if !his_exists {
 			his_slice = append(his_slice, his)
 		} else {
@@ -175,7 +193,6 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 	}
 	this.EuroHisService.SaveList(his_slice)
 	this.EuroHisService.ModifyList(his_update_slice)
-
 
 }
 
