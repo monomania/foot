@@ -45,6 +45,16 @@ func Spider_asiaLastNew(spiderAll bool) {
 	processer.Startup()
 }
 
+func Spider_asiaLastNew_his(season string) {
+	matchLastService := new(service2.MatchHisService)
+	var matchLasts []*pojo.MatchLast
+	matchLasts = matchLastService.FindBySeason(season)
+
+	processer := proc.GetAsiaLastNewProcesser()
+	processer.MatchLastList = matchLasts
+	processer.Startup()
+}
+
 func Spider_asiaLastNew_near() {
 	matchLastService := new(service2.MatchLastService)
 	matchLasts := matchLastService.FindNear()

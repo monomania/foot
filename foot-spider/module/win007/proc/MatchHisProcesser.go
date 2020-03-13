@@ -70,7 +70,7 @@ func (this *MatchHisProcesser) Startup() {
 
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 100, 2000)
+	newSpider.SetSleepTime("rand", 1000, 20000)
 	newSpider.SetThreadnum(1).Run()
 }
 
@@ -115,7 +115,6 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		his := new(pojo2.MatchHis)
 		index := 0
 		//比赛时间
-		index++
 		temp_matchDate := val_arr[index]
 		seasonYear := season.Season
 		if strings.Contains(season.Season, "-") {
@@ -147,8 +146,8 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		half_arr := strings.Split(score_arr[1], ":")
 		his.MainTeamGoals, _ = strconv.Atoi(full_arr[0])
 		his.MainTeamHalfGoals, _ = strconv.Atoi(half_arr[0])
-		his.GuestTeamGoals, _ = strconv.Atoi(full_arr[0])
-		his.GuestTeamHalfGoals, _ = strconv.Atoi(half_arr[0])
+		his.GuestTeamGoals, _ = strconv.Atoi(full_arr[1])
+		his.GuestTeamHalfGoals, _ = strconv.Atoi(half_arr[1])
 		//客队名称
 		index++
 		temp_guestTeam := val_arr[index]
@@ -187,5 +186,4 @@ func (this *MatchHisProcesser) Finish() {
 	}
 	this.MatchHisService.SaveList(matchHis_list_slice)
 	this.MatchHisService.ModifyList(matchHis_modify_list_slice)
-
 }

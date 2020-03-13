@@ -2,20 +2,19 @@ package launch
 
 import (
 	"strconv"
+	"strings"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	"time"
 )
 
-func Clean(){
+func Clean() {
 	//清空数据表
 	//Before_spider_match()
 	//Before_spider_baseFace()
 	Before_spider_asiaLast()
 	Before_spider_euroLast()
 }
-
-
 
 func Spider() {
 	//记录数据爬取时间
@@ -39,7 +38,6 @@ func Spider() {
 	Spider_euroHis_Incomplete()
 }
 
-
 func Spider_Near() {
 	//记录数据爬取时间
 	constants.SpiderDateStr = time.Now().Format("2006-01-02 15:04:05")
@@ -57,18 +55,27 @@ func Spider_Near() {
 	Spider_euroHis_near()
 }
 
-
 func Spider_History() {
+	Spider_league()
+	Spider_leagueSeason()
 	//执行抓取比赛数据
 	//执行抓取比赛欧赔数据
 	//执行抓取亚赔数据
 	//执行抓取欧赔历史
-	Spider_match_his()
-	Spider_baseFace(false)
-	Spider_asiaLastNew(false)
-	Spider_euroLast()
-	Spider_euroHis()
-	//再对欧赔数据不完整的比赛进行两次抓取
-	Spider_euroHis_Incomplete()
-}
+	var seasons []string
+	season_str := utils.GetVal("spider", "history_season")
+	if len(season_str) <= 0 {
+		seasons = []string{"2019"}
+	} else {
+		seasons = strings.Split(season_str, ",")
+	}
 
+	for _, v := range seasons {
+		Spider_match_his(v)
+		Spider_baseFace_his(v)
+		Spider_asiaLastNew_his(v)
+		Spider_euroLast_his(v)
+		Spider_euroHis_his(v)
+	}
+
+}

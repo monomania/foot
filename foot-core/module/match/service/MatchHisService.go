@@ -10,7 +10,6 @@ type MatchHisService struct {
 	mysql.BaseService
 }
 
-
 func (this *MatchHisService) Exist(v *pojo.MatchHis) bool {
 	has, err := mysql.GetEngine().Table("`t_match_his`").Where(" `Id` = ?  ", v.Id).Exist()
 	if err != nil {
@@ -25,8 +24,6 @@ func (this *MatchHisService) FindAll() []*pojo.MatchHis {
 	return dataList
 }
 
-
-
 func (this *MatchHisService) FindById(matchId string) *pojo.MatchHis {
 	data := new(pojo.MatchHis)
 	data.Id = matchId
@@ -35,4 +32,26 @@ func (this *MatchHisService) FindById(matchId string) *pojo.MatchHis {
 		base.Log.Error("FindById:", err)
 	}
 	return data
+}
+
+/**
+查找未结束的比赛
+*/
+func (this *MatchHisService) FindBySeason(season string) []*pojo.MatchLast {
+	sql_build := `
+SELECT 
+  la.* 
+FROM
+  foot.t_match_his la,
+  foot.t_league l 
+WHERE la.LeagueId = l.Id 
+  AND 1=1
+	`
+	sql_build = sql_build + " AND la.MatchDate > '" + season + "-00-01 :00:00:00'"
+
+	//结果值
+	dataList := make([]*pojo.MatchLast, 0)
+	//执行查询
+	this.FindBySQL(sql_build, &dataList)
+	return dataList
 }

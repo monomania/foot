@@ -2,6 +2,7 @@ package launch
 
 import (
 	"strings"
+	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/elem/service"
 	service2 "tesou.io/platform/foot-parent/foot-core/module/match/service"
@@ -34,7 +35,7 @@ func Spider_euroHis() {
 		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 		compService := new(service.CompService)
 		compIds = compService.FindEuroIds()
-	}else{
+	} else {
 		compIds = strings.Split(val, ",")
 	}
 
@@ -45,6 +46,22 @@ func Spider_euroHis() {
 
 }
 
+//查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
+func Spider_euroHis_his(season string) {
+	matchLastService := new(service2.MatchHisService)
+	var matchLasts []*pojo.MatchLast
+	matchLasts = matchLastService.FindBySeason(season)
+
+	var compIds []string
+	compService := new(service.CompService)
+	compIds = compService.FindEuroIds()
+
+	processer := proc.GetEuroTrackProcesser()
+	processer.CompWin007Ids = compIds
+	processer.MatchLastList = matchLasts
+	processer.Startup()
+
+}
 
 //查询标识为win007,且欧赔未抓取的配置数据,指定菠菜公司
 func Spider_euroHis_near() {
@@ -60,7 +77,7 @@ func Spider_euroHis_near() {
 		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 		compService := new(service.CompService)
 		compIds = compService.FindEuroIds()
-	}else{
+	} else {
 		compIds = strings.Split(val, ",")
 	}
 
@@ -78,7 +95,7 @@ func Spider_euroHis_Incomplete() {
 		//为空会抓取所有,这里没有必要配置所有的波菜公司ID
 		compService := new(service.CompService)
 		compIds = compService.FindEuroIds()
-	}else{
+	} else {
 		compIds = strings.Split(val, ",")
 	}
 
