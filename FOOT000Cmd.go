@@ -107,6 +107,14 @@ HEAD:
 			}
 		}()
 		goto HEAD
+	case "smh\n", "smh\r\n":
+		for {
+			base.Log.Info("--------开始抓取历史数据--------")
+			launch.Spider_History()
+			base.Log.Info("--------结束抓取历史数据--------")
+			time.Sleep(58 * time.Minute)
+		}
+		goto HEAD
 	case "autoleisu\n", "autoleisu\r\n":
 		go func() {
 			for {

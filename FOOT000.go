@@ -100,7 +100,7 @@ func main() {
 			base.Log.Info("--------数据更新周期结束--------")
 			time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
 		}
-	case "spiderHistory\n", "spiderHistory":
+	case "smh\n", "smh":
 		for {
 			base.Log.Info("--------开始抓取历史数据--------")
 			launch.Spider_History()
