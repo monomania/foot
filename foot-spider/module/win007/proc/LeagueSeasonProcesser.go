@@ -103,7 +103,6 @@ func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, 
 			temp_id = strings.Replace(temp_id, "ToAnaly(", "", 1)
 			temp_id = strings.Replace(temp_id, ",-1)", "", 1)
 			temp_id = strings.TrimSpace(temp_id)
-			base.Log.Info("比赛ID为:", temp_id)
 
 			val_arr := make([]string, 0)
 			selection.Find("td").Each(func(i int, selection *goquery.Selection) {
@@ -117,9 +116,8 @@ func (this *LeagueSeasonProcesser) season_process(htmlParser *goquery.Document, 
 
 			index := 0
 			//比赛时间
-			index++
 			temp_matchDate := val_arr[index]
-			month, _ := strconv.Atoi(temp_matchDate[:1])
+			month, _ := strconv.Atoi(temp_matchDate[:2])
 			beginMonth = month
 		})
 	}

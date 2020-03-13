@@ -119,8 +119,8 @@ func (this *MatchHisProcesser) Process(p *page.Page) {
 		seasonYear := season.Season
 		if strings.Contains(season.Season, "-") {
 			season_arr := strings.Split(season.Season, "-")
-			month, _ := strconv.Atoi(temp_matchDate[:1])
-			if month < season.BeginMonth {
+			month, _ := strconv.Atoi(temp_matchDate[:2])
+			if month >= season.BeginMonth {
 				seasonYear = season_arr[0]
 			} else {
 				seasonYear = season_arr[1]
