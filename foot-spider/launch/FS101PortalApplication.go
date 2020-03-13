@@ -80,7 +80,7 @@ func Spider_History() {
 		Spider_euroLast_his(v)
 		time.Sleep(58 * time.Minute)
 		Spider_euroHis_his(v)
-		time.Sleep(58 * time.Minute)
+		time.Sleep(108 * time.Minute)
 	}
 
 }
