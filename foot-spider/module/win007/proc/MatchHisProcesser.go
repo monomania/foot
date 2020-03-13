@@ -63,7 +63,7 @@ func (this *MatchHisProcesser) Startup() {
 	for i, v := range seasonList {
 
 		var processer *MatchHisProcesser
-		if i%20 == 0 { //20个联赛一个spider,总数1000多个联赛,最多50条线程
+		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
 			processer = GetMatchHisProcesser()
 			processer.Setup(this)
 		}

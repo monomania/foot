@@ -51,7 +51,7 @@ func (this *EuroTrackProcesser) Startup() {
 	for i, v := range this.MatchLastList {
 
 		var processer *EuroTrackProcesser
-		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30条线程
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetEuroTrackProcesser()
 			processer.Setup(this)
 		}
