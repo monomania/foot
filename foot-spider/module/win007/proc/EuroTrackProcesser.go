@@ -78,6 +78,11 @@ func (this *EuroTrackProcesser) Startup() {
 		}
 	}
 
+	newSpider.SetDownloader(down.NewMWin007Downloader())
+	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *EuroTrackProcesser) findParamVal(url string, paramName string) string {

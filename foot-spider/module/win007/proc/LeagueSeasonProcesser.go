@@ -86,6 +86,11 @@ func (this *LeagueSeasonProcesser) Startup() {
 		}
 	}
 
+	newSpider.SetDownloader(down.NewMWin007Downloader())
+	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetThreadnum(1).Run()
+
 }
 
 func (this *LeagueSeasonProcesser) Process(p *page.Page) {

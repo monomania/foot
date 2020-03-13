@@ -74,8 +74,12 @@ func (this *BaseFaceProcesser) Startup() {
 			newSpider.SetSleepTime("rand", 1000, 20000)
 			newSpider.SetThreadnum(1).Run()
 		}
-
 	}
+
+	newSpider.SetDownloader(down.NewMWin007Downloader())
+	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetThreadnum(1).Run()
 
 }
 

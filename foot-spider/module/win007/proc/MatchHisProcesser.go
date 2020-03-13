@@ -76,7 +76,7 @@ func (this *MatchHisProcesser) Startup() {
 		url = strings.Replace(url, "${subId}", "0", 1)
 
 		index := 1
-		for ; index <= v.Round; i++ {
+		for ; index <= v.Round; index++ {
 			round_url := strings.Replace(url, "${round}", strconv.Itoa(index), 1)
 			processer.SUrl_leagueId[round_url] = v.LeagueId
 			processer.SUrl_Season[round_url] = v
@@ -89,6 +89,11 @@ func (this *MatchHisProcesser) Startup() {
 			newSpider.SetThreadnum(1).Run()
 		}
 	}
+
+	newSpider.SetDownloader(down.NewMWin007Downloader())
+	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetThreadnum(1).Run()
 
 }
 
