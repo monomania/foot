@@ -49,13 +49,14 @@ func (this *BaseFaceProcesser) Setup(temp *BaseFaceProcesser) {
 func (this *BaseFaceProcesser) Startup() {
 
 	var processer *BaseFaceProcesser
+	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetBaseFaceProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
 		}
-		newSpider := spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
 
 		temp_flag := v.Ext[win007.MODULE_FLAG]
 		bytes, _ := json.Marshal(temp_flag)
@@ -67,11 +68,13 @@ func (this *BaseFaceProcesser) Startup() {
 
 		url := strings.Replace(win007.WIN007_BASE_FACE_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetThreadnum(1).Run()
+		}
 
-		newSpider.SetDownloader(down.NewMWin007Downloader())
-		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-		newSpider.SetSleepTime("rand", 1000, 20000)
-		newSpider.SetThreadnum(1).Run()
 	}
 
 }

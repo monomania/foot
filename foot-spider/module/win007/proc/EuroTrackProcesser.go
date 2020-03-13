@@ -49,13 +49,14 @@ func (this *EuroTrackProcesser) Setup(temp *EuroTrackProcesser) {
 func (this *EuroTrackProcesser) Startup() {
 
 	var processer *EuroTrackProcesser
+	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetEuroTrackProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
 		}
-		newSpider := spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
 
 		temp_flag := v.Ext[win007.MODULE_FLAG]
 		bytes, _ := json.Marshal(temp_flag)
@@ -69,11 +70,12 @@ func (this *EuroTrackProcesser) Startup() {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}
-
-		newSpider.SetDownloader(down.NewMWin007Downloader())
-		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-		newSpider.SetSleepTime("rand", 1000, 20000)
-		newSpider.SetThreadnum(1).Run()
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetThreadnum(1).Run()
+		}
 	}
 
 }

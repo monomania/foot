@@ -44,13 +44,14 @@ func (this *AsiaLastNewProcesser) Setup(temp *AsiaLastNewProcesser) {
 func (this *AsiaLastNewProcesser) Startup() {
 
 	var processer *AsiaLastNewProcesser
+	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 
 		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetAsiaLastNewProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "AsiaLastNewProcesser"+strconv.Itoa(i))
 		}
-		newSpider := spider.NewSpider(processer, "AsiaLastNewProcesser"+strconv.Itoa(i))
 
 		temp_flag := v.Ext[win007.MODULE_FLAG]
 		bytes, _ := json.Marshal(temp_flag)
@@ -62,10 +63,12 @@ func (this *AsiaLastNewProcesser) Startup() {
 
 		url := strings.Replace(win007.WIN007_ASIAODD_NEW_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "json")
-		newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
-		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-		newSpider.SetSleepTime("rand", 1000, 20000)
-		newSpider.SetThreadnum(1).Run()
+		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+			newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetThreadnum(1).Run()
+		}
 	}
 
 }

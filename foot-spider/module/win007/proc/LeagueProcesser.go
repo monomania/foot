@@ -46,6 +46,7 @@ func (this *LeagueProcesser) Startup() {
 	document, _ := GetDocument(sid_stat_url)
 
 	var processer *LeagueProcesser
+	var newSpider *spider.Spider
 	document.Find("a[href*='sid']").Each(func(i int, selection *goquery.Selection) {
 		sUrl, _ := selection.Attr("href")
 		sId := strings.Split(sUrl, "sid=")[1]
@@ -58,16 +59,18 @@ func (this *LeagueProcesser) Startup() {
 		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
 			processer = GetLeagueProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "LeagueProcesser"+strconv.Itoa(i))
 		}
-		newSpider := spider.NewSpider(processer, "LeagueProcesser"+strconv.Itoa(i))
 
 		processer.sUrl_Id[win007.WIN007_BASE_URL+sUrl] = sId
 		processer.sUrl_Name[win007.WIN007_BASE_URL+sUrl] = sName
 		newSpider = newSpider.AddUrl(win007.WIN007_BASE_URL+sUrl, "html")
-		newSpider.SetDownloader(down.NewMWin007Downloader())
-		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-		newSpider.SetSleepTime("rand", 1000, 20000)
-		newSpider.SetThreadnum(1).Run()
+		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetThreadnum(1).Run()
+		}
 	})
 
 }

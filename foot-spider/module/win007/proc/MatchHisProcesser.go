@@ -61,13 +61,14 @@ func (this *MatchHisProcesser) Startup() {
 	seasonList := this.LeagueSeasonService.FindBySeason(this.Season)
 	//2.配置要抓取的路径
 	var processer *MatchHisProcesser
+	var newSpider *spider.Spider
 	for i, v := range seasonList {
 
 		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
 			processer = GetMatchHisProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "MatchHisProcesser"+strconv.Itoa(i))
 		}
-		newSpider := spider.NewSpider(processer, "MatchHisProcesser"+strconv.Itoa(i))
 
 		url := win007.WIN007_MATCH_HIS_PATTERN
 		url = strings.Replace(url, "${season}", v.Season, 1)
@@ -81,11 +82,12 @@ func (this *MatchHisProcesser) Startup() {
 			processer.SUrl_Season[round_url] = v
 			newSpider = newSpider.AddUrl(round_url, "html")
 		}
-
-		newSpider.SetDownloader(down.NewMWin007Downloader())
-		newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-		newSpider.SetSleepTime("rand", 1000, 20000)
-		newSpider.SetThreadnum(1).Run()
+		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetThreadnum(1).Run()
+		}
 	}
 
 }
