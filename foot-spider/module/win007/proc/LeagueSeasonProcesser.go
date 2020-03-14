@@ -18,7 +18,8 @@ type LeagueSeasonProcesser struct {
 	service2.LeagueService
 	service2.LeagueSeasonService
 	service2.LeagueSubService
-
+	//是否是单线程
+	SingleThread bool
 	//联赛次级数据
 	leagueSeason_list []*pojo.LeagueSeason
 	leagueSub_list    []*pojo.LeagueSub

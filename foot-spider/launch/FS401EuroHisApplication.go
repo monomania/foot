@@ -42,6 +42,7 @@ func Spider_euroHis() {
 	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 
 }
@@ -105,6 +106,7 @@ func Spider_euroHis_Incomplete() {
 	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 
 }

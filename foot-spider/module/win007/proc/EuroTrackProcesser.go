@@ -24,6 +24,8 @@ type EuroTrackProcesser struct {
 	service2.EuroHisService
 	service2.EuroTrackService
 	//入参
+	//是否是单线程
+	SingleThread bool
 	MatchLastList []*pojo.MatchLast
 	//博彩公司对应的win007id
 	CompWin007Ids      []string
@@ -52,9 +54,12 @@ func (this *EuroTrackProcesser) Startup() {
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 
-		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread &&i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetEuroTrackProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
+		}else{
+			processer = this
 			newSpider = spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
 		}
 
@@ -70,7 +75,7 @@ func (this *EuroTrackProcesser) Startup() {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}
-		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 			newSpider.SetSleepTime("rand", 1000, 20000)

@@ -22,6 +22,8 @@ type MatchLastProcesser struct {
 	service.MatchHisService
 	service2.LeagueService
 	service2.CompService
+	//是否是单线程
+	SingleThread bool
 	//抓取的url
 	MatchlastUrl string
 	//联赛数据

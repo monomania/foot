@@ -23,7 +23,8 @@ type MatchHisProcesser struct {
 	service2.LeagueSeasonService
 	service2.LeagueSubService
 	LeagueSeasonProcesser
-
+	//是否是单线程
+	SingleThread bool
 	Season string
 	//比赛数据
 	MatchHis_list []*pojo2.MatchHis

@@ -20,7 +20,8 @@ import (
 type AsiaLastProcesser struct {
 	service.AsiaLastService
 	service.AsiaHisService
-
+	//是否是单线程
+	SingleThread bool
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
 }

@@ -26,6 +26,7 @@ func Spider_baseFace(spiderAll bool) {
 
 	processer := proc.GetBaseFaceProcesser()
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 }
 

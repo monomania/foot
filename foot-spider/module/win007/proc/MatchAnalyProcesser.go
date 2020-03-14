@@ -16,6 +16,8 @@ import (
 )
 
 type MatchAnalyProcesser struct {
+	//是否是单线程
+	SingleThread bool
 	//博彩公司对应的win007id
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string

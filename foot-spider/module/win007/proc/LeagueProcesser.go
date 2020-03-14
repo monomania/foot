@@ -17,6 +17,8 @@ import (
 type LeagueProcesser struct {
 	service2.LeagueService
 	service2.CompService
+	//是否是单线程
+	SingleThread bool
 	//联赛数据
 	league_list []*entity2.League
 	sUrl_Id     map[string]string

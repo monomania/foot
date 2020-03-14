@@ -129,10 +129,6 @@ func main() {
 		new(service4.AnalyService).DelTovoidData()
 	case "auto\n", "auto":
 		go func() {
-			time.Sleep(6 * time.Hour)
-			new(service4.AnalyService).DelTovoidData()
-		}()
-		go func() {
 			for {
 				base.Log.Info("--------全量数据更新开始运行--------")
 				//1.安装数据库
@@ -166,7 +162,7 @@ func main() {
 		//		time.Sleep(time.Duration(pubService.CycleTime()) * time.Minute)
 		//	}
 		//}()
-		time.Sleep(1 * time.Second)
+		time.Sleep(10 * time.Second)
 		for {
 			matchLastService := new(service3.MatchLastService)
 			matchLasts := matchLastService.FindNear()

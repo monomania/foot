@@ -41,6 +41,7 @@ func Spider_euroLast() {
 	processer := proc.GetEuroLastProcesser()
 	processer.MatchLastList = matchLasts
 	processer.CompWin007Ids = compIds
+	processer.SingleThread = true
 	processer.Startup()
 }
 

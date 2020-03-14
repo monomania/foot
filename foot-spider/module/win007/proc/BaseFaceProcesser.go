@@ -26,7 +26,8 @@ type BaseFaceProcesser struct {
 	service.BFJinService
 	service.BFFutureEventService
 	service2.LeagueService
-
+	//是否是单线程
+	SingleThread bool
 	MatchLastList      []*pojo.MatchLast
 	Win007idMatchidMap map[string]string
 }
@@ -52,9 +53,12 @@ func (this *BaseFaceProcesser) Startup() {
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 
-		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetBaseFaceProcesser()
 			processer.Setup(this)
+			newSpider = spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
+		}else{
+			processer = this
 			newSpider = spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
 		}
 
@@ -68,7 +72,7 @@ func (this *BaseFaceProcesser) Startup() {
 
 		url := strings.Replace(win007.WIN007_BASE_FACE_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
-		if i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 			newSpider.SetSleepTime("rand", 1000, 20000)
