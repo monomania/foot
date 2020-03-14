@@ -47,5 +47,6 @@ func Spider_baseFace_near() {
 
 	processer := proc.GetBaseFaceProcesser()
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 }

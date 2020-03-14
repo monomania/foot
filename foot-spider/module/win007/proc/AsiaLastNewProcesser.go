@@ -44,7 +44,7 @@ func (this *AsiaLastNewProcesser) Setup(temp *AsiaLastNewProcesser) {
 
 func (this *AsiaLastNewProcesser) Startup() {
 
-	var processer *AsiaLastNewProcesser
+	processer := this
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 

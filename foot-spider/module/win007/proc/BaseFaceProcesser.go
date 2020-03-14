@@ -49,7 +49,7 @@ func (this *BaseFaceProcesser) Setup(temp *BaseFaceProcesser) {
 
 func (this *BaseFaceProcesser) Startup() {
 
-	var processer *BaseFaceProcesser
+	processer := this
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 

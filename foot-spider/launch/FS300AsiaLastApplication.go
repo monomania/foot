@@ -62,5 +62,6 @@ func Spider_asiaLastNew_near() {
 
 	processer := proc.GetAsiaLastNewProcesser()
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 }

@@ -51,7 +51,7 @@ func (this *EuroLastProcesser) Setup(temp *EuroLastProcesser) {
 
 func (this *EuroLastProcesser) Startup() {
 
-	var processer *EuroLastProcesser
+	processer := this
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 

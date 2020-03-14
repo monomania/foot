@@ -40,6 +40,7 @@ func Spider_match(matchLevel int) {
 		processer := proc.GetMatchLastProcesser()
 		processer.MatchlastUrl = v
 		processer.MatchLevel = matchLevel
+		processer.SingleThread = true
 		processer.Startup()
 	}
 }

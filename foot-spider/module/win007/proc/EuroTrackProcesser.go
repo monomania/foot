@@ -50,7 +50,7 @@ func (this *EuroTrackProcesser) Setup(temp *EuroTrackProcesser) {
 
 func (this *EuroTrackProcesser) Startup() {
 
-	var processer *EuroTrackProcesser
+	processer := this
 	var newSpider *spider.Spider
 	for i, v := range this.MatchLastList {
 

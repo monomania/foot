@@ -85,6 +85,7 @@ func Spider_euroHis_near() {
 	processer := proc.GetEuroTrackProcesser()
 	processer.CompWin007Ids = compIds
 	processer.MatchLastList = matchLasts
+	processer.SingleThread = true
 	processer.Startup()
 
 }

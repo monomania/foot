@@ -49,7 +49,7 @@ func (this *LeagueSeasonProcesser) Startup() {
 	leaguesList := make([]*pojo.League, 0)
 	this.LeagueService.FindAll(&leaguesList)
 	//2.配置要抓取的路径
-	var processer *LeagueSeasonProcesser
+	processer := this
 	var newSpider *spider.Spider
 	//index := 0
 	for i, v := range leaguesList {
