@@ -96,11 +96,11 @@ func (this *MatchLastProcesser) Process(p *page.Page) {
 	base.Log.Info("日期:TODAY", "比赛信息:", match_str)
 	this.match_process(match_str)
 
-	now := time.Now()
+	//now := time.Now()
 	//获取明天赛程
-	h24h, _ := time.ParseDuration("24h")
-	t_1_date := now.Add(h24h).Format("2006-01-02")
-	this.futrueMatch(t_1_date)
+	//h24h, _ := time.ParseDuration("24h")
+	//t_1_date := now.Add(h24h).Format("2006-01-02")
+	//this.futrueMatch(t_1_date)
 	//获取后天赛程
 	//h24h, _ = time.ParseDuration("48h")
 	//t_1_date = now.Add(h24h).Format("2006-01-02")

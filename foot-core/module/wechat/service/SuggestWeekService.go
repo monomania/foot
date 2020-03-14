@@ -120,7 +120,7 @@ func (this *SuggestWeekService) ModifyWeek(wcClient *core.Client) {
 		}
 		last := new(pojo.MatchLast)
 		last.Id = e.MatchId
-		last.LeagueId = e.LeagueName
+		last.LeagueId = e.LeagueId
 		last.MatchDate = e.MatchDate
 		last.MainTeamId = e.MainTeam
 		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
@@ -223,7 +223,7 @@ func (this *SuggestMonthService) ModifyGutsWeek(wcClient *core.Client) {
 	for _, e := range tempList {
 		last := new(pojo.MatchLast)
 		last.Id = e.MatchId
-		last.LeagueId = e.LeagueName
+		last.LeagueId = e.LeagueId
 		last.MatchDate = e.MatchDate
 		last.MainTeamId = e.MainTeam
 		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
