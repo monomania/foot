@@ -83,14 +83,14 @@ func (this *LeagueSeasonProcesser) Startup() {
 		if i % 10 == 0 {//10个联赛一个spider,总数1000多个联赛,最多100spider
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetSleepTime("rand", 100, 3000)
 			newSpider.SetThreadnum(1).Run()
 		}
 	}
 
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetSleepTime("rand", 100, 3000)
 	newSpider.SetThreadnum(1).Run()
 
 }

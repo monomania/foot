@@ -68,14 +68,14 @@ func (this *AsiaLastNewProcesser) Startup() {
 		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1000, 20000)
+			newSpider.SetSleepTime("rand", 100, 3000)
 			newSpider.SetThreadnum(1).Run()
 		}
 	}
 
 	newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1000, 20000)
+	newSpider.SetSleepTime("rand", 100, 3000)
 	newSpider.SetThreadnum(1).Run()
 
 }
