@@ -163,6 +163,7 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		league := new(entity2.League)
 		league.Id = win007Id
 		league.ShortName = name
+		league.Name = name
 		if this.MatchLevel > 0 {
 			//设置联赛级别
 			league.LevelAssist = 10000

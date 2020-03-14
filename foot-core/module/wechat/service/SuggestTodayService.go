@@ -709,7 +709,7 @@ func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*
 		}
 		last := new(pojo.MatchLast)
 		last.Id = e.MatchId
-		last.LeagueId = e.LeagueName
+		last.LeagueId = e.LeagueId
 		last.MatchDate = e.MatchDate
 		last.MainTeamId = e.MainTeam
 		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)
@@ -782,7 +782,7 @@ func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO,tempList [
 		}
 		last := new(pojo.MatchLast)
 		last.Id = e.MatchId
-		last.LeagueId = e.LeagueName
+		last.LeagueId = e.LeagueId
 		last.MatchDate = e.MatchDate
 		last.MainTeamId = e.MainTeam
 		last.MainTeamGoals, _ = strconv.Atoi(e.MainTeamGoal)

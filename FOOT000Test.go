@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
+	"tesou.io/platform/foot-parent/foot-core/module/wechat/controller"
 	"time"
 )
 
@@ -34,6 +35,8 @@ func set()  {
 }
 
 func main()  {
+	materialController := new(controller.MaterialController)
+	materialController.ModifyNewsOnly()
 	base.Log.Error("22222222222222222222")
 	for ; ;  {
 		fmt.Println(rand.Intn(7))
