@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"tesou.io/platform/foot-parent/foot-spider/launch"
 	"time"
 )
 
@@ -17,7 +18,8 @@ func main() {
 	fmt.Println(parse2)
 	//launch.Spider_match_his("2019")
 	//launch.Spider_History()
-	//launch.Spider_leagueSeason()
+	launch.Spider_match(0)
+	launch.Spider_baseFace(false)
 
 	fmt.Println(SingleThread)
 

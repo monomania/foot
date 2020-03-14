@@ -49,16 +49,14 @@ func (this *BaseFaceProcesser) Setup(temp *BaseFaceProcesser) {
 
 func (this *BaseFaceProcesser) Startup() {
 
-	processer := this
 	var newSpider *spider.Spider
+	processer := this
+	newSpider = spider.NewSpider(processer, "BaseFaceProcesser")
 	for i, v := range this.MatchLastList {
 
 		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetBaseFaceProcesser()
 			processer.Setup(this)
-			newSpider = spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
-		}else{
-			processer = this
 			newSpider = spider.NewSpider(processer, "BaseFaceProcesser"+strconv.Itoa(i))
 		}
 

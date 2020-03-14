@@ -36,16 +36,19 @@ type MatchLastProcesser struct {
 }
 
 func GetMatchLastProcesser() *MatchLastProcesser {
-	return &MatchLastProcesser{}
+	processer := &MatchLastProcesser{}
+	processer.Init()
+	return processer
+}
+
+func (this *MatchLastProcesser) Init() {
+	//初始化参数值
+	this.league_list = make([]*entity2.League, 0)
+	this.win007Id_leagueId_map = make(map[string]string)
+	this.matchLast_list = make([]*pojo.MatchLast, 0)
 }
 
 func (this *MatchLastProcesser) Startup() {
-	//联赛数据
-	this.league_list = make([]*entity2.League, 0)
-	this.win007Id_leagueId_map = make(map[string]string)
-	//比赛数据
-	this.matchLast_list = make([]*pojo.MatchLast, 0)
-
 	if this.MatchlastUrl == "" {
 		this.MatchlastUrl = "http://m.win007.com/phone/Schedule_0_0.txt"
 	}
@@ -54,7 +57,7 @@ func (this *MatchLastProcesser) Startup() {
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand",100,2000)
+	newSpider.SetSleepTime("rand", 100, 2000)
 	newSpider.SetThreadnum(1).Run()
 }
 
@@ -73,7 +76,7 @@ func (this *MatchLastProcesser) Process(p *page.Page) {
 
 	rawText_arr := strings.Split(rawText, "$$")
 	if len(rawText_arr) < 2 {
-		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",request.Url,"内容:", rawText_arr)
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:", request.Url, "内容:", rawText_arr)
 		return
 	}
 
@@ -88,9 +91,9 @@ func (this *MatchLastProcesser) Process(p *page.Page) {
 		match_str = rawText_arr[2]
 	}
 
-	base.Log.Info("日期:TODAY","联赛信息:", league_str)
+	base.Log.Info("日期:TODAY", "联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("日期:TODAY","比赛信息:", match_str)
+	base.Log.Info("日期:TODAY", "比赛信息:", match_str)
 	this.match_process(match_str)
 
 	now := time.Now()
@@ -124,16 +127,16 @@ func (this *MatchLastProcesser) futrueMatch(date string) {
 
 	rawText_arr := strings.Split(rawText, "$")
 	if len(rawText_arr) < 2 {
-		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:",url,"内容:", rawText_arr)
+		base.Log.Error("rawText:解析失败,rawTextArr长度小于所必需要的长度2,url:", url, "内容:", rawText_arr)
 		return
 	}
 
 	league_str := rawText_arr[0]
 	match_str := rawText_arr[1]
 
-	base.Log.Info("日期:",date,"联赛信息:", league_str)
+	base.Log.Info("日期:", date, "联赛信息:", league_str)
 	this.league_process(league_str)
-	base.Log.Info("日期:",date,"比赛信息:", match_str)
+	base.Log.Info("日期:", date, "比赛信息:", match_str)
 	this.match_process(match_str)
 }
 
@@ -146,8 +149,6 @@ func (this *MatchLastProcesser) findParamVal(url string) string {
 func (this *MatchLastProcesser) league_process(rawText string) {
 	league_arr := strings.Split(rawText, "!")
 
-	this.league_list = make([]*entity2.League, len(league_arr))
-	var index int
 	for _, v := range league_arr {
 		league_info_arr := strings.Split(v, "^")
 		if len(league_info_arr) < 3 {
@@ -183,8 +184,8 @@ func (this *MatchLastProcesser) league_process(rawText string) {
 		i++
 		league.SName = league_info_arr[i]
 
-		this.league_list[index] = league
-		index++
+		//最后加入数据中
+		this.league_list = append(this.league_list, league)
 	}
 }
 
@@ -264,7 +265,7 @@ func (this *MatchLastProcesser) Finish() {
 			base.Log.Info(string(bytes))*/
 		exists := this.LeagueService.ExistById(v.Id)
 		if exists {
-			league_modify_list_slice = append(league_modify_list_slice,v)
+			league_modify_list_slice = append(league_modify_list_slice, v)
 			continue
 		}
 		league_list_slice = append(league_list_slice, v)
