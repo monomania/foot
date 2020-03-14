@@ -316,13 +316,13 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
+		data.SLetBall = a18Bet.SLetBall
 		data.LetBall = a18bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 3
-		data.LetBall = a18bet.ELetBall
 		data.MyLetBall = Decimal(letBall)
 		//比赛结果
 		data.Result = this.IsRight(v, data)

@@ -15,6 +15,8 @@ type AnalyResult struct {
 	MatchId string `xorm:" comment('比赛id') index"`
 	//比赛时间,比较便利的冗余
 	MatchDate time.Time `xorm:" comment('比赛时间') index"`
+	///初盘让球
+	SLetBall float64
 	///让球
 	LetBall float64
 	//结果标识

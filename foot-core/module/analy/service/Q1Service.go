@@ -102,6 +102,7 @@ func (this *Q1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
+		data.SLetBall = a18Bet.SLetBall
 		data.LetBall = a18bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
