@@ -48,7 +48,7 @@ func buildWinForm() {
 						Text: "分析数据",
 						OnClicked: func() {
 							inTE.SetText("分析数据...\r\n")
-							go launch.Analy()
+							go launch.Analy(false)
 							go showConsole(inTE)
 						},
 					},

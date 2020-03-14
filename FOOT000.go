@@ -42,7 +42,9 @@ func main() {
 	case "spider\n", "spider":
 		launch.Spider()
 	case "analy\n", "analy":
-		launch2.Analy()
+		launch2.Analy(false)
+	case "alall\n", "alall":
+		launch2.Analy(true)
 	case "mr\n", "mr":
 		//更新结果
 		analyService := new(service4.AnalyService)
@@ -95,7 +97,7 @@ func main() {
 			//3.1 FS000Application 爬取数据
 			launch.Spider()
 			//3.2 FC002AnalyApplication 分析得出推荐列表
-			launch2.Analy()
+			launch2.Analy(false)
 			configService := new(service2.ConfService)
 			base.Log.Info("--------数据更新周期结束--------")
 			time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
@@ -139,7 +141,7 @@ func main() {
 				launch.Clean()
 				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
-				launch2.Analy()
+				launch2.Analy(false)
 				configService := new(service2.ConfService)
 				base.Log.Info("--------全量数据更新周期结束--------")
 

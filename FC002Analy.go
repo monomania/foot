@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	launch.Analy()
+	launch.Analy(false)
 }
 

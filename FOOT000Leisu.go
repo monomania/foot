@@ -43,7 +43,7 @@ HEAD:
 		launch.Spider()
 		goto HEAD
 	case "analy\n", "analy\r\n":
-		launch2.Analy()
+		launch2.Analy(false)
 		goto HEAD
 	case "baseFace\n", "baseFace\r\n":
 		launch.Spider_match(4)
@@ -99,7 +99,7 @@ HEAD:
 				//3.1 FS000Application 爬取数据
 				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
-				launch2.Analy()
+				launch2.Analy(false)
 				configService := new(service2.ConfService)
 				base.Log.Info("--------数据更新周期结束--------")
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
@@ -142,7 +142,7 @@ HEAD:
 				launch.Clean()
 				launch.Spider()
 				//3.2 FC002AnalyApplication 分析得出推荐列表
-				launch2.Analy()
+				launch2.Analy(false)
 				configService := new(service2.ConfService)
 				base.Log.Info("--------全量数据更新周期结束--------")
 				time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)

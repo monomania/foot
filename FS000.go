@@ -18,8 +18,8 @@ func main() {
 	fmt.Println(parse2)
 	//launch.Spider_match_his("2019")
 	//launch.Spider_History()
-	launch.Spider_match(0)
-	launch.Spider_baseFace(false)
+	launch.	Spider_baseFace(true)
+	launch.Spider_asiaLastNew(true)
 
 	fmt.Println(SingleThread)
 

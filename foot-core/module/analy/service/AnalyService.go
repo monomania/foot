@@ -19,6 +19,16 @@ import (
 	"time"
 )
 
+type AnalyInterface interface {
+	ModelName() string
+
+	Analy_Near()
+
+	Analy(analyAll bool)
+
+	analyStub(v *entity2.MatchLast) (int, *entity5.AnalyResult)
+}
+
 type AnalyService struct {
 	mysql.BaseService
 	service.EuroHisService
@@ -41,6 +51,88 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	dataList := make([]*entity5.AnalyResult, 0)
 	mysql.GetEngine().OrderBy("CreateTime Desc").Find(&dataList)
 	return dataList
+}
+
+func (this *AnalyService) Analy(analyAll bool,thiz AnalyInterface) {
+	var matchList []*entity2.MatchLast
+	if analyAll {
+		matchHis := this.MatchHisService.FindAll()
+		for _, e := range matchHis {
+			matchList = append(matchList, &e.MatchLast)
+		}
+		//matchLasts = this.MatchLastService.FindAll()
+	} else {
+		matchList = this.MatchLastService.FindNotFinished()
+	}
+	this.Analy_Process(matchList,thiz)
+}
+
+func (this *AnalyService) Analy_Near(thiz AnalyInterface) {
+	matchList := this.MatchLastService.FindNear()
+	this.Analy_Process(matchList,thiz)
+}
+
+/**
+汇总结果并输出，且持久化
+ */
+func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz AnalyInterface) {
+	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
+	hit_count, _ := strconv.Atoi(hit_count_str)
+	data_list_slice := make([]interface{}, 0)
+	data_modify_list_slice := make([]interface{}, 0)
+	var rightCount = 0
+	var errorCount = 0
+
+	for _, v := range matchList {
+		stub, data := thiz.analyStub(v)
+
+		if nil != data {
+			if strings.EqualFold(data.Result, "命中") {
+				rightCount++
+			}
+			if strings.EqualFold(data.Result, "错误") {
+				errorCount++
+			}
+		}
+
+		if stub == 0 || stub == 1 {
+			data.TOVoid = false
+			hours := v.MatchDate.Sub(time.Now()).Hours()
+			if hours > 0 {
+				data.THitCount = hit_count
+			} else {
+				data.THitCount = 1
+			}
+			if stub == 0 {
+				data_list_slice = append(data_list_slice, data)
+			} else if stub == 1 {
+				data_modify_list_slice = append(data_modify_list_slice, data)
+			}
+		} else {
+			if stub != -2 {
+				data = this.Find(v.Id, thiz.ModelName())
+			}
+			data.TOVoid = true
+			if len(data.Id) > 0 {
+				if data.HitCount >= hit_count {
+					data.HitCount = (hit_count / 2) - 1
+				} else {
+					data.HitCount = 0
+				}
+				data_modify_list_slice = append(data_modify_list_slice, data)
+			}
+		}
+	}
+
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("------------------")
+	base.Log.Info("GOOOO场次:", rightCount)
+	base.Log.Info("X0000场次:", errorCount)
+	base.Log.Info("------------------")
+
+	this.SaveList(data_list_slice)
+	this.ModifyList(data_modify_list_slice)
 }
 
 /**
@@ -103,7 +195,7 @@ FROM
 		last.MainTeamGoals = his.MainTeamGoals
 		last.GuestTeamId = his.GuestTeamId
 		last.GuestTeamGoals = his.GuestTeamGoals
-		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1")  || strings.EqualFold(e.AlFlag, "C2"){
+		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") || strings.EqualFold(e.AlFlag, "C2") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
 		} else {
@@ -268,10 +360,10 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 	}
 	analy.Result = resultFlag
 	league := this.LeagueService.FindById(last.LeagueId)
-	if this.IsCupMatch(league.Name){
+	if this.IsCupMatch(league.Name) {
 		analy.TOVoid = true
 		analy.TOVoidDesc = "杯赛"
-	}else{
+	} else {
 		analy.TOVoidDesc = ""
 	}
 
@@ -282,7 +374,7 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 }
 
 func (this *AnalyService) IsCupMatch(leagueName string) bool {
-	if strings.Contains(leagueName,"杯") || strings.Contains(leagueName,"锦"){
+	if strings.Contains(leagueName, "杯") || strings.Contains(leagueName, "锦") {
 		return true;
 	}
 	return false;
@@ -304,10 +396,10 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	analy.Result = resultFlag
 
 	league := this.LeagueService.FindById(last.LeagueId)
-	if this.IsCupMatch(league.Name){
+	if this.IsCupMatch(league.Name) {
 		analy.TOVoid = true
 		analy.TOVoidDesc = "杯赛"
-	}else{
+	} else {
 		analy.TOVoidDesc = ""
 	}
 
