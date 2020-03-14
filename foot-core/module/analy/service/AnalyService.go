@@ -53,7 +53,7 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	return dataList
 }
 
-func (this *AnalyService) Analy(analyAll bool,thiz AnalyInterface) {
+func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 	var matchList []*entity2.MatchLast
 	if analyAll {
 		matchHis := this.MatchHisService.FindAll()
@@ -64,12 +64,12 @@ func (this *AnalyService) Analy(analyAll bool,thiz AnalyInterface) {
 	} else {
 		matchList = this.MatchLastService.FindNotFinished()
 	}
-	this.Analy_Process(matchList,thiz)
+	this.Analy_Process(matchList, thiz)
 }
 
 func (this *AnalyService) Analy_Near(thiz AnalyInterface) {
 	matchList := this.MatchLastService.FindNear()
-	this.Analy_Process(matchList,thiz)
+	this.Analy_Process(matchList, thiz)
 }
 
 /**
@@ -84,42 +84,39 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 	var errorCount = 0
 
 	for _, v := range matchList {
-		stub, data := thiz.analyStub(v)
+		stub, temp_data := thiz.analyStub(v)
 
-		if nil != data {
-			if strings.EqualFold(data.Result, "命中") {
+		if nil != temp_data {
+			if strings.EqualFold(temp_data.Result, "命中") {
 				rightCount++
 			}
-			if strings.EqualFold(data.Result, "错误") {
+			if strings.EqualFold(temp_data.Result, "错误") {
 				errorCount++
 			}
 		}
 
 		if stub == 0 || stub == 1 {
-			data.TOVoid = false
+			temp_data.TOVoid = false
 			hours := v.MatchDate.Sub(time.Now()).Hours()
 			if hours > 0 {
-				data.THitCount = hit_count
+				temp_data.THitCount = hit_count
 			} else {
-				data.THitCount = 1
+				temp_data.THitCount = 1
 			}
 			if stub == 0 {
-				data_list_slice = append(data_list_slice, data)
+				data_list_slice = append(data_list_slice, temp_data)
 			} else if stub == 1 {
-				data_modify_list_slice = append(data_modify_list_slice, data)
+				data_modify_list_slice = append(data_modify_list_slice, temp_data)
 			}
-		} else {
-			if stub != -2 {
-				data = this.Find(v.Id, thiz.ModelName())
-			}
-			data.TOVoid = true
-			if len(data.Id) > 0 {
-				if data.HitCount >= hit_count {
-					data.HitCount = (hit_count / 2) - 1
+		} else if nil != temp_data {
+			temp_data.TOVoid = true
+			if len(temp_data.Id) > 0 {
+				if temp_data.HitCount >= hit_count {
+					temp_data.HitCount = (hit_count / 2) - 1
 				} else {
-					data.HitCount = 0
+					temp_data.HitCount = 0
 				}
-				data_modify_list_slice = append(data_modify_list_slice, data)
+				data_modify_list_slice = append(data_modify_list_slice, temp_data)
 			}
 		}
 	}
