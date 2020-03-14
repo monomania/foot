@@ -57,7 +57,7 @@ func (this *MatchLastProcesser) Startup() {
 	newSpider = newSpider.AddUrl(this.MatchlastUrl, "text")
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 10, 2000)
+	newSpider.SetSleepTime("rand", 1, 300)
 	newSpider.SetThreadnum(1).Run()
 }
 

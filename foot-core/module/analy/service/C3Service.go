@@ -46,22 +46,22 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	temp_data := this.Find(v.Id, this.ModelName())
 	matchId := v.Id
 	//声明使用变量
-	var a18bet *entity3.AsiaHis
+	var a18Bet *entity3.AsiaHis
 	//亚赔
 	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
-	a18bet = aList[0]
-	temp_data.LetBall = a18bet.ELetBall
-	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
+	a18Bet = aList[0]
+	temp_data.LetBall = a18Bet.ELetBall
+	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		//temp_data.Result =""
 		return -2, temp_data
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	sLetBall := math.Abs(a18bet.SLetBall)
-	eLetBall := math.Abs(a18bet.ELetBall)
+	sLetBall := math.Abs(a18Bet.SLetBall)
+	eLetBall := math.Abs(a18Bet.ELetBall)
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
 		temp_data.Result =""
 		return -2, temp_data
@@ -219,14 +219,14 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//1.0判断主队是否是让球方
 	mainLetball := true
-	if a18bet.ELetBall > 0 {
+	if a18Bet.ELetBall > 0 {
 		mainLetball = true
-	} else if a18bet.ELetBall < 0 {
+	} else if a18Bet.ELetBall < 0 {
 		mainLetball = false
 	} else {
 		//EletBall == 0
 		//通过赔率确立
-		if a18bet.Ep3 > a18bet.Ep0 {
+		if a18Bet.Ep3 > a18Bet.Ep0 {
 			mainLetball = false
 		} else {
 			mainLetball = true
@@ -301,12 +301,12 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -3, temp_data
 	}
 
-	base.Log.Info("所属于区间:", sectionBlock1, "-", sectionBlock2, ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18bet.SLetBall, ",即时盘让球:", a18bet.ELetBall)
+	base.Log.Info("所属于区间:", sectionBlock1, "-", sectionBlock2, ",对阵", v.MainTeamId+":"+v.GuestTeamId, ",计算得出让球为:", letBall, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall)
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18bet.ELetBall
+		temp_data.LetBall = a18Bet.ELetBall
 		temp_data.MyLetBall = Decimal(letBall)
 		data = temp_data
 		//比赛结果
@@ -317,7 +317,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
 		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18bet.ELetBall
+		data.LetBall = a18Bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

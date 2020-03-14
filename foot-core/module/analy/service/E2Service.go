@@ -46,7 +46,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//声明使用变量
 	var e616data *entity3.EuroHis
 	var e104data *entity3.EuroHis
-	var a18bet *entity3.AsiaHis
+	var a18Bet *entity3.AsiaHis
 	//81 -- 伟德
 	eList := this.EuroHisService.FindByMatchIdCompId(matchId, "616", "104")
 	if len(eList) < 2 {
@@ -81,9 +81,9 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
-	a18bet = aList[0]
-	temp_data.LetBall = a18bet.ELetBall
-	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
+	a18Bet = aList[0]
+	temp_data.LetBall = a18Bet.ELetBall
+	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		return -2, temp_data
 	}
 
@@ -104,7 +104,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18bet.ELetBall
+		temp_data.LetBall = a18Bet.ELetBall
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight2Option(v, data)
@@ -114,7 +114,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
 		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18bet.ELetBall
+		data.LetBall = a18Bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

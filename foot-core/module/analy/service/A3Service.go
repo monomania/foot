@@ -49,23 +49,23 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		base.Log.Info("-")
 	}
 	//声明使用变量
-	var a18bet *entity3.AsiaHis
+	var a18Bet *entity3.AsiaHis
 	//亚赔
 	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
-	a18bet = aList[0]
-	temp_data.LetBall = a18bet.ELetBall
-	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
+	a18Bet = aList[0]
+	temp_data.LetBall = a18Bet.ELetBall
+	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		//temp_data.Result =""
 		//return -2, temp_data
 		//return -2, nil
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	sLetBall := math.Abs(a18bet.SLetBall)
-	eLetBall := math.Abs(a18bet.ELetBall)
+	sLetBall := math.Abs(a18Bet.SLetBall)
+	eLetBall := math.Abs(a18Bet.ELetBall)
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
 		//temp_data.Result =""
 		//return -2, temp_data
@@ -138,41 +138,41 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//1.0判断主队是否是让球方
 	mainLetball := true
-	if a18bet.ELetBall > 0 {
+	if a18Bet.ELetBall > 0 {
 		mainLetball = true
-	} else if a18bet.ELetBall < 0 {
+	} else if a18Bet.ELetBall < 0 {
 		mainLetball = false
 	} else {
 		//EletBall == 0
 		//通过赔率确立
-		if a18bet.Ep3 > a18bet.Ep0 {
+		if a18Bet.Ep3 > a18Bet.Ep0 {
 			mainLetball = false
 		} else {
 			mainLetball = true
 		}
 	}
 
-	odd_flag_1 := a18bet.Ep3 >= 1.00 || (a18bet.Ep3 >= 0.94 && a18bet.Ep3 < 0.96)
-	//odd_flag_1 := a18bet.Ep3 < 0.94 && a18bet.Sp3 < 0.94
-	odd_flag_2 := a18bet.Ep0 >= 1.00 || (a18bet.Ep0 >= 0.94 && a18bet.Ep0 < 0.96)
-	//odd_flag_2 := a18bet.Ep0 < 0.94 && a18bet.Sp0 < 0.94
-	if mainStrong == 3 && mainLetball && odd_flag_1 && a18bet.ELetBall == a18bet.SLetBall{
+	odd_flag_1 := a18Bet.Ep3 >= 1.00 || (a18Bet.Ep3 >= 0.94 && a18Bet.Ep3 < 0.96)
+	//odd_flag_1 := a18Bet.Ep3 < 0.94 && a18Bet.Sp3 < 0.94
+	odd_flag_2 := a18Bet.Ep0 >= 1.00 || (a18Bet.Ep0 >= 0.94 && a18Bet.Ep0 < 0.96)
+	//odd_flag_2 := a18Bet.Ep0 < 0.94 && a18Bet.Sp0 < 0.94
+	if mainStrong == 3 && mainLetball && odd_flag_1 && a18Bet.ELetBall == a18Bet.SLetBall{
 		preResult = 0
 	}
-	if mainStrong == 0 && !mainLetball &&  odd_flag_2 && a18bet.ELetBall == a18bet.SLetBall{
+	if mainStrong == 0 && !mainLetball &&  odd_flag_2 && a18Bet.ELetBall == a18Bet.SLetBall{
 		preResult = 3
 	}
 
 	if preResult < 0 {
 		return -3, temp_data
 	}
-	base.Log.Info(a18bet.Sp3," ",a18bet.SLetBall," ",a18bet.Sp0,"   ",a18bet.Ep3," ",a18bet.ELetBall," ",a18bet.Ep0)
+	base.Log.Info(a18Bet.Sp3," ", a18Bet.SLetBall," ", a18Bet.Sp0,"   ", a18Bet.Ep3," ", a18Bet.ELetBall," ", a18Bet.Ep0)
 
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18bet.ELetBall
+		temp_data.LetBall = a18Bet.ELetBall
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -182,7 +182,7 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
 		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18bet.ELetBall
+		data.LetBall = a18Bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

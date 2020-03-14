@@ -44,7 +44,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	var e81 *entity3.EuroHis
 	var e616 *entity3.EuroHis
 	var e104 *entity3.EuroHis
-	var a18bet *entity3.AsiaHis
+	var a18Bet *entity3.AsiaHis
 	//81 -- 伟德
 	eList := this.EuroHisService.FindByMatchIdCompId(matchId, "81", "616", "104")
 	if len(eList) < 3 {
@@ -82,16 +82,16 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
-	a18bet = aList[0]
-	temp_data.LetBall = a18bet.ELetBall
-	if math.Abs(a18bet.ELetBall) > this.MaxLetBall {
+	a18Bet = aList[0]
+	temp_data.LetBall = a18Bet.ELetBall
+	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		//temp_data.Result = ""
 		return -2, temp_data
 	}
 	//2.亚赔是主降还是主升 主降为true
 	//得出结果
 	var preResult int
-	asiaMainDown := this.AsiaDirection(a18bet)
+	asiaMainDown := this.AsiaDirection(a18Bet)
 	e616_s3 := e616.Sp3 / (e616.Sp3 + e616.Sp1 + e616.Sp0)
 	e616_e3 := e616.Ep3 / (e616.Ep3 + e616.Ep1 + e616.Ep0)
 	e616_s0 := e616.Sp0 / (e616.Sp3 + e616.Sp1 + e616.Sp0)
@@ -114,7 +114,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18bet.ELetBall
+		temp_data.LetBall = a18Bet.ELetBall
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -124,7 +124,7 @@ func (this *E1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
 		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18bet.ELetBall
+		data.LetBall = a18Bet.ELetBall
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
