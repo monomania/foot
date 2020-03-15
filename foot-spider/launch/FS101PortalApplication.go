@@ -3,6 +3,7 @@ package launch
 import (
 	"strconv"
 	"strings"
+	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-core/common/utils"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
 	"time"
@@ -74,16 +75,17 @@ func Spider_History() {
 	}
 
 	for _, v := range seasons {
+		mysql.ShowSQL(true)
 		Spider_match_his(v)
+		Spider_euroLast_his(v)
+		time.Sleep(28 * time.Minute)
+		Spider_euroHis_his(v)
 		time.Sleep(28 * time.Minute)
 		Spider_baseFace_his(v)
 		time.Sleep(28 * time.Minute)
 		Spider_asiaLastNew_his(v)
 		time.Sleep(28 * time.Minute)
-		Spider_euroLast_his(v)
-		time.Sleep(58 * time.Minute)
-		Spider_euroHis_his(v)
-		time.Sleep(108 * time.Minute)
+		mysql.ShowSQL(false)
 	}
 
 }
