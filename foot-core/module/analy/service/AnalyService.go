@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
+	"tesou.io/platform/foot-parent/foot-api/common/base/pojo"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/analy/vo"
 	entity2 "tesou.io/platform/foot-parent/foot-api/module/match/pojo"
@@ -56,15 +57,36 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 	var matchList []*entity2.MatchLast
 	if analyAll {
-		matchHis := this.MatchHisService.FindAll()
-		for _, e := range matchHis {
-			matchList = append(matchList, &e.MatchLast)
+		var currentPage,pageSize int64 = 1,100
+		var page *pojo.Page
+		page = new(pojo.Page)
+		page.PageSize = pageSize
+		page.CurPage = currentPage
+		matchList = make([]*entity2.MatchLast, 0)
+		err := this.MatchHisService.PageSql("select mh.* from foot.t_match_his mh ", page, &matchList)
+		if nil != err {
+			base.Log.Error(err)
+			return
 		}
-		//matchLasts = this.MatchLastService.FindAll()
+		this.Analy_Process(matchList, thiz)
+		for currentPage <= page.TotalPage {
+			currentPage++
+			page = new(pojo.Page)
+			page.PageSize = pageSize
+			page.CurPage = currentPage
+			matchList = make([]*entity2.MatchLast, 0)
+			err := this.MatchHisService.PageSql("select mh.* from foot.t_match_his mh", page, &matchList)
+			if nil != err {
+				base.Log.Error(err)
+				continue
+			}
+			this.Analy_Process(matchList, thiz)
+		}
 	} else {
 		matchList = this.MatchLastService.FindNotFinished()
+		this.Analy_Process(matchList, thiz)
 	}
-	this.Analy_Process(matchList, thiz)
+
 }
 
 func (this *AnalyService) Analy_Near(thiz AnalyInterface) {

@@ -275,7 +275,7 @@ func (this *BaseService) PageSql(sql string, page *pojo.Page, dataList interface
 	if len(orderBy) > 0 {
 		sql += orderBy
 	}
-	sql += " limit " + strconv.FormatInt(page.GetFirstResult(), 10) + "," + strconv.FormatInt(page.GetLastResult(), 10)
+	sql += " limit " + strconv.FormatInt(page.GetFirstResult(), 10) + "," + strconv.FormatInt(page.GetPageSize(), 10)
 	err = engine.SQL(sql).Find(dataList)
 	return err
 }
