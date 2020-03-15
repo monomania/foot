@@ -55,7 +55,7 @@ func (this *EuroTrackProcesser) Startup() {
 	newSpider = spider.NewSpider(processer, "EuroTrackProcesser")
 	for i, v := range this.MatchLastList {
 
-		if !this.SingleThread &&i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread &&i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			processer = GetEuroTrackProcesser()
 			processer.Setup(this)
 			newSpider = spider.NewSpider(processer, "EuroTrackProcesser"+strconv.Itoa(i))
@@ -73,7 +73,7 @@ func (this *EuroTrackProcesser) Startup() {
 			url := strings.Replace(base_url, "${cId}", v, 1)
 			newSpider = newSpider.AddUrl(url, "html")
 		}
-		if !this.SingleThread && i%10000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread && i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 			newSpider.SetSleepTime("rand", 1, 300)

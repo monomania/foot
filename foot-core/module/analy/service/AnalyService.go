@@ -57,7 +57,7 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 	var matchList []*entity2.MatchLast
 	if analyAll {
-		var currentPage,pageSize int64 = 1,5000
+		var currentPage,pageSize int64 = 1,1000
 		var page *pojo.Page
 		page = new(pojo.Page)
 		page.PageSize = pageSize
