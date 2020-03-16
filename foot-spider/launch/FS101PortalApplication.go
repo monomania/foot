@@ -82,8 +82,9 @@ func Spider_History() {
 		Spider_asiaLastNew_his(v)
 		time.Sleep(28 * time.Minute)
 		Spider_baseFace_his(v)
-		time.Sleep(28 * time.Minute)
-		Spider_euroHis_his(v)
+		//欧赔历史变盘euro track win007己无法获取到
+		//time.Sleep(28 * time.Minute)
+		//Spider_euroHis_his(v)
 		time.Sleep(28 * time.Minute)
 		mysql.ShowSQL(false)
 	}
