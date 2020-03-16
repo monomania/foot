@@ -68,7 +68,7 @@ func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 			base.Log.Error(err)
 			return
 		}
-		this.Analy_Process(matchList, thiz)
+		go this.Analy_Process(matchList, thiz)
 		for currentPage <= page.TotalPage {
 			currentPage++
 			page = new(pojo.Page)
@@ -80,7 +80,7 @@ func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 				base.Log.Error(err)
 				continue
 			}
-			this.Analy_Process(matchList, thiz)
+			go this.Analy_Process(matchList, thiz)
 		}
 	} else {
 		matchList = this.MatchLastService.FindNotFinished()

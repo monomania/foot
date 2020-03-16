@@ -61,7 +61,7 @@ func (this *EuroLastProcesser) Startup() {
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
 			newSpider.SetSleepTime("rand", 1, 300)
-			newSpider.SetThreadnum(1).Run()
+			newSpider.SetThreadnum(10).Run()
 
 			processer = GetEuroLastProcesser()
 			processer.Setup(this)
