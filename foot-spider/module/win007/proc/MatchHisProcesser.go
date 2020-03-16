@@ -67,6 +67,12 @@ func (this *MatchHisProcesser) Startup() {
 	for i, v := range seasonList {
 
 		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
+			//先将前面的spider启动
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1, 300)
+			newSpider.SetThreadnum(1).Run()
+
 			processer = GetMatchHisProcesser()
 			processer.Setup(this)
 			newSpider = spider.NewSpider(processer, "MatchHisProcesser"+strconv.Itoa(i))
@@ -83,12 +89,6 @@ func (this *MatchHisProcesser) Startup() {
 			processer.SUrl_leagueId[round_url] = v.LeagueId
 			processer.SUrl_Season[round_url] = v
 			newSpider = newSpider.AddUrl(round_url, "html")
-		}
-		if i%10 == 0 { //10个联赛一个spider,总数1000多个联赛,最多100spider
-			newSpider.SetDownloader(down.NewMWin007Downloader())
-			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1, 300)
-			newSpider.SetThreadnum(1).Run()
 		}
 	}
 

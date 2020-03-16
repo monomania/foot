@@ -79,11 +79,11 @@ func Spider_History() {
 		Spider_match_his(v)
 		Spider_euroLast_his(v)
 		time.Sleep(28 * time.Minute)
-		Spider_euroHis_his(v)
+		Spider_asiaLastNew_his(v)
 		time.Sleep(28 * time.Minute)
 		Spider_baseFace_his(v)
 		time.Sleep(28 * time.Minute)
-		Spider_asiaLastNew_his(v)
+		Spider_euroHis_his(v)
 		time.Sleep(28 * time.Minute)
 		mysql.ShowSQL(false)
 	}

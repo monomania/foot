@@ -57,6 +57,12 @@ func (this *EuroLastProcesser) Startup() {
 	for i, v := range this.MatchLastList {
 
 		if !this.SingleThread && i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+			//先将前面的spider启动
+			newSpider.SetDownloader(down.NewMWin007Downloader())
+			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
+			newSpider.SetSleepTime("rand", 1, 300)
+			newSpider.SetThreadnum(1).Run()
+
 			processer = GetEuroLastProcesser()
 			processer.Setup(this)
 			newSpider = spider.NewSpider(processer, "EuroLastProcesser"+strconv.Itoa(i))
@@ -72,12 +78,6 @@ func (this *EuroLastProcesser) Startup() {
 
 		url := strings.Replace(win007.WIN007_EUROODD_URL_PATTERN, "${matchId}", win007_id, 1)
 		newSpider = newSpider.AddUrl(url, "html")
-		if !this.SingleThread && i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
-			newSpider.SetDownloader(down.NewMWin007Downloader())
-			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1, 300)
-			newSpider.SetThreadnum(1).Run()
-		}
 	}
 
 	newSpider.SetDownloader(down.NewMWin007Downloader())
