@@ -27,9 +27,12 @@ func (this *C2Service) ModelName() string {
 	return "C2"
 }
 
-func (this *C2Service) Analy(analyAll bool) {
-	this.AnalyService.Analy(analyAll,this)
+func (this *C2Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
 
+func (this *C2Service) Analy(analyAll bool) {
+	this.AnalyService.Analy(analyAll, this)
 }
 
 func (this *C2Service) Analy_Near() {
@@ -64,9 +67,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	sLetBall := math.Abs(a18Bet.SLetBall)
-	eLetBall := math.Abs(a18Bet.ELetBall)
-	if math.Abs(sLetBall-eLetBall) > 0.25 {
+	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
 		//temp_data.Result =""
 		//return -2, temp_data
 	}
@@ -169,8 +170,8 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*3
 	}
 	//
-	bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 4)
-	bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 4)
+	bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate, v.MainTeamId, 4)
+	bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate, v.GuestTeamId, 4)
 	bfj_mainWin := 0
 	bfj_guestWin := 0
 	for _, e := range bfj_main {
@@ -201,7 +202,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 
-	if this.IsCupMatch(bffe_main.EventLeagueId){
+	if this.IsCupMatch(bffe_main.EventLeagueId) {
 		//下一场打杯赛
 		return -3, temp_data
 	} else {
@@ -210,7 +211,7 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			letBall += (baseVal)
 		}
 	}
-	if this.IsCupMatch(bffe_guest.EventLeagueId){
+	if this.IsCupMatch(bffe_guest.EventLeagueId) {
 		//下一场打杯赛
 		return -3, temp_data
 	} else {
@@ -224,6 +225,8 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	mainLetball := this.AnalyService.mainLetball(a18Bet)
 
 	//2.0区间段
+	sLetBall := math.Abs(a18Bet.SLetBall)
+	eLetBall := math.Abs(a18Bet.ELetBall)
 	var sectionBlock1, sectionBlock2 int
 	tLetBall := math.Abs(letBall)
 	//maxLetBall := math.Max(sLetBall, eLetBall)
@@ -288,23 +291,23 @@ func (this *C2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 
-	temp_bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 1)
-	temp_bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 1)
+	temp_bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate, v.MainTeamId, 1)
+	temp_bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate, v.GuestTeamId, 1)
 	for _, e := range temp_bfj_main {
 		if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
 			continue
-		}else if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
+		} else if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
 			continue
-		}else{
+		} else {
 			return -3, temp_data
 		}
 	}
 	for _, e := range temp_bfj_guest {
 		if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
 			return -3, temp_data
-		}else if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
+		} else if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
 			return -3, temp_data
-		}else{
+		} else {
 			continue
 		}
 	}

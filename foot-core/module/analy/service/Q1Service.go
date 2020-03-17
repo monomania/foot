@@ -19,6 +19,10 @@ func (this *Q1Service) ModelName() string {
 	return "Q1"
 }
 
+func (this *Q1Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
+
 func (this *Q1Service) Analy(analyAll bool) {
 	this.AnalyService.Analy(analyAll,this)
 }

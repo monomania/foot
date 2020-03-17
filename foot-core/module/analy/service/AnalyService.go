@@ -23,6 +23,8 @@ import (
 type AnalyInterface interface {
 	ModelName() string
 
+	AnalyTest()
+
 	Analy_Near()
 
 	Analy(analyAll bool)
@@ -54,10 +56,25 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 	return dataList
 }
 
+func (this *AnalyService) AnalyTest(thiz AnalyInterface) {
+	var currentPage, pageSize int64 = 1, 30000
+	var page *pojo.Page
+	page = new(pojo.Page)
+	page.PageSize = pageSize
+	page.CurPage = currentPage
+	matchList := make([]*entity2.MatchLast, 0)
+	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-03-01 00:00:00' ", page, &matchList)
+	if nil != err {
+		base.Log.Error(err)
+		return
+	}
+	this.Analy_Process(matchList, thiz, false)
+}
+
 func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 	var matchList []*entity2.MatchLast
 	if analyAll {
-		var currentPage,pageSize int64 = 1,1000
+		var currentPage, pageSize int64 = 1, 1000
 		var page *pojo.Page
 		page = new(pojo.Page)
 		page.PageSize = pageSize
@@ -68,7 +85,7 @@ func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 			base.Log.Error(err)
 			return
 		}
-		go this.Analy_Process(matchList, thiz)
+		go this.Analy_Process(matchList, thiz, true)
 		for currentPage <= page.TotalPage {
 			currentPage++
 			page = new(pojo.Page)
@@ -80,24 +97,23 @@ func (this *AnalyService) Analy(analyAll bool, thiz AnalyInterface) {
 				base.Log.Error(err)
 				continue
 			}
-			go this.Analy_Process(matchList, thiz)
+			go this.Analy_Process(matchList, thiz, true)
 		}
 	} else {
 		matchList = this.MatchLastService.FindNotFinished()
-		this.Analy_Process(matchList, thiz)
+		this.Analy_Process(matchList, thiz, true)
 	}
-
 }
 
 func (this *AnalyService) Analy_Near(thiz AnalyInterface) {
 	matchList := this.MatchLastService.FindNear()
-	this.Analy_Process(matchList, thiz)
+	this.Analy_Process(matchList, thiz, true)
 }
 
 /**
 汇总结果并输出，且持久化
  */
-func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz AnalyInterface) {
+func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz AnalyInterface, persisted bool) {
 	hit_count_str := utils.GetVal(constants.SECTION_NAME, "hit_count")
 	hit_count, _ := strconv.Atoi(hit_count_str)
 	data_list_slice := make([]interface{}, 0)
@@ -107,15 +123,6 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 
 	for _, v := range matchList {
 		stub, temp_data := thiz.analyStub(v)
-
-		if nil != temp_data {
-			if strings.EqualFold(temp_data.Result, "命中") {
-				rightCount++
-			}
-			if strings.EqualFold(temp_data.Result, "错误") {
-				errorCount++
-			}
-		}
 
 		if stub == 0 || stub == 1 {
 			temp_data.TOVoid = false
@@ -130,6 +137,14 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 			} else if stub == 1 {
 				data_modify_list_slice = append(data_modify_list_slice, temp_data)
 			}
+
+			if strings.EqualFold(temp_data.Result, "命中") {
+				rightCount++
+			}
+			if strings.EqualFold(temp_data.Result, "错误") {
+				errorCount++
+			}
+
 		} else if nil != temp_data {
 			temp_data.TOVoid = true
 			if len(temp_data.Id) > 0 {
@@ -150,8 +165,10 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 	base.Log.Info("X0000场次:", errorCount)
 	base.Log.Info("------------------")
 
-	this.SaveList(data_list_slice)
-	this.ModifyList(data_modify_list_slice)
+	if persisted {
+		this.SaveList(data_list_slice)
+		this.ModifyList(data_modify_list_slice)
+	}
 }
 
 /**
@@ -458,7 +475,6 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 	}
 	return result
 }
-
 
 /**
 是否是主队让球，反之是客队让球

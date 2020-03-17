@@ -23,6 +23,10 @@ func (this *E3Service) ModelName() string {
 	return "E3"
 }
 
+func (this *E3Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
+
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */
@@ -83,7 +87,7 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//得出结果
 	//1.0判断主队是否是让球方
-	mainLetball := this.AnalyService.mainLetball(a18Bet)
+	mainLetball := this.AnalyService.mainLetball(aBet365)
 
 	preResult := -1
 	if mainLetball{

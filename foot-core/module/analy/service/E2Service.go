@@ -19,6 +19,10 @@ func (this *E2Service) ModelName() string {
 	return "E2"
 }
 
+func (this *E2Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
+
 /**
 计算欧赔81 616的即时盘,和初盘的差异
 */

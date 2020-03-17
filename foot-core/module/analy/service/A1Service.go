@@ -23,6 +23,10 @@ func (this *A1Service) ModelName() string {
 	return "A1"
 }
 
+func (this *A1Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
+
 /**
 分析比赛数据,, 结合亚赔 赔赔差异
 ( 1.欧赔降水,亚赔反之,以亚赔为准)

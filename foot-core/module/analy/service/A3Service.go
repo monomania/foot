@@ -27,6 +27,10 @@ func (this *A3Service) ModelName() string {
 	return "A3"
 }
 
+func (this *A3Service) AnalyTest() {
+	this.AnalyService.AnalyTest(this)
+}
+
 func (this *A3Service) Analy(analyAll bool) {
 	this.AnalyService.Analy(analyAll,this)
 }
@@ -64,9 +68,7 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	sLetBall := math.Abs(a18Bet.SLetBall)
-	eLetBall := math.Abs(a18Bet.ELetBall)
-	if math.Abs(sLetBall-eLetBall) > 0.25 {
+	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
 		//temp_data.Result =""
 		//return -2, temp_data
 		//return -2, nil
