@@ -83,20 +83,7 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//得出结果
 	//1.0判断主队是否是让球方
-	mainLetball := true
-	if aBet365.ELetBall > 0 {
-		mainLetball = true
-	} else if aBet365.ELetBall < 0 {
-		mainLetball = false
-	} else {
-		//EletBall == 0
-		//通过赔率确立
-		if aBet365.Ep3 > aBet365.Ep0 {
-			mainLetball = false
-		} else {
-			mainLetball = true
-		}
-	}
+	mainLetball := this.AnalyService.mainLetball(a18Bet)
 
 	preResult := -1
 	if mainLetball{

@@ -204,18 +204,7 @@ func (this *C1Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//1.0判断主队是否是让球方
-	mainLetball := true
-	if a18Bet.ELetBall > 0 {
-		mainLetball = true
-	} else if a18Bet.ELetBall < 0 {
-		mainLetball = false
-	} else {
-		if letBall > 0 {
-			mainLetball = false
-		} else {
-			mainLetball = true
-		}
-	}
+	mainLetball := this.AnalyService.mainLetball(a18Bet)
 
 	val_range := 0.375
 	if mainLetball {

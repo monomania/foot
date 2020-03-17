@@ -459,6 +459,28 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 	return result
 }
 
+
+/**
+是否是主队让球，反之是客队让球
+*/
+func (this *AnalyService) mainLetball(a18Bet *entity3.AsiaHis) bool {
+	mainLetball := true
+	if a18Bet.ELetBall > 0 {
+		mainLetball = true
+	} else if a18Bet.ELetBall < 0 {
+		mainLetball = false
+	} else {
+		//EletBall == 0
+		//通过赔率确立
+		if a18Bet.Ep3 > a18Bet.Ep0 {
+			mainLetball = false
+		} else {
+			mainLetball = true
+		}
+	}
+	return mainLetball
+}
+
 /**
 1.欧赔是主降还是主升 主降为true
 */

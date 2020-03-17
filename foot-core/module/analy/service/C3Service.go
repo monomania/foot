@@ -27,7 +27,7 @@ func (this *C3Service) ModelName() string {
 }
 
 func (this *C3Service) Analy(analyAll bool) {
-	this.AnalyService.Analy(analyAll,this)
+	this.AnalyService.Analy(analyAll, this)
 
 }
 
@@ -63,8 +63,8 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	sLetBall := math.Abs(a18Bet.SLetBall)
 	eLetBall := math.Abs(a18Bet.ELetBall)
 	if math.Abs(sLetBall-eLetBall) > 0.25 {
-		temp_data.Result =""
-		return -2, temp_data
+		//temp_data.Result =""
+		//return -2, temp_data
 	}
 
 	//得出结果
@@ -140,64 +140,10 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//------
-	//只取近5场
-	bfb_arr := this.BFBattleService.FindNearByMatchId(matchId, 4)
-	mainWin := 0
-	guestWin := 0
-	for _, e := range bfb_arr {
-		if e.BattleMainTeamId == v.MainTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
-			mainWin++
-		}
-		if e.BattleGuestTeamId == v.MainTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
-			mainWin++
-		}
-		if e.BattleMainTeamId == v.GuestTeamId && e.BattleMainTeamGoals > e.BattleGuestTeamGoals {
-			guestWin++
-		}
-		if e.BattleGuestTeamId == v.GuestTeamId && e.BattleGuestTeamGoals > e.BattleMainTeamGoals {
-			guestWin++
-		}
-	}
-	if mainWin > guestWin {
-		letBall += baseVal + float64(mainWin-guestWin)*baseVal*3
-	}
-	if guestWin > mainWin {
-		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*3
-	}
-
-	bfj_main := this.BFJinService.FindNearByTeamName(v.MatchDate,v.MainTeamId, 1)
-	bfj_guest := this.BFJinService.FindNearByTeamName(v.MatchDate,v.GuestTeamId, 1)
-	bfj_mainWin := 0
-	bfj_guestWin := 0
-	for _, e := range bfj_main {
-		if e.HomeTeam == v.MainTeamId && e.HomeScore > e.GuestScore {
-			bfj_mainWin++
-		}
-		if e.GuestTeam == v.MainTeamId && e.GuestScore > e.HomeScore {
-			bfj_mainWin++
-		}
-	}
-	for _, e := range bfj_guest {
-		if e.HomeTeam == v.GuestTeamId && e.HomeScore > e.GuestScore {
-			bfj_guestWin++
-		}
-		if e.GuestTeam == v.GuestTeamId && e.GuestScore > e.HomeScore {
-			bfj_guestWin++
-		}
-	}
-	if bfj_mainWin > bfj_guestWin {
-		letBall += baseVal + float64(mainWin-guestWin)*baseVal*2
-	}
-	if bfj_guestWin > bfj_mainWin {
-		letBall -= baseVal + float64(guestWin-mainWin)*baseVal*2
-	}
-
-
-	//------
 	bffe_main := this.BFFutureEventService.FindNextBattle(matchId, v.MainTeamId)
 	bffe_guest := this.BFFutureEventService.FindNextBattle(matchId, v.GuestTeamId)
 
-	if this.IsCupMatch(bffe_main.EventLeagueId){
+	if this.IsCupMatch(bffe_main.EventLeagueId) {
 		//下一场打杯赛
 		//return -3, temp_data
 	} else {
@@ -207,7 +153,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 
-		if this.IsCupMatch(bffe_guest.EventLeagueId){
+	if this.IsCupMatch(bffe_guest.EventLeagueId) {
 		//下一场打杯赛
 		//return -3, temp_data
 	} else {
@@ -218,20 +164,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	//1.0判断主队是否是让球方
-	mainLetball := true
-	if a18Bet.ELetBall > 0 {
-		mainLetball = true
-	} else if a18Bet.ELetBall < 0 {
-		mainLetball = false
-	} else {
-		//EletBall == 0
-		//通过赔率确立
-		if a18Bet.Ep3 > a18Bet.Ep0 {
-			mainLetball = false
-		} else {
-			mainLetball = true
-		}
-	}
+	mainLetball := this.AnalyService.mainLetball(a18Bet)
 
 	//2.0区间段
 	var sectionBlock1, sectionBlock2 int
@@ -266,7 +199,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//3.0即时盘赔率大于等于初盘赔率
 	endUp := eLetBall >= sLetBall
 	//3.1即时盘初盘
-	notZero := tLetBall >= eLetBall  && tLetBall >= sLetBall
+	notZero := tLetBall >= eLetBall && tLetBall >= sLetBall
 
 	//看两个区间是否属于同一个区间
 	//if sectionBlock1 == 1 && sectionBlock2 == 1 {
@@ -277,20 +210,9 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 			//preResult = 0
 		}
 	}
-	//else if sectionBlock <= 1.0 {
-	//	if mainLetball && letBall >= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-	//		preResult = 3
-	//	} else if !mainLetball && letBall <= 0 && math.Abs(tLetBall-maxLetBall) < 0.25 {
-	//		preResult = 0
-	//	}
-	//}
 
 	if preResult < 0 {
 		return -3, temp_data
-	}
-
-	if matchId == "1723449" {
-		base.Log.Info("-")
 	}
 
 	if preResult == 3 && this.IsCupMatch(bffe_main.EventLeagueId) {
@@ -329,3 +251,5 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return 0, data
 	}
 }
+
+

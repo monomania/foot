@@ -5,6 +5,7 @@ import (
 	"github.com/hu17889/go_spider/core/common/page"
 	"github.com/hu17889/go_spider/core/pipeline"
 	"github.com/hu17889/go_spider/core/spider"
+	"math/rand"
 	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -70,6 +71,7 @@ func (this *AsiaLastNewProcesser) Startup() {
 		processer.Win007idMatchidMap[win007_id] = v.Id
 
 		url := strings.Replace(win007.WIN007_ASIAODD_NEW_URL_PATTERN, "${matchId}", win007_id, 1)
+		url = strings.Replace(url, "${flesh}", strconv.FormatFloat(rand.Float64(), 'f', -1, 64), 1)
 		newSpider = newSpider.AddUrl(url, "json")
 	}
 
