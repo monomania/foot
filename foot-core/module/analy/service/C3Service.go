@@ -123,106 +123,114 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, temp_data
 	}
 
-	//保证积分榜上,进球能力有支持
-	if (temp_zong_val_1 > 0 && temp_zong_val_2 < 0) || (temp_zong_val_1 < 0 && temp_zong_val_2 > 0) {
-		return -2, temp_data
-	}
-
 	//2.0区间段
-	var sectionBlock1, sectionBlock2 int = -1, -1
-
-	var sectionValArr = []float64{0.0, 0.25, 0.50, 0.75, 1, 1.25, 1.5, 1.75, 2}
+	var sectionValArr_3 = []float64{0.0, 0.25, 0.50, 0.75, 1, 1.25, 1.5, 1.75, 2}
+	var sectionValArr_0 = []float64{0.0, -0.25, -0.50, -0.75, -1, -1.25, -1.5, -1.75, -2}
+	var temp_zong_sorce, temp_zong_goal float64
 	//总积分的让球值
-	tempLetball1 := math.Abs(temp_zong_val_1) / 10
-	for i, e := range sectionValArr {
-		if tempLetball1 <= e {
-			sectionBlock1 = i
-			break;
+	if temp_zong_val_1 <= 0 {
+		//主队总积分占优
+		tempLetball1 := temp_zong_val_1 / 10
+		for _, e := range sectionValArr_3 {
+			if tempLetball1 <= e {
+				temp_zong_sorce = e
+				break;
+			}
+		}
+	} else {
+		//客队总积分占优
+		tempLetball1 := (0 - temp_zong_val_1) / 10
+		for _, e := range sectionValArr_0 {
+			if tempLetball1 >= e {
+				temp_zong_sorce = e
+				break;
+			}
 		}
 	}
 
-	tempLetball2 := math.Abs(temp_zong_val_2) / 10
-	for i, e := range sectionValArr {
-		if tempLetball2 <= e {
-			sectionBlock2 = i
-			break;
+	if temp_zong_val_2 >= 0 {
+		//主队总进球占优
+		tempLetball2 := temp_zong_val_2 / 10
+		for i, e := range sectionValArr_3 {
+			if tempLetball2 <= e{
+				temp_zong_goal = sectionValArr_3[i]
+				break;
+			}
 		}
-	}
-
-	if sectionBlock1 == -1 || sectionBlock2 == -1 {
-		return -3, temp_data
+	} else {
+		//客队总进球占优
+		tempLetball2 := temp_zong_val_2 / 10
+		for i, e := range sectionValArr_0 {
+			if tempLetball2 >= e  {
+				temp_zong_goal = sectionValArr_0[i]
+				break;
+			}
+		}
 	}
 
 	//3.0即时盘赔率大于等于初盘赔率
-	sLetBall := math.Abs(a18Bet.SLetBall)
-	eLetBall := math.Abs(a18Bet.ELetBall)
+	sLetBall := a18Bet.SLetBall
+	eLetBall := a18Bet.ELetBall
 	endUp := eLetBall >= sLetBall
-	if !endUp {
-		return -3, temp_data
+	//1.0判断主队是否是让球方
+	mainLetball := this.AnalyService.mainLetball(a18Bet)
+	if matchId == "1834190" {
+		fmt.Println(temp_jin_val_2)
 	}
 
-
-	if matchId == "1721267" {
-		fmt.Println("")
-	}
-
-	//
-	var bf_begin, bf_end float64
-	if sectionBlock1 == sectionBlock2 {
-		if sectionBlock1 == 0 {
-			return -3, temp_data
-		}
-		bf_begin = sectionValArr[sectionBlock1] - 0.25
-		bf_end = sectionValArr[sectionBlock1] + 0.25
-	} else if sectionBlock1-sectionBlock2 == 1 || sectionBlock1-sectionBlock2 == -1 {
-		if sectionBlock1 < sectionBlock2 {
-			bf_begin = sectionValArr[sectionBlock1] - 0.25
-			bf_end = sectionValArr[sectionBlock2] + 0.25
+	if temp_jin_val_1 > 0 {
+		//主队近况占优
+		if temp_zong_sorce <= 0 || temp_zong_goal <= 0 {
+			if mainLetball {
+				//总积分不利,进球不利还能让球
+				//preResult = 3
+			}
 		} else {
-			bf_begin = sectionValArr[sectionBlock2] - 0.25
-			bf_end = sectionValArr[sectionBlock1] + 0.25
+			if mainLetball && endUp {
+				sorceUp := temp_zong_sorce > temp_zong_goal
+				var b1, _ float64
+				if sorceUp {
+					b1 = temp_zong_sorce
+				} else {
+					b1 = temp_zong_goal
+				}
+				if b1 == eLetBall {
+					//preResult = 3
+				}
+			}
+		}
+	}
+
+	if temp_jin_val_1 < 0 {
+		//主队近况占优
+		if temp_zong_sorce >= 0 || temp_zong_goal >= 0 {
+			if mainLetball {
+				//总积分不利,进球不利还能让球
+				//preResult = 0
+			}
+		} else {
+			if !mainLetball && !endUp {
+				sorceUp := temp_zong_sorce < temp_zong_goal
+				var b1, _ float64
+				if sorceUp {
+					b1 = temp_zong_sorce
+				} else {
+					b1 = temp_zong_goal
+				}
+				if b1 == eLetBall {
+					preResult = 0
+				}
+			}
 		}
 	}
 
 	//存在合理区间里
-	var smallLetBall float64
-	if eLetBall-sLetBall >= 0 {
-		smallLetBall = sLetBall
-	} else {
-		smallLetBall = eLetBall
-	}
-	if bf_end-smallLetBall >= 0.5 {
-		return -3, temp_data
-	}
-	var reasonable = false
-	if bf_begin <= eLetBall && eLetBall <= bf_end {
-		reasonable = true
-	}
-
-	//1.0判断主队是否是让球方
-	mainLetball := this.AnalyService.mainLetball(a18Bet)
-	if reasonable {
-		if mainLetball {
-			preResult = 3
-		} else {
-			preResult = 0
-		}
-	} else {
-
-	}
-
-	if preResult == 3 && (temp_jin_val_1 < 0 || temp_jin_val_2 < 0) {
-		preResult = -1
-	}
-	if preResult == 3 && (temp_jin_val_1 > 0 || temp_jin_val_2 > 0) {
-		preResult = -1
-	}
 
 	if preResult < 0 {
 		return -3, temp_data
 	}
 
-	base.Log.Info("所属于区间: ", bf_begin, " - ", bf_end, " ,对阵", v.MainTeamId+":"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall)
+	base.Log.Info("总积分:", temp_zong_sorce, " ,总进球:", temp_zong_goal, " ,近况:", temp_jin_val_1, " ,对阵", v.MainTeamId+":"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall)
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
