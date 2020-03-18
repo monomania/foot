@@ -103,12 +103,11 @@ func main() {
 			time.Sleep(time.Duration(configService.GetSpiderCycleTime()) * time.Minute)
 		}
 	case "smh\n", "smh":
-		for {
+		//for {
 			base.Log.Info("--------开始抓取历史数据--------")
 			launch.Spider_History()
 			base.Log.Info("--------结束抓取历史数据--------")
-			time.Sleep(58 * time.Minute)
-		}
+		//}
 	case "autoleisu\n", "autoleisu":
 		for {
 			base.Log.Info("--------发布开始运行--------")

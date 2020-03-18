@@ -77,15 +77,12 @@ func Spider_History() {
 	for _, v := range seasons {
 		mysql.ShowSQL(true)
 		Spider_match_his(v)
-		Spider_euroLast_his(v)
-		time.Sleep(28 * time.Minute)
-		Spider_asiaLastNew_his(v)
-		time.Sleep(28 * time.Minute)
-		Spider_baseFace_his(v)
+		go Spider_euroLast_his(v)
+		go Spider_asiaLastNew_his(v)
+		go Spider_baseFace_his(v)
 		//欧赔历史变盘euro track win007己无法获取到
-		//time.Sleep(28 * time.Minute)
 		//Spider_euroHis_his(v)
-		time.Sleep(28 * time.Minute)
+		time.Sleep(12 * time.Hour)
 		mysql.ShowSQL(false)
 	}
 
