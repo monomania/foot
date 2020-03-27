@@ -70,7 +70,7 @@ func (this *MatchHisProcesser) Startup() {
 			//先将前面的spider启动
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1, 300)
+			newSpider.SetSleepTime("rand", win007.SLEEP_RAND_S, win007.SLEEP_RAND_E)
 			newSpider.SetThreadnum(10).Run()
 
 			processer = GetMatchHisProcesser()
@@ -94,7 +94,7 @@ func (this *MatchHisProcesser) Startup() {
 
 	newSpider.SetDownloader(down.NewMWin007Downloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1, 300)
+	newSpider.SetSleepTime("rand", win007.SLEEP_RAND_S, win007.SLEEP_RAND_E)
 	newSpider.SetThreadnum(1).Run()
 
 }
