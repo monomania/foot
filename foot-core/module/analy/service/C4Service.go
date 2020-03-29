@@ -81,14 +81,14 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	page.PageSize = pageSize
 	page.CurPage = currentPage
 	mainJinList := make([]*pojo.BFJin, 0)
-	err1 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND j.HomeTeam = '"+v.MainTeamId+"' AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &mainJinList)
+	err1 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND (j.HomeTeam = '"+v.MainTeamId+"' OR j.GuestTeam = '"+v.MainTeamId+"') AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &mainJinList)
 	if nil != err1 {
 		base.Log.Error(err1)
 		return -2, temp_data
 	}
 
 	guestJinList := make([]*pojo.BFJin, 0)
-	err2 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND j.HomeTeam = '"+v.GuestTeamId+"' AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &guestJinList)
+	err2 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND (j.HomeTeam = '"+v.GuestTeamId+"' OR j.GuestTeam = '"+v.GuestTeamId+"') AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &guestJinList)
 	if nil != err2 {
 		base.Log.Error(err2)
 		return -2, temp_data
