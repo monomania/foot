@@ -31,6 +31,6 @@ const (
 
 const (
 	SLEEP_RAND_S = 10
-	SLEEP_RAND_E = 200
+	SLEEP_RAND_E = 100
 
 )

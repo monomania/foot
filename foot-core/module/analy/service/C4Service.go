@@ -67,8 +67,9 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//限制初盘,即时盘让球在0.25以内
 	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
-		//temp_data.Result =""
-		//return -2, temp_data
+		temp_data.TOVoid = true
+		temp_data.TOVoidDesc = "界限"
+		return -2, temp_data
 	}
 
 	//得出结果

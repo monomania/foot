@@ -46,7 +46,7 @@ func Analy(all bool) {
 	base.Log.Info("---------------A3模型--------------")
 	base.Log.Info("---------------------------------------------------------------")
 	a3 := new(service.A3Service)
-	a3.MaxLetBall = 10
+	a3.MaxLetBall = 5
 	a3.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------C1模型--------------")
