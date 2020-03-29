@@ -57,7 +57,7 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 }
 
 func (this *AnalyService) AnalyTest(thiz AnalyInterface) {
-	var currentPage, pageSize int64 = 1, 30000
+	var currentPage, pageSize int64 = 1, 10000
 	var page *pojo.Page
 	page = new(pojo.Page)
 	page.PageSize = pageSize

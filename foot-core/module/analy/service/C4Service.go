@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"math"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
@@ -80,14 +81,14 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	page.PageSize = pageSize
 	page.CurPage = currentPage
 	mainJinList := make([]*pojo.BFJin, 0)
-	err1 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.HomeTeam = "+v.MainTeamId+" AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &mainJinList)
+	err1 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND j.HomeTeam = '"+v.MainTeamId+"' AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &mainJinList)
 	if nil != err1 {
 		base.Log.Error(err1)
 		return -2, temp_data
 	}
 
 	guestJinList := make([]*pojo.BFJin, 0)
-	err2 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.HomeTeam = "+v.MainTeamId+" AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &guestJinList)
+	err2 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND j.HomeTeam = '"+v.GuestTeamId+"' AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &guestJinList)
 	if nil != err2 {
 		base.Log.Error(err2)
 		return -2, temp_data
@@ -97,51 +98,81 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -2, temp_data
 	}
 
-	mainGoal,guestGoal := 0,0
-	mainScore,guestScore := 0,0
+	mainGoal, guestGoal := 0, 0
+	mainScore, guestScore := 0, 0
 	for _, temp := range mainJinList {
-		if strings.EqualFold(temp.HomeTeam,v.MainTeamId){
+		if strings.EqualFold(temp.HomeTeam, v.MainTeamId) {
 			mainGoal += temp.HomeScore
-			if temp.HomeScore > temp.GuestScore{
+			if temp.HomeScore > temp.GuestScore {
 				mainScore += 3
 			}
+			if temp.HomeScore == temp.GuestScore {
+				mainScore += 1
+			}
 		}
-		if strings.EqualFold(temp.GuestTeam,v.MainTeamId){
+		if strings.EqualFold(temp.GuestTeam, v.MainTeamId) {
 			mainGoal += temp.GuestScore
-			if temp.GuestScore > temp.HomeScore{
+			if temp.GuestScore > temp.HomeScore {
 				mainScore += 3
+			}
+			if temp.GuestScore == temp.HomeScore {
+				mainScore += 1
 			}
 		}
 	}
-
 
 	for _, temp := range guestJinList {
-		if strings.EqualFold(temp.HomeTeam,v.GuestTeamId){
+		if strings.EqualFold(temp.HomeTeam, v.GuestTeamId) {
 			guestGoal += temp.HomeScore
-			if temp.HomeScore > temp.GuestScore{
+			if temp.HomeScore > temp.GuestScore {
 				guestScore += 3
 			}
+			if temp.HomeScore == temp.GuestScore {
+				guestScore += 1
+			}
 		}
-		if strings.EqualFold(temp.GuestTeam,v.GuestTeamId){
+		if strings.EqualFold(temp.GuestTeam, v.GuestTeamId) {
 			guestGoal += temp.GuestScore
-			if temp.GuestScore > temp.HomeScore{
+			if temp.GuestScore > temp.HomeScore {
 				guestScore += 3
+			}
+			if temp.GuestScore == temp.HomeScore {
+				guestScore += 1
 			}
 		}
 	}
 
+	diffGoal := float64(mainGoal-guestGoal) / 10
+	diffScore := float64(mainScore-guestScore) / 10
+	eLetBall := a18Bet.ELetBall
+	//if eLetBall > 0 {
+	//	if diffGoal > 0 && diffScore > 0 && (math.Abs(diffScore-eLetBall) < 0.25 && math.Abs(diffGoal-eLetBall) < 0.25) {
+	//		preResult = 3
+	//	}
+	//
+	//} else if eLetBall == 0 {
+	//
+	//} else {
+	//	//<0
+	//	if diffGoal < 0 && diffScore < 0 && (math.Abs(diffScore-eLetBall) < 0.25 && math.Abs(diffGoal-eLetBall) < 0.25) {
+	//		preResult = 0
+	//	}
+	//}
+	//
+	//if preResult < 0 {
+	//	return -3, temp_data
+	//}
+	base.Log.Info("对阵:", v.MainTeamId+":"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
-
-
-	base.Log.Info("总进球:", mainGoal,":",guestGoal, " ,得分:", mainScore,":",guestScore,  " ,对阵", v.MainTeamId+":"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall)
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18Bet.ELetBall
+		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
 		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		//data.Result = this.IsRight(v, data)
 		return 1, data
 	} else {
 		data = new(entity5.AnalyResult)
@@ -149,13 +180,14 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data.MatchDate = v.MatchDate
 		data.SLetBall = a18Bet.SLetBall
 		data.LetBall = a18Bet.ELetBall
+		data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 3
 		//比赛结果
-		data.Result = this.IsRight(v, data)
+		//data.Result = this.IsRight(v, data)
 		return 0, data
 	}
 }
