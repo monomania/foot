@@ -77,7 +77,7 @@ func Spider_History() {
 	for _, v := range seasons {
 		mysql.ShowSQL(true)
 		Spider_match_his(v)
-		go Spider_euroLast_his(v)
+		//go Spider_euroLast_his(v)
 		go Spider_asiaLastNew_his(v)
 		go Spider_baseFace_his(v)
 		//欧赔历史变盘euro track win007己无法获取到

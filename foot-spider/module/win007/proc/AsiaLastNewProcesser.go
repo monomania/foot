@@ -54,7 +54,7 @@ func (this *AsiaLastNewProcesser) Startup() {
 			//先将前面的spider启动
 			newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-			newSpider.SetSleepTime("rand", 1, 300)
+			newSpider.SetSleepTime("rand", win007.SLEEP_RAND_S, win007.SLEEP_RAND_E)
 			newSpider.SetThreadnum(10).Run()
 
 			processer = GetAsiaLastNewProcesser()
@@ -77,7 +77,7 @@ func (this *AsiaLastNewProcesser) Startup() {
 
 	newSpider.SetDownloader(down.NewMAsiaLastApiDownloader())
 	newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
-	newSpider.SetSleepTime("rand", 1, 300)
+	newSpider.SetSleepTime("rand", win007.SLEEP_RAND_S, win007.SLEEP_RAND_E)
 	newSpider.SetThreadnum(1).Run()
 
 }

@@ -35,6 +35,8 @@ type AnalyResult struct {
 	//是否己经作废,因后续结果不符合要求
 	TOVoid bool `xorm:"bool notnull comment('是否己经作废') index"`
 	TOVoidDesc string `xorm:" comment('作废备注') index"`
+	//用于增加备注
+	Desc string `xorm:" comment('备注信息') index"`
 
 	pojo.BasePojo `xorm:"extends"`
 }
