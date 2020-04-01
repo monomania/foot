@@ -62,17 +62,21 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	temp_data.LetBall = a18Bet.ELetBall
 	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		//temp_data.Result =""
+		temp_data.PreResult = -1
 		return -2, temp_data
 	}
 
 	//限制初盘,即时盘让球在0.25以内
 	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
 		//temp_data.TOVoid = true
-		//temp_data.TOVoidDesc = "界限"
+		temp_data.TOVoidDesc = "升盘"
+		temp_data.PreResult = -1
 		return -2, temp_data
 	}
 
 	if math.Abs(a18Bet.SLetBall) > math.Abs(a18Bet.ELetBall) {
+		temp_data.TOVoidDesc = "降盘"
+		temp_data.PreResult = -1
 		return -2, temp_data
 	}
 
@@ -181,9 +185,9 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 
-	if preResult < 0 {
-		return -3, temp_data
-	}
+	//if preResult < 0 {
+	//	return -3, temp_data
+	//}
 	base.Log.Info("比赛时间:", matchDateStr +",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
 	var data *entity5.AnalyResult
