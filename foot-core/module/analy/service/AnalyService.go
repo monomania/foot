@@ -282,10 +282,10 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 6 HOUR) > NOW()
 		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") || strings.EqualFold(e.AlFlag, "C2") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
-		} else if strings.EqualFold(e.AlFlag, "C4"){
+		} else if strings.EqualFold(e.AlFlag, "C4") {
 			//nothing todo
 			return
-		}else {
+		} else {
 			e.Result = this.IsRight(last, e)
 		}
 		this.Modify(e)
@@ -423,7 +423,9 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	//比赛结果
 	globalResult := this.ActualResult(last, analy)
 	var resultFlag string
-	if globalResult == -1 {
+	if analy.PreResult == -1 {
+		resultFlag = constants.UNKNOW
+	} else if globalResult == -1 {
 		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult {
 		resultFlag = constants.HIT

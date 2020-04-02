@@ -29,4 +29,5 @@ const (
 	UNCERTAIN = "待定"
 	//走盘
 	WALKING_PLATE = "走盘"
+	UNKNOW = "未知"
 )
