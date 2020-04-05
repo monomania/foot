@@ -50,6 +50,9 @@ func (this *C4Service) Analy_Near() {
  */
 func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) {
 	temp_data := this.Find(v.Id, this.ModelName())
+	if len(temp_data.Id) <= 0 {
+		temp_data = new(entity5.AnalyResult)
+	}
 	matchId := v.Id
 	//声明使用变量
 	var a18Bet *entity3.AsiaHis
@@ -62,20 +65,6 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	temp_data.LetBall = a18Bet.ELetBall
 	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
 		//temp_data.Result =""
-		temp_data.PreResult = -1
-		return -2, temp_data
-	}
-
-	//限制初盘,即时盘让球在0.25以内
-	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
-		//temp_data.TOVoid = true
-		temp_data.TOVoidDesc = "升盘"
-		temp_data.PreResult = -1
-		return -2, temp_data
-	}
-
-	if math.Abs(a18Bet.SLetBall) > math.Abs(a18Bet.ELetBall) {
-		temp_data.TOVoidDesc = "降盘"
 		temp_data.PreResult = -1
 		return -2, temp_data
 	}
@@ -183,13 +172,35 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	}
 
 	if preResult < 0 {
+		temp_data.MatchId = v.Id
 		temp_data.MatchDate = v.MatchDate
+		temp_data.SLetBall = a18Bet.SLetBall
+		temp_data.LetBall = a18Bet.ELetBall
 		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
+		temp_data.AlFlag = this.ModelName()
+		format := time.Now().Format("0102150405")
+		temp_data.AlSeq = format
+		temp_data.PreResult = preResult
+		temp_data.HitCount = 3
+
+		//限制初盘,即时盘让球在0.25以内
+		if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
+			//temp_data.TOVoid = true
+			temp_data.TOVoidDesc = "升盘"
+			temp_data.PreResult = -1
+			return -2, temp_data
+		}
+
+		if math.Abs(a18Bet.SLetBall) > math.Abs(a18Bet.ELetBall) {
+			temp_data.TOVoidDesc = "降盘"
+			temp_data.PreResult = -1
+			return -2, temp_data
+		}
+
 		return -3, temp_data
 	}
 	base.Log.Info("比赛时间:", matchDateStr+",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
-	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		//更新比赛时间
 		temp_data.MatchDate = v.MatchDate
@@ -197,24 +208,22 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18Bet.ELetBall
 		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
-		data = temp_data
 		//比赛结果
-		data.Result = this.IsRight(v, data)
-		return 1, data
+		temp_data.Result = this.IsRight(v, temp_data)
+		return 1, temp_data
 	} else {
-		data = new(entity5.AnalyResult)
-		data.MatchId = v.Id
-		data.MatchDate = v.MatchDate
-		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18Bet.ELetBall
-		data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
-		data.AlFlag = this.ModelName()
+		temp_data.MatchId = v.Id
+		temp_data.MatchDate = v.MatchDate
+		temp_data.SLetBall = a18Bet.SLetBall
+		temp_data.LetBall = a18Bet.ELetBall
+		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
+		temp_data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
-		data.AlSeq = format
-		data.PreResult = preResult
-		data.HitCount = 3
+		temp_data.AlSeq = format
+		temp_data.PreResult = preResult
+		temp_data.HitCount = 3
 		//比赛结果
-		data.Result = this.IsRight(v, data)
-		return 0, data
+		temp_data.Result = this.IsRight(v, temp_data)
+		return 0, temp_data
 	}
 }
