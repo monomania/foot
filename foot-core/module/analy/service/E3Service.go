@@ -114,6 +114,7 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
+		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = aBet365.ELetBall

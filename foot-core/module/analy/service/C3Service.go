@@ -233,6 +233,7 @@ func (this *C3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	base.Log.Info("总积分:", temp_zong_sorce, " ,总进球:", temp_zong_goal, " ,近况:", temp_jin_val_1, " ,对阵", v.MainTeamId+":"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall)
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
+		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18Bet.ELetBall

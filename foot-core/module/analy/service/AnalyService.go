@@ -57,13 +57,13 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 }
 
 func (this *AnalyService) AnalyTest(thiz AnalyInterface) {
-	var currentPage, pageSize int64 = 1, 1000
+	var currentPage, pageSize int64 = 1, 10000
 	var page *pojo.Page
 	page = new(pojo.Page)
 	page.PageSize = pageSize
 	page.CurPage = currentPage
 	matchList := make([]*entity2.MatchLast, 0)
-	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-03-23 00:00:00' AND mh.`MatchDate` < '2020-03-31 00:00:00'", page, &matchList)
+	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-04-01 00:00:00' AND mh.`MatchDate` < '2020-04-31 00:00:00'", page, &matchList)
 	if nil != err {
 		base.Log.Error(err)
 		return
@@ -154,6 +154,8 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 					temp_data.HitCount = 0
 				}
 				data_modify_list_slice = append(data_modify_list_slice, temp_data)
+			}else if temp_data.AlFlag == "C4"{
+				data_list_slice = append(data_list_slice, temp_data)
 			}
 		}
 	}

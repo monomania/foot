@@ -159,13 +159,12 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult = 3
 			} else if math.Abs(diffScore-eLetBall) <= 0.25 {
 				preResult = 3
-			} else if math.Abs(diffGoal-eLetBall) >= 0.5 {
-				preResult = 0
-			} else if math.Abs(diffScore-eLetBall) >= 0.5 {
+			} else if math.Abs(diffGoal-eLetBall) >= 0.5 && math.Abs(diffScore-eLetBall) >= 0.5 {
 				preResult = 0
 			}
-		}else{
-			//preResult = 3
+		} else {
+			temp_data.TOVoidDesc = "Turn"
+			temp_data.PreResult = -1
 		}
 	}
 	if eLetBall < 0 {
@@ -174,23 +173,26 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult = 0
 			} else if math.Abs(diffScore-eLetBall) <= 0.25 {
 				preResult = 0
-			} else if math.Abs(diffGoal-eLetBall) >= 0.5 {
-				preResult = 3
-			} else if math.Abs(diffScore-eLetBall) >= 0.5 {
+			} else if math.Abs(diffGoal-eLetBall) >= 0.5 && math.Abs(diffScore-eLetBall) >= 0.5 {
 				preResult = 3
 			}
-		}else{
-			//preResult = 0
+		} else {
+			temp_data.TOVoidDesc = "Turn"
+			temp_data.PreResult = -1
 		}
 	}
 
 	if preResult < 0 {
+		temp_data.MatchDate = v.MatchDate
+		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
 		return -3, temp_data
 	}
-	base.Log.Info("比赛时间:", matchDateStr +",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
+	base.Log.Info("比赛时间:", matchDateStr+",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
+		//更新比赛时间
+		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18Bet.ELetBall
