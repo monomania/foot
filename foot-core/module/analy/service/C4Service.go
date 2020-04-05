@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	pojo2 "tesou.io/platform/foot-parent/foot-api/common/base/pojo"
@@ -81,7 +82,6 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	mainJinList := make([]*pojo.BFJin, 0)
 	err1 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND (j.HomeTeam = '"+v.MainTeamId+"' OR j.GuestTeam = '"+v.MainTeamId+"') AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &mainJinList)
 	if nil != err1 {
-		base.Log.Error(err1)
 		return -2, temp_data
 	}
 
@@ -152,8 +152,8 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult = 0
 			}
 		} else {
-			temp_data.TOVoidDesc = "Turn"
-			temp_data.PreResult = -1
+			preResult = -1
+			temp_data.TOVoidDesc = "None"
 		}
 	}
 	if eLetBall < 0 {
@@ -166,61 +166,52 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 				preResult = 3
 			}
 		} else {
-			temp_data.TOVoidDesc = "Turn"
-			temp_data.PreResult = -1
+			preResult = -1
+			temp_data.TOVoidDesc = "None"
 		}
 	}
 
-	if preResult < 0 {
-		temp_data.MatchId = v.Id
-		temp_data.MatchDate = v.MatchDate
-		temp_data.SLetBall = a18Bet.SLetBall
-		temp_data.LetBall = a18Bet.ELetBall
-		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
-		temp_data.AlFlag = this.ModelName()
-		format := time.Now().Format("0102150405")
-		temp_data.AlSeq = format
-		temp_data.PreResult = preResult
+	if v.Id == "1865711" {
+		fmt.Println("-------------")
+	}
+
+	temp_data.MatchId = v.Id
+	temp_data.MatchDate = v.MatchDate
+	temp_data.SLetBall = a18Bet.SLetBall
+	temp_data.LetBall = a18Bet.ELetBall
+	temp_data.Desc = fmt.Sprintf("S:%v,G:%v", diffScore, diffGoal)
+	temp_data.AlFlag = this.ModelName()
+	format := time.Now().Format("0102150405")
+	temp_data.AlSeq = format
+	temp_data.PreResult = preResult
+
+	//限制初盘,即时盘让球在0.25以内
+	range_letball := math.Abs(a18Bet.SLetBall - a18Bet.ELetBall)
+	if (a18Bet.SLetBall > 0 && a18Bet.ELetBall < 0) || (a18Bet.SLetBall < 0 && a18Bet.ELetBall > 0) {
+		temp_data.TOVoidDesc = fmt.Sprintf("Turn:%v,%v,%v", strconv.FormatFloat(range_letball, 'f', -1, 64), strconv.FormatFloat(a18Bet.SLetBall, 'f', -1, 64), strconv.FormatFloat(a18Bet.ELetBall, 'f', -1, 64))
+		temp_data.PreResult = -1
 		temp_data.HitCount = 3
-
-		//限制初盘,即时盘让球在0.25以内
-		if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
-			//temp_data.TOVoid = true
-			temp_data.TOVoidDesc = "升盘"
-			temp_data.PreResult = -1
-			return -2, temp_data
-		}
-
-		if math.Abs(a18Bet.SLetBall) > math.Abs(a18Bet.ELetBall) {
-			temp_data.TOVoidDesc = "降盘"
-			temp_data.PreResult = -1
-			return -2, temp_data
-		}
-
+		return -2, temp_data
+	}
+	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
+		temp_data.TOVoidDesc = fmt.Sprintf("Change:%v,%v,%v", strconv.FormatFloat(range_letball, 'f', -1, 64), strconv.FormatFloat(a18Bet.SLetBall, 'f', -1, 64), strconv.FormatFloat(a18Bet.ELetBall, 'f', -1, 64))
+		temp_data.PreResult = -1
+		temp_data.HitCount = 3
+		return -2, temp_data
+	}
+	if preResult < 0 {
+		temp_data.HitCount = 3
 		return -3, temp_data
 	}
+
 	base.Log.Info("比赛时间:", matchDateStr+",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
 	if len(temp_data.Id) > 0 {
-		//更新比赛时间
-		temp_data.MatchDate = v.MatchDate
-		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18Bet.ELetBall
-		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
 		//比赛结果
 		temp_data.Result = this.IsRight(v, temp_data)
 		return 1, temp_data
 	} else {
-		temp_data.MatchId = v.Id
-		temp_data.MatchDate = v.MatchDate
-		temp_data.SLetBall = a18Bet.SLetBall
-		temp_data.LetBall = a18Bet.ELetBall
-		temp_data.Desc = fmt.Sprintf("分差:%v ,球差:%v", diffScore, diffGoal)
-		temp_data.AlFlag = this.ModelName()
-		format := time.Now().Format("0102150405")
-		temp_data.AlSeq = format
-		temp_data.PreResult = preResult
 		temp_data.HitCount = 3
 		//比赛结果
 		temp_data.Result = this.IsRight(v, temp_data)
