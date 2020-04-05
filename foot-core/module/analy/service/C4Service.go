@@ -99,7 +99,6 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	guestJinList := make([]*pojo.BFJin, 0)
 	err2 := this.BFJinService.PageSql("SELECT j.* FROM foot.t_b_f_jin j WHERE j.SclassID = "+v.LeagueId+" AND (j.HomeTeam = '"+v.GuestTeamId+"' OR j.GuestTeam = '"+v.GuestTeamId+"') AND STR_TO_DATE(j.MatchTimeStr, '%Y%m%d%H%i%s') <  '"+matchDateStr+"' ORDER BY j.MatchTimeStr DESC ", page, &guestJinList)
 	if nil != err2 {
-		base.Log.Error(err2)
 		return -2, temp_data
 	}
 
@@ -185,9 +184,9 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		}
 	}
 
-	//if preResult < 0 {
-	//	return -3, temp_data
-	//}
+	if preResult < 0 {
+		return -3, temp_data
+	}
 	base.Log.Info("比赛时间:", matchDateStr +",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
 	var data *entity5.AnalyResult
