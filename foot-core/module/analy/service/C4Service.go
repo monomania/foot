@@ -95,6 +95,10 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -2, temp_data
 	}
 
+
+	base.Log.Info("比赛时间:", matchDateStr+",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", a18Bet.ELetBall, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
+
+
 	mainGoal, guestGoal := 0, 0
 	mainScore, guestScore := 0, 0
 	for _, temp := range mainJinList {
@@ -203,8 +207,6 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.HitCount = 3
 		return -3, temp_data
 	}
-
-	base.Log.Info("比赛时间:", matchDateStr+",对阵:"+v.GuestTeamId, ",初盘让球:", a18Bet.SLetBall, ",即时盘让球:", eLetBall, ",球差:", diffGoal, ",分差:", diffScore, " ,比分:", v.MainTeamGoals, ":", v.GuestTeamGoals, " ,半场比分:", v.MainTeamHalfGoals, ":", v.GuestTeamHalfGoals)
 
 	if len(temp_data.Id) > 0 {
 		temp_data.HitCount = temp_data.HitCount + 1

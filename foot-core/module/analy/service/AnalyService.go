@@ -205,7 +205,7 @@ func (this *AnalyService) ModifyAllResult() {
 SELECT 
   ar.* 
 FROM
-  foot.t_analy_result ar WHERE ar.tovoid IS TRUE
+  foot.t_analy_result ar 
      `
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
