@@ -63,7 +63,7 @@ func (this *AnalyService) AnalyTest(thiz AnalyInterface) {
 	page.PageSize = pageSize
 	page.CurPage = currentPage
 	matchList := make([]*entity2.MatchLast, 0)
-	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-04-01 00:00:00' AND mh.`MatchDate` < '2020-04-31 00:00:00'", page, &matchList)
+	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-03-01 00:00:00' AND mh.`MatchDate` < '2020-04-30 00:00:00'", page, &matchList)
 	if nil != err {
 		base.Log.Error(err)
 		return
@@ -147,6 +147,7 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 
 		} else if nil != temp_data {
 			temp_data.TOVoid = true
+			temp_data.Result = ""
 			if len(temp_data.Id) > 0 {
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
@@ -204,7 +205,7 @@ func (this *AnalyService) ModifyAllResult() {
 SELECT 
   ar.* 
 FROM
-  foot.t_analy_result ar 
+  foot.t_analy_result ar WHERE ar.tovoid IS TRUE
      `
 	//结果值
 	entitys := make([]*entity5.AnalyResult, 0)
@@ -392,7 +393,9 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 		}
 	}
 	var resultFlag string
-	if globalResult == -1 {
+	if analy.PreResult == -1 {
+		resultFlag = constants.UNKNOW
+	} else if globalResult == -1 {
 		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult || globalResult == 1 {
 		resultFlag = constants.HIT

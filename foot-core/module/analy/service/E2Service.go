@@ -6,6 +6,7 @@ import (
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
 	entity3 "tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
+	"tesou.io/platform/foot-parent/foot-core/module/analy/constants"
 	"time"
 )
 
@@ -81,7 +82,7 @@ func (this *E2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	//1.有变化,进行以下逻辑
 	//亚赔
-	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, "18Bet")
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId,  constants.DEFAULT_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, temp_data
 	}

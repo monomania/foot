@@ -58,7 +58,7 @@ func (this *C4Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//声明使用变量
 	var a18Bet *entity3.AsiaHis
 	//亚赔
-	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.DEFAULT_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
