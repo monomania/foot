@@ -147,7 +147,9 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 
 		} else if nil != temp_data {
 			temp_data.TOVoid = true
-			temp_data.Result = ""
+			if temp_data.AlFlag == "C4"{
+				temp_data.Result = ""
+			}
 			if len(temp_data.Id) > 0 {
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
