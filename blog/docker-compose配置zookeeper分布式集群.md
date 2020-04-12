@@ -1,30 +1,7 @@
-#swarm模式下docker-compose配置zookeeper分布式集群
+#docker-compose配置zookeeper分布式集群
 
 ##$ 前言
 * 记录一次,在docker swarm 下利用docker-compose创建的3个节点的zookeer分布式集群.
-
-##$ docker环境下常用到的命令
-~~~
-####docker启动单个容器
-docker start 容器名
-####docker停止单个容器
-docker stop 容器名
-####停止删除所有容器
-docker stop $(docker ps -a -q)  && docker rm   $(docker ps -a -q) -f
-####删除所有镜像
-docker image rm $(docker images -q) -f
-####删除无用的卷
-docker volume prune
-####查看docker日志文件大小
-ls -lh $(find /var/lib/docker/containers/ -name *-json.log)
-####查找大文件
-find / -type f -size +100M
-####docker-compose方式创建启动容器
-docker-compose -f zk.yml up -d
-####docker-compose方式停止销毁容器
-docker-compose -f zk.yml down
-~~~
-
 
 ## 首先创建一个Docker网卡
 ~~~
@@ -117,4 +94,26 @@ services:
     networks:
         ov_net:
             ipv4_address: 172.169.11.103
+~~~
+
+##$ 附带上自己docker环境下常用到的命令
+~~~
+####docker启动单个容器
+docker start 容器名
+####docker停止单个容器
+docker stop 容器名
+####停止删除所有容器
+docker stop $(docker ps -a -q)  && docker rm   $(docker ps -a -q) -f
+####删除所有镜像
+docker image rm $(docker images -q) -f
+####删除无用的卷
+docker volume prune
+####查看docker日志文件大小
+ls -lh $(find /var/lib/docker/containers/ -name *-json.log)
+####查找大文件
+find / -type f -size +100M
+####docker-compose方式创建启动容器
+docker-compose -f zk.yml up -d
+####docker-compose方式停止销毁容器
+docker-compose -f zk.yml down
 ~~~
