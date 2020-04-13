@@ -298,8 +298,4 @@ sql文件,可自行导入自己的mysql库中.
 ##$ CSV 4W行版本
 * 链接：[https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg](https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg) 
 * 提取码：2fdm
-
-##$ CSV 数据截图
-<img src="https://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5S7uoIx92S3coZD6UJMK4PKVY31wo4Fml9EJNtEHXfO5aHpMPUk3eeIGlz5Qia2oTxsbe21XLofnVA/0?wx_fmt=png" width="200px">
-
  
