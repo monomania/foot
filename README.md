@@ -2,7 +2,7 @@
 ##AI足球大数据爬虫分析一体化GO项目
 
 ## 项目地址
-* [https://github.com/monomania/foot](https://github.com/monomania/foot)
+* [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
 
 ## 项目介绍
 ```
@@ -75,9 +75,6 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 * [beego](https://github.com/astaxie/beego)
 * [walk](https://github.com/lxn/walk)
 * [go版wechat sdk](https://github.com/chanxuehong/wechat)
-
-
-
 
 
 ## 项目结构
@@ -199,17 +196,6 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
   | foot-spider  |foot-core|
   | foot-web     |暂无|
    
-
-
-## 实现功能
-    ```
-    本项目仅作娱乐研究参考所用,
-    ```
-## 后台数据截图
-> 1. <img src="https://oscimg.oschina.net/oscnet/up-fb352eee77e897424c365a77b07269388ca.png" width="180px">
-> 2. <img src="https://oscimg.oschina.net/oscnet/up-7da97167e12e1d89e455a342c0e17bbe21d.png" width="180px">
-> 3. <img src="https://oscimg.oschina.net/oscnet/up-e1dc8255364a999bcc473489b163e1aa98c.png" width="180px">
-
 ## 使用教程
 
 * 配置环境
@@ -265,4 +251,55 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 1.运行build_linux.bat 进行打包
 2.FOOT000 auto        启动
 ~~~
+
+#历年足球数据下载
+~~~
+足球历年数据,数据的年份范围为:2010-2020. 10年间的数据.没有杯赛,友谊赛,联赛次级的数据.
+包含澳门，bet365，威廉，立博等多菠菜公司的欧赔数据.
+当前数据提供的有
+csv文件,可自行转excel.
+sql文件,可自行导入自己的mysql库中.
+~~~
+
+##$ Mysql 文件
+* 链接：[https://pan.baidu.com/s/1DSva_tkTB433iRtmbg7q0w ](https://pan.baidu.com/s/1DSva_tkTB433iRtmbg7q0w ) 
+* 提取码：wmwl
+
+##$ Mysql 表说明
+  | 	表名  | 	数据行数| 	表说明	   | 
+  | ----------- | :--------------:| ---------------------| 
+  | 	t_asia_track	| 	2702052	| 	亚赔变化表	| 
+  | 	t_euro_his	| 	2186160	| 	欧赔历史表(只有各家初即数据)	| 
+  | 	t_asia_his	| 	2039445	| 	亚赔历史表(只有各家初即数据)	| 
+  | 	t_b_f_score	| 	1485341	| 	积分榜数据表	| 
+  | 	t_b_f_future_event	| 	1000137	| 	未来赛事表	| 
+  | 	t_euro_track	| 	917214	| 	欧赔变化表(部分历史比赛己无法获取)	| 
+  | 	t_b_f_jin	| 	497977	| 	近期战绩表	| 
+  | 	t_match_his	| 	397253	| 	比赛数据表	| 
+  | 	t_b_f_battle	| 	356232	| 	主客队对战历史表	| 
+  | 	t_analy_result	| 	123793	| 	分析预测结果表	| 
+  | 	t_league_sub	| 	23953	| 	联赛次级表	| 
+  | 	t_league_season	| 	9550	| 	联赛赛季表	| 
+  | 	t_match_last	| 	3056	| 	比赛临时表	| 
+  | 	t_league	| 	1149	| 	联赛表	| 
+  | 	t_asia_last	| 	155	| 	亚赔临时表	| 
+  | 	t_comp	| 	40	| 	波菜公司表	| 
+  | 	t_euro_last	| 	36	| 	欧赔临时表	| 
+  | 	t_pub	| 	0	| 	无用	| 
+## Mysql 数据截图
+> 1. <img src="https://oscimg.oschina.net/oscnet/up-fb352eee77e897424c365a77b07269388ca.png" width="180px">
+> 2. <img src="https://oscimg.oschina.net/oscnet/up-7da97167e12e1d89e455a342c0e17bbe21d.png" width="180px">
+> 3. <img src="https://oscimg.oschina.net/oscnet/up-e1dc8255364a999bcc473489b163e1aa98c.png" width="180px">
+
+##$ CSV 20W行版本
+* 链接：[https://pan.baidu.com/s/1t8RtDtlk38MxZzsnNmrRlg](https://pan.baidu.com/s/1t8RtDtlk38MxZzsnNmrRlg) 
+* 提取码：a0kw
+
+##$ CSV 4W行版本
+* 链接：[https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg](https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg) 
+* 提取码：2fdm
+
+##$ CSV 数据截图
+<img src="https://mmbiz.qpic.cn/sz_mmbiz_png/BePaFicK2B5S7uoIx92S3coZD6UJMK4PKVY31wo4Fml9EJNtEHXfO5aHpMPUk3eeIGlz5Qia2oTxsbe21XLofnVA/0?wx_fmt=png" width="200px">
+
  
