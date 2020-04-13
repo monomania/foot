@@ -30,10 +30,10 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 
 ## 公众号演示
  * 公众号: AI球探(ai00268)
- >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
+ >> ![](https://images.gitee.com/uploads/images/2020/0413/190211_5a77af19_1880617.jpeg "go mod")
 ## 战绩截图
-<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
-<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
+<img src="https://images.gitee.com/uploads/images/2020/0413/190211_4c4104ef_1880617.png" width="180px">
+<img src="https://images.gitee.com/uploads/images/2020/0413/190211_3e625fe9_1880617.png" width="180px">
 
 ##目前程序已经完成了对很多足球相关数据荐的收集,包括且不仅限于:
 * 所有的联赛信息,
@@ -210,7 +210,7 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-  >> ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
+  >> ![](https://images.gitee.com/uploads/images/2020/0413/190211_94a51eee_1880617.png "go mod")
 * 下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -252,7 +252,7 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 2.FOOT000 auto        启动
 ~~~
 
-#历年足球数据下载
+## 历年足球数据下载
 ~~~
 足球历年数据,数据的年份范围为:2010-2020. 10年间的数据.没有杯赛,友谊赛,联赛次级的数据.
 包含澳门，bet365，威廉，立博等多菠菜公司的欧赔数据.
@@ -261,11 +261,11 @@ csv文件,可自行转excel.
 sql文件,可自行导入自己的mysql库中.
 ~~~
 
-##$ Mysql 文件
+## $ Mysql 文件
 * 链接：[https://pan.baidu.com/s/1DSva_tkTB433iRtmbg7q0w ](https://pan.baidu.com/s/1DSva_tkTB433iRtmbg7q0w ) 
 * 提取码：wmwl
 
-##$ Mysql 表说明
+## $ Mysql 表说明
   | 	表名  | 	数据行数| 	表说明	   | 
   | ----------- | :--------------:| ---------------------| 
   | 	t_asia_track	| 	2702052	| 	亚赔变化表	| 
@@ -286,16 +286,17 @@ sql文件,可自行导入自己的mysql库中.
   | 	t_comp	| 	40	| 	波菜公司表	| 
   | 	t_euro_last	| 	36	| 	欧赔临时表	| 
   | 	t_pub	| 	0	| 	无用	| 
-## Mysql 数据截图
-> 1. <img src="https://oscimg.oschina.net/oscnet/up-fb352eee77e897424c365a77b07269388ca.png" width="180px">
-> 2. <img src="https://oscimg.oschina.net/oscnet/up-7da97167e12e1d89e455a342c0e17bbe21d.png" width="180px">
-> 3. <img src="https://oscimg.oschina.net/oscnet/up-e1dc8255364a999bcc473489b163e1aa98c.png" width="180px">
 
-##$ CSV 20W行版本
+## $ Mysql 数据截图
+> 1. <img src="https://images.gitee.com/uploads/images/2020/0413/190211_64977560_1880617.png" width="180px">
+> 2. <img src="https://images.gitee.com/uploads/images/2020/0413/190211_33ff97ee_1880617.png" width="180px">
+> 3. <img src="https://images.gitee.com/uploads/images/2020/0413/190211_3863d3cc_1880617.png" width="180px">
+
+## $ CSV 20W行版本
 * 链接：[https://pan.baidu.com/s/1t8RtDtlk38MxZzsnNmrRlg](https://pan.baidu.com/s/1t8RtDtlk38MxZzsnNmrRlg) 
 * 提取码：a0kw
 
-##$ CSV 4W行版本
+## $ CSV 4W行版本
 * 链接：[https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg](https://pan.baidu.com/s/1-70U-_gm26s2RcjWNooebg) 
 * 提取码：2fdm
  
