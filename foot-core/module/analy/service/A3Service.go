@@ -55,7 +55,7 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//声明使用变量
 	var a18Bet *entity3.AsiaHis
 	//亚赔
-	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.C1_REFER_ASIA)
+	aList := this.AsiaHisService.FindByMatchIdCompId(matchId, constants.DEFAULT_REFER_ASIA)
 	if len(aList) < 1 {
 		return -1, temp_data
 	}
@@ -159,6 +159,7 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
+		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
 		temp_data.LetBall = a18Bet.ELetBall

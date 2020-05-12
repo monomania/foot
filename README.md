@@ -1,85 +1,144 @@
+## ‍🚀 AI足球大数据爬虫分析预测一体化项目(golang)
 
+## 📝 项目地址
+* [https://gitee.com/aoe5188/foot](https://gitee.com/aoe5188/foot)
+***
 
-## 项目地址
-* [https://github.com/monomania/foot](https://github.com/monomania/foot)
+![](https://img.shields.io/badge/build-go1.13.4-yeoll?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/build-python3.7-yellow?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/database-mysql5.7.28-red?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/ide-goland2018-blue?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/status-dev-green?style=for-the-badge&logo=appveyor)
+***
 
-## 项目介绍
+## 🎉 项目简介
+> + 👊 foot-parent 是一个集足球数据采集器,简单分析的项目.
+> + 👍 程序采用golang开发,项目模块化结构清晰完整,非常容易入手并进行二次开发分析.
+> + 👍 AI球探为程序全自动处理,全程无人为参与干预足球分析预测程序.
+> + ⚡️ 避免了人为分析的主观性及不稳定因素.
+> + ✨ 程序根据各大指数多维度数据,结合作者多年足球分析经验,精雕细琢,
+    集天地之灵气,汲日月之精华,历时七七四十九天,经Bug九九八十一个,编码而成.
+> + 🎯 程序执行流程包括且不仅限于(数据自动获取-->分析学习-->自动推送发布).  
+> + 😎 经近三个月的实验准确率一直能维持在一个较高的水平.
+> + ☕ 同时也是一个学习golang的一个入门级项目.
+***
+
+## 🌰 项目来由
 ```
 热衷于足球多年,之余也会去研究一下,时间久了,都会有自己的心得.
 但不可能每次都那么费劲的自己人工去看盘分析,
 所以结合所学,就有这个项目.
 ```
+***
 
-```
-foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其他发布平台一体化的项目.
-程序采用go语言开发,项目结构清晰完整,非常容易入手并进行二次开发分析.
-```
+## 😎 如该项目对你有帮助,请给一个👉 star,谢谢!
+## 😎 如该项目对你有帮助,请给一个👉 star,谢谢!
+## 😎 如该项目对你有帮助,请给一个👉 star,谢谢!
+***
 
-## 项目为什么开源?
-~~~
-让有编程能力的朋友,同样爱好足球的朋友,也可以参与进来.
-
-大家购彩多年,都有自己购彩的心得.
-如果大家将这些心得,集中起来,形成一个模型习惯算法库.进行持续优化.
-再交给机器来对之前的大数据量的比赛进行复盘学习,学习过程中对各种模型习惯进行加权重加评分.
-是否是一个比较有价值的预测东西,,,或只是个人妄想而已.哈哈 
-~~~
-
-##如该项目对你有帮助,请给一个star,谢谢!
-
-## 公众号演示
+## 🙋‍ 公众号演示
  * 公众号: AI球探(ai00268)
- >> ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
-## 战绩截图
-<img src="https://oscimg.oschina.net/oscnet/up-a2c999d4924ad795a582a8514f49fabe420.png" width="180px">
-<img src="https://oscimg.oschina.net/oscnet/up-c71f54f3bf588fc4ffc6b6edc94919b7671.png" width="180px">
+ ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
+***
 
-##目前程序已经完成了对很多足球相关数据荐的收集,包括且不仅限于:
+## 👏 目前程序已经完成了对很多足球相关数据的收集,包括且不仅限于:
 * 所有的联赛信息,
 * 球队信息,
 * 今日比赛列表,
 * 自动更新比赛结果,
 * 所有亚指的数据,
 * 所有的亚指的变化数据,
-* 部分欧指数据,(可配置)
-* 部分欧指数据的变化过程(可配置),
+* 所有的欧指数据,(可配置)
+* 所有的欧指数据的变化过程(可配置),
 * 对阵双方的积分榜收集,
 * 对阵双方的对战历史,
 * 对阵双方的近30场战绩,
 * 对阵双方的未来三场赛事.
+* 必发交易量
+* 大小球指数数据
+* 大小球指数数据的变化数据
+***
 
-##项目中同时也提供一些分析示例,都是个人及一些网友的忙得,且在持续更新中:
-###模型说明
-* A1模型  
-  >> A1模型分析算法,以亚指指数为校验基准,为亚欧盘联动变化过程不符合模型设定值时,产生.
-* A2模型  
-  >> A2模型分析算法,以亚指指数为校验基准,比较复杂,开发实现中...
-* C1模型  
-  >> C1模型分析算法,以亚指指数为校验基准,纯基本面分析.
-  >> 通过基本面计算出让球(BF让球),与盘口让球对比是否在合理范畴内
-* E1模型  
-  >> E1模型分析算法,以亚指指数为校验基准,比较复杂,暂无说明.
-* E2模型  
-  >> E2模型分析算法,以胜平负为校验基准,由于是单边防平双选,因此结果非对即错.
-  >> 为公众号主推模型,望大家长期关注,对比历史查看.
-* Q1模型  
-  >> Q1模型分析算法,以亚指指数为校验基准,由网友(强)提供,逻辑简单有效,经长测表现稳定.
-  >> 分析算法逻辑,对比计算对竞彩官方与***波菜的即时盘赔率得出预测结果.
-  >> 目前只可在待选池中可查看,未加入到推荐列表中.
-
-
-## 技术选型
+## 🌰 技术选型
 * [xorm](https://github.com/go-xorm/xorm)
 * [go_spider](https://github.com/hu17889/go_spider)
 * [beego](https://github.com/astaxie/beego)
 * [walk](https://github.com/lxn/walk)
 * [go版wechat sdk](https://github.com/chanxuehong/wechat)
+***
 
 
+## 🌰 模块依赖
+  
+  | 模块名    |  依赖模块     |  说明     |
+  |:----:    | :----:   |:----   |
+  | foot-api      |无| 存放各载体struct|
+  | foot-core    |foot-api| 提供CRUD能力逻辑处理|
+  | foot-gui     |foot-core| windows桌面控制| 
+  | foot-spider  |foot-core|爬虫数据源|
+  | foot-web     |暂无| 可能会用于提供API|
+***
 
+## 🌰 使用教程
 
+* 配置环境
+  * 安装 go
+    * 配置GOPATH
+  * 环境变量
+    
+  | 变量名称=值    |  说明     |
+  | --------    | :----:   |
+  | GO111MODULE=on  |开启go mod模块支持|
+  | GOPROXY=https://goproxy.cn,direct     |依赖包下载代理地址|
+  | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
+  
+* 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
+  ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
+  * 或可手动下载资源包
+    ```
+      cd ./foot-api && go mod tidy
+      cd ../foot-core && go mod tidy
+      cd ../foot-gui && go mod tidy
+      cd ../foot-spider && go mod tidy
+      cd ../foot-web && go mod tidy
+    ```
+* 手动创建数据库
+  
+  数据库名为: foot 
+* 配置数据库连接
+  * conf文件修改配置
+    * ./conf/app.ini
+     ~~~
+     详情看配置文件内的说明
+     ~~~
+* 同步数据库表
+     * FC001DBInit.go 
+      
+## 🌰 主要入口
+  *  build_linux.bat            一键打包linux发布程序
+  *  build_windows.bat          一键打包windows发布程序
+  *  FC000.go                   运行beego
+  *  FC001DBInit.go             数据库表同步初始化
+  *  FC002Analy.go              运行结果分析    
+  *  FOOT000.go                 linux入口（主要使用）
+  *  FOOT000Cmd.go              windows入口（主要使用）
+  *  FS000.go                   运行数据爬虫
 
-## 项目结构
+## 🌰 本地调试运行
+~~~
+1. 创建数据库foot
+2. FC001DBInit.go  同步数据库表
+3. FS000.go 运行数据爬虫
+4. FC002Analy.go 分析得出推荐列表
+~~~
+## 🌰打包部署
+~~~
+1.运行build_linux.bat 进行打包
+2.FOOT000 auto        启动
+~~~
+***
+
+## 🌰 项目结构
 ~~~
 |-- assets 素材文件夹
 |   |-- common
@@ -188,80 +247,3 @@ foot-parent 是一个集足球数据采集器,简单分析,同步到微信及其
 `-- logs
 
 ~~~
-## 模块依赖
-  
-  | 模块名    |  依赖模块     |
-  | --------    | :----:   |
-  | foot-api      |无|
-  | foot-core    |foot-api|
-  | foot-gui     |foot-core|
-  | foot-spider  |foot-core|
-  | foot-web     |暂无|
-   
-
-
-## 实现功能
-    ```
-    本项目仅作娱乐研究参考所用,
-    ```
-## 后台数据截图
-> 1. <img src="https://oscimg.oschina.net/oscnet/up-fb352eee77e897424c365a77b07269388ca.png" width="180px">
-> 2. <img src="https://oscimg.oschina.net/oscnet/up-7da97167e12e1d89e455a342c0e17bbe21d.png" width="180px">
-> 3. <img src="https://oscimg.oschina.net/oscnet/up-e1dc8255364a999bcc473489b163e1aa98c.png" width="180px">
-
-## 使用教程
-
-* 配置环境
-  * 安装 go
-    * 配置GOPATH
-  * 环境变量
-    
-  | 变量名称=值    |  说明     |
-  | --------    | :----:   |
-  | GO111MODULE=on  |开启go mod模块支持|
-  | GOPROXY=https://goproxy.cn,direct     |依赖包下载代理地址|
-  | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
-  
-* 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-  >> ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
-* 下载资源包
-    ```
-      cd ./foot-api && go mod tidy
-      cd ../foot-core && go mod tidy
-      cd ../foot-gui && go mod tidy
-      cd ../foot-spider && go mod tidy
-      cd ../foot-web && go mod tidy
-    ```
-* 手动创建数据库
-  
-  数据库名为: foot 
-* 配置数据库连接
-  * conf文件修改配置
-    * ./conf/app.ini
-     >>>> 详情看配置文件内的说明
-* 同步数据库表
-     * FC001DBInitApplication.go 
-      
-## 主要入口
-  *  build_linux.bat            一键打包linux发布程序
-  *  build_windows.bat          一键打包windows发布程序
-  *  FC000Application.go        运行beego
-  *  FC001DBInitApplication.go  数据库表同步初始化
-  *  FC002AnalyApplication.go   运行结果分析    
-  *  FOOT000.go                 linux入口（主要使用）
-  *  FOOT000CmdApplication.go   windows入口（主要使用）
-  *  FS000Application.go        运行数据爬虫
-
-## 本地调试运行
-~~~
-1. 创建数据库foot
-2. FC001DBInitApplication.go  同步数据库表
-3. FS000Application.go 运行数据爬虫
-4. FC002AnalyApplication 分析得出推荐列表
-~~~
-## 打包部署
-~~~
-1.运行build_linux.bat 进行打包
-2.FOOT000 auto        启动
-~~~
- 

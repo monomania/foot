@@ -57,13 +57,13 @@ func (this *AnalyService) FindAll() []*entity5.AnalyResult {
 }
 
 func (this *AnalyService) AnalyTest(thiz AnalyInterface) {
-	var currentPage, pageSize int64 = 1, 30000
+	var currentPage, pageSize int64 = 1, 10000
 	var page *pojo.Page
 	page = new(pojo.Page)
 	page.PageSize = pageSize
 	page.CurPage = currentPage
 	matchList := make([]*entity2.MatchLast, 0)
-	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2019-10-01 00:00:00' AND mh.`MatchDate` < '2020-02-28 00:00:00'", page, &matchList)
+	err := this.MatchHisService.PageSql("SELECT mh.* FROM foot.t_match_his mh WHERE mh.`MatchDate` > '2020-03-01 00:00:00' AND mh.`MatchDate` < '2020-04-30 00:00:00'", page, &matchList)
 	if nil != err {
 		base.Log.Error(err)
 		return
@@ -147,6 +147,9 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 
 		} else if nil != temp_data {
 			temp_data.TOVoid = true
+			if temp_data.AlFlag == "C4"{
+				temp_data.Result = ""
+			}
 			if len(temp_data.Id) > 0 {
 				if temp_data.HitCount >= hit_count {
 					temp_data.HitCount = (hit_count / 2) - 1
@@ -154,6 +157,8 @@ func (this *AnalyService) Analy_Process(matchList []*entity2.MatchLast, thiz Ana
 					temp_data.HitCount = 0
 				}
 				data_modify_list_slice = append(data_modify_list_slice, temp_data)
+			}else if temp_data.AlFlag == "C4"{
+				data_list_slice = append(data_list_slice, temp_data)
 			}
 		}
 	}
@@ -282,6 +287,9 @@ WHERE DATE_ADD(ar.MatchDate, INTERVAL 6 HOUR) > NOW()
 		if strings.EqualFold(e.AlFlag, "E2") || strings.EqualFold(e.AlFlag, "C1") || strings.EqualFold(e.AlFlag, "C2") {
 			//E2使用特别自身的验证结果方法
 			e.Result = this.IsRight2Option(last, e)
+		} else if strings.EqualFold(e.AlFlag, "C4") {
+			//nothing todo
+			return
 		} else {
 			e.Result = this.IsRight(last, e)
 		}
@@ -387,7 +395,9 @@ func (this *AnalyService) IsRight2Option(last *entity2.MatchLast, analy *entity5
 		}
 	}
 	var resultFlag string
-	if globalResult == -1 {
+	if analy.PreResult == -1 {
+		resultFlag = constants.UNKNOW
+	} else if globalResult == -1 {
 		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult || globalResult == 1 {
 		resultFlag = constants.HIT
@@ -420,7 +430,9 @@ func (this *AnalyService) IsRight(last *entity2.MatchLast, analy *entity5.AnalyR
 	//比赛结果
 	globalResult := this.ActualResult(last, analy)
 	var resultFlag string
-	if globalResult == -1 {
+	if analy.PreResult == -1 {
+		resultFlag = constants.UNKNOW
+	} else if globalResult == -1 {
 		resultFlag = constants.UNCERTAIN
 	} else if globalResult == analy.PreResult {
 		resultFlag = constants.HIT

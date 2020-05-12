@@ -46,7 +46,7 @@ func Analy(all bool) {
 	base.Log.Info("---------------A3模型--------------")
 	base.Log.Info("---------------------------------------------------------------")
 	a3 := new(service.A3Service)
-	a3.MaxLetBall = 10
+	a3.MaxLetBall = 5
 	a3.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------C1模型--------------")
@@ -55,11 +55,11 @@ func Analy(all bool) {
 	c1.MaxLetBall = maxLetBall
 	c1.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------C2模型--------------")
+	base.Log.Info("---------------C4模型--------------")
 	base.Log.Info("---------------------------------------------------------------")
-	c2 := new(service.C2Service)
-	c2.MaxLetBall = maxLetBall
-	c2.Analy(all)
+	c4 := new(service.C4Service)
+	c4.MaxLetBall = 10
+	c4.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------处理结果--------------")
 	base.Log.Info("---------------------------------------------------------------")

@@ -9,7 +9,7 @@ import (
 */
 type BFJin struct {
 	//比赛ID
-	ScheduleID int64 `json:"ScheduleID" xorm:"comment('比赛ID')  index"`
+	ScheduleID int64 `json:"ScheduleID" xorm:"comment('比赛ID') unique(ScheduleID) index"`
 	//联赛ID
 	SclassID int64 `json:"SclassID"  xorm:"comment('联赛ID') index"`
 	//联赛名称
