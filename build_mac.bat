@@ -2,8 +2,9 @@
 echo=
 
 echo set sytem env
+set GOOS=darwin
+set GOARCH=amd64
 set rootDir=%cd%
-
 
 echo copy config
 if not exist %rootDir%\bin\conf\ md %rootDir%\bin\conf\
@@ -26,7 +27,8 @@ for %%s in (%rootDir%\bin\assets\wechat\html\*.html) do (
 
 echo build
 cd %rootDir%
-go build  -v -x  -o bin/FOOT000.exe FOOT000Cmd.go
+go build -v -x -o bin/FOOT000 FOOT000.go
 
 echo=
 pause
+
