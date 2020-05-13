@@ -26,9 +26,20 @@ type SuggestTodayService struct {
 	service2.SuggestService
 }
 
+//双选模型
+var choice2_map = [...]string{"E2", "C1", "C2"}
+
 func preResultStr(val int, al_flag string) string {
 	var result string
-	if "E22" == al_flag || "C11" == al_flag {
+	choice2 := false
+	for _, e := range choice2_map {
+		if strings.EqualFold(e, al_flag) {
+			choice2 = true
+			break
+		}
+	}
+
+	if choice2 {
 		if 3 == val {
 			result = "胜平"
 		} else if 1 == val {
@@ -48,22 +59,26 @@ func preResultStr(val int, al_flag string) string {
 	return result
 }
 
-func color(str string) string {
-	if "A1" == str {
-		return "orange"
-	} else if "C1" == str {
-		return "yellow"
-	} else if "C2" == str {
-		return "yellowgreen"
-	} else if "E1" == str {
-		return "blue"
-	} else if "E2" == str {
-		return "darkblue"
-	} else if "Q1" == str {
-		return "olivedrab"
+var (
+	color_map = map[string]string{
+		"A1": "red",
+		"A3": "orange",
+		"C1": "yellow",
+		"C2": "yellowgreen",
+		"C4": "green",
+		"E1": "cyan",
+		"E2": "blue",
+		"Q1": "purple",
+		"Q2": "black",
 	}
-	return "XX"
+)
+
+func color(str string) string {
+	s := color_map[str]
+	return s
 }
+
+
 
 func resultColor(str string) string {
 	if str == constants2.HIT || str == constants2.HIT_1 {
@@ -166,7 +181,7 @@ func (this *SuggestTodayService) __ModifyToday(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"C2")
+	this.StatWinOdd_Today(&temp, tempList, "C2")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today.html")
@@ -183,6 +198,7 @@ func (this *SuggestTodayService) __ModifyToday(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
+
 /**
 今日稳胆比赛c1e2 稳胆C2E2
  */
@@ -216,7 +232,7 @@ func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"C1")
+	this.StatWinOdd_Today(&temp, tempList, "C1")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_guts_c1e2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts_c1e2.html")
@@ -233,6 +249,7 @@ func (this *SuggestTodayService) ModifyTodayGutsC1E2(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
+
 //func (this *SuggestTodayService) ModifyTodayGutsC2E2(wcClient *core.Client)  {}
 func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 	param := new(vo.SuggStubVO)
@@ -265,7 +282,7 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"C2")
+	this.StatWinOdd_Today(&temp, tempList, "C2")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_guts_c2e2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_guts_c2e2.html")
@@ -282,7 +299,6 @@ func (this *SuggestTodayService) ModifyToday(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
 
 /**
 今日赛事分析
@@ -387,15 +403,13 @@ func (this *SuggestTodayService) ModifyTodayDetailNew(wcClient *core.Client) {
 	}
 	first.Content = buf.String()
 	first.Content = strings.TrimSpace(first.Content)
-	first.Content = strings.ReplaceAll(first.Content,"\r\n","")
+	first.Content = strings.ReplaceAll(first.Content, "\r\n", "")
 
 	err = material.UpdateNews(wcClient, today_mediaId, 2, &first)
 	if err != nil {
 		base.Log.Error(err)
 	}
 }
-
-
 
 /**
 今日比赛c1
@@ -432,7 +446,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"C1")
+	this.StatWinOdd_Today(&temp, tempList, "C1")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_c1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c1.html")
@@ -449,6 +463,7 @@ func (this *SuggestTodayService) ModifyTodayC1(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
+
 /**
 今日C2比赛
  */
@@ -484,7 +499,7 @@ func (this *SuggestTodayService) ModifyTodayC2(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"C2")
+	this.StatWinOdd_Today(&temp, tempList, "C2")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_c2.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_c2.html")
@@ -501,7 +516,6 @@ func (this *SuggestTodayService) ModifyTodayC2(wcClient *core.Client) {
 		base.Log.Error(err)
 	}
 }
-
 
 /**
 今日A1待选池比赛
@@ -537,7 +551,7 @@ func (this *SuggestTodayService) __ModifyTodayA1(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"A1")
+	this.StatWinOdd_Today(&temp, tempList, "A1")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_a1.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_a1.html")
@@ -555,10 +569,11 @@ func (this *SuggestTodayService) __ModifyTodayA1(wcClient *core.Client) {
 	}
 }
 
-func (this *SuggestTodayService)  Print11(){
+func (this *SuggestTodayService) Print11() {
 	fmt.Println(constants.SpiderDateStr)
 	fmt.Println(constants.FullSpiderDateStr)
 }
+
 /**
 今日待选池比赛
  */
@@ -593,7 +608,7 @@ func (this *SuggestTodayService) ModifyTodayTbsA1A3(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"A3")
+	this.StatWinOdd_Today(&temp, tempList, "A3")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_tbs.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_tbs.html")
@@ -619,7 +634,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 	h12, _ = time.ParseDuration("100h")
 	endDate := now.Add(h12)
 	param.EndDateStr = endDate.Format("2006-01-02 15:04:05")
-	param.AlFlags = []string{"E1", "E2", "C4","Q1"}
+	param.AlFlags = []string{"E1", "E2", "C4", "Q1"}
 	tempList := this.SuggestService.QueryTbs(param)
 	//更新推送
 	first := material.Article{}
@@ -641,7 +656,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 		temp.DataList[i] = *e
 	}
 
-	this.StatWinOdd_Today(&temp,tempList,"E2")
+	this.StatWinOdd_Today(&temp, tempList, "E2")
 
 	var buf bytes.Buffer
 	tpl, err := template.New("today_tbs.html").Funcs(getFuncMap()).ParseFiles("assets/wechat/html/today_tbs.html")
@@ -662,7 +677,7 @@ func (this *SuggestTodayService) ModifyTodayTbs(wcClient *core.Client) {
 /**
 胜率统计
  */
-func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*vo.SuggStubVO,temp_main_alflag string){
+func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO, tempList []*vo.SuggStubVO, temp_main_alflag string) {
 	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
 	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
@@ -704,7 +719,7 @@ func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*
 	//计算单方向胜率
 	var mainRedCount, mainBlackCount int64
 	for _, e := range tempList {
-		if !strings.Contains(temp_main_alflag,e.AlFlag){
+		if !strings.Contains(temp_main_alflag, e.AlFlag) {
 			continue
 		}
 		last := new(pojo.MatchLast)
@@ -716,7 +731,7 @@ func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*
 		last.GuestTeamId = e.GuestTeam
 		last.GuestTeamGoals, _ = strconv.Atoi(e.GuestTeamGoal)
 		option := this.AnalyService.IsRight(last, &e.AnalyResult)
-		if option == constants2.HIT ||  option == constants2.HIT_1{
+		if option == constants2.HIT || option == constants2.HIT_1 {
 			mainRedCount++
 		}
 		if option == constants2.UNHIT {
@@ -731,11 +746,10 @@ func (this *SuggestTodayService) StatWinOdd_Today(temp *vo.TTodayVO,tempList []*
 	temp.MainVal = strconv.FormatFloat(mainVal, 'f', -1, 64) + "%"
 }
 
-
 /**
 胜率统计
  */
-func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO,tempList []*vo.SuggStubVO,temp_main_alflag string){
+func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO, tempList []*vo.SuggStubVO, temp_main_alflag string) {
 	var redCount, walkCount, blackCount, linkRedCount, tempLinkRedCount, linkBlackCount, tempLinkBlackCount int64
 	temp.DataList = make([]vo.SuggStubVO, len(tempList))
 	for i, e := range tempList {
@@ -777,7 +791,7 @@ func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO,tempList [
 	//计算单方向胜率
 	var mainRedCount, mainBlackCount int64
 	for _, e := range tempList {
-		if !strings.Contains(temp_main_alflag,e.AlFlag){
+		if !strings.Contains(temp_main_alflag, e.AlFlag) {
 			continue
 		}
 		last := new(pojo.MatchLast)
@@ -789,7 +803,7 @@ func (this *SuggestTodayService) StatWinOdd_MultiDay(temp *vo.TWeekVO,tempList [
 		last.GuestTeamId = e.GuestTeam
 		last.GuestTeamGoals, _ = strconv.Atoi(e.GuestTeamGoal)
 		option := this.AnalyService.IsRight(last, &e.AnalyResult)
-		if option == constants2.HIT ||  option == constants2.HIT_1{
+		if option == constants2.HIT || option == constants2.HIT_1 {
 			mainRedCount++
 		}
 		if option == constants2.UNHIT {
