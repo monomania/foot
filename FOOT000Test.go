@@ -2,11 +2,8 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
-	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-core/module/spider/constants"
-	"tesou.io/platform/foot-parent/foot-core/module/wechat/controller"
 	"time"
 )
 
@@ -34,14 +31,36 @@ func set()  {
 	constants.FullSpiderDateStr = constants.SpiderDateStr
 }
 
-func main()  {
-	materialController := new(controller.MaterialController)
-	materialController.ModifyNewsOnly()
-	base.Log.Error("22222222222222222222")
-	for ; ;  {
-		fmt.Println(rand.Intn(7))
-		time.Sleep(1 * time.Second)
+var (
+	color_map = map[string]string{
+		"A1": "red",
+		"A3": "orange",
+		"C1": "yellow",
+		"C2": "yellowgreen",
+		"C4": "green",
+		"E1": "cyan",
+		"E2": "blue",
+		"Q1": "purple",
+		"Q2": "black",
 	}
+)
+
+func color(str string) string {
+	s := color_map[str]
+	return s
+}
+
+func main()  {
+	println(color("A1"))
+	println(color("55"))
+
+	//materialController := new(controller.MaterialController)
+	//materialController.ModifyNewsOnly()
+	//base.Log.Error("22222222222222222222")
+	//for ; ;  {
+	//	fmt.Println(rand.Intn(7))
+	//	time.Sleep(1 * time.Second)
+	//}
 }
 
 //func main(){
