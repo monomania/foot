@@ -2,7 +2,6 @@ package service
 
 import (
 	"math"
-	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	entity5 "tesou.io/platform/foot-parent/foot-api/module/analy/pojo"
 	"tesou.io/platform/foot-parent/foot-api/module/match/pojo"
@@ -63,11 +62,11 @@ func (this *A2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, temp_data
 	}
 	for _, ev := range eList {
-		if strings.EqualFold(ev.CompId, "81") {
+		if  ev.CompId == 81{
 			e81 = ev
 			continue
 		}
-		if strings.EqualFold(ev.CompId, "616") {
+		if ev.CompId == 616{
 			e616 = ev
 			continue
 		}
@@ -90,8 +89,8 @@ func (this *A2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, temp_data
 	}
 	a18Bet = aList[0]
-	temp_data.LetBall = a18Bet.ELetBall
-	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
+	temp_data.LetBall = a18Bet.EPanKou
+	if math.Abs(a18Bet.EPanKou) > this.MaxLetBall {
 		//temp_data.Result = ""
 		return -2, temp_data
 	}
@@ -125,7 +124,7 @@ func (this *A2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18Bet.ELetBall
+		temp_data.LetBall = a18Bet.EPanKou
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -134,8 +133,8 @@ func (this *A2Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18Bet.ELetBall
+		data.SLetBall = a18Bet.SPanKou
+		data.LetBall = a18Bet.EPanKou
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

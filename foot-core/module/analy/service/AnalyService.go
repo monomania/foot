@@ -493,9 +493,9 @@ func (this *AnalyService) ActualResult(last *entity2.MatchLast, analy *entity5.A
 */
 func (this *AnalyService) mainLetball(a18Bet *entity3.AsiaHis) bool {
 	mainLetball := true
-	if a18Bet.ELetBall > 0 {
+	if a18Bet.EPanKou > 0 {
 		mainLetball = true
-	} else if a18Bet.ELetBall < 0 {
+	} else if a18Bet.EPanKou < 0 {
 		mainLetball = false
 	} else {
 		//EletBall == 0
@@ -565,8 +565,8 @@ func (this *AnalyService) AsiaDirectionMulti(matchId string) int {
 */
 func (this *AnalyService) AsiaDirection(ahis *entity3.AsiaHis) int {
 	mark := -1
-	slb := ahis.SLetBall
-	elb := ahis.ELetBall
+	slb := ahis.SPanKou
+	elb := ahis.EPanKou
 	ep3_small := ahis.Ep3 < ahis.Sp3
 	ep0_small := ahis.Ep0 < ahis.Sp0
 	if elb > 0 {

@@ -79,8 +79,8 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, temp_data
 	}
 	aBet365 = aList[0]
-	temp_data.LetBall = aBet365.ELetBall
-	if math.Abs(aBet365.ELetBall) > this.MaxLetBall {
+	temp_data.LetBall = aBet365.EPanKou
+	if math.Abs(aBet365.EPanKou) > this.MaxLetBall {
 		return -2, temp_data
 	}
 
@@ -91,23 +91,23 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 
 	preResult := -1
 	if mainLetball{
-		if aBet365.Ep3 > aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 > e281_2.Kelly3{
+		if aBet365.Ep3 > aBet365.Sp3  && e281_1.Kelly3 > e281_2.Kelly3{
 			preResult = 0
 		}
-		if aBet365.Ep3 > aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 < e281_2.Kelly3{
+		if aBet365.Ep3 > aBet365.Sp3  && e281_1.Kelly3 < e281_2.Kelly3{
 			preResult = 3
 		}
-		if aBet365.Ep3 < aBet365.Sp3 && e281_1.Ep3 < e281_1.Sp3 && e281_1.Kelly3 > e281_2.Kelly3{
+		if aBet365.Ep3 < aBet365.Sp3  && e281_1.Kelly3 > e281_2.Kelly3{
 			preResult = 0
 		}
 	}else{
-		if aBet365.Ep0 > aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 > e281_2.Kelly0{
+		if aBet365.Ep0 > aBet365.Sp0  && e281_1.Kelly0 > e281_2.Kelly0{
 			preResult = 3
 		}
-		if aBet365.Ep0 > aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 < e281_2.Kelly0{
+		if aBet365.Ep0 > aBet365.Sp0  && e281_1.Kelly0 < e281_2.Kelly0{
 			preResult = 0
 		}
-		if aBet365.Ep0 < aBet365.Sp0 && e281_1.Ep0 < e281_1.Sp0 && e281_1.Kelly0 > e281_2.Kelly0{
+		if aBet365.Ep0 < aBet365.Sp0  && e281_1.Kelly0 > e281_2.Kelly0{
 			preResult = 3
 		}
 	}
@@ -117,7 +117,7 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = aBet365.ELetBall
+		temp_data.LetBall = aBet365.EPanKou
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -126,14 +126,14 @@ func (this *E3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.SLetBall = aBet365.SLetBall
-		data.LetBall = aBet365.ELetBall
+		data.SLetBall = aBet365.SPanKou
+		data.LetBall = aBet365.EPanKou
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format
 		data.PreResult = preResult
 		data.HitCount = 3
-		data.LetBall = aBet365.ELetBall
+		data.LetBall = aBet365.EPanKou
 		//比赛结果
 		data.Result = this.IsRight(v, data)
 		return 0, data

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -14,7 +15,7 @@ type AsiaHisService struct {
 
 func (this *AsiaHisService) Exist(v *pojo.AsiaHis) (string, bool) {
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
+	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + strconv.Itoa(v.CompId) + "' ")
 	temp := &pojo.AsiaHis{}
 	var id string
 	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)
@@ -49,30 +50,30 @@ FROM
   foot.t_asia_his h 
 WHERE 1 = 1 
   AND h.MatchId = '` + matchId + `' 
-  AND h.SLetBall = 
+  AND h.SPanKou = 
   (SELECT 
-    t.SLetBall 
+    t.SPanKou 
   FROM
     (SELECT 
-      h.SLetBall,
+      h.SPanKou,
       COUNT(1) AS cc 
     FROM
       foot.t_asia_his h 
     WHERE h.MatchId = '` + matchId + `' 
-    GROUP BY h.SLetBall) t 
+    GROUP BY h.SPanKou) t 
   ORDER BY t.cc DESC 
   LIMIT 0, 1) 
-  AND h.ELetBall = (
+  AND h.EPanKou = (
     (SELECT 
-      t.ELetBall 
+      t.EPanKou 
     FROM
       (SELECT 
-        h.ELetBall,
+        h.EPanKou,
         COUNT(1) AS cc 
       FROM
         foot.t_asia_his h 
       WHERE h.MatchId = '` + matchId + `' 
-      GROUP BY h.ELetBall) t 
+      GROUP BY h.EPanKou) t 
     ORDER BY t.cc DESC 
     LIMIT 0, 1)
   ) 

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strconv"
 	"strings"
 	"tesou.io/platform/foot-parent/foot-api/common/base"
 	"tesou.io/platform/foot-parent/foot-api/module/odds/pojo"
@@ -13,7 +14,7 @@ type EuroHisService struct {
 
 func (this *EuroHisService) Exist(v *pojo.EuroHis) (string, bool) {
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + v.CompId + "' ")
+	sql_build.WriteString(" MatchId = '" + v.MatchId + "' AND CompId = '" + strconv.Itoa(v.CompId) + "' ")
 	temp := &pojo.EuroHis{}
 	var id string
 	exist, err := mysql.GetEngine().Where(sql_build.String()).Get(temp)

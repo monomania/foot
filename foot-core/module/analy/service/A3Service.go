@@ -60,15 +60,15 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		return -1, temp_data
 	}
 	a18Bet = aList[0]
-	temp_data.LetBall = a18Bet.ELetBall
-	if math.Abs(a18Bet.ELetBall) > this.MaxLetBall {
+	temp_data.LetBall = a18Bet.EPanKou
+	if math.Abs(a18Bet.EPanKou) > this.MaxLetBall {
 		//temp_data.Result =""
 		//return -2, temp_data
 		//return -2, nil
 	}
 
 	//限制初盘,即时盘让球在0.25以内
-	if math.Abs(a18Bet.SLetBall-a18Bet.ELetBall) > 0.25 {
+	if math.Abs(a18Bet.SPanKou-a18Bet.EPanKou) > 0.25 {
 		//temp_data.Result =""
 		//return -2, temp_data
 		//return -2, nil
@@ -145,24 +145,24 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 	//odd_flag_1 := a18Bet.Ep3 < 0.94 && a18Bet.Sp3 < 0.94
 	odd_flag_2 := a18Bet.Ep0 >= 1.00 || (a18Bet.Ep0 >= 0.94 && a18Bet.Ep0 < 0.96)
 	//odd_flag_2 := a18Bet.Ep0 < 0.94 && a18Bet.Sp0 < 0.94
-	if mainStrong == 3 && mainLetball && odd_flag_1 && a18Bet.ELetBall == a18Bet.SLetBall{
+	if mainStrong == 3 && mainLetball && odd_flag_1 && a18Bet.EPanKou == a18Bet.SPanKou {
 		preResult = 0
 	}
-	if mainStrong == 0 && !mainLetball &&  odd_flag_2 && a18Bet.ELetBall == a18Bet.SLetBall{
+	if mainStrong == 0 && !mainLetball &&  odd_flag_2 && a18Bet.EPanKou == a18Bet.SPanKou {
 		preResult = 3
 	}
 
 	if preResult < 0 {
 		return -3, temp_data
 	}
-	base.Log.Info(a18Bet.Sp3," ", a18Bet.SLetBall," ", a18Bet.Sp0,"   ", a18Bet.Ep3," ", a18Bet.ELetBall," ", a18Bet.Ep0)
+	base.Log.Info(a18Bet.Sp3," ", a18Bet.SPanKou," ", a18Bet.Sp0,"   ", a18Bet.Ep3," ", a18Bet.EPanKou," ", a18Bet.Ep0)
 
 	var data *entity5.AnalyResult
 	if len(temp_data.Id) > 0 {
 		temp_data.MatchDate = v.MatchDate
 		temp_data.PreResult = preResult
 		temp_data.HitCount = temp_data.HitCount + 1
-		temp_data.LetBall = a18Bet.ELetBall
+		temp_data.LetBall = a18Bet.EPanKou
 		data = temp_data
 		//比赛结果
 		data.Result = this.IsRight(v, data)
@@ -171,8 +171,8 @@ func (this *A3Service) analyStub(v *pojo.MatchLast) (int, *entity5.AnalyResult) 
 		data = new(entity5.AnalyResult)
 		data.MatchId = v.Id
 		data.MatchDate = v.MatchDate
-		data.SLetBall = a18Bet.SLetBall
-		data.LetBall = a18Bet.ELetBall
+		data.SLetBall = a18Bet.SPanKou
+		data.LetBall = a18Bet.EPanKou
 		data.AlFlag = this.ModelName()
 		format := time.Now().Format("0102150405")
 		data.AlSeq = format

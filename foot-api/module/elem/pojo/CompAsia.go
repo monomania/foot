@@ -5,10 +5,10 @@ import (
 )
 
 /**
-欧赔菠菜公司表
+亚赔菠菜公司表
  */
 //不管是从哪个平台抓取的数据，都使用win007的菠菜公司的ID数据
-type Comp struct {
+type CompAsia struct {
 	//名称
 	Name string `xorm:" comment('名称') index varchar(50)"`
 	NameEn string `xorm:" comment('en名称') index varchar(50)"`

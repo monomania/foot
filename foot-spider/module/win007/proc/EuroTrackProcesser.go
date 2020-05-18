@@ -25,7 +25,7 @@ type EuroTrackProcesser struct {
 	service2.EuroTrackService
 	//入参
 	//是否是单线程
-	SingleThread bool
+	SingleThread  bool
 	MatchLastList []*pojo.MatchLast
 	//博彩公司对应的win007id
 	CompWin007Ids      []string
@@ -55,7 +55,7 @@ func (this *EuroTrackProcesser) Startup() {
 	newSpider = spider.NewSpider(processer, "EuroTrackProcesser")
 	for i, v := range this.MatchLastList {
 
-		if !this.SingleThread &&i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
+		if !this.SingleThread && i%1000 == 0 { //10000个比赛一个spider,一个赛季大概有30万场比赛,最多30spider
 			//先将前面的spider启动
 			newSpider.SetDownloader(down.NewMWin007Downloader())
 			newSpider = newSpider.AddPipeline(pipeline.NewPipelineConsole())
@@ -124,7 +124,7 @@ func (this *EuroTrackProcesser) Process(p *page.Page) {
 		track := new(entity3.EuroTrack)
 		track_list = append(track_list, track)
 		track.MatchId = matchId
-		track.CompId = win007_betCompId
+		track.CompId, _ = strconv.Atoi(win007_betCompId)
 
 		td_list_node := selection.Find(" td ")
 		td_list_node.Each(func(ii int, selection *goquery.Selection) {
