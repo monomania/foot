@@ -79,7 +79,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 		selection.Find("td").Each(func(td_index int, selection *goquery.Selection) {
 			if td_index == 0 {
 				//波菜公司名称
-				last.CompId = selection.Text()
+				last.CompName = selection.Text()
 			} else {
 				selection.Children().Each(func(i int, selection *goquery.Selection) {
 					if td_index == 1 {
@@ -88,7 +88,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 							last.Sp3, _ = strconv.ParseFloat(selection.Text(), 64)
 							break
 						case 1:
-							last.SLetBall = ConvertLetball(selection.Text())
+							last.SPanKou = ConvertLetball(selection.Text())
 							break
 						case 2:
 							last.Sp0, _ = strconv.ParseFloat(selection.Text(), 64)
@@ -100,7 +100,7 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 							last.Ep3, _ = strconv.ParseFloat(selection.Text(), 64)
 							break
 						case 1:
-							last.ELetBall = ConvertLetball(selection.Text())
+							last.EPanKou = ConvertLetball(selection.Text())
 							break
 						case 2:
 							last.Ep0, _ = strconv.ParseFloat(selection.Text(), 64)
@@ -125,10 +125,10 @@ func (this *AsiaLastProcesser) Process(p *page.Page) {
 		his.OddDate = last.OddDate
 		his.Sp0 = last.Sp0
 		his.Sp3 = last.Sp3
-		his.SLetBall = last.SLetBall
+		his.SPanKou = last.SPanKou
 		his.Ep0 = last.Ep0
 		his.Ep3 = last.Ep3
-		his.ELetBall = last.ELetBall
+		his.EPanKou = last.EPanKou
 
 		temp_id, his_exists := this.AsiaHisService.Exist(his)
 		if !his_exists {

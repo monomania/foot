@@ -13,19 +13,15 @@ type EuroTrack struct {
 	Sp1 float64
 	Sp0 float64
 
-	/**
-	即时盘胜平负赔率
-	*/
-	Ep3 float64
-	Ep1 float64
-	Ep0 float64
-
 	//博彩公司id
-	CompId string `xorm:"unique(CompId_MatchId_OddDate) index"`
+	CompId int `xorm:"unique(CompId_MatchId_OddDate_Num)"`
 	//比赛id
-	MatchId string `xorm:"unique(CompId_MatchId_OddDate) index"`
+	MatchId string `xorm:"unique(CompId_MatchId_OddDate_Num)  varchar(20)"`
 	//数据时间
-	OddDate string	`xorm:"unique(CompId_MatchId_OddDate) index"`
+	OddDate string	`xorm:"unique(CompId_MatchId_OddDate_Num) varchar(20)"`
+
+
+	Num int `xorm:"unique(CompId_MatchId_OddDate_Num)"`
 
 	//赔付率
 	Payout float64

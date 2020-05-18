@@ -113,14 +113,15 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 
 		last := new(entity2.AsiaLast)
 		last.MatchId = matchId
-		last.CompId = e.NameCn
+		last.CompId = e.CompanyID
+		last.CompName = e.NameCn
 
 		odd := e.Details[0]
 		last.Sp3 = odd.FirstHomeOdds
-		last.SLetBall = odd.FirstDrawOdds
+		last.SPanKou = odd.FirstDrawOdds
 		last.Sp0 = odd.FirstAwayOdds
 		last.Ep3 = odd.HomeOdds
-		last.ELetBall = odd.DrawOdds
+		last.EPanKou = odd.DrawOdds
 		last.Ep0 = odd.AwayOdds
 		if len(odd.ModifyTime) > 0 {
 			tempMt, err := strconv.ParseInt(odd.ModifyTime, 0, 64)
@@ -153,10 +154,7 @@ func (this *AsiaLastNewProcesser) Process(p *page.Page) {
 		track.OddDate = last.OddDate
 		track.Sp0 = last.Sp0
 		track.Sp3 = last.Sp3
-		track.SLetBall = last.SLetBall
-		track.Ep0 = last.Ep0
-		track.Ep3 = last.Ep3
-		track.ELetBall = last.ELetBall
+		track.SPanKou = last.SPanKou
 
 		track_temp_id, track_exists := this.AsiaTrackService.Exist(track)
 		if !track_exists {

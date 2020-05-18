@@ -8,9 +8,10 @@ import (
 */
 type EuroLast struct {
 	//博彩公司id
-	CompId string `xorm:"unique(CompId_MatchId) index"`
+	CompId int `xorm:"unique(CompId_MatchId)"`
+	CompName string `xorm:"varchar(50)"`
 	//比赛id
-	MatchId string `xorm:"unique(CompId_MatchId) index"`
+	MatchId string `xorm:"unique(CompId_MatchId) varchar(20)"`
 
 	/**
 	初盘胜平负赔率
@@ -30,7 +31,14 @@ type EuroLast struct {
 	Payout float64	`xorm:" comment('赔付率') index"`
 
 	//数据时间
-	OddDate string	`xorm:" comment('数据时间') index"`
+	OddDate string	`xorm:" comment('数据时间') index varchar(20)"`
+
+	/**
+	胜平负凯利指数
+	*/
+	Kelly3 float64
+	Kelly1 float64
+	Kelly0 float64
 
 	pojo.BasePojo `xorm:"extends"`
 }

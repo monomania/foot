@@ -158,7 +158,7 @@ func (this *EuroLastProcesser) hdata_process(url string, hdata_str string) {
 
 		last := new(entity3.EuroLast)
 		last.MatchId = matchId
-		last.CompId = comp.Id
+		last.CompId,_ = strconv.Atoi(comp.Id)
 
 		last.Sp3 = v.Hw
 		last.Sp1 = v.So
