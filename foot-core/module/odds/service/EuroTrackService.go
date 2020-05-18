@@ -12,7 +12,7 @@ type EuroTrackService struct {
 }
 
 func (this *EuroTrackService) Exist(v *pojo.EuroTrack) (string, bool) {
-	temp := &pojo.EuroTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate}
+	temp := &pojo.EuroTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate,Num:v.Num}
 	var id string
 	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
