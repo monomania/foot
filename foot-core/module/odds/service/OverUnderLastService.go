@@ -7,12 +7,13 @@ import (
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 )
 
-type AsiaTrackService struct {
+type OverUnderLastService struct {
 	mysql.BaseService
 }
 
-func (this *AsiaTrackService) Exist(v *pojo.AsiaTrack) (string, bool) {
-	temp := &pojo.AsiaTrack{MatchId: v.MatchId, CompId: v.CompId, OddDate: v.OddDate,Num:v.Num}
+//查看数据是否已经存在
+func (this *OverUnderLastService) Exist(v *pojo.OverUnderLast) (string, bool) {
+	temp := &pojo.OverUnderLast{MatchId: v.MatchId, CompId: v.CompId}
 	var id string
 	exist, err := mysql.GetEngine().Get(temp)
 	if err != nil {
@@ -25,8 +26,8 @@ func (this *AsiaTrackService) Exist(v *pojo.AsiaTrack) (string, bool) {
 }
 
 //根据比赛ID查找亚赔
-func (this *AsiaTrackService) FindByMatchId(matchId string) []*pojo.AsiaTrack {
-	dataList := make([]*pojo.AsiaTrack, 0)
+func (this *OverUnderLastService) FindByMatchId(matchId string) []*pojo.OverUnderLast {
+	dataList := make([]*pojo.OverUnderLast, 0)
 	err := mysql.GetEngine().Where(" MatchId = ? ", matchId).Find(dataList)
 	if err != nil {
 		base.Log.Error("FindByMatchId:", err)
@@ -35,11 +36,11 @@ func (this *AsiaTrackService) FindByMatchId(matchId string) []*pojo.AsiaTrack {
 }
 
 //根据比赛ID和波菜公司ID查找亚赔
-func (this *AsiaTrackService) FindByMatchIdCompId(matchId string, compIds ...string) []*pojo.AsiaTrack {
-	dataList := make([]*pojo.AsiaTrack, 0)
+func (this *OverUnderLastService) FindByMatchIdCompName(matchId string, compNames ...string) []*pojo.OverUnderLast {
+	dataList := make([]*pojo.OverUnderLast, 0)
 	sql_build := strings.Builder{}
-	sql_build.WriteString(" MatchId = '" + matchId + "' AND CompId in ( '0' ")
-	for _, v := range compIds {
+	sql_build.WriteString(" MatchId = '" + matchId + "' AND CompName in ( '0' ")
+	for _, v := range compNames {
 		sql_build.WriteString(" ,'")
 		sql_build.WriteString(v)
 		sql_build.WriteString("'")
@@ -47,7 +48,7 @@ func (this *AsiaTrackService) FindByMatchIdCompId(matchId string, compIds ...str
 	sql_build.WriteString(")")
 	err := mysql.GetEngine().Where(sql_build.String()).Find(&dataList)
 	if err != nil {
-		base.Log.Error("FindByMatchIdCompId:", err)
+		base.Log.Error("FindByMatchIdCompName:", err)
 	}
 	return dataList
 }
