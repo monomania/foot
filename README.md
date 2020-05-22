@@ -94,7 +94,7 @@
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-  ![](https://oscimg.oschina.net/oscnet/265bf76794ead3bac4c19a38dc4dbbe8bbb.png "go mod")
+  ![](http://aoe5188.gitee.io/foot/assets/project/0-env.png "build")
   * 或可手动下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -134,11 +134,11 @@
 4. FC002Analy.go 分析得出推荐列表
 ~~~
 ## 🌰打包部署
-* 编译打包
-
-* 压缩编译后的文件,并上传
-
-* 上传到服务器后,Terminal Record
+* 编译打包  
+![](http://aoe5188.gitee.io/foot/assets/project/1-build.png "build")
+* 压缩编译后的文件,并上传  
+![](http://aoe5188.gitee.io/foot/assets/project/2-upload.png "upload")
+* 上传到服务器后,Terminal Record  
 
 ***
 
