@@ -93,8 +93,8 @@
   | GOPROXY=https://goproxy.cn,direct     |依赖包下载代理地址|
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
-* 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod
-  ![](http://aoe5188.gitee.io/foot/assets/project/0-env.png "build")
+* 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod  
+  ![](http://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
   * 或可手动下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -135,9 +135,9 @@
 ~~~
 ## 🌰打包部署
 * 编译打包  
-![](http://aoe5188.gitee.io/foot/assets/project/1-build.png "build")
+![](http://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
 * 压缩编译后的文件,并上传  
-![](http://aoe5188.gitee.io/foot/assets/project/2-upload.png "upload")
+![](http://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
 * 上传到服务器后,Terminal Record  
 
 ***
