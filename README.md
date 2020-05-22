@@ -38,8 +38,17 @@
 ***
 
 ## 🙋‍ 公众号演示
- * 公众号: AI球探(ai00268)
- ![](https://oscimg.oschina.net/oscnet/up-e1c184e44f8f98c962274667d01f9670639.JPEG "go mod")
+ * 公众号: AI球探(ai00268)  
+ ![](http://aoe5188.gitee.io/foot/assets/wechat/qr_code_1.JPEG "AI球探")
+***
+
+## 🌰打包部署
+* 编译打包  
+![](https://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
+* 压缩编译后的文件,并上传  
+![](https://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
+* 上传到服务器后,Terminal Record  
+[![asciinema]( https://asciinema.org/a/332918.svg)]( https://asciinema.org/a/332918)
 ***
 
 ## 👏 目前程序已经完成了对很多足球相关数据的收集,包括且不仅限于:
@@ -94,7 +103,7 @@
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod  
-  ![](http://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
+  ![](https://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
   * 或可手动下载资源包
     ```
       cd ./foot-api && go mod tidy
@@ -133,14 +142,6 @@
 3. FS000.go 运行数据爬虫
 4. FC002Analy.go 分析得出推荐列表
 ~~~
-## 🌰打包部署
-* 编译打包  
-![](http://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
-* 压缩编译后的文件,并上传  
-![](http://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
-* 上传到服务器后,Terminal Record  
-
-***
 
 ## 🌰 项目结构
 ~~~
