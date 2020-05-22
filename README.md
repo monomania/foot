@@ -39,16 +39,16 @@
 
 ## 🙋‍ 公众号演示
  * 公众号: AI球探(ai00268)  
- ![]( http://aoe5188.gitee.io/foot/assets/wechat/qr_code_1.JPEG "AI球探")
+ ![](https://gitee.com/aoe5188/foot/raw/master/assets/wechat/qr_code_1.JPEG "qr_code_1")
 ***
 
 ## 🌰打包部署
 * 编译打包  
-![]( http://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
+![](https://gitee.com/aoe5188/foot/raw/master/assets/project/10001build.png "10001build")
 * 压缩编译后的文件,并上传  
-![]( http://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
+![](https://gitee.com/aoe5188/foot/raw/master/assets/project/10002upload.png "10002upload")
 * 上传到服务器后,Terminal Record  
-[![asciinema]( https://asciinema.org/a/332918.svg)]( https://asciinema.org/a/332918)
+[![Terminal Record]( https://asciinema.org/a/332918.svg)]( https://asciinema.org/a/332918)
 ***
 
 ## 👏 目前程序已经完成了对很多足球相关数据的收集,包括且不仅限于:
@@ -103,7 +103,7 @@
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod  
-  ![](http://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
+  ![](https://gitee.com/aoe5188/foot/raw/master/assets/project/10000env.png "10000env")
   * 或可手动下载资源包
     ```
       cd ./foot-api && go mod tidy
