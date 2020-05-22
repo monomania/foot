@@ -39,14 +39,14 @@
 
 ## 🙋‍ 公众号演示
  * 公众号: AI球探(ai00268)  
- ![](http://aoe5188.gitee.io/foot/assets/wechat/qr_code_1.JPEG "AI球探")
+ ![]( http://aoe5188.gitee.io/foot/assets/wechat/qr_code_1.JPEG "AI球探")
 ***
 
 ## 🌰打包部署
 * 编译打包  
-![](https://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
+![]( http://aoe5188.gitee.io/foot/assets/project/10001build.png "build")
 * 压缩编译后的文件,并上传  
-![](https://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
+![]( http://aoe5188.gitee.io/foot/assets/project/10002upload.png "upload")
 * 上传到服务器后,Terminal Record  
 [![asciinema]( https://asciinema.org/a/332918.svg)]( https://asciinema.org/a/332918)
 ***
@@ -103,7 +103,7 @@
   | GOSUMDB=sum.golang.google.cn     |包的哈希值校验地址|
   
 * 导入项目到[JetBrains GoLand](https://www.jetbrains.com/go/)并启用go mod  
-  ![](https://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
+  ![](http://aoe5188.gitee.io/foot/assets/project/10000env.png "build")
   * 或可手动下载资源包
     ```
       cd ./foot-api && go mod tidy
