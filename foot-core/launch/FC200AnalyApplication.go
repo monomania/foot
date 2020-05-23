@@ -37,18 +37,6 @@ func Analy(all bool) {
 	e1.PrintOddData = printOddData
 	e1.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------A1模型--------------")
-	base.Log.Info("---------------------------------------------------------------")
-	a1 := new(service.A1Service)
-	a1.MaxLetBall = maxLetBall
-	a1.Analy(all)
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------A3模型--------------")
-	base.Log.Info("---------------------------------------------------------------")
-	a3 := new(service.A3Service)
-	a3.MaxLetBall = 5
-	a3.Analy(all)
-	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("---------------处理结果--------------")
 	base.Log.Info("---------------------------------------------------------------")
 	analyService := new(service.AnalyService)
@@ -80,15 +68,5 @@ func Analy_Near() {
 	e1.MaxLetBall = maxLetBall
 	e1.PrintOddData = printOddData
 	e1.Analy_Near()
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------A1模型--------------")
-	base.Log.Info("---------------------------------------------------------------")
-	a1 := new(service.A1Service)
-	a1.MaxLetBall = maxLetBall
-	a1.PrintOddData = printOddData
-	a1.Analy_Near()
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("---------------C1模型--------------")
-	base.Log.Info("---------------------------------------------------------------")
 	mysql.ShowSQL(true)
 }
