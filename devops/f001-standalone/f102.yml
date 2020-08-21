@@ -1,0 +1,45 @@
+version: '3.4'
+
+x-logging:
+  &default-logging
+  options:
+    max-size: '256m'
+    max-file: '3'
+  driver: json-file
+
+volumes:
+  foot-data:
+
+services:
+  #1-4个
+  spider-1:
+    image: tesou/base:1.0
+    logging: *default-logging
+    restart: always
+    hostname: spider-1.foot
+    volumes:
+      - foot-data:/usr/local/apps/foot
+    network_mode: "host"
+    command: bash -c "cd /usr/local/apps/foot && chmod u+x ./FOOT000 && ./FOOT000 spider auto "
+
+  #单个
+  pub-1:
+    image: tesou/base:1.0
+    logging: *default-logging
+    restart: always
+    hostname: pub-1.foot
+    volumes:
+      - foot-data:/usr/local/apps/foot
+    environment:
+      ZOO_MY_ID: 1
+    network_mode: "host"
+    command: bash -c "cd /usr/local/apps/foot && chmod u+x ./FOOT000 && ./FOOT000 pub auto "
+
+
+
+
+      
+
+
+  
+   

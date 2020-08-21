@@ -8,61 +8,45 @@ x-logging:
   driver: json-file
   
 volumes:
-  foot:
-  nginx-conf-d:
+  foot-data:
 
 services:
-  spider-1:
-    image: golang
+  #单个
+  near-1:
+    image: tesou/base:1.0
     logging: *default-logging
     restart: always
-    hostname: spider-1.foot
+    hostname: near-1.foot
     volumes:
-        - zk-1-conf:/conf
-        - zk-1-data:/data 
-        - zk-1-datalog:/datalog 
-    environment:
-      ZOO_MY_ID: 1
+      - foot-data:/usr/local/apps/foot
     network_mode: "host"
+    command: bash -c "cd /usr/local/apps/foot && chmod u+x ./FOOT000 && ./FOOT000 autoNear "
 
+  #单个
   analy-1:
-    image: golang
+    image: tesou/base:1.0
     logging: *default-logging
     restart: always
     hostname: analy-1.foot
     volumes:
-        - zk-2-conf:/conf 
-        - zk-2-data:/data 
-        - zk-2-datalog:/datalog
+      - foot-data:/usr/local/apps/foot
     environment:
       ZOO_MY_ID: 2
     network_mode: "host"
+    command: bash -c "cd /usr/local/apps/foot && chmod u+x ./FOOT000 && ./FOOT000 analy auto "
 
+  #单个
   wechat-1:
-    image: golang
+    image: tesou/base:1.0
     logging: *default-logging
     restart: always
     hostname: wechat-1.foot
     volumes:
-        - zk-3-conf:/conf 
-        - zk-3-data:/data 
-        - zk-3-datalog:/datalog
+      - foot-data:/usr/local/apps/foot
     environment:
       ZOO_MY_ID: 3
     network_mode: "host"
-    
-  pub-1:
-    image: golang
-    logging: *default-logging
-    restart: always
-    hostname: pub-1.foot
-    volumes:
-        - assembly-zk-1-conf:/conf 
-        - assembly-zk-1-data:/data 
-        - assembly-zk-1-datalog:/datalog
-    environment:
-      ZOO_MY_ID: 1
-    network_mode: "host"
+    command: bash -c "cd /usr/local/apps/foot && chmod u+x ./FOOT000 && ./FOOT000 mp auto "
 
 
 

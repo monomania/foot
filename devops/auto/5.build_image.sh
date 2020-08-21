@@ -19,8 +19,7 @@ build_image() {
 	docker image rm $(docker images -q) -f
 	#构建镜像
 	cd $WORK_HOME/build
-	docker build -t meta/base:1.0  				-f base.Dockerfile .
+	docker build -t tesou/base:1.0  				-f base.Dockerfile .
 
-	docker build -t meta/zookeeper:1.0  		-f zookeeper.Dockerfile .
 
 }
