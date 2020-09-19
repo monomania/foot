@@ -115,25 +115,23 @@
 ## 🌰 主要入口
   *  build_linux.bat            一键打包linux发布程序
   *  build_windows.bat          一键打包windows发布程序
-  *  FC000.go                   运行beego
-  *  FC001DBInit.go             数据库表同步初始化
-  *  FC002Analy.go              运行结果分析    
   *  FOOT000.go                 linux入口（主要使用）
   *  FOOT000Cmd.go              windows入口（主要使用）
-  *  FS000.go                   运行数据爬虫
 
 ## 🌰 本地调试运行
 ~~~
 (有变动需要自行查看源码)
 1. 创建数据库foot
-2. FC001DBInit.go  同步数据库表
-3. FS000.go 运行数据爬虫
-4. FC002Analy.go 分析得出推荐列表
+2. FOOT000Cmd.go  init  同步数据库表
+3. FOOT000Cmd.go spider 运行数据爬虫
+4. FOOT000Cmd.go analy  分析得出推荐列表
 ~~~
 ## 🌰打包部署
 ~~~
 1.运行build_linux.bat 进行打包
-2.FOOT000 spider        启动
+2.FOOT000 init        
+3.FOOT000 spider        
+4.FOOT000 analy        
 ~~~
 ***
 
