@@ -1,6 +1,0 @@
-{
-  "registry-mirrors": ["https://fra0fvhv.mirror.aliyuncs.com"]
-  ,"dns": ["172.16.0.23"]
-  ,"log-driver":"json-file"
-  ,"log-opts":{ "max-size" :"10g","max-file":"3"}
-}

@@ -1,6 +1,7 @@
 package launch
 
 import (
+	"strconv"
 	"tesou.io/platform/foot-parent/foot-core/common/base/service/mysql"
 	"tesou.io/platform/foot-parent/foot-spider/module/win007/proc"
 )
@@ -35,6 +36,8 @@ func Spider_match(matchLevel int) {
 	//4单场
 	if matchLevel == 4 {
 		strings = append(strings, "http://m.win007.com/phone/Schedule_0_4.txt")
+	}else{
+		strings = append(strings, "http://m.win007.com/phone/Schedule_0_"+strconv.Itoa(matchLevel)+".txt")
 	}
 	for _, v := range strings {
 		processer := proc.GetMatchLastProcesser()

@@ -29,12 +29,12 @@ func Spider() {
 	}
 	matchLevel, _ := strconv.Atoi(matchLevelStr)
 	Spider_match(matchLevel)
-	Spider_baseFace(false)
+	//Spider_baseFace(false)
 	Spider_asiaLastNew(false)
 	Spider_euroLast()
 	Spider_euroHis()
 	//再对欧赔数据不完整的比赛进行两次抓取
-	Spider_euroHis_Incomplete()
+	//Spider_euroHis_Incomplete()
 }
 
 func Spider_Near() {

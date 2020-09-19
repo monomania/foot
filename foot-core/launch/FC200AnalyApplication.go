@@ -23,13 +23,6 @@ func Analy(all bool) {
 	e2.PrintOddData = printOddData
 	e2.Analy(all)
 	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("----------------Q1模型-------------------")
-	base.Log.Info("---------------------------------------------------------------")
-	q1 := new(service.Q1Service)
-	q1.MaxLetBall = maxLetBall
-	q1.PrintOddData = printOddData
-	q1.Analy(all)
-	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------E1模型-------------------")
 	base.Log.Info("---------------------------------------------------------------")
 	e1 := new(service.E1Service)
@@ -54,13 +47,6 @@ func Analy_Near() {
 	e2.MaxLetBall = maxLetBall
 	e2.PrintOddData = printOddData
 	e2.Analy_Near()
-	base.Log.Info("---------------------------------------------------------------")
-	base.Log.Info("----------------Q1模型-------------------")
-	base.Log.Info("---------------------------------------------------------------")
-	q1 := new(service.Q1Service)
-	q1.MaxLetBall = maxLetBall
-	q1.PrintOddData = printOddData
-	q1.Analy_Near()
 	base.Log.Info("---------------------------------------------------------------")
 	base.Log.Info("----------------E1模型-------------------")
 	base.Log.Info("---------------------------------------------------------------")

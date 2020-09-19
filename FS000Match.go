@@ -10,7 +10,7 @@ func main() {
 	launch.Clean()
 	matchLevelStr := utils.GetVal("spider", "match_level")
 	if len(matchLevelStr) <= 0 {
-		matchLevelStr = "4"
+		matchLevelStr = "3"
 	}
 	matchLevel, _ := strconv.Atoi(matchLevelStr)
 	launch.Spider_match(matchLevel)

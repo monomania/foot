@@ -26,7 +26,7 @@ for %%s in (%rootDir%\bin\assets\wechat\html\*.html) do (
 
 echo build
 cd %rootDir%
-go build  -v -x  -o bin/FOOT000.exe FOOT000.go
+go build  -v -x  -o bin/FOOT000.exe FOOT000Cmd.go
 
 echo=
 pause

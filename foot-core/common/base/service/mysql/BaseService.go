@@ -42,7 +42,7 @@ func setEngine() *xorm.Engine {
 	var err error
 	engine, err = xorm.NewEngine("mysql", url)
 	if nil != err {
-		base.Log.Error("init" + err.Error())
+		base.Log.Errorf("init" + err.Error())
 	}
 
 	//engine.ShowExecTime(true)
@@ -151,7 +151,7 @@ func beforeSave(entity interface{}) interface{} {
 func (this *BaseService) SaveOrModify(entity interface{}) {
 	b, err := engine.Exist(entity)
 	if nil != err {
-		base.Log.Info("SaveOrModify:" + err.Error())
+		base.Log.Errorf(err.Error())
 	}
 	if b {
 		this.Modify(entity)
@@ -163,7 +163,7 @@ func (this *BaseService) Save(entity interface{}) interface{} {
 	id := beforeSave(entity)
 	_, err := engine.InsertOne(entity)
 	if nil != err {
-		base.Log.Info("Save:" + err.Error())
+		base.Log.Errorf(err.Error())
 	}
 	return id
 }
@@ -180,7 +180,7 @@ func (this *BaseService) SaveList(entitys []interface{}) *list.List {
 
 	_, err := engine.Insert(entitys...)
 	if nil != err {
-		base.Log.Info("SaveList:" + err.Error())
+		base.Log.Errorf(err.Error())
 	}
 	return list_ids
 }
@@ -191,7 +191,7 @@ func (this *BaseService) Del(entity interface{}) int64 {
 	id_field := entity_value.FieldByName("Id")
 	i, err := engine.Id(id_field.Interface()).Delete(entity)
 	if err != nil {
-		base.Log.Info("Del:", err)
+		base.Log.Errorf(err.Error())
 	}
 	return i
 }
@@ -203,7 +203,7 @@ func (this *BaseService) Modify(entity interface{}) int64 {
 	id_field := entity_value.FieldByName("Id")
 	i, err := engine.Id(id_field.Interface()).AllCols().Update(entity)
 	if err != nil {
-		base.Log.Info("Modify:", err)
+		base.Log.Errorf(err.Error())
 	}
 	return i
 }
@@ -225,7 +225,7 @@ func (this *BaseService) Exist(entity interface{}) bool {
 	//对象操作
 	exist, err := engine.Exist(entity)
 	if nil != err {
-		base.Log.Info("ExistByName:" + err.Error())
+		base.Log.Errorf(err.Error())
 	}
 	return exist
 }
@@ -241,7 +241,7 @@ func (this *BaseService) FindBySQL(sql string, entity interface{}) {
 func (this *BaseService) FindAll(entity interface{}) {
 	err := engine.Find(entity)
 	if nil != err {
-		base.Log.Info("FindAll: " + err.Error())
+		base.Log.Errorf(err.Error())
 	}
 }
 
@@ -266,6 +266,7 @@ func (this *BaseService) PageSql(sql string, page *pojo.Page, dataList interface
 	countSql := " select count(1) from (" + sql + ") t"
 	counts, err = engine.SQL(countSql).Count()
 	if nil != err {
+		base.Log.Errorf(err.Error())
 		return err
 	} else {
 		page.SetCounts(counts)

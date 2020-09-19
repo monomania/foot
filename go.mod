@@ -8,7 +8,6 @@ require (
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect
 	tesou.io/platform/foot-parent/foot-api v1.0.0
 	tesou.io/platform/foot-parent/foot-core v1.0.0
-	tesou.io/platform/foot-parent/foot-robot v1.0.0
 	tesou.io/platform/foot-parent/foot-spider v1.0.0
 )
 
